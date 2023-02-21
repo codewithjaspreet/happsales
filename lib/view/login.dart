@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../viewmodels/login_view_model.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
 // put login controller
-//   final loginController = Get.put(LoginController());
+  final loginController = Get.put(LoginController());
 
   Login({Key? key}) : super(key: key);
 
@@ -22,6 +23,10 @@ class _LoginState extends State<Login> {
   String password = "";
 
   bool _obscureText = true;
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _orgController = TextEditingController();
 
   void _toggle() {
     setState(() {
@@ -39,10 +44,14 @@ class _LoginState extends State<Login> {
       invisible=true;
     });
   }
+
+  LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> form = GlobalKey<FormState>();
     return Scaffold(
+
       appBar: AppBar(
         title: Text("HappSales" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
         centerTitle: true,
@@ -75,8 +84,10 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller : loginController.emailController,
                       decoration: InputDecoration(
-                        hintText: "Email *",
+
+                        hintText: "email *",
                         hintStyle: TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
@@ -98,7 +109,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextFormField(
                       obscureText: true,
-
+                      controller : loginController.passwordController,
                       decoration: InputDecoration(
 
                         hintText: "Password *",
@@ -130,6 +141,7 @@ class _LoginState extends State<Login> {
                       height: 20.h,
                     ),
                     TextFormField(
+                      controller : loginController.orgController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Organization Code *",
@@ -162,7 +174,7 @@ class _LoginState extends State<Login> {
                           children: [
 
                             Text(
-                              "Forgot Password?",
+                              "Forgot Password",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14.sp,
@@ -183,22 +195,26 @@ class _LoginState extends State<Login> {
                         }
                       },
 
-                      child: Container(
-                        height: 50.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color(0xff000080),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp,
-                            ),
+                      child: GestureDetector(
+                        onTap: () {
+                          print("Button Tap");
+                          loginController.loginWithEmail();
+                        },
+                        child: Container(
+                          height: 50.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            shape: BoxShape.rectangle,
                           ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print("Button Tap");
+                                // loginController.loginWithEmail();
+                              },
+                              style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor: Color(0xff171A63),primary: Colors.white),
+                              child: Text('Login' ,style:  TextStyle(),),
+                            )
                         ),
                       ),
 

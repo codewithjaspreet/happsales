@@ -63,8 +63,8 @@ class _LoginState extends State<ForgotPassword> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Email *",
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintText: "UserName *",
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
@@ -88,7 +88,7 @@ class _LoginState extends State<ForgotPassword> {
 
                       decoration: InputDecoration(
 
-                        hintText: "Password *",
+                        hintText: "Organisation Code *",
 
                         hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
@@ -112,8 +112,8 @@ class _LoginState extends State<ForgotPassword> {
                     TextFormField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: "Organization Code *",
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintText: "Email *",
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
                         ),
@@ -147,12 +147,12 @@ class _LoginState extends State<ForgotPassword> {
                         height: 50.h,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Color(0xff000080),
+                          color: const Color(0xff000080),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
                           child: Text(
-                            "Login",
+                            "Confirm",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
