@@ -7,7 +7,7 @@ import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
 // put login controller
-  final loginController = Get.put(LoginController());
+  LoginController loginController = Get.put(LoginController());
 
   Login({Key? key}) : super(key: key);
 
@@ -209,11 +209,11 @@ class _LoginState extends State<Login> {
                           ),
                             child: ElevatedButton(
                               onPressed: () {
-                                print("Button Tap");
+                                print("Button Tap2");
                                 // loginController.loginWithEmail();
                               },
                               style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor: Color(0xff171A63),primary: Colors.white),
-                              child: Text('Login' ,style:  TextStyle(),),
+                              child: Text('Login' ,style:  TextStyle(fontWeight: FontWeight.bold ,fontSize: 16.sp),),
                             )
                         ),
                       ),

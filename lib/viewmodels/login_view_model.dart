@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController orgController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};
@@ -58,4 +59,34 @@ class LoginController extends GetxController {
     }
   }
 
+  Future<String> forgotPassword(String loginName, String emailAddress, String groupCode) async {
+
+    // the api url for the reset password
+
+    var apiUrl  = ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.forgotPassword;
+
+    // the body of the request
+    final response = await http.post(Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'LoginName': loginName,
+          'EmailAddress': emailAddress,
+          'GroupCode': groupCode,
+        }));
+
+    // if the response is successful
+
+
+
+    if (response.statusCode == 200) {
+
+      // here we can add an email sending service to send the email
+      return 'Password reset instructions have been sent to your email.';
+    } else {
+
+      // if the response is not successful, display an error message
+      return 'Something went wrong. Please try again later.';
+    }
+  }
 }
+

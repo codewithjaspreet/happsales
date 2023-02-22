@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../viewmodels/login_view_model.dart';
+
 class ForgotPassword extends StatefulWidget {
-// put login controller
-//   final loginController = Get.put(LoginController());
+
 
   ForgotPassword({Key? key}) : super(key: key);
 
@@ -14,6 +15,15 @@ class ForgotPassword extends StatefulWidget {
 
 class _LoginState extends State<ForgotPassword> {
   String email = "";
+
+  LoginController loginController = Get.put(LoginController());
+
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _orgController = TextEditingController();
+
+  final TextEditingController _nameController = TextEditingController();
 
 
   String password = "";
@@ -50,7 +60,7 @@ class _LoginState extends State<ForgotPassword> {
               Column(
                 children: [
                   Image.asset("assets/logo.png"),
-                  const Text("Login" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+                  const Text("Forgot Password" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
 
                 ],
               ),
@@ -62,6 +72,7 @@ class _LoginState extends State<ForgotPassword> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller : loginController.nameController,
                       decoration: InputDecoration(
                         hintText: "UserName *",
                         hintStyle: const TextStyle(color: Colors.grey),
@@ -85,6 +96,7 @@ class _LoginState extends State<ForgotPassword> {
                     ),
                     TextFormField(
                       obscureText: true,
+                      controller : loginController.orgController,
 
                       decoration: InputDecoration(
 
@@ -110,6 +122,7 @@ class _LoginState extends State<ForgotPassword> {
                       height: 20.h,
                     ),
                     TextFormField(
+                      controller: loginController.emailController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Email *",
@@ -137,31 +150,32 @@ class _LoginState extends State<ForgotPassword> {
 
                     GestureDetector(
                       onTap:  () {
-                        if (form.currentState!.validate()) {
-                          form.currentState!.save();
-                          // loginController.login(email, password);
-                        }
+
+                        loginController.forgotPassword;
+
+
+                        // if (form.currentState!.validate()) {
+                        //   form.currentState!.save();
+                        //   // loginController.login(email, password);
+                        // }
                       },
 
                       child: Container(
-                        height: 50.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff000080),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Confirm",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp,
-                            ),
+                          height: 50.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            shape: BoxShape.rectangle,
                           ),
-                        ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              print("Button Tap2");
+                              // loginController.loginWithEmail();
+                            },
+                            style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor: Color(0xff171A63),primary: Colors.white),
+                            child: Text('Confirm' ,style:  TextStyle(fontSize: 16.sp , fontWeight: FontWeight.bold),),
+                          )
                       ),
-
                     ),
                   ],
                 ),
