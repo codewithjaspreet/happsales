@@ -79,8 +79,8 @@ flutter:
      - assets/Icons/Android/6_Forget Password/forgotpassword.png
      - assets/Icons/Android/7_DashBoard/Activity/drawable-hdpi/img_dashboard_activity.png
      - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
-
-
+     - assets/8_Menu/ic_account.svg
+     - assets/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
