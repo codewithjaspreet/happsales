@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <g id="Group_8118" data-name="Group 8118" transform="translate(0 0.266)">
+    <rect id="Rectangle_3074" data-name="Rectangle 3074" width="40" height="40" rx="20" transform="translate(0 -0.266)" fill="#fff"/>
+    <g id="Layer_2" data-name="Layer 2" transform="translate(8 8)">
+      <g id="invisible_box" data-name="invisible box">
+        <rect id="Rectangle_3085" data-name="Rectangle 3085" width="24.24" height="24.24" fill="none"/>
+      </g>
+      <g id="icons_Q2" data-name="icons Q2" transform="translate(2.02 3.03)">
+        <path id="Path_11766" data-name="Path 11766" d="M23.695,10.04h-1.01V7.01A1.01,1.01,0,0,0,21.675,6H7.03A3.03,3.03,0,0,0,4,9.03V21.15a3.03,3.03,0,0,0,3.03,3.03H23.695a1.01,1.01,0,0,0,1.01-1.01V11.05A1.01,1.01,0,0,0,23.695,10.04ZM7.03,8.02H20.665v2.02H7.081A1.061,1.061,0,0,1,6.02,9.182,1.01,1.01,0,0,1,7.03,8.02Zm15.655,6.06h-6.06a1.01,1.01,0,0,0-1.01,1.01v4.04a1.01,1.01,0,0,0,1.01,1.01h6.06v2.02H7.03a1.01,1.01,0,0,1-1.01-1.01V12.06H22.685Zm-3.03,3.03a1.01,1.01,0,1,1-1.01-1.01A1.01,1.01,0,0,1,19.655,17.11Z" transform="translate(-4 -6)" fill="#171a63"/>
+      </g>
+    </g>
+  </g>
+</svg>

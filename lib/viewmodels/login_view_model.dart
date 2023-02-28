@@ -10,6 +10,7 @@ import '../utils/api_endpoints.dart';
 import '../view/home_screen.dart';
 
 class LoginController extends GetxController {
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController orgController = TextEditingController();
@@ -79,6 +80,8 @@ class LoginController extends GetxController {
 
 
     if (response.statusCode == 200) {
+
+      Get.snackbar("Password Changed Successfully", "done");
 
       // here we can add an email sending service to send the email
       return 'Password reset instructions have been sent to your email.';

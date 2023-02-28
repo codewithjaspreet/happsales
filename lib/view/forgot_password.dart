@@ -51,7 +51,7 @@ class _LoginState extends State<ForgotPassword> {
 
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 50.w),
+          padding: EdgeInsets.symmetric(horizontal: 50.w,vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
 
@@ -59,12 +59,19 @@ class _LoginState extends State<ForgotPassword> {
 
               Column(
                 children: [
-                  Image.asset("assets/logo.png"),
-                  const Text("Forgot Password" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+                  Container(
+                    child: Column(
+                      children: [
+                        Image.asset("assets/Icons/Android/6_Forget Password/forgotpassword.png"),
+                        SizedBox(height: 20.h,),
+                        const Text("Forgot Password" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
 
+                      ],
+                    ),
+                  )
                 ],
               ),
-              SizedBox(height: 50.h,),
+              SizedBox(height: 60.h,),
 
 
               Form(
@@ -74,6 +81,7 @@ class _LoginState extends State<ForgotPassword> {
                     TextFormField(
                       controller : loginController.nameController,
                       decoration: InputDecoration(
+                        labelText: "Username",
                         hintText: "UserName *",
                         hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
@@ -87,18 +95,16 @@ class _LoginState extends State<ForgotPassword> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        email = value!;
-                      },
+
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     TextFormField(
-                      obscureText: true,
                       controller : loginController.orgController,
 
                       decoration: InputDecoration(
+                        labelText: "Organisation Code",
 
                         hintText: "Organisation Code *",
 
@@ -125,6 +131,7 @@ class _LoginState extends State<ForgotPassword> {
                       controller: loginController.emailController,
                       obscureText: true,
                       decoration: InputDecoration(
+                        labelText: "Email",
                         hintText: "Email *",
                         hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
@@ -169,6 +176,7 @@ class _LoginState extends State<ForgotPassword> {
                           ),
                           child: ElevatedButton(
                             onPressed: () {
+
                               print("Button Tap2");
                               // loginController.loginWithEmail();
                             },

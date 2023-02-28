@@ -38,8 +38,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.6.1
   get: ^4.6.5
+  get_storage: ^2.0.3
   shared_preferences: ^2.0.17
+  google_fonts:
+  bubble_tab_indicator: ^0.1.6
+  introduction_screen:
   http:
+  buttons_tabbar:
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +70,18 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/
-  #   - images/a_dot_ham.jpeg
+
+     - assets/Icons/Android/5_Login/drawable-hdpi/img_login.png
+     - assets/Icons/Android/2_StoryBoard screen_1/drawable-hdpi/img_story_board_1.png
+     - assets/Icons/Android/3_StoryBoard screen_2/drawable-hdpi/img_story_board_2.png
+     - assets/Icons/Android/4_StoryBoard screen_3/drawable-hdpi/img_story_board_3.png
+     - assets/Icons/Android/1_Splash screen/drawable-hdpi/ic_logo.png
+     - assets/Icons/Android/6_Forget Password/forgotpassword.png
+     - assets/Icons/Android/7_DashBoard/Activity/drawable-hdpi/img_dashboard_activity.png
+     - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
+
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

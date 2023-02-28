@@ -28,22 +28,7 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _orgController = TextEditingController();
 
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-  void inContact(TapDownDetails details) {
-    setState(() {
-      invisible = false;
-    });
-  }
 
-  void outContact(TapUpDetails details) {
-    setState(() {
-      invisible=true;
-    });
-  }
 
   LoginController loginController = Get.put(LoginController());
 
@@ -69,12 +54,21 @@ class _LoginState extends State<Login> {
 
             children: [
 
-              Column(
-                children: [
-                  Image.asset("assets/logo.png"),
-                  const Text("Login" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
 
-                ],
+                      children: [
+                        Image.asset("assets/Icons/Android/5_Login/drawable-hdpi/img_login.png"),
+                        SizedBox(height: 10.h,),
+                        const Text("Login" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+
+                      ],
+                    )
+                  ],
+                ),
               ),
               SizedBox(height: 50.h,),
 
@@ -84,12 +78,21 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     TextFormField(
+                      textAlign: TextAlign.left,
                       controller : loginController.emailController,
-                      decoration: InputDecoration(
 
+                      decoration: InputDecoration(
+                        labelText: "email",
+
+                        contentPadding: EdgeInsets.all(16.sp),
+
+
+                        floatingLabelStyle: TextStyle(color: Colors.black),
                         hintText: "email *",
                         hintStyle: TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
+
+                          borderSide: BorderSide(color: Color(0xff00A6D6)),
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
@@ -100,29 +103,29 @@ class _LoginState extends State<Login> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        email = value!;
-                      },
+
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     TextFormField(
+
                       obscureText: true,
                       controller : loginController.passwordController,
                       decoration: InputDecoration(
 
                         hintText: "Password *",
+                        labelText: "Password",
                         suffixIcon:GestureDetector(
-                          onTapDown: inContact,//call this method when incontact
-                          onTapUp: outContact,//call this method when contact with screen is removed
-                          child: Icon(
+                           child: Icon(
                             Icons.remove_red_eye,
                             color: Colors.black,
                           ),
                         ),
                         hintStyle: const TextStyle(color: Colors.grey),
+                        contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
+
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
@@ -133,9 +136,7 @@ class _LoginState extends State<Login> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        password = value!;
-                      },
+                     /**/
                     ),
                     SizedBox(
                       height: 20.h,
@@ -146,6 +147,7 @@ class _LoginState extends State<Login> {
                       decoration: InputDecoration(
                         hintText: "Organization Code *",
                         hintStyle: TextStyle(color: Colors.grey),
+                        contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
                         ),
@@ -156,11 +158,9 @@ class _LoginState extends State<Login> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        password = value!;
-                      },
-                    ),
 
+                    ),
+/**/
                     // forgot password line
 
                     GestureDetector(
