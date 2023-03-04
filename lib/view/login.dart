@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:happsales_crm/view/dashboard/parent.dart';
 
 import '../viewmodels/login_view_model.dart';
 import 'forgot_password.dart';
@@ -22,7 +23,7 @@ class _LoginState extends State<Login> {
 
   String password = "";
 
-  bool _obscureText = true;
+  final bool _obscureText = true;
 
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -38,7 +39,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("HappSales" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        title: const Text("HappSales" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -87,12 +88,12 @@ class _LoginState extends State<Login> {
                         contentPadding: EdgeInsets.all(16.sp),
 
 
-                        floatingLabelStyle: TextStyle(color: Colors.black),
+                        floatingLabelStyle: const TextStyle(color: Colors.black),
                         hintText: "email *",
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
 
-                          borderSide: BorderSide(color: Color(0xff00A6D6)),
+                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
@@ -116,26 +117,17 @@ class _LoginState extends State<Login> {
 
                         hintText: "Password *",
                         labelText: "Password",
-                        suffixIcon:GestureDetector(
-                           child: Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.black,
-                          ),
-                        ),
+
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
 
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        return null;
-                      },
+
                      /**/
                     ),
                     SizedBox(
@@ -146,18 +138,15 @@ class _LoginState extends State<Login> {
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Organization Code *",
-                        hintStyle: TextStyle(color: Colors.grey),
+                        labelText: "Organization Code",
+                        hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        return null;
-                      },
+
 
                     ),
 /**/
@@ -165,7 +154,7 @@ class _LoginState extends State<Login> {
 
                     GestureDetector(
                       onTap: () {
-                        Get.to(ForgotPassword());
+                        Get.to(() => ForgotPassword());
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
@@ -188,13 +177,6 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 30.h,),
 
                     GestureDetector(
-                      onTap:  () {
-                        if (form.currentState!.validate()) {
-                          form.currentState!.save();
-                          // loginController.login(email, password);
-                        }
-                      },
-
                       child: GestureDetector(
                         onTap: () {
                           print("Button Tap");
@@ -210,9 +192,10 @@ class _LoginState extends State<Login> {
                             child: ElevatedButton(
                               onPressed: () {
                                 print("Button Tap2");
+                                Get.to(DashBoardPage());
                                 // loginController.loginWithEmail();
                               },
-                              style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor: Color(0xff171A63),primary: Colors.white),
+                              style: ElevatedButton.styleFrom(shape: const StadiumBorder(),backgroundColor: const Color(0xff171A63)),
                               child: Text('Login' ,style:  TextStyle(fontWeight: FontWeight.bold ,fontSize: 16.sp),),
                             )
                         ),

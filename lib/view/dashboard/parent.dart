@@ -1,10 +1,13 @@
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/pages/dashboard.dart';
 import 'package:happsales_crm/view/dashboard/pages/opportunities.dart';
 import 'package:happsales_crm/view/dashboard/pages/recommendations.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import '../menu/views/menu.dart';
 
 
 class DashBoardPage extends StatelessWidget {
@@ -20,10 +23,12 @@ class DashBoardPage extends StatelessWidget {
         appBar: AppBar(
           actions: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => const Menu());
+              },
               child: Container(
                 margin:  EdgeInsets.only(right: 10.w),
-                child:  Icon(Icons.menu,color: Colors.black,),
+                child:  const Icon(Icons.menu,color: Colors.black,),
               ),
             )
           ],
@@ -61,10 +66,10 @@ class DashBoardPage extends StatelessWidget {
                     child: FittedBox(
                       child: Text(
                         'Dashboard',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style : TextStyle(
+                              fontFamily: 'roboto_bold'
+                          )
+
                       ),
                     ),
                   ),
@@ -84,10 +89,10 @@ class DashBoardPage extends StatelessWidget {
                     child: FittedBox(
                       child: Text(
                         'Opportunities',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style : TextStyle(
+                              fontFamily: 'roboto_bold'
+                          )
+
                       ),
                     ),
                   ),
@@ -106,10 +111,14 @@ class DashBoardPage extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                       child: Text(
                         'Recommendations',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style : TextStyle(
+                          fontFamily: 'roboto_bold'
+                        )
+
+                        // style: GoogleFonts.poppins(
+                        //   fontSize: 16.sp,
+                        //   fontWeight: FontWeight.bold,
+                        // ),
                       ),
                     ),
                   ),
@@ -119,15 +128,225 @@ class DashBoardPage extends StatelessWidget {
             ],
           ),
         ),
-        body:   TabBarView(
-          children:  [
-            DashBoardItem(),
-            Opportunities(),
-            Recommendations(),
+        body:   Column(
+          children: [
+            Expanded(
+              child: TabBarView(
+              children:  [
+                DashBoardItem(),
+                Opportunities(),
+                Recommendations(),
 
+              ],
+
+
+                ),
+            ),
+            SlidingUpPanel(
+              backdropColor: Colors.white,
+              renderPanelSheet: false,
+              panel: _floatingPanel(),
+              collapsed: _floatingCollapsed(),
+
+            )
           ],
         ),
       ),
     );
   }
+}
+
+
+Widget _floatingCollapsed(){
+  return Stack(
+    clipBehavior: Clip.none,
+
+
+      children :[
+
+        Positioned(
+          top: -5.h,
+          left: 160.w,
+          child: GestureDetector(
+            onTap: () {
+              _floatingPanel();
+            },
+            child:
+                Container(
+                  child: Image.asset("assets/ami/ami_logo.png"),
+                  width: 60.w,
+                  height: 60.w,
+                  decoration: BoxDecoration(
+
+                    shape: BoxShape.circle,
+                  ),
+                ),
+
+
+          ),
+        ),
+        Positioned(
+          left: 125.w,
+          top: 76.h,
+          child: Container(
+          child: Text("Powered by HappSales",style: TextStyle(
+              fontFamily: "roboto_regular",
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color:Color(0xffB4C6D4)
+          ),),
+        ),)
+
+
+
+      ]
+  );
+}
+
+Widget _floatingPanel(){
+  return Container(
+  decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(24.sp)),
+
+  ),
+  // margin: const EdgeInsets.all(24.0),
+  child: Column(
+    children: [
+      Expanded(
+        child: Container(
+          margin: EdgeInsets.only(top: 52.h),
+          child:    Column(
+            children: [
+              Container(
+                child: Text("Hi I'm Ami, how can I help you?",style: TextStyle(
+                    fontFamily: 'roboto_bold',
+                    fontSize: 18.sp
+                    ,
+                    fontWeight: FontWeight.w500
+
+                ),),
+              ),
+
+
+              Container(
+                margin: EdgeInsets.only(top: 22.h),
+
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      AmiRow("assets/ami/building.png" , "I want to know about my company")
+                      ,AmiRow("assets/ami/people.png" , "Want to create a contact?")
+                      ,AmiRow("assets/ami/money.png" , "Want to create an opportunity?")
+                      ,AmiRow("assets/ami/calender.png" , "Want to create an activity?")
+
+                    ],
+                  ),
+
+              ),
+
+              Container(
+
+                margin: EdgeInsets.only(top: 20.h),
+
+                  child: AmiVoice()),
+
+              Container(
+                margin: EdgeInsets.only(top: 8.h),
+                child: Text("Powered by HappSales",style: TextStyle(
+                    fontFamily: "roboto_regular",
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color:Color(0xffB4C6D4)
+                ),),
+              )
+            ],
+          )
+        ),
+      ),
+
+    ],
+  ),
+    );
+}
+
+
+Widget AmiRow(String imageUrl , String title ){
+
+
+  return Container(
+    margin: EdgeInsets.only(top: 12.h),
+    width: 323.w,
+    height: 50.h,
+    decoration: BoxDecoration(
+      color: const Color(0xff171A63),
+      borderRadius: BorderRadius.circular(24.sp),
+    ),
+    child: Container(
+
+      margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Image.asset(imageUrl),
+              Container(
+                margin: EdgeInsets.only(left: 8.w),
+                child: Text(title,style: TextStyle(
+                    fontFamily: 'roboto_medium',
+                    fontSize: 14.sp
+                    ,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400
+
+                ),),
+              ),
+
+            ],
+          ),
+          Container(
+            child: Image.asset("assets/ami/forward.png"),
+          )
+        ],
+      ),
+    ),
+  );
+
+}
+
+
+Widget AmiVoice(){
+
+  return Container(
+
+    width: 323.w,
+
+    child: Container(
+      margin : EdgeInsets.symmetric(horizontal: 12.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Chat or give a voice command to Ami!",style: TextStyle(
+            color: Color(0xffB4C6D4)
+          ),),
+
+          Container(
+            width: 22.h,
+            height: 22.h,
+              child: Image.asset("assets/ami/voice.png"))
+        ],
+      ),
+    ),
+    height: 50.h,
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: Color(0xffB4C6D4),
+        width: 1,
+      ),
+      color:  Colors.white,
+      borderRadius: BorderRadius.circular(24.sp),
+    ),
+  );
+
 }

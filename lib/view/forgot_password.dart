@@ -7,7 +7,7 @@ import '../viewmodels/login_view_model.dart';
 class ForgotPassword extends StatefulWidget {
 
 
-  ForgotPassword({Key? key}) : super(key: key);
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
   State<ForgotPassword> createState() => _LoginState();
@@ -19,9 +19,8 @@ class _LoginState extends State<ForgotPassword> {
   LoginController loginController = Get.put(LoginController());
 
 
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _orgController = TextEditingController();
+  final TextEditingController _forgotemailController = TextEditingController();
+  final TextEditingController _forgotorgController = TextEditingController();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -64,7 +63,7 @@ class _LoginState extends State<ForgotPassword> {
                       children: [
                         Image.asset("assets/Icons/Android/6_Forget Password/forgotpassword.png"),
                         SizedBox(height: 20.h,),
-                        const Text("Forgot Password" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+                        const Text("Forgot Password" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20,fontFamily: 'roboto_bold'),),
 
                       ],
                     ),
@@ -101,7 +100,7 @@ class _LoginState extends State<ForgotPassword> {
                       height: 20.h,
                     ),
                     TextFormField(
-                      controller : loginController.orgController,
+                      controller : loginController.forgotOrgController,
 
                       decoration: InputDecoration(
                         labelText: "Organisation Code",
@@ -114,21 +113,13 @@ class _LoginState extends State<ForgotPassword> {
 
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        password = value!;
-                      },
+
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     TextFormField(
-                      controller: loginController.emailController,
+                      controller: loginController.forgotEmailController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Email",
@@ -138,15 +129,7 @@ class _LoginState extends State<ForgotPassword> {
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
                         ),
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your password";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        password = value!;
-                      },
+
                     ),
 
                     // forgot password line
@@ -180,7 +163,7 @@ class _LoginState extends State<ForgotPassword> {
                               print("Button Tap2");
                               // loginController.loginWithEmail();
                             },
-                            style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor: Color(0xff171A63),primary: Colors.white),
+                            style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: const Color(0xff171A63)),
                             child: Text('Confirm' ,style:  TextStyle(fontSize: 16.sp , fontWeight: FontWeight.bold),),
                           )
                       ),

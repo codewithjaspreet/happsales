@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.6.1
   get: ^4.6.5
+  sliding_up_panel: ^2.0.0+1
   get_storage: ^2.0.3
   shared_preferences: ^2.0.17
   google_fonts:
@@ -81,6 +82,7 @@ flutter:
      - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
      - assets/8_Menu/ic_account.svg
      - assets/
+     - assets/ami/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -94,16 +96,30 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+  fonts:
+
+     - family: roboto_bold
+       fonts:
+         - asset: fonts/roboto_bold.ttf
+
+     - family: roboto_light
+       fonts:
+          - asset: fonts/roboto_light.ttf
+
+     - family: roboto_medium
+       fonts:
+          - asset: fonts/roboto_medium.ttf
+
+
+
+     - family: roboto_regular
+       fonts:
+         - asset: fonts/roboto_regular.ttf
+
+
+     - family: oswald
+       fonts:
+         - asset: fonts/oswald_bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,

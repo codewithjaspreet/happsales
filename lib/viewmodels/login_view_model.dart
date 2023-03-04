@@ -15,6 +15,8 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController orgController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController forgotOrgController = TextEditingController();
+  TextEditingController forgotEmailController = TextEditingController();
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};
@@ -70,9 +72,9 @@ class LoginController extends GetxController {
     final response = await http.post(Uri.parse(apiUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'LoginName': loginName,
-          'EmailAddress': emailAddress,
-          'GroupCode': groupCode,
+          'LoginName': nameController.text.trim(),
+          'EmailAddress': forgotEmailController.text.trim(),
+          'GroupCode': forgotEmailController.text.trim(),
         }));
 
     // if the response is successful
