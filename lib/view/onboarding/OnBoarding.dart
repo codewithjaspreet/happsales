@@ -51,7 +51,7 @@ class _OnbordingState extends State<OnBoarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(40),
+                  padding:  EdgeInsets.all(40.sp),
                   child: Column(
                     children: [
                       Image.asset(
@@ -66,6 +66,7 @@ class _OnbordingState extends State<OnBoarding> {
 
                           color: const Color(0xff171A63),
                           fontSize: 24.sp,
+                          fontFamily: 'roboto_bold',
                           fontWeight: FontWeight.bold,
 
                         ),
@@ -75,9 +76,10 @@ class _OnbordingState extends State<OnBoarding> {
                       Text(
                         contents[i].discription,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
+                        style:  TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff171A63),
                         ),
                       )
                     ],
@@ -111,11 +113,7 @@ class _OnbordingState extends State<OnBoarding> {
               onPressed: () {
                 Get.to(const DashBoardPage());
               },
-              // color: Theme.of(context).primaryColor,
-              // textColor: Colors.white,
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(20),
-              // ),
+
             ),
           ),
           Container(width: 134.w,height: 5.h,

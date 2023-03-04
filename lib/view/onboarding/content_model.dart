@@ -10,7 +10,7 @@ class UnbordingContent {
 
 List<UnbordingContent> contents = [
   UnbordingContent(
-      title: 'Why choose HappSales?',
+      title: 'Why choose \nHappSales?',
       image: 'assets/Icons/Android/2_StoryBoard screen_1/drawable-hdpi/img_story_board_1.png',
       discription: "HappSales is  as traditional CRM software can take more time to deploy. It is Easy-to-use as you can spend more time putting it to use and less time figuring it out. Its Effective as can be customized to meet any business needs."
   ),

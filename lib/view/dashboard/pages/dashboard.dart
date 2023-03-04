@@ -86,7 +86,7 @@ class rowItem extends StatelessWidget {
               children: [
                 Text(title, style: TextStyle(
 
-                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 28.sp,
+                  color: const Color(0xff171A63),fontWeight: FontWeight.w400,fontFamily: 'roboto_bold',fontSize: 32.sp,
                 ),),
 
                 SizedBox(height: 5.h,),

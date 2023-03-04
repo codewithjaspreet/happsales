@@ -17,14 +17,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String email = "";
 
-  bool invisible = true;
 
-  String password = "";
 
-  final bool _obscureText = true;
 
+   bool _obscureText = true;
+
+
+  void _toggleObscureText() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _orgController = TextEditingController();
@@ -36,6 +40,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> form = GlobalKey<FormState>();
+
+    void _submitForm() {
+      final isValid = form.currentState?.validate();
+      if (isValid!) {
+        // perform login action
+        Get.to(DashBoardPage());
+      }
+    }
     return Scaffold(
 
       appBar: AppBar(
@@ -79,30 +91,30 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     TextFormField(
-                      textAlign: TextAlign.left,
+                      obscureText: true,
                       controller : loginController.emailController,
-
                       decoration: InputDecoration(
+
+                        hintText: "Email *",
                         labelText: "email",
 
-                        contentPadding: EdgeInsets.all(16.sp),
-
-
-                        floatingLabelStyle: const TextStyle(color: Colors.black),
-                        hintText: "email *",
                         hintStyle: const TextStyle(color: Colors.grey),
+                        contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
 
-                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Please enter your email";
+                          Get.snackbar("Error", "Please Enter a Valid Email ");
                         }
                         return null;
+                      },
+                      onSaved: (value) {
+                        _emailController.text = value!;
                       },
 
                     ),
@@ -111,9 +123,16 @@ class _LoginState extends State<Login> {
                     ),
                     TextFormField(
 
-                      obscureText: true,
+                      obscureText: _obscureText,
                       controller : loginController.passwordController,
                       decoration: InputDecoration(
+
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: _toggleObscureText,
+                        ),
 
                         hintText: "Password *",
                         labelText: "Password",
@@ -121,7 +140,7 @@ class _LoginState extends State<Login> {
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
 
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
@@ -142,7 +161,7 @@ class _LoginState extends State<Login> {
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00A6D6)),
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
                         ),
                       ),
@@ -154,7 +173,7 @@ class _LoginState extends State<Login> {
 
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => ForgotPassword());
+                        Get.to(() => const ForgotPassword());
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
@@ -177,28 +196,27 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 30.h,),
 
                     GestureDetector(
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Button Tap");
-                          loginController.loginWithEmail();
-                        },
-                        child: Container(
-                          height: 50.h,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            shape: BoxShape.rectangle,
-                          ),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print("Button Tap2");
-                                Get.to(DashBoardPage());
-                                // loginController.loginWithEmail();
-                              },
-                              style: ElevatedButton.styleFrom(shape: const StadiumBorder(),backgroundColor: const Color(0xff171A63)),
-                              child: Text('Login' ,style:  TextStyle(fontWeight: FontWeight.bold ,fontSize: 16.sp),),
-                            )
+                      child: Container(
+                        height: 50.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          shape: BoxShape.rectangle,
                         ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              loginController.loginWithEmail();
+
+                              print("Button Tap2");
+
+                              _submitForm;
+                              // loginController.loginWithEmail();
+                            },
+                            style:
+
+                            ElevatedButton.styleFrom(shape: const StadiumBorder(),backgroundColor: const Color(0xff171A63)),
+                            child: Text('Login' ,style:  TextStyle(fontWeight: FontWeight.bold ,fontSize: 16.sp),),
+                          )
                       ),
 
                     ),

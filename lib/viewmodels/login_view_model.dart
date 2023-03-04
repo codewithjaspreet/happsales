@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:happsales_crm/view/dashboard/parent.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,17 +37,32 @@ class LoginController extends GetxController {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         String token = jsonResponse['token'];
 
-        print(token);
+        print('token is $token');
 
         // Save the token to shared preferences for future use
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
 
         // Navigate to the home screen or other relevant screen
-        Get.off(const HomeScreen());
+        Get.off(const DashBoardPage());
       } else {
         // If the response is not successful, display an error message
-        throw Exception('Failed to login: ${response.statusCode}');
+        // throw Exception('Failed to login: ${response.statusCode}');
+
+        Get.snackbar(
+          "Invalid Credentials",
+          "Please Enter Valid Email or Password or Organization Code",
+          icon: Icon(Icons.error, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xff1b1e44),
+          borderRadius: 20,
+          margin: EdgeInsets.all(15.sp),
+          colorText: Colors.white,
+          duration: Duration(seconds: 2),
+          isDismissible: true,
+          forwardAnimationCurve: Curves.easeOutBack,
+
+        );
       }
     } catch (error) {
       Get.back();

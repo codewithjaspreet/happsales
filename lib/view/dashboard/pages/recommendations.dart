@@ -72,15 +72,21 @@ class rowItem extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 250.w,
-                  child: Text("New Activity Assigned - \nMeeting - 03 -Feb-2023-\n HAPPSALES-ATVTY-0000002123-\n \"Meeting with Arnav [Paramount pictures] on 03 Feb 2023 At 19:42\")", textAlign: TextAlign.left, style: TextStyle(
+                  child:
 
-                    color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 16.sp,
-                  ),),
+                  Container(
+                    padding: EdgeInsets.all(20.w),
+                    child: Text("New Activity Assigned - \nMeeting - 03 -Feb-2023-\nHAPPSALES-ATVTY-0000002123-\n\Meeting with Arnav [Paramount pictures]  on 03 Feb 2023 At 19:42\")", textAlign: TextAlign.left, style: TextStyle(
+
+                      color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 16.sp,
+                    ),),
+                  ),
                 ),
                 
               ],
             ),
-          )
+          ),
+
         ],
       ),
 
