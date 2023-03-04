@@ -86,13 +86,13 @@ class rowItem extends StatelessWidget {
               children: [
                 Text(title, style: TextStyle(
 
-                  color: const Color(0xff171A63),fontWeight: FontWeight.w400,fontFamily: 'roboto_bold',fontSize: 32.sp,
+                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: 'roboto_bold',fontSize: 32.sp,
                 ),),
 
                 SizedBox(height: 5.h,),
                 Text(subtitle, style: TextStyle(
 
-                  color: const Color(0xff171A63),fontWeight: FontWeight.w400,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 16.sp,
+                  color: const Color(0xff171A63),fontWeight: FontWeight.w400,fontFamily: 'roboto_medium',fontSize: 16.sp,
                 ),),
               ],
             ),

@@ -34,7 +34,7 @@ class Menu extends StatelessWidget {
           gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 4.0,
-            crossAxisSpacing: 12,
+            crossAxisSpacing: 8,
           ),
           children:  const <Widget>[
             _buildGridItem(title : 'home', image: 'assets/home.png' ),

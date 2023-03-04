@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/parent.dart';
+import 'package:happsales_crm/view/login.dart';
 
 import 'content_model.dart';
 
@@ -111,7 +112,7 @@ class _OnbordingState extends State<OnBoarding> {
                 "Let's Start"
               ),
               onPressed: () {
-                Get.to(const DashBoardPage());
+                Get.to( Login());
               },
 
             ),

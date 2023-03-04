@@ -83,6 +83,7 @@ flutter:
      - assets/8_Menu/ic_account.svg
      - assets/
      - assets/ami/
+     - assets/recommend.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
