@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
       final isValid = form.currentState?.validate();
       if (isValid!) {
         // perform login action
-        Get.to(DashBoardPage());
+        Get.to(const DashBoardPage());
       }
     }
     return Scaffold(
@@ -91,6 +91,7 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: [
                     TextFormField(
+
                       obscureText: true,
                       controller : loginController.emailController,
                       decoration: InputDecoration(
@@ -101,6 +102,8 @@ class _LoginState extends State<Login> {
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
+
+
                           borderSide: const BorderSide(color: Color(0xffff00a6d6)),
 
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),

@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/api_endpoints.dart';
-import '../view/home_screen.dart';
 
 class LoginController extends GetxController {
 
@@ -52,13 +51,15 @@ class LoginController extends GetxController {
         Get.snackbar(
           "Invalid Credentials",
           "Please Enter Valid Email or Password or Organization Code",
-          icon: Icon(Icons.error, color: Colors.white),
+          icon: const Icon(
+
+              Icons.error, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Color(0xff1b1e44),
+          backgroundColor: const Color(0xff1b1e44),
           borderRadius: 20,
           margin: EdgeInsets.all(15.sp),
           colorText: Colors.white,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
           isDismissible: true,
           forwardAnimationCurve: Curves.easeOutBack,
 

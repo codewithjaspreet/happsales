@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:happsales_crm/view/dashboard/parent.dart';
 import 'package:happsales_crm/view/login.dart';
 
 import 'content_model.dart';
@@ -80,7 +79,7 @@ class _OnbordingState extends State<OnBoarding> {
                         style:  TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff171A63),
+                          color: const Color(0xff171A63),
                         ),
                       )
                     ],

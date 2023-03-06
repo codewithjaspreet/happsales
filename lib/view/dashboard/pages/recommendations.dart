@@ -78,7 +78,7 @@ class rowItem extends StatelessWidget {
 
                     Container(
                       padding: EdgeInsets.all(12.sp),
-                      child: Text("New Activity Assigned - \nMeeting - 03 -Feb-2023-\nHAPPSALES-ATVTY-0000002123-\n\Meeting with Arnav [Paramount pictures]  on 03 Feb 2023 At 19:42\")", textAlign: TextAlign.left, style: TextStyle(
+                      child: Text("New Activity Assigned - \nMeeting - 03 -Feb-2023-\nHAPPSALES-ATVTY-0000002123-\nMeeting with Arnav [Paramount pictures]  on 03 Feb 2023 At 19:42\")", textAlign: TextAlign.left, style: TextStyle(
                         color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 14.sp,
                       ),),
                     ),
