@@ -19,10 +19,10 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
 
+  final FocusNode _passwordFocusNode = FocusNode();
 
-
-   bool _obscureText = true;
-
+  bool _obscureText = true;
+  Color _passwordIconColor = Color(0xffB4C6D4);
 
   void _toggleObscureText() {
     setState(() {
@@ -42,11 +42,15 @@ class _LoginState extends State<Login> {
     GlobalKey<FormState> form = GlobalKey<FormState>();
 
     void _submitForm() {
-      final isValid = form.currentState?.validate();
-      if (isValid!) {
-        // perform login action
-        Get.to(const DashBoardPage());
+
+
+      if(form.currentState!.validate()){
+
+        SnackBar snackBar = SnackBar(content: Text("Login Successful"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Get.offAll(() => DashBoardPage());
       }
+
     }
     return Scaffold(
 
@@ -96,6 +100,12 @@ class _LoginState extends State<Login> {
                       controller : loginController.emailController,
                       decoration: InputDecoration(
 
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        ),
+
+
+
                         hintText: "Email *",
                         labelText: "email",
 
@@ -110,29 +120,40 @@ class _LoginState extends State<Login> {
 
                         ),
                       ),
+
+
                       validator: (value) {
-                        if (value!.isEmpty) {
-                          Get.snackbar("Error", "Please Enter a Valid Email ");
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _emailController.text = value!;
-                      },
-
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     TextFormField(
 
+                      onTap: () {
+                        // Change the suffix icon color when the field is tapped
+                        setState(() {
+
+                          _passwordIconColor = Color(0xffff00a6d6);
+                        });
+                      },
                       obscureText: _obscureText,
                       controller : loginController.passwordController,
                       decoration: InputDecoration(
 
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        ),
+
+
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureText ? Icons.visibility_off : Icons.visibility,
+
+                              _obscureText ? Icons.visibility_off : Icons.visibility,color: _passwordIconColor
                           ),
                           onPressed: _toggleObscureText,
                         ),
@@ -143,13 +164,19 @@ class _LoginState extends State<Login> {
                         hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: EdgeInsets.all(16.sp),
                         border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                          borderSide: const BorderSide(color: Color(0xff00A6D6)),
 
                           borderRadius: BorderRadius.all(Radius.circular(5.sp)),
 
                         ),
                       ),
 
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Password';
+                        }
+                        return null;
+                      },
                      /**/
                     ),
                     SizedBox(
@@ -159,6 +186,9 @@ class _LoginState extends State<Login> {
                       controller : loginController.orgController,
                       obscureText: true,
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        ),
                         hintText: "Organization Code *",
                         labelText: "Organization Code",
                         hintStyle: const TextStyle(color: Colors.grey),
@@ -169,6 +199,12 @@ class _LoginState extends State<Login> {
                         ),
                       ),
 
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Organisation Code';
+                        }
+                        return null;
+                      },
 
                     ),
 /**/
@@ -181,6 +217,7 @@ class _LoginState extends State<Login> {
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
 
                           children: [
 
@@ -209,9 +246,6 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton(
                             onPressed: () {
                               loginController.loginWithEmail();
-
-                              print("Button Tap2");
-
                               _submitForm;
                               // loginController.loginWithEmail();
                             },
