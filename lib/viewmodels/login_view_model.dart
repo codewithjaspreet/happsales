@@ -44,6 +44,8 @@ class LoginController extends GetxController {
 
         // Navigate to the home screen or other relevant screen
         Get.off(const DashBoardPage());
+
+
       } else {
         // If the response is not successful, display an error message
         // throw Exception('Failed to login: ${response.statusCode}');

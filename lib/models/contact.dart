@@ -78,7 +78,7 @@ class Contact {
     this.contactId,
     this.contactCode,
     this.title,
-    this.firstName,
+   required this.firstName,
     this.middleName,
     this.lastName,
     this.contactName,

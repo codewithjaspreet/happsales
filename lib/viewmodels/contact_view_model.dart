@@ -1,15 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
 
-import '../models/account_model.dart';
 import '../models/contact.dart';
 import '../models/database.dart';
+import 'package:http/http.dart' as http;
+
 
 class ContactViewModel extends GetxController {
   var contactList = RxList<Contact>();
 
-  RxBool downloading = false.obs;
+  RxBool downloaded = false.obs;
 
   Future<void> getContactList() async {
 
@@ -29,27 +32,34 @@ class ContactViewModel extends GetxController {
           },
         ));
 
-        for (var employee in (response.data as List)) {
-          // print('Inserting $employee');
-          DBProvider.db.createEmployee(employee);
-        }
+    for (var employee in (response.data as List)) {
+      // print('Inserting $employee');
+      DBProvider.db.createEmployee(employee);
+    }
 
-
+    downloaded.value = true;
+    downloaded.refresh();
+    contactList.value = await DBProvider.db.getAllEmployees();
+    contactList.refresh();
+    // if (response.statusCode == 200) {
+    //
+    //
+    //   print(response.data);
+    //   // final contactsJson = jsonDecode(response.data);
+    //   // final contacts = contactsJson
+    //   //     .map((contactJson) => Contact.fromJson(contactJson))
+    //   //     .toList();
+    //   //
+    //   // for (final contact in contacts) {
+    //   //   await DBProvider.db.saveContact(contact);
+    //   // }
+    //   //
+    //   // downloaded.value = true;
+    //   // contactList.value = await DBProvider.db.getAllEmployees(); // await the result of getAllEmployees() before assigning it to contactList.value
+    //   // contactList.refresh();
+    //
+    // } else {
+    //   throw Exception('Failed to fetch contacts');
+    // }
   }
-
-  //   if (response.statusCode == 200) {
-  //     var data = response.data;
-  //     print(data); // check response data
-  //
-  //     // parse response data
-  //     var contacts = List<Contact>.from(
-  //       data.map((contactData) => Account.fromJson(contactData)),
-  //     );
-  //
-  //     contactList.value = contacts; // set accountList value
-  //   } else {
-  //     print("ERROR ->${response.statusCode}");
-  //   }
-  //   // sort response data
-  // }
 }

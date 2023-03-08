@@ -55,56 +55,62 @@ class DBProvider {
 
       },
 
+
+
     );
   }
-     createEmployee(Map<String, dynamic> newEmployee) async {
-      conflictAlgorithm:
-      ConflictAlgorithm.replace;
 
-      final db = await database;
+  createEmployee(Map<String, dynamic> newEmployee) async {
+    conflictAlgorithm:
+    ConflictAlgorithm.replace;
 
-      final int? contactID = newEmployee['contactId'];
-      final int? firstName = newEmployee['firstName'];
-      final String? lastName = newEmployee['lastName'];
-      final String? designation = newEmployee['designation'];
+    final db = await database;
+    final int? contactId = newEmployee['ContactID'];
+    final String? firstName = newEmployee['firstName'];
+    final String? lastName = newEmployee['lastName'];
 
-      try {
-        final res = await db.rawInsert(
-
-            "INSERT INTO $contactTable (contactId, firstName, lastName,designation) VALUES ($contactID , $firstName, '$lastName', '$designation')");
-        return res;
-      } catch (e) {
-        // check if the value is already in the database
-        final res = await db
-            .rawQuery("SELECT * FROM categoryTable WHERE contactId = $contactID");
-        if (res.isNotEmpty) {
-          print("Already in database =  $res");
-        } else {
-          print("Failed to insert $contactID  | $firstName | $lastName | $designation");
-          // print(e);
-          // print("\n");
-        }
-        // print("Failed to insert $contactId  | $contactName | $accountName");
+    try {
+      final res = await db.rawInsert(
+          "INSERT INTO Contact (contactId, firstName, lastName) VALUES ($contactId, '$firstName', '$lastName')");
+      return res;
+    } catch (e) {
+      // check if the value is already in the database
+      final res = await db
+          .rawQuery("SELECT * FROM Contact WHERE contactId = $contactId");
+      if (res.isNotEmpty) {
+        print("Already in database =  $res");
+      } else {
+        print("Failed to insert $contactId  | $firstName | $lastName");
         // print(e);
         // print("\n");
       }
-      Future<List<Contact>> getAllEmployees() async {
-        final db = await database;
-        final res = await db.query('Contact');
-        // print("Replay from db =>$res");
-
-        List<Contact> list =
-        res.isNotEmpty ? res.map((c) => Contact.fromJson(c)).toList() : [];
-
-        // print("Made Employee List => ");
-        // list.forEach((element) {
-        //   print(element.accountName);
-        //   print("\n\n\n");
-        // });
-        return list;
-      }
+      // print("Failed to insert $contactId  | $contactName | $accountName");
+      // print(e);
+      // print("\n");
     }
+  }
+
+    // get all contacts
+
+  Future<List<Contact>> getAllEmployees() async {
+    final db = await database;
+    final res = await db.query('Contact');
+    // print("Replay from db =>$res");
+
+    List<Contact> list =
+    res.isNotEmpty ? res.map((c) => Contact.fromJson(c)).toList() : [];
+
+    // print("Made Employee List => ");
+    // list.forEach((element) {
+    //   print(element.accountName);
+    //   print("\n\n\n");
+    // });
+    return list;
+  }
+
+
+  }
 
 
 
-}
+
