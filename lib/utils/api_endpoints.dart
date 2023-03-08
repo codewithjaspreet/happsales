@@ -8,6 +8,8 @@ class _AuthEndPoints {
   final String loginEmail = 'login';
 
   final String getAccountPaged  = 'v1/DownSyncManager/GetAccountPaged';
+  final String getContactPaged  = 'v1/DownSyncManager/GetContactPaged';
+
 
   final String loginPhone = 'GetAppUser';
 }
