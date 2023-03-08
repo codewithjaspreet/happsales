@@ -198,7 +198,6 @@ class Account {
     );
   }
 
-  //make to json for all of the above
   Map<String, dynamic> toJson() {
     return {
       'Id': id,
@@ -272,4 +271,4 @@ class Account {
 
 
 }
-// Define a factory method to create
+

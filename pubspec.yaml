@@ -42,10 +42,12 @@ dependencies:
   get_storage: ^2.0.3
   sqflite: ^2.2.5
   shared_preferences: ^2.0.17
+  dio:
   google_fonts:
   bubble_tab_indicator: ^0.1.6
   introduction_screen:
   http:
+  path_provider:
   buttons_tabbar:
 
 dev_dependencies:
