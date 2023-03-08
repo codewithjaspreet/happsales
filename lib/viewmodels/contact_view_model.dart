@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
 
 import '../models/account_model.dart';
@@ -13,10 +12,9 @@ class ContactViewModel extends GetxController {
   RxBool downloading = false.obs;
 
   Future<void> getContactList() async {
-    // var url = ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getAccountPaged;
 
     var url = ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getContactPaged;
-    var token  = ApiEndPoints.authEndpoints.token;
+    var token = ApiEndPoints.authEndpoints.token;
 
     var response = await Dio().post(url,
         data: {
@@ -31,19 +29,27 @@ class ContactViewModel extends GetxController {
           },
         ));
 
-    if (response.statusCode == 200) {
-      var data = response.data;
-      print(data); // check response data
+        for (var employee in (response.data as List)) {
+          // print('Inserting $employee');
+          DBProvider.db.createEmployee(employee);
+        }
 
-      // parse response data
-      var contacts = List<Contact>.from(
-        data.map((contactData) => Account.fromJson(contactData)),
-      );
 
-      contactList.value = contacts; // set accountList value
-    } else {
-      print("ERROR ->${response.statusCode}");
-    }
-    // sort response data
   }
+
+  //   if (response.statusCode == 200) {
+  //     var data = response.data;
+  //     print(data); // check response data
+  //
+  //     // parse response data
+  //     var contacts = List<Contact>.from(
+  //       data.map((contactData) => Account.fromJson(contactData)),
+  //     );
+  //
+  //     contactList.value = contacts; // set accountList value
+  //   } else {
+  //     print("ERROR ->${response.statusCode}");
+  //   }
+  //   // sort response data
+  // }
 }

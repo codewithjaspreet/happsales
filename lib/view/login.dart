@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
   final FocusNode _passwordFocusNode = FocusNode();
 
   bool _obscureText = true;
-  Color _passwordIconColor = Color(0xffB4C6D4);
+  Color _passwordIconColor = const Color(0xffB4C6D4);
 
   void _toggleObscureText() {
     setState(() {
@@ -46,9 +46,9 @@ class _LoginState extends State<Login> {
 
       if(form.currentState!.validate()){
 
-        SnackBar snackBar = SnackBar(content: Text("Login Successful"));
+        SnackBar snackBar = const SnackBar(content: Text("Login Successful"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Get.offAll(() => DashBoardPage());
+        Get.offAll(() => const DashBoardPage());
       }
 
     }
@@ -100,8 +100,8 @@ class _LoginState extends State<Login> {
                       controller : loginController.emailController,
                       decoration: InputDecoration(
 
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffff00a6d6)),
                         ),
 
 
@@ -138,15 +138,15 @@ class _LoginState extends State<Login> {
                         // Change the suffix icon color when the field is tapped
                         setState(() {
 
-                          _passwordIconColor = Color(0xffff00a6d6);
+                          _passwordIconColor = const Color(0xffff00a6d6);
                         });
                       },
                       obscureText: _obscureText,
                       controller : loginController.passwordController,
                       decoration: InputDecoration(
 
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffff00a6d6)),
                         ),
 
 
@@ -186,8 +186,8 @@ class _LoginState extends State<Login> {
                       controller : loginController.orgController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffff00a6d6)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffff00a6d6)),
                         ),
                         hintText: "Organization Code *",
                         labelText: "Organization Code",

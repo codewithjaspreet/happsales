@@ -5,11 +5,17 @@ import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
 
+import 'contact.dart';
+
 class DBProvider {
   static Database? _database;
   static final DBProvider db = DBProvider._();
 
   DBProvider._();
+   static String accountTable = "Account";
+   static String contactTable = "Contact";
+   static  String contactTitle = "ContactTitle";
+
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -23,10 +29,7 @@ class DBProvider {
     final path = join(documentsDirectory.path, 'employee_manager.db');
 
     // table names
-    
-    const String accountTable = "Account";
-    const String contactTable = "Contact";
-    const String contactTitle = "ContactTitle";
+
 
 
     // initialising tables
@@ -48,7 +51,60 @@ class DBProvider {
         
             CREATE TABLE $contactTitle(Id INTEGER PRIMARY KEY AUTOINCREMENT,ContactTitleID TEXT,ContactTitleCode TEXT,ContactTitleName TEXT,CreatedOn TEXT,CreatedBy TEXT,ModifiedOn TEXT,ModifiedBy TEXT,IsActive TEXT,Uid TEXT,AppUserID TEXT,AppUserGroupID TEXT,IsArchived TEXT,IsDeleted TEXT,IsDirty TEXT,IsActive1 TEXT,IsDeleted1 TEXT,UpSyncMessage TEXT,DownSyncMessage TEXT,SCreatedOn TEXT,SModifiedOn TEXT,CreatedByUser TEXT,ModifiedByUser TEXT,UpSyncIndex INTEGER,OwnerUserID TEXT)
          ''');
+
+
       },
+
     );
   }
+     createEmployee(Map<String, dynamic> newEmployee) async {
+      conflictAlgorithm:
+      ConflictAlgorithm.replace;
+
+      final db = await database;
+
+      final int? contactID = newEmployee['contactId'];
+      final int? firstName = newEmployee['firstName'];
+      final String? lastName = newEmployee['lastName'];
+      final String? designation = newEmployee['designation'];
+
+      try {
+        final res = await db.rawInsert(
+
+            "INSERT INTO $contactTable (contactId, firstName, lastName,designation) VALUES ($contactID , $firstName, '$lastName', '$designation')");
+        return res;
+      } catch (e) {
+        // check if the value is already in the database
+        final res = await db
+            .rawQuery("SELECT * FROM categoryTable WHERE contactId = $contactID");
+        if (res.isNotEmpty) {
+          print("Already in database =  $res");
+        } else {
+          print("Failed to insert $contactID  | $firstName | $lastName | $designation");
+          // print(e);
+          // print("\n");
+        }
+        // print("Failed to insert $contactId  | $contactName | $accountName");
+        // print(e);
+        // print("\n");
+      }
+      Future<List<Contact>> getAllEmployees() async {
+        final db = await database;
+        final res = await db.query('Contact');
+        // print("Replay from db =>$res");
+
+        List<Contact> list =
+        res.isNotEmpty ? res.map((c) => Contact.fromJson(c)).toList() : [];
+
+        // print("Made Employee List => ");
+        // list.forEach((element) {
+        //   print(element.accountName);
+        //   print("\n\n\n");
+        // });
+        return list;
+      }
+    }
+
+
+
 }

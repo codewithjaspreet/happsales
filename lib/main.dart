@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:happsales_crm/view/home_screen.dart';
-import 'package:happsales_crm/view/menu/views/items/contact.dart';
-import 'package:happsales_crm/view/onboarding/splash_screen.dart';
+import 'package:happsales_crm/view/menu/items/contacts/contact.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -19,7 +17,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, a) {
-        return GetMaterialApp(
+        return  GetMaterialApp(
           debugShowCheckedModeBanner: false,
           home: ContactPage(),
         );

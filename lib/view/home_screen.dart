@@ -24,10 +24,10 @@ class HomeScreen extends StatelessWidget {
           contactViewModel.getContactList();
 
         }, child:
-         Container(
+         SizedBox(
            width: 40.w,
            height: 40.h,
-           child: Text("Home Screen"),
+           child: const Text("Home Screen"),
          ),
         ),
       ),

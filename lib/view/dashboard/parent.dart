@@ -7,7 +7,7 @@ import 'package:happsales_crm/view/dashboard/pages/opportunities.dart';
 import 'package:happsales_crm/view/dashboard/pages/recommendations.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../menu/views/menu.dart';
+import '../menu/menu.dart';
 
 
 class DashBoardPage extends StatelessWidget {
