@@ -85,6 +85,7 @@ flutter:
      - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
      - assets/8_Menu/ic_account.svg
      - assets/
+     - assets/contacts/
      - assets/ami/
      - assets/recommend.png
 
