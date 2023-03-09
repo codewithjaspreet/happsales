@@ -62,43 +62,42 @@ class _ContactPageState extends State<ContactPage> {
       body: isLoading
           ? const CircularProgressIndicator()
           : Container(
-              child: Column(
-                children: [
-                  const HelperRow(
-                    title: "My Contacts",
-                  ),
-                  Image.asset("assets/contacts/contact_banner.png"),
-
-                  Expanded(
-                      child: Obx(() => ListView.builder(
-                            itemCount: contactController.contactList.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                  padding:
-                                      EdgeInsets.only(left: 14.sp, top: 20.h),
-                                  child: ContactRow(
-                                    firstName: contactController
-                                        .contactList[index].firstName
-                                        .toString(),
-                                    lastName: contactController
-                                        .contactList[index].lastName
-                                        .toString(),
-                                    employeeDesignation: contactController
-                                        .contactList[index].designation
-                                        .toString(),
-                                  ));
-                            },
-                          )))
-                  // Container(
-                  //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
-                  //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
-                  // Container(
-                  //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
-                  //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
-                ],
-              ),
+        child: Column(
+          children: [
+            const HelperRow(
+              title: "My Contacts",
             ),
+            Image.asset("assets/contacts/contact_banner.png"),
+
+            Expanded(
+                child: Obx(() => ListView.builder(
+                  itemCount: contactController.contactList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                        padding:
+                        EdgeInsets.only(left: 14.sp, top: 20.h),
+                        child: ContactRow(
+                          firstName: contactController
+                              .contactList[index].firstName
+                              .toString(),
+                          lastName: contactController
+                              .contactList[index].lastName
+                              .toString(),
+                          employeeDesignation: contactController
+                              .contactList[index].designation
+                              .toString(),
+                        ));
+                  },
+                )))
+            // Container(
+            //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
+            //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
+            // Container(
+            //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
+            //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
+          ],
+        ),
+      ),
     );
   }
 }
-
