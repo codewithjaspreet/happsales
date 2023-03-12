@@ -1,7 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/AlertBox.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/common_navbar.dart';
+import 'package:happsales_crm/view/menu/views/menu.dart';
 
 import '../../../../utils/color.dart';
 class AddContact extends StatelessWidget {
@@ -11,14 +15,35 @@ class AddContact extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-
+        elevation: 0,
         backgroundColor: Colors.transparent,
-
-
-
+        title: Text(
+          "HappSales",
+          style: TextStyle(
+              color: Colors.black, fontSize: 16.sp, fontFamily: 'roboto_bold'),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.to(() => Menu());
+            },
+            icon: const Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
-
 
       body:  Column(
         children: [
