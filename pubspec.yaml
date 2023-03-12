@@ -48,6 +48,7 @@ dependencies:
   introduction_screen:
   http:
   path_provider:
+  flutter_chat_bubble: ^2.0.2
   buttons_tabbar:
 
 dev_dependencies:
