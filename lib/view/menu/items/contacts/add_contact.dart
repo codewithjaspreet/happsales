@@ -1,5 +1,7 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/AlertBox.dart';
 
 import '../../../../utils/color.dart';
 class AddContact extends StatelessWidget {
@@ -85,7 +87,11 @@ class AddContact extends StatelessWidget {
             ),
           ),
 
-          BusinessCard()
+          GestureDetector(
+              onTap: () {
+                _showDialog(context);
+              },
+              child: BusinessCard())
 
         ],
       )
@@ -126,9 +132,25 @@ class BusinessCard extends StatelessWidget {
             Container(child: Image.asset("assets/contacts/add.png"),),
             Container(
               child: Text("add business card" , style: TextStyle(fontWeight: FontWeight.w500 , fontFamily: "roboto_medium" , fontSize: 18.sp),),)
+
+
           ],
         ),
       ),
     );
   }
 }
+
+
+
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return MyAlertDialog();
+    },
+  );
+}
+
+
+

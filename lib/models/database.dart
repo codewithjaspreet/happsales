@@ -28,7 +28,7 @@ class DBProvider {
     const String firstName = "firstName";
     const String lastName = "lastName";
 
-    var temp_db = await openDatabase(path, version: 5, onOpen: (db) {},
+    var tempDb = await openDatabase(path, version: 5, onOpen: (db) {},
         onCreate: (Database db, int version) async {
           await db.execute("CREATE TABLE $contactTable("
               "$contactId INTEGER PRIMARY KEY, "
@@ -36,8 +36,8 @@ class DBProvider {
               "$lastName TEXT )");
         });
     // print("DB )
-    var result = await temp_db.rawQuery("SELECT * FROM $contactTable");
-    return temp_db;
+    var result = await tempDb.rawQuery("SELECT * FROM $contactTable");
+    return tempDb;
   }
 
   // insert employee
