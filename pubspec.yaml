@@ -51,6 +51,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   buttons_tabbar:
   awesome_dialog: ^3.0.2
+  dropdown_button2:
 
 dev_dependencies:
   flutter_test:
