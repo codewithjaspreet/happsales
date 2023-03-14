@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/AlertBox.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDown.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputTwo.dart';
@@ -16,7 +17,7 @@ import 'package:happsales_crm/view/menu/views/menu.dart';
 
 import '../../../../utils/color.dart';
 class AddContact extends StatelessWidget {
-  const AddContact({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +163,7 @@ class _MyRowState extends State<MyRow> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -193,17 +195,40 @@ class _MyRowState extends State<MyRow> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Input(title: 'Title *',),
-                DropDown(),
-                Input(title: 'Title *',),
-                Input(title: 'Title *',),
-                Input(title: 'Title *',),
+                DropDownInput(hint : 'Title *'),
+                Input(title: 'First Name*',),
+                Input(title: 'last Name',),
+                Input(title: 'account name',),
+                DropDownInput(hint : 'designation'),
+                DropDownInput(hint : 'Mobile Number'),
+                Input(title: 'Mobile Number',),
+                Input(title: 'alternate Mobile Number',),
+                Input(title: 'Work Phone',),
+                Input(title: 'residence phone',),
+                Input(title: 'email address',),
+                Input(title: 'alternate email address',),
+                Input(title: 'Address Line',),
+                Input(title: 'Address Line 2',),
+                Input(title: 'Address Line 3',),
+                DropDownInput(hint: 'city',),
+                DropDownInput(hint:  'state',),
+                DropDownInput(hint: 'country',),
+                Input(title: 'pincode',),
+                Input(title: 'GPS Coordinate',),
+
+
+
+
+
+
+
               ],
             ),
           )
       ]
     );
   }
+
 }
 
 

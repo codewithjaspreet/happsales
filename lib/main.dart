@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, a) {
-        return  const GetMaterialApp(
+        return   GetMaterialApp(
           debugShowCheckedModeBanner: false,
           home: AddContact(),
         );
