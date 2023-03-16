@@ -6,6 +6,8 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/ContactRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 
+import '../../menu.dart';
+
 class ContactPage extends StatefulWidget {
   @override
   State<ContactPage> createState() => _ContactPageState();
@@ -46,7 +48,9 @@ class _ContactPageState extends State<ContactPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => Menu());
+            },
             icon: const Icon(
               Icons.menu,
               color: Colors.black,
@@ -66,31 +70,7 @@ class _ContactPageState extends State<ContactPage> {
               Image.asset("assets/contacts/contact_banner.png"),
 
               _buildEmployeeListView()
-              // Expanded
-              //     child: ListView.builder(
-              //   itemCount: contactController.contactList.length,
-              //   itemBuilder: (context, index) {
-              //     return Container(
-              //         padding: EdgeInsets.only(left: 14.sp, top: 20.h),
-              //         child: ContactRow(
-              //           firstName: contactController
-              //               .contactList[index].firstName
-              //               .toString(),
-              //           lastName: contactController
-              //               .contactList[index].lastName
-              //               .toString(),
-              //           employeeDesignation: contactController
-              //               .contactList[index].designation
-              //               .toString(),
-              //         ));
-              //   },
-              // ))
-              // Container(
-              //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
-              //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
-              // Container(
-              //   padding: EdgeInsets.only( left : 14.sp,top: 20.h),
-              //     child: const ContactRow(firstName: 'Jaspreet'  , lastName: 'Singh' , employeeDesignation: "bc",)),
+
             ],
           ),
     );
@@ -150,7 +130,7 @@ _buildEmployeeListView() {
                           )),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 4.sp),
-                      child: Text(contactController.contactList[index].contactID.toString(),
+                      child: Text(contactController.contactList[index].contactCode.toString(),
                           style: TextStyle(
                               color: AppColors.primaryColor
                           )),

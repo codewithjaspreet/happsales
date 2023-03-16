@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/AlertBox.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDown.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
@@ -22,36 +23,7 @@ class AddContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "HappSales",
-          style: TextStyle(
-              color: Colors.black, fontSize: 16.sp, fontFamily: 'roboto_bold'),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Get.to(() => Menu());
-            },
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(context),
 
       body:  SingleChildScrollView(
         child: Column(
@@ -136,6 +108,7 @@ class AddContact extends StatelessWidget {
       )
     );
   }
+
 
 
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:happsales_crm/view/menu/items/contacts/Details.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/contact.dart';
+import 'package:happsales_crm/view/onboarding/splash_screen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
       builder: (context, a) {
         return   GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ContactPage(),
+          home: ContactDetails(),
         );
       },
     );
