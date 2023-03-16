@@ -1,314 +1,338 @@
+import 'dart:convert';
+
+List<Contact> contactFromJson(String str) =>
+    List<Contact>.from(json.decode(str).map((x) => Contact.fromJson(x)));
+
+String contactToJson(List<Contact> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Contact {
-  int? id;
-  String? contactId;
+  int? contactID;
   String? contactCode;
   String? title;
   String? firstName;
   String? middleName;
   String? lastName;
   String? contactName;
-  String? contactIdentifier;
-  String? accountId;
-  String? departmentName;
+  // String? contactIdentifier;
+  // int? accountID;
+  // Null? contactCategoryID;
+  // String? departmentName;
   String? designation;
-  String? rolesAndResponsibilities;
-  String? reportingManager;
-  String? reportingContactId;
-  String? mobileNumber;
-  String? alternateMobileNumber;
-  String? workPhone;
-  String? residencePhone;
-  String? email;
-  String? alternateEmail;
-  String? addressLine1;
-  String? addressLine2;
-  String? addressLine3;
-  String? city;
-  String? state;
-  String? country;
-  String? pin;
-  String? gpsCoordinates;
-  String? linkedIn;
-  String? pastAccounts;
-  String? pastDesignations;
-  String? dateOfBirth;
-  String? remindBirthday;
-  String? contactAlignmentId;
-  String? remarks;
-  String? referenceHistory;
-  String? isPrimaryContact;
-  String? tags;
-  String? freeTextField1;
-  String? freeTextField2;
-  String? freeTextField3;
-  String? companyName;
-  String? taxPayerIdentificationNumber;
-  String? socialSecurityNumber;
-  String? passportNumber;
-  String? drivingLicenseNumber;
-  String? voterIdCardNumber;
-  String? marketingContactId;
-  String? createdBy;
-  String? createdOn;
-  String? modifiedBy;
-  String? modifiedOn;
-  String? deviceIdentifier;
-  String? referenceIdentifier;
-  String? isActive;
-  String? uid;
-  String? appUserId;
-  String? appUserGroupId;
-  String? isArchived;
-  String? isDeleted;
-  String? leadQualificationId;
-  String? isDirty;
-  String? isActive1;
-  String? isDeleted1;
-  String? upSyncMessage;
-  String? downSyncMessage;
-  String? sCreatedOn;
-  String? sModifiedOn;
-  String? createdByUser;
-  String? modifiedByUser;
-  int? upSyncIndex;
-  String? ownerUserId;
+  // String? rolesAndResponsibilities;
+  // String? reportingManager;
+  // Null? reportingContactID;
+  // String? mobileNumber;
+  // String? alternateMobileNumber;
+  // String? workPhone;
+  // String? residencePhone;
+  // String? email;
+  // String? alternateEmail;
+  // String? addressLine1;
+  // String? addressLine2;
+  // String? addressLine3;
+  // String? city;
+  // String? state;
+  // String? country;
+  // String? pIN;
+  // String? gPSCoordinates;
+  // String? linkedIn;
+  // String? pastAccounts;
+  // String? pastDesignations;
+  // Null? dateOfBirth;
+  // bool? remindBirthday;
+  // Null? contactAlignmentID;
+  // String? remarks;
+  // String? referenceHistory;
+  // bool? isPrimaryContact;
+  // String? tags;
+  // String? freeTextField1;
+  // String? freeTextField2;
+  // String? freeTextField3;
+  // String? companyName;
+  // Null? taxPayerIdentificationNumber;
+  // Null? socialSecurityNumber;
+  // Null? passportNumber;
+  // Null? drivingLicenseNumber;
+  // Null? voterIDCardNumber;
+  // Null? marketingContactID;
+  // String? createdBy;
+  // String? createdOn;
+  // String? modifiedBy;
+  // String? modifiedOn;
+  // String? deviceIdentifier;
+  // String? referenceIdentifier;
+  // bool? isActive;
+  // String? uid;
+  // int? appUserID;
+  // Null? assignedByAppUserID;
+  // int? appUserGroupID;
+  // bool? isArchived;
+  // bool? isDeleted;
+  // Null? leadQualificationID;
+  String? accountName ;
+  // Null? contactCategoryName;
+  // Null? accountLocation;
+  // String? reportingContactName;
+  // String? contactAlignmentName;
+  // String? appUserName;
+  // Null? assignedByAppUserName;
+  // String? appUserGroupName;
+  // Null? iD;
+  // Null? userLoginName;
+  // Null? deviceAndLocation;
+  // Null? userInput;
+  // Null? appUserUid;
+  // Null? appUserGroupUid;
+  // Null? createdForUser;
+  // int? rowNum;
 
   Contact({
-    this.id,
-    this.contactId,
+    this.contactID,
     this.contactCode,
     this.title,
     this.firstName,
     this.middleName,
     this.lastName,
     this.contactName,
-    this.contactIdentifier,
-    this.accountId,
-    this.departmentName,
+
+    // this.contactIdentifier,
+    // this.accountID,
+    // this.contactCategoryID,
+    // this.departmentName,
     this.designation,
-    this.rolesAndResponsibilities,
-    this.reportingManager,
-    this.reportingContactId,
-    this.mobileNumber,
-    this.alternateMobileNumber,
-    this.workPhone,
-    this.residencePhone,
-    this.email,
-    this.alternateEmail,
-    this.addressLine1,
-    this.addressLine2,
-    this.addressLine3,
-    this.city,
-    this.state,
-    this.country,
-    this.pin,
-    this.gpsCoordinates,
-    this.linkedIn,
-    this.pastAccounts,
-    this.pastDesignations,
-    this.dateOfBirth,
-    this.remindBirthday,
-    this.contactAlignmentId,
-    this.remarks,
-    this.referenceHistory,
-    this.isPrimaryContact,
-    this.tags,
-    this.freeTextField1,
-    this.freeTextField2,
-    this.freeTextField3,
-    this.companyName,
-    this.taxPayerIdentificationNumber,
-    this.socialSecurityNumber,
-    this.passportNumber,
-    this.drivingLicenseNumber,
-    this.voterIdCardNumber,
-    this.marketingContactId,
-    this.createdBy,
-    this.createdOn,
-    this.modifiedBy,
-    this.modifiedOn,
-    this.deviceIdentifier,
-    this.referenceIdentifier,
-    this.isActive,
-    this.uid,
-    this.appUserId,
-    this.appUserGroupId,
-    this.isArchived,
-    this.isDeleted,
-    this.leadQualificationId,
-    this.isDirty,
-    this.isActive1,
-    this.isDeleted1,
-    this.upSyncMessage,
-    this.downSyncMessage,
-    this.sCreatedOn,
-    this.sModifiedOn,
-    this.createdByUser,
-    this.modifiedByUser,
-    this.upSyncIndex,
-    this.ownerUserId,
+    // this.rolesAndResponsibilities,
+    // this.reportingManager,
+    // this.reportingContactID,
+    // this.mobileNumber,
+    // this.alternateMobileNumber,
+    // this.workPhone,
+    // this.residencePhone,
+    // this.email,
+    // this.alternateEmail,
+    // this.addressLine1,
+    // this.addressLine2,
+    // this.addressLine3,
+    // this.city,
+    // this.state,
+    // this.country,
+    // this.pIN,
+    // this.gPSCoordinates,
+    // this.linkedIn,
+    // this.pastAccounts,
+    // this.pastDesignations,
+    // this.dateOfBirth,
+    // this.remindBirthday,
+    // this.contactAlignmentID,
+    // this.remarks,
+    // this.referenceHistory,
+    // this.isPrimaryContact,
+    // this.tags,
+    // this.freeTextField1,
+    // this.freeTextField2,
+    // this.freeTextField3,
+    // this.companyName,
+    // this.taxPayerIdentificationNumber,
+    // this.socialSecurityNumber,
+    // this.passportNumber,
+    // this.drivingLicenseNumber,
+    // this.voterIDCardNumber,
+    // this.marketingContactID,
+    // this.createdBy,
+    // this.createdOn,
+    // this.modifiedBy,
+    // this.modifiedOn,
+    // this.deviceIdentifier,
+    // this.referenceIdentifier,
+    // this.isActive,
+    // this.uid,
+    // this.appUserID,
+    // this.assignedByAppUserID,
+    // this.appUserGroupID,
+    // this.isArchived,
+    // this.isDeleted,
+    // this.leadQualificationID,
+    this.accountName,
+    // this.contactCategoryName,
+    // this.accountLocation,
+    // this.reportingContactName,
+    // this.contactAlignmentName,
+    // this.appUserName,
+    // this.assignedByAppUserName,
+    // this.appUserGroupName,
+    // this.iD,
+    // this.userLoginName,
+    // this.deviceAndLocation,
+    // this.userInput,
+    // this.appUserUid,
+    // this.appUserGroupUid,
+    // this.createdForUser,
+    // this.rowNum});
   });
 
-  // tojson
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['id'] = id;
-    data['contactId'] = contactId;
-    data['contactCode'] = contactCode;
-    data['title'] = title;
-    data['firstName'] = firstName;
-    data['middleName'] = middleName;
-    data['lastName'] = lastName;
-    data['contactName'] = contactName;
-    data['contactIdentifier'] = contactIdentifier;
-    data['accountId'] = accountId;
-    data['departmentName'] = departmentName;
-    data['designation'] = designation;
-    data['rolesAndResponsibilities'] = rolesAndResponsibilities;
-    data['reportingManager'] = reportingManager;
-    data['reportingContactId'] = reportingContactId;
-    data['mobileNumber'] = mobileNumber;
-    data['alternateMobileNumber'] = alternateMobileNumber;
-    data['workPhone'] = workPhone;
-    data['residencePhone'] = residencePhone;
-    data['email'] = email;
-    data['alternateEmail'] = alternateEmail;
-    data['addressLine1'] = addressLine1;
-    data['addressLine2'] = addressLine2;
-    data['addressLine3'] = addressLine3;
-    data['city'] = city;
-    data['state'] = state;
-    data['country'] = country;
-    data['pin'] = pin;
-    data['gpsCoordinates'] = gpsCoordinates;
-    data['linkedIn'] = linkedIn;
-    data['pastAccounts'] = pastAccounts;
-    data['pastDesignations'] = pastDesignations;
-    data['dateOfBirth'] = dateOfBirth;
-    data['remindBirthday'] = remindBirthday;
-    data['contactAlignmentId'] = contactAlignmentId;
-    data['remarks'] = remarks;
-    data['referenceHistory'] = referenceHistory;
-    data['isPrimaryContact'] = isPrimaryContact;
-    data['tags'] = tags;
-    data['freeTextField1'] = freeTextField1;
-    data['freeTextField2'] = freeTextField2;
-    data['freeTextField3'] = freeTextField3;
-    data['companyName'] = companyName;
-    data['taxPayerIdentificationNumber'] = taxPayerIdentificationNumber;
-    data['socialSecurityNumber'] = socialSecurityNumber;
-    data['passportNumber'] = passportNumber;
-    data['drivingLicenseNumber'] = drivingLicenseNumber;
-    data['voterIdCardNumber'] = voterIdCardNumber;
-    data['marketingContactId'] = marketingContactId;
-    data['createdBy'] = createdBy;
-    data['createdOn'] = createdOn;
-    data['modifiedBy'] = modifiedBy;
-    data['modifiedOn'] = modifiedOn;
-    data['deviceIdentifier'] = deviceIdentifier;
-    data['referenceIdentifier'] = referenceIdentifier;
-    data['isActive'] = isActive;
-    data['uid'] = uid;
-    data['appUserId'] = appUserId;
-    data['appUserGroupId'] = appUserGroupId;
-    data['isArchived'] = isArchived;
-    data['isDeleted'] = isDeleted;
-    data['leadQualificationId'] = leadQualificationId;
-    data['isDirty'] = isDirty;
-    data['isActive1'] = isActive1;
-    data['isDeleted1'] = isDeleted1;
-    data['upSyncMessage'] = upSyncMessage;
-    data['downSyncMessage'] = downSyncMessage;
-    data['sCreatedOn'] = sCreatedOn;
-    data['sModifiedOn'] = sModifiedOn;
-    data['createdByUser'] = createdByUser;
-    data['modifiedByUser'] = modifiedByUser;
-    data['upSyncIndex'] = upSyncIndex;
-    data['ownerUserId'] = ownerUserId;
-
-    return data;
+  Contact.fromJson(Map<String, dynamic> json) {
+    contactID = json['ContactID'];
+    contactCode = json['ContactCode'];
+    title = json['Title'];
+    firstName = json['FirstName'];
+    middleName = json['MiddleName'];
+    lastName = json['LastName'];
+    contactName = json['ContactName'];
+    // contactIdentifier = json['ContactIdentifier'];
+    // accountID = json['AccountID'];
+    // contactCategoryID = json['ContactCategoryID'];
+    // departmentName = json['DepartmentName'];
+    designation = json['Designation'];
+    // rolesAndResponsibilities = json['RolesAndResponsibilities'];
+    // reportingManager = json['ReportingManager'];
+    // reportingContactID = json['ReportingContactID'];
+    // mobileNumber = json['MobileNumber'];
+    // alternateMobileNumber = json['AlternateMobileNumber'];
+    // workPhone = json['WorkPhone'];
+    // residencePhone = json['ResidencePhone'];
+    // email = json['Email'];
+    // alternateEmail = json['AlternateEmail'];
+    // addressLine1 = json['AddressLine1'];
+    // addressLine2 = json['AddressLine2'];
+    // addressLine3 = json['AddressLine3'];
+    // city = json['City'];
+    // state = json['State'];
+    // country = json['Country'];
+    // pIN = json['PIN'];
+    // gPSCoordinates = json['GPSCoordinates'];
+    // linkedIn = json['LinkedIn'];
+    // pastAccounts = json['PastAccounts'];
+    // pastDesignations = json['PastDesignations'];
+    // dateOfBirth = json['DateOfBirth'];
+    // remindBirthday = json['RemindBirthday'];
+    // contactAlignmentID = json['ContactAlignmentID'];
+    // remarks = json['Remarks'];
+    // referenceHistory = json['ReferenceHistory'];
+    // isPrimaryContact = json['IsPrimaryContact'];
+    // tags = json['Tags'];
+    // freeTextField1 = json['FreeTextField1'];
+    // freeTextField2 = json['FreeTextField2'];
+    // freeTextField3 = json['FreeTextField3'];
+    // companyName = json['CompanyName'];
+    // taxPayerIdentificationNumber  = json['TaxPayerIdentificationNumber'];
+    // socialSecurityNumber = json['SocialSecurityNumber'];
+    // passportNumber = json['PassportNumber'];
+    // drivingLicenseNumber = json['DrivingLicenseNumber'];
+    // voterIDCardNumber = json['VoterIDCardNumber'];
+    // marketingContactID = json['MarketingContactID'];
+    // createdBy = json['CreatedBy'];
+    // createdOn = json['CreatedOn'];
+    // modifiedBy = json['ModifiedBy'];
+    // modifiedOn = json['ModifiedOn'];
+    // deviceIdentifier = json['DeviceIdentifier'];
+    // referenceIdentifier = json['ReferenceIdentifier'];
+    // isActive = json['IsActive'];
+    // uid = json['Uid'];
+    // appUserID = json['AppUserID'];
+    // assignedByAppUserID = json['AssignedByAppUserID'];
+    // appUserGroupID = json['AppUserGroupID'];
+    // isArchived = json['IsArchived'];
+    // isDeleted = json['IsDeleted'];
+    // leadQualificationID = json['LeadQualificationID'];
+    accountName = json['AccountName'] ?? '';
+    // contactCategoryName = json['ContactCategoryName'];
+    // accountLocation = json['AccountLocation'];
+    // reportingContactName = json['ReportingContactName'];
+    // contactAlignmentName = json['ContactAlignmentName'];
+    // appUserName = json['AppUserName'];
+    // assignedByAppUserName = json['AssignedByAppUserName'];
+    // appUserGroupName = json['AppUserGroupName'];
+    // iD = json['ID'];
+    // userLoginName = json['UserLoginName'];
+    // deviceAndLocation = json['DeviceAndLocation'];
+    // userInput = json['UserInput'];
+    // appUserUid = json['AppUserUid'];
+    // appUserGroupUid = json['AppUserGroupUid'];
+    // createdForUser = json['CreatedForUser'];
+    // rowNum = json['RowNum'];
   }
 
-  //fromjson method
-
-   Contact.fromJson(Map<String, dynamic> json) {
-
-      id: json['id'];
-      contactId: json['contactId'];
-      contactCode: json['contactCode'];
-      title: json['title'];
-      firstName: json['firstName'];
-      middleName: json['middleName'];
-      lastName: json['lastName'];
-      contactName: json['contactName'];
-      contactIdentifier: json['contactIdentifier'];
-      accountId: json['accountId'];
-      departmentName: json['departmentName'];
-      designation: json['designation'];
-      rolesAndResponsibilities: json['rolesAndResponsibilities'];
-      reportingManager: json['reportingManager'];
-      reportingContactId: json['reportingContactId'];
-      mobileNumber: json['mobileNumber'];
-      alternateMobileNumber: json['alternateMobileNumber'];
-      workPhone: json['workPhone'];
-      residencePhone: json['residencePhone'];
-      email: json['email'];
-      alternateEmail: json['alternateEmail'];
-      addressLine1: json['addressLine1'];
-      addressLine2: json['addressLine2'];
-      addressLine3: json['addressLine3'];
-      city: json['city'];
-      state: json['state'];
-      country: json['country'];
-      pin: json['pin'];
-      gpsCoordinates: json['gpsCoordinates'];
-      linkedIn: json['linkedIn'];
-      pastAccounts: json['pastAccounts'];
-      pastDesignations: json['pastDesignations'];
-      dateOfBirth: json['dateOfBirth'];
-      remindBirthday: json['remindBirthday'];
-      contactAlignmentId: json['contactAlignmentId'];
-      remarks: json['remarks'];
-      referenceHistory: json['referenceHistory'];
-      isPrimaryContact: json['isPrimaryContact'];
-      tags: json['tags'];
-      freeTextField1: json['freeTextField1'];
-      freeTextField2: json['freeTextField2'];
-      freeTextField3: json['freeTextField3'];
-      companyName: json['companyName'];
-      taxPayerIdentificationNumber: json['taxPayerIdentificationNumber'];
-      socialSecurityNumber: json['socialSecurityNumber'];
-      passportNumber: json['passportNumber'];
-      drivingLicenseNumber: json['drivingLicenseNumber'];
-      voterIdCardNumber: json['voterIdCardNumber'];
-      marketingContactId: json['marketingContactId'];
-      createdBy: json['createdBy'];
-      createdOn: json['createdOn'];
-      modifiedBy: json['modifiedBy'];
-      modifiedOn: json['modifiedOn'];
-      deviceIdentifier: json['deviceIdentifier'];
-      referenceIdentifier: json['referenceIdentifier'];
-      isActive: json['isActive'];
-      uid: json['uid'];
-      appUserId: json['appUserId'];
-      appUserGroupId: json['appUserGroupId'];
-      isArchived: json['isArchived'];
-      isDeleted: json['isDeleted'];
-      leadQualificationId: json['leadQualificationId'];
-      isDirty: json['isDirty'];
-      isActive1: json['isActive1'];
-      isDeleted1: json['isDeleted1'];
-      upSyncMessage: json['upSyncMessage'];
-      downSyncMessage: json['downSyncMessage'];
-      sCreatedOn: json['sCreatedOn'];
-      sModifiedOn: json['sModifiedOn'];
-      createdByUser: json['createdByUser'];
-      modifiedByUser: json['modifiedByUser'];
-      upSyncIndex: json['upSyncIndex'];
-      ownerUserId: json['ownerUserId'];
-
-
-    }
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ContactID'] = this.contactID;
+    data['ContactCode'] = this.contactCode;
+    data['Title'] = this.title;
+    data['FirstName'] = this.firstName;
+    data['MiddleName'] = this.middleName;
+    data['LastName'] = this.lastName;
+    data['ContactName'] = this.contactName;
+    // data['ContactIdentifier'] = this.contactIdentifier;
+    // data['AccountID'] = this.accountID;
+    // data['ContactCategoryID'] = this.contactCategoryID;
+    // data['DepartmentName'] = this.departmentName;
+    // data['Designation'] = this.designation;
+    // data['RolesAndResponsibilities'] = this.rolesAndResponsibilities;
+    // data['ReportingManager'] = this.reportingManager;
+    // data['ReportingContactID'] = this.reportingContactID;
+    // data['MobileNumber'] = this.mobileNumber;
+    // data['AlternateMobileNumber'] = this.alternateMobileNumber;
+    // data['WorkPhone'] = this.workPhone;
+    // data['ResidencePhone'] = this.residencePhone;
+    // data['Email'] = this.email;
+    // data['AlternateEmail'] = this.alternateEmail;
+    // data['AddressLine1'] = this.addressLine1;
+    // data['AddressLine2'] = this.addressLine2;
+    // data['AddressLine3'] = this.addressLine3;
+    // data['City'] = this.city;
+    // data['State'] = this.state;
+    // data['Country'] = this.country;
+    // data['PIN'] = this.pIN;
+    // data['GPSCoordinates'] = this.gPSCoordinates;
+    // data['LinkedIn'] = this.linkedIn;
+    // data['PastAccounts'] = this.pastAccounts;
+    // data['PastDesignations'] = this.pastDesignations;
+    // data['DateOfBirth'] = this.dateOfBirth;
+    // data['RemindBirthday'] = this.remindBirthday;
+    // data['ContactAlignmentID'] = this.contactAlignmentID;
+    // data['Remarks'] = this.remarks;
+    // data['ReferenceHistory'] = this.referenceHistory;
+    // data['IsPrimaryContact'] = this.isPrimaryContact;
+    // data['Tags'] = this.tags;
+    // data['FreeTextField1'] = this.freeTextField1;
+    // data['FreeTextField2'] = this.freeTextField2;
+    // data['FreeTextField3'] = this.freeTextField3;
+    // data['CompanyName'] = this.companyName;
+    // data['TaxPayerIdentificationNumber'] = this.taxPayerIdentificationNumber;
+    // data['SocialSecurityNumber'] = this.socialSecurityNumber;
+    // data['PassportNumber'] = this.passportNumber;
+    // data['DrivingLicenseNumber'] = this.drivingLicenseNumber;
+    // data['VoterIDCardNumber'] = this.voterIDCardNumber;
+    // data['MarketingContactID'] = this.marketingContactID;
+    // data['CreatedBy'] = this.createdBy;
+    // data['CreatedOn'] = this.createdOn;
+    // data['ModifiedBy'] = this.modifiedBy;
+    // data['ModifiedOn'] = this.modifiedOn;
+    // data['DeviceIdentifier'] = this.deviceIdentifier;
+    // data['ReferenceIdentifier'] = this.referenceIdentifier;
+    // data['IsActive'] = this.isActive;
+    // data['Uid'] = this.uid;
+    // data['AppUserID'] = this.appUserID;
+    // data['AssignedByAppUserID'] = this.assignedByAppUserID;
+    // data['AppUserGroupID'] = this.appUserGroupID;
+    // data['IsArchived'] = this.isArchived;
+    // data['IsDeleted'] = this.isDeleted;
+    // data['LeadQualificationID'] = this.leadQualificationID;
+    data['AccountName'] = this.accountName;
+    // data['ContactCategoryName'] = this.contactCategoryName;
+    // data['AccountLocation'] = this.accountLocation;
+    // data['ReportingContactName'] = this.reportingContactName;
+    // data['ContactAlignmentName'] = this.contactAlignmentName;
+    // data['AppUserName'] = this.appUserName;
+    // data['AssignedByAppUserName'] = this.assignedByAppUserName;
+    // data['AppUserGroupName'] = this.appUserGroupName;
+    // data['ID'] = this.iD;
+    // data['UserLoginName'] = this.userLoginName;
+    // data['DeviceAndLocation'] = this.deviceAndLocation;
+    // data['UserInput'] = this.userInput;
+    // data['AppUserUid'] = this.appUserUid;
+    // data['AppUserGroupUid'] = this.appUserGroupUid;
+    // data['CreatedForUser'] = this.createdForUser;
+    // data['RowNum'] = this.rowNum;
+    return data;
+  }
 }

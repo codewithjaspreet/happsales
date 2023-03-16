@@ -5,10 +5,10 @@ import '../../../../../../utils/color.dart';
 
 class ContactRow extends StatelessWidget {
 
-  const ContactRow({required this.firstName ,required this.lastName , required this.employeeDesignation});
+  const ContactRow({required this.firstName ,required this.lastName , required this.account, });
   final String firstName;
-  final String employeeDesignation;
   final String lastName;
+  final String account;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +32,15 @@ class ContactRow extends StatelessWidget {
                   color: AppColors.primaryColor,
                 ),
                 child: Center(
-                  child: Text(firstName[0] + lastName[0] , style: TextStyle(color: Colors.white , fontSize: 16.sp),),
+                  child: Text("hello" , style: TextStyle(color: Colors.white , fontSize: 16.sp),),
                 ),
               ),
               SizedBox(width: 12.w,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("$firstName $lastName" , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 16.sp),),
-                  Text(employeeDesignation , style: TextStyle(fontFamily: 'roboto_regular' , fontSize: 12.sp),),
+                  Text(firstName[0] + lastName[0] , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 16.sp),),
+                  Text(account , style: TextStyle(fontFamily: 'roboto_regular' , fontSize: 12.sp),),
                 ],
               )
             ],
