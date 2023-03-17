@@ -49,6 +49,7 @@ dependencies:
   http:
   path_provider:
   flutter_chat_bubble: ^2.0.2
+  auto_size_text: ^3.0.0
   buttons_tabbar:
   awesome_dialog: ^3.0.2
   dropdown_button2:
