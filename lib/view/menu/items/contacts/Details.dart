@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/FifthTypeDetailing.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/FourthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
 
 class ContactDetails extends StatelessWidget {
   const ContactDetails({Key? key}) : super(key: key);
@@ -22,7 +27,10 @@ class ContactDetails extends StatelessWidget {
                 Hdivider(),
                 DetailRow(),
                 Hdivider(),
-                DetailRow(),
+                MoreDetail(),
+                Hdivider(),
+                const DetailItems(),
+
 
               ],
             ),
@@ -216,6 +224,7 @@ class _MyRowState extends State<DetailRow> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Detaling(
+                          imgUrl: "assets/contacts/web.png",
                           title: 'contact name',
                           subTitle: 'Mr. Radha R Krishna',
                         ),
@@ -258,16 +267,10 @@ class _MyRowState extends State<DetailRow> {
                             subTitle1:
                                 'Lorem ipsum dolor,\nipsum dolor, \nDelhi 110004',
                             title2: 'GPS Coordinate',
-                            subTitle2: 'subTitle2')
-                        // ThirdTypeDetailing(
-                        //
-                        //   title1: 'Mobile number',
-                        //   subTitle1: '99999 12345',
-                        //   title2: 'alt. Mobile number',
-                        //   subTitle2: '99999 12346',
-                        //
-                        // ),
-                      ]),
+                            subTitle2: 'subTitle2'),
+
+                      ]
+                  ),
                 ),
               ],
             ),
@@ -278,11 +281,12 @@ class _MyRowState extends State<DetailRow> {
 }
 
 class Detaling extends StatelessWidget {
-  const Detaling({Key? key, required this.title, required this.subTitle})
+  const Detaling({Key? key, required this.title, required this.subTitle, required this.imgUrl})
       : super(key: key);
 
   final String title;
   final String subTitle;
+  final String imgUrl;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -308,16 +312,17 @@ class Detaling extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        subTitle,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: "roboto_bold",
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w400,
+                      Flexible(
+                        child: Text(
+                          subTitle,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                      Image.asset("assets/contacts/web.png")
+                      Image.asset(imgUrl)
                     ],
                   )
                 ],
@@ -329,320 +334,86 @@ class Detaling extends StatelessWidget {
     );
   }
 }
+class DetailItems extends StatelessWidget {
+  const DetailItems({Key? key}) : super(key: key);
 
-class SecondTypeDetailing extends StatelessWidget {
-  const SecondTypeDetailing(
-      {Key? key, required this.title, required this.subTitle})
-      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
+          IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
+          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'notes',),
+        ],
+      ),
+
+    );
+
+  }
+}
+class IndividualItem extends StatelessWidget {
+  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+
+  final String imageUrl;
   final String title;
-  final String subTitle;
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 10.h,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 16.h, top: 10.h, right: 16.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(title,
-                            style: TextStyle(
-                                color: Color(0xff00A6D6),
-                                fontFamily: "roboto_bold",
-                                fontSize: 13.sp)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          subTitle,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontFamily: "roboto_bold",
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class ThirdTypeDetailing extends StatelessWidget {
-  ThirdTypeDetailing(
-      {Key? key,
-      required this.title1,
-      required this.subTitle1,
-      required this.title2,
-      required this.subTitle2})
-      : super(key: key);
-
-  final String title1;
-  final String subTitle1;
-  final String title2;
-  final String subTitle2;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 16.h,
-        top: 20.h,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(title1,
-                          style: TextStyle(
-                              color: Color(0xff00A6D6),
-                              fontFamily: "roboto_bold",
-                              fontSize: 13.sp)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AutoSizeText(
-                        subTitle1,
-
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 110.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(title2,
-                            style: TextStyle(
-                                color: Color(0xff00A6D6),
-                                fontFamily: "roboto_bold",
-                                fontSize: 13.sp)),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 110.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            AutoSizeText(
-                              subTitle2,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontFamily: "roboto_bold",
-                                color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-
-
-
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class FourthTypeDetailing extends StatelessWidget {
-  const FourthTypeDetailing(
-      {Key? key,
-      required this.title1,
-      required this.subTitle1,
-      required this.title2,
-      required this.subTitle2})
-      : super(key: key);
-
-  final String title1;
-  final String subTitle1;
-  final String title2;
-  final String subTitle2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 14.h, top: 20.h),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(title1,
-                          style: TextStyle(
-                              color: Color(0xff00A6D6),
-                              fontFamily: "roboto_bold",
-                              fontSize: 13.sp)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        subTitle1,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: "roboto_bold",
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 12.w),
-                        child: Image.asset("assets/contacts/call.png"),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 55.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(title2,
-                            style: TextStyle(
-                                color: Color(0xff00A6D6),
-                                fontFamily: "roboto_bold",
-                                fontSize: 13.sp)),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 55.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              subTitle2,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontFamily: "roboto_bold",
-                                color: AppColors.primaryColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20.w),
-                              child: Image.asset("assets/contacts/call.png"),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class FifthTypeDetailing extends StatelessWidget {
-  const FifthTypeDetailing(
-      {Key? key, required this.title, required this.subTitle})
-      : super(key: key);
-
-  final String title;
-  final String subTitle;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(
-            left: 14.w,
-            top: 20.h,
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: Color(0xffF5F6F9),
+
+            borderRadius: BorderRadius.circular(12.sp),
           ),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontFamily: "roboto_bold",
-              color: Color(0xff00A6D6),
-              fontWeight: FontWeight.bold,
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(imageUrl),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: "roboto_bold",
+                    color: Color(0xff00A6D6),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+              ],
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 14.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AutoSizeText(
-                subTitle,
+        Positioned(
+          top: 10.h,
+          left: 70.w,
+          child: Container(
+            child: Center(
+              child: Text(
+                '2',
                 style: TextStyle(
-                    fontSize: 16.sp,
-                    fontFamily: "roboto_bold",
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.w400),
+                  fontSize: 13.sp,
+                  fontFamily: "roboto_bold",
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Image.asset("assets/contacts/mail.png")
-            ],
+            ),
+            width: 20.w,
+            height: 20.h,
+            decoration: BoxDecoration(
+              color: Color(0xff00A6D6),
+              shape: BoxShape.circle,
+            ),
           ),
-        )
+        ),
       ],
     );
   }
