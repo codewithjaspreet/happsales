@@ -38,4 +38,8 @@ class ContactViewModel extends GetxController {
 
     return contactList;
   }
+
+  Contact? getUserById(int id) {
+    return contactList.firstWhere((user) => user.contactID == id, orElse: () => null);
+  }
 }

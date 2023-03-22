@@ -16,7 +16,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/common_navbar.dart';
 import 'package:happsales_crm/view/menu/views/menu.dart';
 
-import '../../../../utils/color.dart';
+import '../../../../../utils/color.dart';
 class AddContact extends StatelessWidget {
 
 

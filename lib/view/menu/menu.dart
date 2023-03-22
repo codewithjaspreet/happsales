@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'items/contacts/add_contact.dart';
+import 'items/contacts/views/add_contact.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
 

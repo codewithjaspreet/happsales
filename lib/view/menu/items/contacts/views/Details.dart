@@ -13,22 +13,28 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
 
-import '../../../../viewmodels/contact_view_model.dart';
+import '../../../../../models/contact.dart';
+import '../../../../../viewmodels/contact_view_model.dart';
 
 class ContactDetails extends StatelessWidget {
-  const ContactDetails({Key? key, required contact}) : super(key: key);
+  ContactDetails({Key? key, required this.Id}) : super(key: key);
 
 
+  ContactViewModel contactViewModel = Get.put(ContactViewModel());
+  final int Id;
 
   @override
   Widget build(BuildContext context) {
+
+    Contact? contact = contactViewModel.getUserById(Id);
+    print(contact!.firstName);
     return Scaffold(
         appBar: CustomAppBar(context),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserDetailCard(),
+              UserDetailCard( title : contact.firstName ),
               Hdivider(),
               DetailRow(),
               Hdivider(),
@@ -40,7 +46,10 @@ class ContactDetails extends StatelessWidget {
         ));
   }
 
-  Column UserDetailCard() {
+  Column UserDetailCard({String? title}) {
+
+
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -88,7 +97,10 @@ class ContactDetails extends StatelessWidget {
                     children: [
                       Container(
                         child: Text(
-                          "Radha Krishna",
+
+                          title!,
+
+                          // name of the user getting accessed
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.sp,

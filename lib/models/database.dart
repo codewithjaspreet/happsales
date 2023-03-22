@@ -36,7 +36,7 @@ class DBProvider {
               'ContactName TEXT,'
               'AccountName TEXT,'
               'Email TEXT,'
-              'AlternateEmail TEXT'
+              'AlternateEmail TEXT,'
               'PIN TEXT,'
               ')');
     });

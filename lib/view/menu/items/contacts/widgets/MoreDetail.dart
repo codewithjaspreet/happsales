@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/color.dart';
-import '../Details.dart';
+import '../views/Details.dart';
 import 'HDivider.dart';
 import 'SecondTypeDetailing.dart';
 import 'ThirdTypeDetailing.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:happsales_crm/view/menu/items/contacts/contact.dart';
+import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
 
