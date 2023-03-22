@@ -38,6 +38,7 @@ class DBProvider {
               'Email TEXT,'
               'AlternateEmail TEXT,'
               'PIN TEXT,'
+              'MobileNumber TEXT,'
               ')');
     });
   }

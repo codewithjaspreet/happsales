@@ -34,11 +34,11 @@ class ContactDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserDetailCard( title : contact.firstName ),
+              UserDetailCard( title : contact.firstName , designation: contact.designation ),
               Hdivider(),
-              DetailRow(),
+              DetailRow(contact : contact),
               Hdivider(),
-              MoreDetail(),
+              MoreDetail(contact : contact),
               Hdivider(),
               const DetailItems(),
             ],
@@ -46,7 +46,7 @@ class ContactDetails extends StatelessWidget {
         ));
   }
 
-  Column UserDetailCard({String? title}) {
+  Column UserDetailCard({String? title , String? designation }) {
 
 
 
@@ -55,6 +55,18 @@ class ContactDetails extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
+          width: 337.w,
+          height: 216.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xffAA80F9),
+                  Color(0xff6165D7),
+                ],
+              )),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -73,7 +85,8 @@ class ContactDetails extends StatelessWidget {
                         margin: EdgeInsets.only(left: 2.w),
                         child: Center(
                           child: Text(
-                            "ST",
+                            title!.split("")[0][0] + title.split("")[1][0],
+                            // firstName![0]+ lastName![0],
                             style: TextStyle(
                                 color: AppColors.primaryColor, fontSize: 44.sp),
                           ),
@@ -109,7 +122,8 @@ class ContactDetails extends StatelessWidget {
                       ),
                       Container(
                         child: Text(
-                          "Maintenance Manager",
+                          // "Maintenance Manager",
+                          designation!,
                           style:
                               TextStyle(color: Colors.white, fontSize: 15.sp),
                         ),
@@ -123,6 +137,8 @@ class ContactDetails extends StatelessWidget {
                   children: [
                     Container(
                       child: Text(
+
+                        // phNo! ?? "",
                         "99999 12345",
                         style: TextStyle(
                             color: Colors.white,
@@ -132,6 +148,7 @@ class ContactDetails extends StatelessWidget {
                     ),
                     Container(
                       child: Text(
+                        // email!,
                         "radha.krishna@SuvarnaTraders.com",
                         style: TextStyle(
                             color: Colors.white,
@@ -144,18 +161,6 @@ class ContactDetails extends StatelessWidget {
               )
             ],
           ),
-          width: 337.w,
-          height: 216.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xffAA80F9),
-                  Color(0xff6165D7),
-                ],
-              )),
         ),
       ],
     );
@@ -164,7 +169,9 @@ class ContactDetails extends StatelessWidget {
 
 class DetailRow extends StatefulWidget {
 
-  ContactViewModel contactViewModel = Get.put(ContactViewModel());
+  DetailRow({Key? key, required this.contact}) : super(key: key);
+  // ContactViewModel contactViewModel = Get.put(ContactViewModel());
+  final  Contact contact;
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -244,50 +251,50 @@ class _MyRowState extends State<DetailRow> {
                             imgUrl: "assets/contacts/web.png",
                             title: 'contact name',
                             // subTitle: widget.contactViewModel.contactList[0].contactName,
-                            subTitle: 'Mr. Radha R Krishna',
+                            subTitle: widget.contact.contactName!.toString(),
                           ),
                           SecondTypeDetailing(
                             title: 'Account name',
-                            subTitle: 'Mr. Radha R Krishna',
+                            subTitle: widget.contact.accountName!.toString(),
                           ),
                           // ThirdTypeDetailing(),
                           ThirdTypeDetailing(
                             title1: 'Department',
-                            subTitle1: 'Sales',
+                            subTitle1: widget.contact.departmentName!.toString(),
                             title2: 'Designation',
-                            subTitle2: 'Sales Manager',
+                            subTitle2: widget.contact.designation!.toString(),
                           ),
 
                           FourthTypeDetailing(
                             title1: 'Mobile number',
-                            subTitle1: '9999912345',
+                            subTitle1: widget.contact.mobileNumber!.toString(),
                             title2: 'Mobile number',
-                            subTitle2: '9999912346',
+                            subTitle2: widget.contact.alternateMobileNumber!.toString(),
                           ),
                           FourthTypeDetailing(
                             title1: 'Work Phone',
-                            subTitle1: '08022225555',
+                            subTitle1: widget.contact.workPhone!.toString(),
                             title2: 'Residence Phone',
-                            subTitle2: '08033335555',
+                            subTitle2: widget.contact.residencePhone!.toString(),
                           ),
 
                           FifthTypeDetailing(
                             title: 'Email Address',
-                            subTitle: 'radha.krishna@suvarnatraders.com',
+                            subTitle: widget.contact.email!.toString(),
                             // subTitle: controller.contactList[0].email,
                           ),
 
                           FifthTypeDetailing(
                             title: 'Alt. Email Address',
-                            subTitle: 'radha.krishna33@gmail.com',
+                            subTitle:   widget.contact.alternateEmail!.toString(),
                           ),
 
                           ThirdTypeDetailing(
                               title1: 'Address',
                               subTitle1:
-                              'Lorem ipsum dolor,\nipsum dolor, \nDelhi 110004',
+                              widget.contact.addressLine1!.toString(),
                               title2: 'GPS Coordinate',
-                              subTitle2: 'subTitle2'),
+                              subTitle2: widget.contact.gPSCoordinates!.toString()),
 
                         ]
                     ),

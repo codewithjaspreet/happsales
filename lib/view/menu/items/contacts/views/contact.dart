@@ -90,7 +90,7 @@ _buildEmployeeListView() {
           return GestureDetector(
             onTap: (){
 
-              print("THE ID IS" + contactController.contactList[index].contactID.toString());
+              print("THE ID IS${contactController.contactList[index].contactID}");
               Get.to(() => ContactDetails(Id : contactController.contactList[index].contactID,));
             },
             child: Container(
