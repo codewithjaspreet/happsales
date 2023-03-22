@@ -1,9 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../utils/color.dart';
 
 class FourthTypeDetailing extends StatelessWidget {
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
   const FourthTypeDetailing(
       {Key? key,
         required this.title1,
@@ -91,9 +100,16 @@ class FourthTypeDetailing extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20.w),
-                              child: Image.asset("assets/contacts/call.png"),
+                            GestureDetector(
+                              onTap: (){
+                                _makePhoneCall(
+                                  "9336622215"
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(left: 20.w),
+                                child: Image.asset("assets/contacts/call.png"),
+                              ),
                             )
                           ],
                         )

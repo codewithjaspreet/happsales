@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/FifthTypeDetailing.dart';
@@ -10,6 +12,8 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
+
+import '../../../../viewmodels/contact_view_model.dart';
 
 class ContactDetails extends StatelessWidget {
   const ContactDetails({Key? key}) : super(key: key);
@@ -149,6 +153,8 @@ class ContactDetails extends StatelessWidget {
 }
 
 class DetailRow extends StatefulWidget {
+
+  ContactViewModel contactViewModel = Get.put(ContactViewModel());
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -226,6 +232,7 @@ class _MyRowState extends State<DetailRow> {
                         Detaling(
                           imgUrl: "assets/contacts/web.png",
                           title: 'contact name',
+                          // subTitle: widget.contactViewModel.contactList[0].contactName,
                           subTitle: 'Mr. Radha R Krishna',
                         ),
                         SecondTypeDetailing(
@@ -378,6 +385,7 @@ class IndividualItem extends StatelessWidget {
               children: [
                 Image.asset(imageUrl),
                 Text(
+                  
                   title,
                   style: TextStyle(
                     fontSize: 13.sp,

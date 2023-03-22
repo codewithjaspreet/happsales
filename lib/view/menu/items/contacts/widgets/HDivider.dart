@@ -7,6 +7,7 @@ Container Hdivider() {
     margin: EdgeInsets.only(top: 10.h),
     child: Divider(
       thickness: 0.4,
+      height: 2.h,
       indent: 20,
       endIndent: 20,
       color: Colors.black,

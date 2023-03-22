@@ -24,88 +24,128 @@ class ThirdTypeDetailing extends StatelessWidget {
         left: 16.h,
 
         top: 20.h,
+        right: 20.h,
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(title1,
+              Text(title1,
+                  style: TextStyle(
+                      color: Color(0xff00A6D6),
+                      fontFamily: "roboto_bold",
+                      fontSize: 13.sp)),
+      AutoSizeText(
+                          subTitle1,
+
                           style: TextStyle(
-                              color: Color(0xff00A6D6),
-                              fontFamily: "roboto_bold",
-                              fontSize: 13.sp)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AutoSizeText(
-                        subTitle1,
+                            fontSize: 16.sp,
 
-                        style: TextStyle(
-                          fontSize: 16.sp,
-
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w400,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 110.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(title2,
-                              style: TextStyle(
-                                  color: Color(0xff00A6D6),
-                                  fontFamily: "roboto_bold",
-                                  fontSize: 13.sp)),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 110.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              AutoSizeText(
-                                subTitle2,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
 
-
-
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
             ],
-          )
+          ),Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title2,
+                  style: TextStyle(
+                      color: Color(0xff00A6D6),
+                      fontFamily: "roboto_bold",
+                      fontSize: 13.sp)),
+      AutoSizeText(
+                          subTitle2,
+
+                          style: TextStyle(
+                            fontSize: 16.sp,
+
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+
+            ],
+          ),
         ],
       ),
+      // child: Column(
+      //   children: [
+      //     Row(
+      //       children: [
+      //         Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             Row(
+      //               mainAxisAlignment: MainAxisAlignment.start,
+      //               children: [
+      //                 Text(title1,
+      //                     style: TextStyle(
+      //                         color: Color(0xff00A6D6),
+      //                         fontFamily: "roboto_bold",
+      //                         fontSize: 13.sp)),
+      //               ],
+      //             ),
+      //             Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               children: [
+      //                 AutoSizeText(
+      //                   subTitle1,
+      //
+      //                   style: TextStyle(
+      //                     fontSize: 16.sp,
+      //
+      //                     color: AppColors.primaryColor,
+      //                     fontWeight: FontWeight.w400,
+      //                   ),
+      //                 ),
+      //               ],
+      //             )
+      //           ],
+      //         ),
+      //         Column(
+      //           crossAxisAlignment: CrossAxisAlignment.start,
+      //           children: [
+      //             Container(
+      //               margin: EdgeInsets.only(left: 80.w),
+      //               child: Row(
+      //                 mainAxisAlignment: MainAxisAlignment.start,
+      //                 children: [
+      //                   Text(title2,
+      //                       style: TextStyle(
+      //                           color: Color(0xff00A6D6),
+      //                           fontFamily: "roboto_bold",
+      //                           fontSize: 13.sp)),
+      //                 ],
+      //               ),
+      //             ),
+      //             Container(
+      //               margin: EdgeInsets.only(left: 100.w),
+      //               child: Row(
+      //                 children: [
+      //                   AutoSizeText(
+      //                     subTitle2,
+      //                     style: TextStyle(
+      //                       fontSize: 16.sp,
+      //                       color: AppColors.primaryColor,
+      //                       fontWeight: FontWeight.w400,
+      //                     ),
+      //                   ),
+      //
+      //
+      //
+      //                 ],
+      //               ),
+      //             )
+      //           ],
+      //         ),
+      //       ],
+      //     )
+      //   ],
+      // ),
     );
   }
 }

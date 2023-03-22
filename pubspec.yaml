@@ -47,6 +47,8 @@ dependencies:
   bubble_tab_indicator: ^0.1.6
   introduction_screen:
   http:
+  flutter_phone_direct_caller: ^2.1.1
+  url_launcher: ^6.1.10
   path_provider:
   flutter_chat_bubble: ^2.0.2
   auto_size_text: ^3.0.0

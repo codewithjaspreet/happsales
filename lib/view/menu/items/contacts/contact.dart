@@ -7,6 +7,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 
 import '../../menu.dart';
+import 'Details.dart';
 
 class ContactPage extends StatefulWidget {
   @override
@@ -116,12 +117,17 @@ _buildEmployeeListView() {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ContactDetails());
+                      },
+                      child: Container(
 
-                      margin: EdgeInsets.only(left : 16.sp),
-                      child: Text(contactController.contactList[index].contactName,style: TextStyle(
-                        color: AppColors.primaryColor
-                      ),),
+                        margin: EdgeInsets.only(left : 16.sp),
+                        child: Text(contactController.contactList[index].contactName,style: TextStyle(
+                          color: AppColors.primaryColor
+                        ),),
+                      ),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 2.sp,),
                       child: Text(contactController.contactList[index].designation,
