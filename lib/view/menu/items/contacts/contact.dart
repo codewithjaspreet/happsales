@@ -119,7 +119,12 @@ _buildEmployeeListView() {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => ContactDetails());
+
+                        Get.to(() => ContactDetails(
+
+                          contact:contactController.contactList[index].contactID,
+                          // contact: contactController.contactList[index],
+                        ));
                       },
                       child: Container(
 

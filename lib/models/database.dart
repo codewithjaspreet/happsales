@@ -25,18 +25,20 @@ class DBProvider {
 
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute('CREATE TABLE Contacts ('
-          'Id INTEGER PRIMARY KEY AUTOINCREMENT,'
-          'ContactID TEXT,'
-          'ContactCode TEXT,'
-          'Title TEXT,'
-          'FirstName TEXT,'
-          'MiddleName TEXT,'
-          'LastName TEXT,'
-          'ContactName TEXT,'
-          'AccountName TEXT, '
-
-          ')');
+          await db.execute('CREATE TABLE Contacts ('
+              'Id INTEGER PRIMARY KEY AUTOINCREMENT,'
+              'ContactID TEXT,'
+              'ContactCode TEXT,'
+              'Title TEXT,'
+              'FirstName TEXT,'
+              'MiddleName TEXT,'
+              'LastName TEXT,'
+              'ContactName TEXT,'
+              'AccountName TEXT,'
+              'Email TEXT,'
+              'AlternateEmail TEXT'
+              'PIN TEXT,'
+              ')');
     });
   }
 

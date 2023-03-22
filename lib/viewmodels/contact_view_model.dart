@@ -27,7 +27,7 @@ class ContactViewModel extends GetxController {
         },
       ),
     );
-
+     print(response.data);
     (response.data as List).forEach((employee) {
       Contact contact = Contact.fromJson(employee);
       contactList.add(contact);

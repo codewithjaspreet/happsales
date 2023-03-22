@@ -16,28 +16,26 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailin
 import '../../../../viewmodels/contact_view_model.dart';
 
 class ContactDetails extends StatelessWidget {
-  const ContactDetails({Key? key}) : super(key: key);
+  const ContactDetails({Key? key, required contact}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(context),
         body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                UserDetailCard(),
-                Hdivider(),
-                DetailRow(),
-                Hdivider(),
-                MoreDetail(),
-                Hdivider(),
-                const DetailItems(),
-
-
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UserDetailCard(),
+              Hdivider(),
+              DetailRow(),
+              Hdivider(),
+              MoreDetail(),
+              Hdivider(),
+              const DetailItems(),
+            ],
           ),
         ));
   }
@@ -225,60 +223,65 @@ class _MyRowState extends State<DetailRow> {
           SingleChildScrollView(
             child: Column(
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Detaling(
-                          imgUrl: "assets/contacts/web.png",
-                          title: 'contact name',
-                          // subTitle: widget.contactViewModel.contactList[0].contactName,
-                          subTitle: 'Mr. Radha R Krishna',
-                        ),
-                        SecondTypeDetailing(
-                          title: 'Account name',
-                          subTitle: 'Mr. Radha R Krishna',
-                        ),
-                        // ThirdTypeDetailing(),
-                        ThirdTypeDetailing(
-                          title1: 'Department',
-                          subTitle1: 'Sales',
-                          title2: 'Designation',
-                          subTitle2: 'Sales Manager',
-                        ),
 
-                        FourthTypeDetailing(
-                          title1: 'Mobile number',
-                          subTitle1: '9999912345',
-                          title2: 'Mobile number',
-                          subTitle2: '9999912346',
-                        ),
-                        FourthTypeDetailing(
-                          title1: 'Work Phone',
-                          subTitle1: '08022225555',
-                          title2: 'Residence Phone',
-                          subTitle2: '08033335555',
-                        ),
+                 SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Detaling(
+                            imgUrl: "assets/contacts/web.png",
+                            title: 'contact name',
+                            // subTitle: widget.contactViewModel.contactList[0].contactName,
+                            subTitle: 'Mr. Radha R Krishna',
+                          ),
+                          SecondTypeDetailing(
+                            title: 'Account name',
+                            subTitle: 'Mr. Radha R Krishna',
+                          ),
+                          // ThirdTypeDetailing(),
+                          ThirdTypeDetailing(
+                            title1: 'Department',
+                            subTitle1: 'Sales',
+                            title2: 'Designation',
+                            subTitle2: 'Sales Manager',
+                          ),
 
-                        FifthTypeDetailing(
-                          title: 'Email Address',
-                          subTitle: 'radha.krishna@suvarnatraders.com',
-                        ),
-                        FifthTypeDetailing(
-                          title: 'Alt. Email Address',
-                          subTitle: 'radha.krishna33@gmail.com',
-                        ),
+                          FourthTypeDetailing(
+                            title1: 'Mobile number',
+                            subTitle1: '9999912345',
+                            title2: 'Mobile number',
+                            subTitle2: '9999912346',
+                          ),
+                          FourthTypeDetailing(
+                            title1: 'Work Phone',
+                            subTitle1: '08022225555',
+                            title2: 'Residence Phone',
+                            subTitle2: '08033335555',
+                          ),
 
-                        ThirdTypeDetailing(
-                            title1: 'Address',
-                            subTitle1:
-                                'Lorem ipsum dolor,\nipsum dolor, \nDelhi 110004',
-                            title2: 'GPS Coordinate',
-                            subTitle2: 'subTitle2'),
+                          FifthTypeDetailing(
+                            title: 'Email Address',
+                            subTitle: 'radha.krishna@suvarnatraders.com',
+                            // subTitle: controller.contactList[0].email,
+                          ),
 
-                      ]
+                          FifthTypeDetailing(
+                            title: 'Alt. Email Address',
+                            subTitle: 'radha.krishna33@gmail.com',
+                          ),
+
+                          ThirdTypeDetailing(
+                              title1: 'Address',
+                              subTitle1:
+                              'Lorem ipsum dolor,\nipsum dolor, \nDelhi 110004',
+                              title2: 'GPS Coordinate',
+                              subTitle2: 'subTitle2'),
+
+                        ]
+                    ),
                   ),
-                ),
+
+
               ],
             ),
           )
@@ -385,7 +388,7 @@ class IndividualItem extends StatelessWidget {
               children: [
                 Image.asset(imageUrl),
                 Text(
-                  
+
                   title,
                   style: TextStyle(
                     fontSize: 13.sp,
