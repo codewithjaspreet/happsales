@@ -5,6 +5,7 @@ import 'package:happsales_crm/models/contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/Details.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
+import 'package:happsales_crm/view/menu/items/contacts/views/edit_contact.dart';
 import 'package:happsales_crm/view/onboarding/splash_screen.dart';
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       builder: (context, a) {
         return   GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          home: ContactPage(),
+          home: SplashScreen(),
         );
       },
     );

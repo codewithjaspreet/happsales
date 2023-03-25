@@ -212,9 +212,9 @@ class Contact {
     freeTextField2 = json['FreeTextField2'];
     freeTextField3 = json['FreeTextField3'];
     // companyName = json['CompanyName'];
-    taxPayerIdentificationNumber  = json['TaxPayerIdentificationNumber'];
-    socialSecurityNumber = json['SocialSecurityNumber'];
-    passportNumber = json['PassportNumber'];
+    taxPayerIdentificationNumber  = json['TaxPayerIdentificationNumber'] ?? "";
+    socialSecurityNumber = json['SocialSecurityNumber'] ?? "";
+    passportNumber = json['PassportNumber'] ?? "";
     drivingLicenseNumber = json['DrivingLicenseNumber'] ?? "";
     voterIDCardNumber = json['VoterIDCardNumber'] ?? "";
     marketingContactID = json['MarketingContactID'] ?? "";
