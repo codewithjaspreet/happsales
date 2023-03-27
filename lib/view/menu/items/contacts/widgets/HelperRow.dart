@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 
 import '../../../../../../utils/color.dart';
 
@@ -18,17 +21,22 @@ class HelperRow extends StatelessWidget {
           Text(title , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
           Row(
             children: [
-              Container(
-                margin:  EdgeInsets.only(right: 16.w),
-                width: 30.w,
-                height: 30.h,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xff171A63),
+              GestureDetector(
+                onTap: (){
+                  Get.to(AddContact());
+                },
+                child: Container(
+                  margin:  EdgeInsets.only(right: 16.w),
+                  width: 30.w,
+                  height: 30.h,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xff171A63),
 
-                ),
-                child: const Center(
-                  child: Icon(Icons.add ,color: Colors.white,),
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.add ,color: Colors.white,),
+                  ),
                 ),
               ),
               Container(

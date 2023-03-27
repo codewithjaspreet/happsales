@@ -7,7 +7,6 @@ import '../viewmodels/login_view_model.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
-// put login controller
   LoginController loginController = Get.put(LoginController());
 
   Login({Key? key}) : super(key: key);
@@ -177,7 +176,7 @@ class _LoginState extends State<Login> {
                         }
                         return null;
                       },
-                     /**/
+                      /**/
                     ),
                     SizedBox(
                       height: 20.h,
@@ -237,12 +236,12 @@ class _LoginState extends State<Login> {
 
                     GestureDetector(
                       child: Container(
-                        height: 50.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          shape: BoxShape.rectangle,
-                        ),
+                          height: 50.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            shape: BoxShape.rectangle,
+                          ),
                           child: ElevatedButton(
                             onPressed: () {
                               loginController.loginWithEmail();
@@ -270,4 +269,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-

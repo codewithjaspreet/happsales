@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ContactRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
@@ -18,6 +21,8 @@ class _ContactPageState extends State<ContactPage> {
   var isLoading = false;
 
   ContactViewModel contactController = Get.put(ContactViewModel());
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -79,6 +84,15 @@ class _ContactPageState extends State<ContactPage> {
 }
 _buildEmployeeListView() {
 
+  int generateRandomColorInt() {
+    Random random =  Random();
+    int r = random.nextInt(256);
+    int g = random.nextInt(256);
+    int b = random.nextInt(256);
+    int color = (r << 16) + (g << 8) + b;
+    return color;
+  }
+
   ContactViewModel contactController = Get.put(ContactViewModel());
   return  Expanded(
       child: Obx(() => ListView.builder(
@@ -109,12 +123,22 @@ _buildEmployeeListView() {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left : 12.sp),
-                    child: Icon(Icons.add , color: Colors.white,),
                     width: 40.w,
                     height: 40.w,
                     decoration: BoxDecoration(
                       color: Colors.purple,
                       shape: BoxShape.circle
+                    ),
+                    child: GestureDetector(
+                      onTap: (){
+                        Get.to(AddContact());
+                      },
+                      child: Center(
+                        child: Text(contactController.contactList[index].contactName[index].toUpperCase(),style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp
+                        ),),
+                      ),
                     ),
                   ),
 
