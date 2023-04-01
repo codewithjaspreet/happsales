@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'items/accounts/accounts.dart';
+import 'items/contacts/contact.dart';
 import 'items/contacts/views/add_contact.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
@@ -42,10 +44,14 @@ class Menu extends StatelessWidget {
           ),
           children:   <Widget>[
             _buildGridItem(title : 'home', image: 'assets/home.png' ),
-            _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' ),
             GestureDetector(
                 onTap: () {
-                  Get.to(() => AddContact());
+                  Get.to(() => AccountPage());
+                },
+                child: _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' )),
+            GestureDetector(
+                onTap: () {
+                  Get.to(() => ContactPage());
                 },
                 child: _buildGridItem(title : 'Contacts', image: 'assets/contacts.png' )),
             _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' ),

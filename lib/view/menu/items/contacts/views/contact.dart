@@ -5,10 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/ContactRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
-
 import '../../../menu.dart';
 import 'Details.dart';
 
@@ -22,14 +20,6 @@ class _ContactPageState extends State<ContactPage> {
 
   ContactViewModel contactController = Get.put(ContactViewModel());
 
-
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    contactController.getContactList();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +88,13 @@ _buildEmployeeListView() {
       child: Obx(() => ListView.builder(
         padding: EdgeInsets.all(12.sp),
 
-        // padding: EdgeInsets.only(top : 12.sp),
-        itemCount: contactController.contactList.length,
+        itemCount: contactController.contacts.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
 
-              print("THE ID IS${contactController.contactList[index].contactID}");
-              Get.to(() => ContactDetails(Id : contactController.contactList[index].contactID,));
+              print("THE ID IS${contactController.contacts[index].contactID}");
+              Get.to(() => ContactDetails(Id : contactController.contacts[index].contactID,));
             },
             child: Container(
               margin: EdgeInsets.only(top : 12.sp),
@@ -134,7 +123,7 @@ _buildEmployeeListView() {
                         Get.to(AddContact());
                       },
                       child: Center(
-                        child: Text(contactController.contactList[index].contactName[index].toUpperCase(),style: TextStyle(
+                        child: Text(contactController.contacts[index].contactName[index].toUpperCase(),style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.sp
                         ),),
@@ -150,18 +139,18 @@ _buildEmployeeListView() {
                       Container(
 
                         margin: EdgeInsets.only(left : 16.sp),
-                        child: Text(contactController.contactList[index].contactName,style: TextStyle(
+                        child: Text(contactController.contacts[index].contactName,style: TextStyle(
                           color: AppColors.primaryColor
                         ),),
                       ),Container(
                         margin: EdgeInsets.only(left : 16.sp,top: 2.sp,),
-                        child: Text(contactController.contactList[index].designation,
+                        child: Text(contactController.contacts[index].designation,
                             style: TextStyle(
                                 color: AppColors.primaryColor
                             )),
                       ),Container(
                         margin: EdgeInsets.only(left : 16.sp,top: 4.sp),
-                        child: Text(contactController.contactList[index].contactCode.toString(),
+                        child: Text(contactController.contacts[index].contactCode.toString(),
                             style: TextStyle(
                                 color: AppColors.primaryColor
                             )),

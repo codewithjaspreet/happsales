@@ -18,7 +18,7 @@ class LoginController extends GetxController {
   TextEditingController forgotOrgController = TextEditingController();
   TextEditingController forgotEmailController = TextEditingController();
 
-  Future<void> loginWithEmail() async {
+  Future<String> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};
     try {
       var url = Uri.parse(
@@ -34,16 +34,24 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         // If the response is successful, parse the JSON data and extract the token
         Map<String, dynamic> jsonResponse = json.decode(response.body);
+        print(jsonResponse);
         String token = jsonResponse['token'];
 
         print('token is $token');
+        print('user email is${emailController.text.trim()}');
 
         // Save the token to shared preferences for future use
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
 
+        SharedPreferences cred = await SharedPreferences.getInstance();
+        cred.setString('email', emailController.text.trim());
+
         // Navigate to the home screen or other relevant screen
         Get.off(const DashBoardPage());
+
+        return token;
+
 
 
       } else {
@@ -78,8 +86,28 @@ class LoginController extends GetxController {
               children: [Text(error.toString())],
             );
           });
+
+
     }
+
+    return '';
+
+
   }
+  //
+  // Future<void> login(String username, String password) async {
+  //   // Validate user credentials
+  //   bool isValid = await authenticate(username, password);
+  //
+  //   if (isValid) {
+  //     final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //     // Save the user's credentials
+  //     prefs.setBool('isLoggedIn', true);
+  //     prefs.setString('username', username);
+  //     prefs.setString('password', password);
+  //   }
+  // }
 
   Future<String> forgotPassword(String loginName, String emailAddress, String groupCode) async {
 

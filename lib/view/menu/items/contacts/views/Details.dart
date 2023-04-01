@@ -15,6 +15,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailin
 
 import '../../../../../models/contact.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
+import 'edit_contact.dart';
 
 class ContactDetails extends StatelessWidget {
   ContactDetails({Key? key, required this.Id}) : super(key: key);
@@ -214,7 +215,9 @@ class _MyRowState extends State<DetailRow> {
                    Container(
                       margin: EdgeInsets.only(right: 10.w),
                      child: GestureDetector(
-                         onTap: (){},
+                         onTap: (){
+                            Get.to(() => EditContact());
+                         },
                          child: Container(
                            child: Center(
                              child: Image.asset("assets/contacts/edit.png"),
@@ -229,8 +232,8 @@ class _MyRowState extends State<DetailRow> {
                    ),
                    GestureDetector(
                        onTap: _toggleDropdown,
-                       child: Icon(
-                           _isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
+                       child:Image.asset(
+                           _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
 
                  ],
                ),

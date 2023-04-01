@@ -55,6 +55,8 @@ dependencies:
   buttons_tabbar:
   awesome_dialog: ^3.0.2
   dropdown_button2:
+  connectivity_plus: ^3.0.3
+
 
 dev_dependencies:
   flutter_test:

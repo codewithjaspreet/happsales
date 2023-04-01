@@ -15,7 +15,9 @@ class Input extends StatelessWidget {
       padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 10.h),
       child: TextFormField(
 
+
         decoration: InputDecoration(
+          labelText: title,
           hintText: title,
           hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
           border: OutlineInputBorder(

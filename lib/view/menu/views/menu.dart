@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
+
+import '../items/accounts/accounts.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
 
@@ -40,7 +42,11 @@ class Menu extends StatelessWidget {
           ),
           children:   <Widget>[
             _buildGridItem(title : 'home', image: 'assets/home.png' ),
-            _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' ),
+            GestureDetector(
+                onTap: () {
+                  Get.to(() => AccountPage());
+                },
+                child: _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' )),
 
             GestureDetector(
 

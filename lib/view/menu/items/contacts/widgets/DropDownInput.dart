@@ -37,7 +37,7 @@ class DropDownInput extends StatelessWidget {
           ),
 
           suffixIcon: PopupMenuButton<String>(
-            icon: const Icon(Icons.arrow_drop_down),
+            icon: Image.asset("assets/contacts/dropdown.png"),
             onSelected: (String value) {
               _controller.text = value;
             },

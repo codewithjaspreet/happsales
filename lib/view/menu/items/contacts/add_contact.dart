@@ -1,18 +1,12 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/AlertBox.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDown.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/InputTwo.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/common_navbar.dart';
 import 'package:happsales_crm/view/menu/views/menu.dart';
 
 import '../../../../utils/color.dart';
@@ -185,7 +179,7 @@ class _MyRowState extends State<MyRow> {
               ),
               GestureDetector(
                   onTap: _toggleDropdown,
-                  child: Icon(_isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
+                  child: Image.asset(_isOpen ? "assets/contacts/back.png" : "assets/contacts/up.png")),
             ],
           ),
         ),

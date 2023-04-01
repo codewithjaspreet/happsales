@@ -1,13 +1,39 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
-
 import '../models/contact.dart';
 import '../models/database.dart';
 
 class ContactViewModel extends GetxController {
 
+  @override
+  Future<bool> checkInternetConnectivity() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return true;
+      }
+    } on SocketException catch (_) {
+      return false;
+    }
+    return false;
+  }
+
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    // var result = await Connectivity().checkConnectivity();
+
+    print("ONINITTTTT called${contacts.length} ");
+
+    var result = checkInternetConnectivity();
+    print("result is $result");
+    getContactList();
+  }
+
   RxList contactList = [].obs;
+  var contacts = [].obs;
 
   Future<RxList> getContactList() async {
     var url = ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getContactPaged;
@@ -30,16 +56,22 @@ class ContactViewModel extends GetxController {
      print(response.data);
     (response.data as List).forEach((employee) {
       Contact contact = Contact.fromJson(employee);
-      contactList.add(contact);
+      contacts.add(contact);
       // Uncomment the following line if DBProvider is properly configured
       DBProvider.db.createEmployee(contact);
 
     });
 
-    return contactList;
+    return contacts;
   }
 
   Contact? getUserById(int id) {
-    return contactList.firstWhere((user) => user.contactID == id, orElse: () => null);
+    return contacts.firstWhere((user) => user.contactID == id, orElse: () => null);
   }
+  fetchContacts() async {
+    var dbcontacts = await DBProvider.db.getAllEmployees();
+    contacts.value = dbcontacts;
+  }
+
+
 }

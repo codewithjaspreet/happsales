@@ -9,6 +9,8 @@ import '../../../../../utils/color.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../widgets/AmiRow.dart';
 import '../widgets/CustomAppBar.dart';
+import '../widgets/DropDown.dart';
+import '../widgets/InputOne.dart';
 
 class EditContact extends StatelessWidget {
    // EditContact({Key? key, required this.Id}) : super(key: key);
@@ -24,11 +26,13 @@ class EditContact extends StatelessWidget {
     return Scaffold(
 
       appBar: CustomAppBar(context, ),
-      body: Column(
-        children: [
-          AmiHeaderRow(title: 'Edit Contact',),
-          DetailRow(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AmiHeaderRow(title: 'Edit Contact',),
+            DetailRow(),
+          ],
+        ),
       ),
     );
   }
@@ -81,8 +85,8 @@ class _MyRowState extends State<DetailRow> {
 
                     GestureDetector(
                         onTap: _toggleDropdown,
-                        child: Icon(
-                            _isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
+                        child: Image.asset(
+                            _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
 
                   ],
                 ),
@@ -101,6 +105,27 @@ class _MyRowState extends State<DetailRow> {
                       children: [
 
                         DropDownInput(hint: 'Title *'),
+                        Input(title: 'First Name *'),
+                        Input(title: 'Middle Name *'),
+                        Input(title: 'Last Name *'),
+                        Input(title: 'Last Name *'),
+                        Input(title: 'Account Name *'),
+                        Input(title: 'Department Name *'),
+                        Input(title: 'Designation Name *'),
+                        Input(title: 'mobile number. *'),
+                        Input(title: 'alternate mbile No. *'),
+                        Input(title: 'work phone*'),
+                        Input(title: 'residence phone'),
+                        Input(title: 'alternate Email Address'),
+                        Input(title: 'Address line 1'),
+                        Input(title: 'Address line 2'),
+                        Input(title: 'Address line 3'),
+                        Input(title: 'city'),
+                        Input(title: 'state'),
+                        Input(title: 'country'),
+                        Input(title: 'pincode'),
+                        Input(title: 'description'),
+
 
                       ]
                   ),
