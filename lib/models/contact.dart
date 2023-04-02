@@ -6,7 +6,7 @@ List<Contact> contactFromJson(String str) =>
 String contactToJson(List<Contact> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 class Contact {
-  int? contactID;
+  String? contactID;
   String? contactCode;
   String? title;
   String? firstName;
@@ -169,7 +169,7 @@ class Contact {
     // this.rowNum});
   });
   Contact.fromJson(Map<String, dynamic> json) {
-    contactID = json['ContactID'] ?? 0;
+    contactID = json['ContactID'] ?? " ";
     contactCode = json['ContactCode'] ?? "" ;
     title = json['Title'] ??  "";
     firstName = json['FirstName'] ?? "";

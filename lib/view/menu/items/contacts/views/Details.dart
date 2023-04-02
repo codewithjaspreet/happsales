@@ -22,7 +22,7 @@ class ContactDetails extends StatelessWidget {
 
 
   ContactViewModel contactViewModel = Get.put(ContactViewModel());
-  final int Id;
+  final String Id;
 
   @override
   Widget build(BuildContext context) {

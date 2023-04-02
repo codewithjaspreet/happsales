@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/models/contact.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -52,7 +53,6 @@ CREATE TABLE Account (
   GPSCoordinates,
   LogoImagePath,
   LogoImageContent,
-  LocalMediaPath,
   IsUploaded,
   TaxPayerIdentificationNumber,
   FreeTextField1,
@@ -70,6 +70,7 @@ CREATE TABLE Account (
   Uid,
   AppUserID,
   AppUserGroupID,
+  AssignedByAppUserID,
   IsArchived,
   IsDeleted,
   LeadQualificationID,
@@ -114,10 +115,8 @@ CREATE TABLE Account (
           'RolesAndResponsibilities TEXT,'
           'ReportingManager TEXT,'
           'ReportingContactID INTEGER,'
-          'MobileNumber TEXT,'
           'AlternateMobileNumber TEXT,'
           'WorkPhone TEXT,'
-          'ResidencePhone TEXT,'
           'ResidencePhone TEXT,'
           'AddressLine1 TEXT,'
           'AddressLine2 TEXT,'
@@ -127,7 +126,6 @@ CREATE TABLE Account (
           'Country TEXT,'
           'GPSCoordinates TEXT,'
           'LinkedIn TEXT,'
-          'PastAccounts TEXT,'
           'PastAccounts TEXT,'
           'PastDesignations TEXT,'
           'DateOfBirth TEXT,'
@@ -143,17 +141,114 @@ CREATE TABLE Account (
           'VoterIDCardNumber TEXT,'
           'MarketingContactID TEXT,'
           'CreatedBy TEXT,'
-          'CreatedOn TEXT,'
+          'CreatedOn TEXT'
           ')');
 
-      db.execute(createAccountTableQuery);
+      await db.execute('CREATE TABLE Account ('
+          'Id INTEGER PRIMARY KEY AUTOINCREMENT,'
+          'AccountID TEXT,'
+          'AccountCode TEXT,'
+          'AccountName TEXT,'
+          'AccountLocation TEXT,'
+          'AccountIdentifier TEXT,'
+          'AccountSegmentID TEXT,'
+          'AccountStatusID TEXT,'
+          'AccountTypeID TEXT,'
+          'ParentAccountID TEXT,'
+          'IndustryName TEXT,'
+          'Website TEXT,'
+          'Turnover TEXT,'
+          'NumberOfEmployees TEXT,'
+          'CreditRatingID INTEGER,'
+          'CurrencyID TEXT,'
+          'PrimaryContactName TEXT,'
+          'Phone TEXT,'
+          'Email TEXT,'
+          'Fax INTEGER,'
+          'AlternateMobileNumber TEXT,'
+          'WorkPhone TEXT,'
+          'ResidencePhone TEXT,'
+          'AddressLine1 TEXT,'
+          'AddressLine2 TEXT,'
+          'AddressLine3 TEXT,'
+          'City TEXT,'
+          'State TEXT,'
+          'Country TEXT,'
+          'PIN TEXT,'
+          'TerritoryName TEXT,'
+          'GPSCoordinates TEXT,'
+          'LogoImagePath TEXT,'
+          'LogoImageContent TEXT,'
+          'LocalMediaPath TEXT,'
+          'IsUploaded TEXT,'
+          'TaxPayerIdentificationNumber TEXT,'
+          'FreeTextField1 TEXT,'
+          'FreeTextField2 TEXT,'
+          'FreeTextField3 TEXT,'
+          'Tags TEXT,'
+          'MarketingContactID TEXT,'
+          'CreatedBy TEXT,'
+          'CreatedOn TEXT,'
+          'ModifiedBy TEXT,'
+          'ModifiedOn TEXT,'
+          'DeviceIdentifier TEXT'
+          'ReferenceIdentifier TEXT'
+          'IsActive TEXT'
+          'Uid TEXT'
+          'AppUserID TEXT'
+          'AppUserGroupID TEXT'
+          'IsArchived TEXT'
+          'IsDeleted TEXT'
+          'LeadQualificationID TEXT'
+          'IsDirty TEXT'
+          'IsActive1 TEXT'
+          'IsDeleted1 TEXT'
+          'UpSyncMessage TEXT'
+          'DownSyncMessage TEXT'
+          'SCreatedOn TEXT'
+          'SModifiedOn TEXT'
+          'CreatedByUser TEXT'
+          'ModifiedByUser TEXT'
+          'UpSyncIndex TEXT'
+          'OwnerUserID INTEGER'
+          ')');
+
     });
   }
 
   createEmployee(Contact newEmployee) async {
     final db = await database;
 
-    final res = await db.insert('Contacts', newEmployee.toJson());
+    // Check if newEmployee already exists in database
+    final existingEmployees = await db.query('Contacts',
+        where: 'email = ?', whereArgs: [newEmployee.email]);
+
+    if (existingEmployees.isNotEmpty) {
+      // Employee already exists, update it instead of inserting
+      final existingEmployee = existingEmployees.first;
+      final res = await db.update('Contacts', newEmployee.toJson(),
+          where: 'id = ?', whereArgs: [existingEmployee['id']]);
+      print("Updating $existingEmployee");
+      print("Updated $res IN THE DATABASE");
+      return res;
+    } else {
+      // Employee doesn't exist, insert it
+      final res = await db.insert('Contacts', newEmployee.toJson());
+      print("Inserting $newEmployee");
+      print("Inserted $res IN THE DATABASE");
+      return res;
+    }
+  }
+
+
+  createAccount(Account newEmployee) async {
+    final db = await database;
+
+
+    final res = await db.insert('Account', newEmployee.toJson(),
+
+        conflictAlgorithm: ConflictAlgorithm.replace
+    );
     print("Inserting $newEmployee");
 
     print("Inserted $res IN THE DATABASE");
@@ -175,6 +270,16 @@ CREATE TABLE Account (
 
     List<Contact> list =
         res.isNotEmpty ? res.map((c) => Contact.fromJson(c)).toList() : [];
+
+    return list;
+  }
+
+  Future<List<Account>> getAllAccounts() async {
+    final db = await database;
+    final res = await db.rawQuery("SELECT * FROM CONTACTS");
+
+    List<Account> list =
+        res.isNotEmpty ? res.map((c) => Account.fromJson(c)).toList() : [];
 
     return list;
   }

@@ -17,13 +17,6 @@ class _ContactPageState extends State<ContactPage> {
   var isLoading = false;
 
   ContactViewModel contactController = Get.put(ContactViewModel());
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    contactController.getContactList();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +101,7 @@ _buildEmployeeListView() {
         padding: EdgeInsets.all(12.sp),
 
         // padding: EdgeInsets.only(top : 12.sp),
-        itemCount: contactController.contactList.length,
+        itemCount: contactController.contacts.length,
         itemBuilder: (context, index) {
           return Container(
             margin: EdgeInsets.only(top : 12.sp),
@@ -143,18 +136,18 @@ _buildEmployeeListView() {
                     Container(
 
                       margin: EdgeInsets.only(left : 16.sp),
-                      child: Text(contactController.contactList[index].contactName,style: TextStyle(
+                      child: Text(contactController.contacts[index].contactName,style: TextStyle(
                         color: AppColors.primaryColor
                       ),),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 2.sp,),
-                      child: Text(contactController.contactList[index].designation,
+                      child: Text(contactController.contacts[index].designation,
                           style: TextStyle(
                               color: AppColors.primaryColor
                           )),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 4.sp),
-                      child: Text(contactController.contactList[index].contactCode.toString(),
+                      child: Text(contactController.contacts[index].contactCode.toString(),
                           style: TextStyle(
                               color: AppColors.primaryColor
                           )),

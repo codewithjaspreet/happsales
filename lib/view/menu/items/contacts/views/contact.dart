@@ -94,7 +94,7 @@ _buildEmployeeListView() {
             onTap: (){
 
               print("THE ID IS${contactController.contacts[index].contactID}");
-              Get.to(() => ContactDetails(Id : contactController.contacts[index].contactID,));
+              Get.to(() => ContactDetails(Id : contactController.contacts[index].contactID.toString(),));
             },
             child: Container(
               margin: EdgeInsets.only(top : 12.sp),

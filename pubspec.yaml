@@ -94,6 +94,7 @@ flutter:
      - assets/8_Menu/ic_account.svg
      - assets/
      - assets/contacts/
+     - assets/accounts/
      - assets/ami/
      - assets/recommend.png
 
