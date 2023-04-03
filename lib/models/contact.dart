@@ -6,7 +6,7 @@ List<Contact> contactFromJson(String str) =>
 String contactToJson(List<Contact> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 class Contact {
-  String? contactID;
+  int? contactID;
   String? contactCode;
   String? title;
   String? firstName;
@@ -57,6 +57,7 @@ class Contact {
   String? marketingContactID;
   String? createdBy;
   String? createdOn;
+  int? appUserID;
   // String? modifiedBy;
   // String? modifiedOn;
   // String? deviceIdentifier;
@@ -145,7 +146,7 @@ class Contact {
     // this.referenceIdentifier,
     // this.isActive,
     // this.uid,
-    // this.appUserID,
+    this.appUserID,
     // this.assignedByAppUserID,
     // this.appUserGroupID,
     // this.isArchived,
@@ -169,7 +170,7 @@ class Contact {
     // this.rowNum});
   });
   Contact.fromJson(Map<String, dynamic> json) {
-    contactID = json['ContactID'] ?? " ";
+    contactID = json['ContactID'] ?? 0;
     contactCode = json['ContactCode'] ?? "" ;
     title = json['Title'] ??  "";
     firstName = json['FirstName'] ?? "";
@@ -226,7 +227,7 @@ class Contact {
     // referenceIdentifier = json['ReferenceIdentifier'];
     // isActive = json['IsActive'];
     // uid = json['Uid'];
-    // appUserID = json['AppUserID'];
+    appUserID = json['AppUserID'] ?? 0;
     // assignedByAppUserID = json['AssignedByAppUserID'];
     // appUserGroupID = json['AppUserGroupID'];
     // isArchived = json['IsArchived'];
@@ -309,7 +310,7 @@ class Contact {
     // data['ReferenceIdentifier'] = this.referenceIdentifier;
     // data['IsActive'] = this.isActive;
     // data['Uid'] = this.uid;
-    // data['AppUserID'] = this.appUserID;
+    data['AppUserID'] = this.appUserID;
     // data['AssignedByAppUserID'] = this.assignedByAppUserID;
     // data['AppUserGroupID'] = this.appUserGroupID;
     // data['IsArchived'] = this.isArchived;

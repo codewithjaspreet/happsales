@@ -20,73 +20,6 @@ class DBProvider {
     return _database!;
   }
 
-  String createAccountTableQuery = '''
-CREATE TABLE Account (
-  Id INTEGER PRIMARY KEY AUTOINCREMENT,
-  AccountID,
-  AccountCode,
-  AccountName,
-  AccountLocation,
-  AccountIdentifier,
-  AccountSegmentID,
-  AccountStatusID,
-  AccountTypeID,
-  ParentAccountID,
-  IndustryName,
-  Website,
-  Turnover,
-  NumberOfEmployees,
-  CreditRatingID,
-  CurrencyID,
-  PrimaryContactName,
-  Phone,
-  Email,
-  Fax,
-  AddressLine1,
-  AddressLine2,
-  AddressLine3,
-  City,
-  State,
-  Country,
-  PIN,
-  TerritoryName,
-  GPSCoordinates,
-  LogoImagePath,
-  LogoImageContent,
-  IsUploaded,
-  TaxPayerIdentificationNumber,
-  FreeTextField1,
-  FreeTextField2,
-  FreeTextField3,
-  Tags,
-  MarketingContactID,
-  CreatedBy,
-  CreatedOn,
-  ModifiedBy,
-  ModifiedOn,
-  DeviceIdentifier,
-  ReferenceIdentifier,
-  IsActive,
-  Uid,
-  AppUserID,
-  AppUserGroupID,
-  AssignedByAppUserID,
-  IsArchived,
-  IsDeleted,
-  LeadQualificationID,
-  IsDirty,
-  IsActive1,
-  IsDeleted1,
-  UpSyncMessage,
-  DownSyncMessage,
-  SCreatedOn,
-  SModifiedOn,
-  CreatedByUser,
-  ModifiedByUser,
-  UpSyncIndex,
-  OwnerUserID
-)
-''';
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -142,6 +75,7 @@ CREATE TABLE Account (
           'MarketingContactID TEXT,'
           'CreatedBy TEXT,'
           'CreatedOn TEXT'
+          'AppUserID TEXT'
           ')');
 
       await db.execute('CREATE TABLE Account ('
@@ -219,25 +153,16 @@ CREATE TABLE Account (
   createEmployee(Contact newEmployee) async {
     final db = await database;
 
-    // Check if newEmployee already exists in database
-    final existingEmployees = await db.query('Contacts',
-        where: 'email = ?', whereArgs: [newEmployee.email]);
 
-    if (existingEmployees.isNotEmpty) {
-      // Employee already exists, update it instead of inserting
-      final existingEmployee = existingEmployees.first;
-      final res = await db.update('Contacts', newEmployee.toJson(),
-          where: 'id = ?', whereArgs: [existingEmployee['id']]);
-      print("Updating $existingEmployee");
-      print("Updated $res IN THE DATABASE");
-      return res;
-    } else {
-      // Employee doesn't exist, insert it
-      final res = await db.insert('Contacts', newEmployee.toJson());
-      print("Inserting $newEmployee");
-      print("Inserted $res IN THE DATABASE");
-      return res;
-    }
+    final res = await db.insert('Contacts', newEmployee.toJson(),
+
+        conflictAlgorithm: ConflictAlgorithm.replace
+    );
+    print("Inserting $newEmployee");
+
+    print("Inserted $res IN THE DATABASE");
+
+    return res;
   }
 
 
@@ -266,17 +191,19 @@ CREATE TABLE Account (
 
   Future<List<Contact>> getAllEmployees() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT * FROM CONTACTS");
+    final res = await db.rawQuery("SELECT DISTINCT contactID, * FROM CONTACTS");
 
-    List<Contact> list =
-        res.isNotEmpty ? res.map((c) => Contact.fromJson(c)).toList() : [];
+    List<Contact> list = res.isNotEmpty
+        ? res.map((c) => Contact.fromJson(c)).toList()
+        : [];
 
     return list;
   }
 
+
   Future<List<Account>> getAllAccounts() async {
     final db = await database;
-    final res = await db.rawQuery("SELECT * FROM CONTACTS");
+    final res = await db.rawQuery("SELECT DISTINCT accountID, * FROM Account");
 
     List<Account> list =
         res.isNotEmpty ? res.map((c) => Account.fromJson(c)).toList() : [];

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountUserDetailCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/FifthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/FourthTypeDetailing.dart';
@@ -12,36 +14,43 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
+import 'package:happsales_crm/viewmodels/account_view_model.dart';
 
 import '../../../../../models/contact.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
-import 'edit_contact.dart';
+import '../contacts/views/edit_contact.dart';
 
-class ContactDetails extends StatelessWidget {
-  ContactDetails({Key? key, required this.Id}) : super(key: key);
+class AcccountDetails extends StatelessWidget {
+  AcccountDetails({Key? key, required this.accountID}) : super(key: key);
 
 
   ContactViewModel contactViewModel = Get.put(ContactViewModel());
-  final int Id;
+  final int accountID;
+
+  AccountViewModel accountViewModel = Get.put(AccountViewModel());
 
   @override
   Widget build(BuildContext context) {
 
-    Contact? contact = contactViewModel.getUserById(Id);
-    print(contact!.firstName);
+
+   Account? account = accountViewModel.getAccountById(accountID);
+    // ContactViewModel contactViewModel = Get.put(ContactViewModel());
+    // Contact? contact = AccountViewModel().getContactByAccountID(accountID!);
+    // print(account!.accountName);
     return Scaffold(
         appBar: CustomAppBar(context),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserDetailCard( title : contact.firstName , designation: contact.designation ),
+              AccountUserDetailCard( title : contactViewModel.contacts[0].contactName , designation: contactViewModel.contacts[1].designation ),
+              AccountDetailRow(account: account,),
               Hdivider(),
-              DetailRow(contact : contact),
+              DetailRow(),
               Hdivider(),
-              MoreDetail(contact : contact),
-              Hdivider(),
-              const DetailItems(),
+              // MoreDetail(contact : account),
+              // Hdivider(),
+              // const DetailItems(),
             ],
           ),
         ));
@@ -86,7 +95,7 @@ class ContactDetails extends StatelessWidget {
                         margin: EdgeInsets.only(left: 2.w),
                         child: Center(
                           child: Text(
-                            "${title![0]}${title.split(' ')[1][0]}",
+                            title!.split("")[0][0] + title.split("")[1][0],
                             // firstName![0]+ lastName![0],
                             style: TextStyle(
                                 color: AppColors.primaryColor, fontSize: 44.sp),
@@ -126,7 +135,7 @@ class ContactDetails extends StatelessWidget {
                           // "Maintenance Manager",
                           designation!,
                           style:
-                              TextStyle(color: Colors.white, fontSize: 15.sp),
+                          TextStyle(color: Colors.white, fontSize: 15.sp),
                         ),
                       ),
                     ]),
@@ -168,16 +177,16 @@ class ContactDetails extends StatelessWidget {
   }
 }
 
-class DetailRow extends StatefulWidget {
+class AccountDetailRow extends StatefulWidget {
 
-  DetailRow({Key? key, required this.contact}) : super(key: key);
+  AccountDetailRow({Key? key, required this.account}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
-  final  Contact contact;
+  final  Account account;
   @override
   _MyRowState createState() => _MyRowState();
 }
 
-class _MyRowState extends State<DetailRow> {
+class _MyRowState extends State<AccountDetailRow> {
   bool _isOpen = false;
 
   void _toggleDropdown() {
@@ -199,7 +208,7 @@ class _MyRowState extends State<DetailRow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Contact Details',
+                    'Account Details',
                     style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: "roboto_medium",
@@ -207,37 +216,37 @@ class _MyRowState extends State<DetailRow> {
                   ),
                 ],
               ),
-             Container(
+              Container(
 
-               child: Row(
+                child: Row(
 
-                 children: [
-                   Container(
+                  children: [
+                    Container(
                       margin: EdgeInsets.only(right: 10.w),
-                     child: GestureDetector(
-                         onTap: (){
+                      child: GestureDetector(
+                          onTap: (){
                             Get.to(() => EditContact());
-                         },
-                         child: Container(
-                           child: Center(
-                             child: Image.asset("assets/contacts/edit.png"),
-                           ),
-                           width: 24.w,
-                           height: 24.h,
-                           decoration: BoxDecoration(
-                             shape: BoxShape.circle,
-                             color: AppColors.primaryColor,
-                           ),
-                         )),
-                   ),
-                   GestureDetector(
-                       onTap: _toggleDropdown,
-                       child:Image.asset(
-                           _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
+                          },
+                          child: Container(
+                            child: Center(
+                              child: Image.asset("assets/contacts/edit.png"),
+                            ),
+                            width: 24.w,
+                            height: 24.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primaryColor,
+                            ),
+                          )),
+                    ),
+                    GestureDetector(
+                        onTap: _toggleDropdown,
+                        child:Image.asset(
+                            _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
 
-                 ],
-               ),
-             )
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -246,62 +255,90 @@ class _MyRowState extends State<DetailRow> {
             child: Column(
               children: [
 
-                 SingleChildScrollView(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Detaling(
-                            imgUrl: "assets/contacts/web.png",
-                            title: 'contact name',
-                            // subTitle: widget.contactViewModel.contactList[0].contactName,
-                            subTitle: widget.contact.contactName!.toString(),
-                          ),
-                          SecondTypeDetailing(
-                            title: 'Account name',
-                            subTitle: widget.contact.accountName!.toString(),
-                          ),
-                          // ThirdTypeDetailing(),
-                          ThirdTypeDetailing(
-                            title1: 'Department',
-                            subTitle1: widget.contact.departmentName!.toString(),
-                            title2: 'Designation',
-                            subTitle2: widget.contact.designation!.toString(),
-                          ),
+                SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Detaling(
+                          imgUrl: "assets/contacts/web.png",
+                          title: 'contact name',
+                          // subTitle: widget.contactViewModel.contactList[0].contactName,
+                          subTitle: widget.account.accountName!.toString(),
+                        ),
+                        SecondTypeDetailing(
+                          title: 'Account name',
+                          subTitle: widget.account.accountName!.toString(),
+                        ),
+                        // ThirdTypeDetailing(),
+                        ThirdTypeDetailing(
+                          title1: 'segment',
+                          subTitle1: widget.account.accountSegmentName!.toString(),
+                          title2: 'status',
+                          subTitle2: widget.account.accountStatusName!.toString(),
+                        ),
 
-                          FourthTypeDetailing(
-                            title1: 'Mobile number',
-                            subTitle1: widget.contact.mobileNumber!.toString(),
-                            title2: 'Mobile number',
-                            subTitle2: widget.contact.alternateMobileNumber!.toString(),
-                          ),
-                          FourthTypeDetailing(
-                            title1: 'Work Phone',
-                            subTitle1: widget.contact.workPhone!.toString(),
-                            title2: 'Residence Phone',
-                            subTitle2: widget.contact.residencePhone!.toString(),
-                          ),
+                        FourthTypeDetailing(
+                          title1: 'type',
+                          subTitle1: widget.account.tags!.toString(),
+                          title2: 'industry',
+                          subTitle2: widget.account.industryName!.toString(),
+                        ),
 
-                          FifthTypeDetailing(
-                            title: 'Email Address',
-                            subTitle: widget.contact.email!.toString(),
-                            // subTitle: controller.contactList[0].email,
-                          ),
+                        SecondTypeDetailing(
+                          title: 'Work phone',
+                          subTitle: widget.account.phone!.toString(),
+                        ),SecondTypeDetailing(
+                          title: 'Website',
+                          subTitle: widget.account.website!.toString(),
+                        ),
+                        FourthTypeDetailing(
+                          title1: 'Turnover (Cr)',
+                          subTitle1: widget.account.turnover!.toString(),
+                          title2: 'No. Of Employees',
+                          subTitle2: widget.account.numberOfEmployees!.toString(),
+                        ),
 
-                          FifthTypeDetailing(
-                            title: 'Alt. Email Address',
-                            subTitle:   widget.contact.alternateEmail!.toString(),
-                          ),
+                        FourthTypeDetailing(
+                          title1: 'Credit Rating',
+                          subTitle1: widget.account.creditRatingName!.toString(),
+                          title2: 'Currency',
+                          subTitle2: widget.account.currencyName!.toString(),
+                        ),
 
-                          ThirdTypeDetailing(
-                              title1: 'Address',
-                              subTitle1:
-                              widget.contact.addressLine1!.toString(),
-                              title2: 'GPS Coordinate',
-                              subTitle2: widget.contact.gPSCoordinates!.toString()),
+                        FourthTypeDetailing(
+                          title1: 'tags',
+                          subTitle1: widget.account.tags!.toString(),
+                          title2: 'category',
+                          subTitle2: widget.account.companyName!.toString(),
+                        ),
+                        // FourthTypeDetailing(
+                        //   title1: 'Work Phone',
+                        //   subTitle1: widget.contact.workPhone!.toString(),
+                        //   title2: 'Residence Phone',
+                        //   subTitle2: widget.contact.residencePhone!.toString(),
+                        // ),
 
-                        ]
-                    ),
+                        // FifthTypeDetailing(
+                        //   title: 'Email Address',
+                        //   subTitle: widget.contact.email!.toString(),
+                        //   // subTitle: controller.contactList[0].email,
+                        // ),
+
+                        // FifthTypeDetailing(
+                        //   title: 'Alt. Email Address',
+                        //   subTitle:   widget.contact.alternateEmail!.toString(),
+                        // ),
+
+                        // ThirdTypeDetailing(
+                        //     title1: 'Address',
+                        //     subTitle1:
+                        //     widget.contact.addressLine1!.toString(),
+                        //     title2: 'GPS Coordinate',
+                        //     subTitle2: widget.contact.gPSCoordinates!.toString()),
+
+                      ]
                   ),
+                ),
 
 
               ],

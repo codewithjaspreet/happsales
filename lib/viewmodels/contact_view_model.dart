@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
 import '../models/contact.dart';
 import '../models/database.dart';
@@ -30,11 +31,11 @@ class ContactViewModel extends GetxController {
 
     var result = checkInternetConnectivity();
     print("result is $result");
+    getContactList();
     fetchContacts();
     // getContactList();
   }
 
-  RxList contactList = [].obs;
   RxList contacts = [].obs;
 
   Future<RxList> getContactList() async {
@@ -67,12 +68,15 @@ class ContactViewModel extends GetxController {
     return contacts;
   }
 
-  Contact? getUserById(String id) {
+  Contact? getUserById(int id) {
     return contacts.firstWhere((user) => user.contactID == id, orElse: () => null);
   }
+
   fetchContacts() async {
     var dbcontacts = await DBProvider.db.getAllEmployees();
     contacts.value =  dbcontacts;
+
+
   }
 
 
