@@ -13,6 +13,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
 
@@ -255,6 +256,80 @@ class _MyRowState extends State<AccountDetailRow> {
                       children: [
 
                         // ThirdTypeDetailing(),
+                        Padding(
+                          padding:  EdgeInsets.only(left: 8.w,top: 10.h),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+
+                                     CircularPercentIndicator(
+
+                                      radius: 60.0,
+                                      backgroundWidth: 6,
+                                      backgroundColor: AppColors.primaryColor,
+                                      lineWidth: 25.0,
+                                      animation: true,
+                                      percent: 0.75,
+                                      center:  Text(
+                                        "75%",
+                                        style:
+                                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp
+
+                                         ,color: AppColors.primaryColor
+                                         ),
+                                      ),
+
+
+                                      linearGradient:const LinearGradient(
+
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [
+
+                                            Color(0xff5DD7F9),
+                                            Color(0xffE02ADA),
+                                          ]
+                                    ),
+                                    ),
+                                    Text("Incomplete" ,style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.bold
+                                    ),),
+                                  ],
+                                ),
+
+                                Container(
+                                  margin: EdgeInsets.only(right: 70.sp),
+
+                                  child: Column(
+
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Suvarna Traders",style: TextStyle(color: AppColors.primaryColor,
+
+                                      fontSize: 20.sp , fontWeight: FontWeight.w500),),
+
+                                      SizedBox(height : 5.h),
+                                      Text("Chemicals",style: TextStyle(color: AppColors.primaryColor,
+
+                                      fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
+
+                                      SizedBox(height: 5.h,),
+                                      Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
+
+                                      fontSize: 14.sp , fontWeight: FontWeight.w200),)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+
+
                         AccountThirdTypeDetailing(
                           title1: 'segment',
                           subTitle1: widget.account.accountSegmentName!.toString(),
