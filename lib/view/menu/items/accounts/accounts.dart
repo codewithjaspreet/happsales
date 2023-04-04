@@ -7,7 +7,7 @@ import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 
 import '../../menu.dart';
-import 'Details.dart';
+import 'AccountDetails.dart';
 
 class AccountPage extends StatefulWidget {
   @override

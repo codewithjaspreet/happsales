@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,17 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountFourthTypeDetailing.dart';
+import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountMoreDetail.dart';
+import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountThirdTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountUserDetailCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/FifthTypeDetailing.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/FourthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
-
-import '../../../../../models/contact.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
 
@@ -44,13 +40,11 @@ class AcccountDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AccountUserDetailCard( title : contactViewModel.contacts[0].contactName , designation: contactViewModel.contacts[1].designation ),
-              AccountDetailRow(account: account,),
+
               Hdivider(),
-              DetailRow(),
+              AccountDetailRow(account:account!,),
               Hdivider(),
-              // MoreDetail(contact : account),
-              // Hdivider(),
-              // const DetailItems(),
+              AccountMoreDetail(account: account,)
             ],
           ),
         ));
@@ -259,25 +253,16 @@ class _MyRowState extends State<AccountDetailRow> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Detaling(
-                          imgUrl: "assets/contacts/web.png",
-                          title: 'contact name',
-                          // subTitle: widget.contactViewModel.contactList[0].contactName,
-                          subTitle: widget.account.accountName!.toString(),
-                        ),
-                        SecondTypeDetailing(
-                          title: 'Account name',
-                          subTitle: widget.account.accountName!.toString(),
-                        ),
+
                         // ThirdTypeDetailing(),
-                        ThirdTypeDetailing(
+                        AccountThirdTypeDetailing(
                           title1: 'segment',
                           subTitle1: widget.account.accountSegmentName!.toString(),
                           title2: 'status',
                           subTitle2: widget.account.accountStatusName!.toString(),
                         ),
 
-                        FourthTypeDetailing(
+                        AccountFourthTypeDetailing(
                           title1: 'type',
                           subTitle1: widget.account.tags!.toString(),
                           title2: 'industry',
@@ -291,21 +276,21 @@ class _MyRowState extends State<AccountDetailRow> {
                           title: 'Website',
                           subTitle: widget.account.website!.toString(),
                         ),
-                        FourthTypeDetailing(
+                        AccountFourthTypeDetailing(
                           title1: 'Turnover (Cr)',
                           subTitle1: widget.account.turnover!.toString(),
                           title2: 'No. Of Employees',
                           subTitle2: widget.account.numberOfEmployees!.toString(),
                         ),
 
-                        FourthTypeDetailing(
+                        AccountFourthTypeDetailing(
                           title1: 'Credit Rating',
                           subTitle1: widget.account.creditRatingName!.toString(),
                           title2: 'Currency',
                           subTitle2: widget.account.currencyName!.toString(),
                         ),
 
-                        FourthTypeDetailing(
+                        AccountFourthTypeDetailing(
                           title1: 'tags',
                           subTitle1: widget.account.tags!.toString(),
                           title2: 'category',
@@ -403,29 +388,96 @@ class Detaling extends StatelessWidget {
     );
   }
 }
-class DetailItems extends StatelessWidget {
-  const DetailItems({Key? key}) : super(key: key);
+class AccountDetailItems extends StatelessWidget {
+  const AccountDetailItems({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 20.h),
-      padding: EdgeInsets.symmetric(horizontal: 14.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
-          IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
-          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'notes',),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_1.png', title: 'Activity',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_2.png', title: 'Opportunity',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'notes',),
+            ],
+          ),
 
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_4.png', title: 'contacts',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_5.png', title: 'Opportunities',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_6.png', title: 'Activities',),
+            ],
+          ),
+
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'notes',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hirarchy',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_9.png', title: 'Buying Process',),
+            ],
+          ),
+
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'business unit',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_12.png', title: 'Competition Activities',),
+            ],
+          ),
+
+        ), Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'documents',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'forms',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',),
+            ],
+          ),
+
+        ), Container(
+          margin: EdgeInsets.only(top: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'chat history',),
+            ],
+          ),
+
+        ),
+      ],
     );
 
   }
 }
-class IndividualItem extends StatelessWidget {
-  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+class AccountIndividualItem extends StatelessWidget {
+  const AccountIndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
 
   final String imageUrl;
   final String title;
@@ -449,11 +501,11 @@ class IndividualItem extends StatelessWidget {
                 Text(
 
                   title,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 13.sp,
-                    fontFamily: "roboto_bold",
+                    fontSize: 14.sp,
                     color: Color(0xff00A6D6),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
@@ -461,29 +513,7 @@ class IndividualItem extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          top: 10.h,
-          left: 70.w,
-          child: Container(
-            child: Center(
-              child: Text(
-                '2',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontFamily: "roboto_bold",
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(
-              color: Color(0xff00A6D6),
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
+
       ],
     );
   }

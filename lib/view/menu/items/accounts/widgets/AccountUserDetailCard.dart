@@ -42,8 +42,7 @@ Column AccountUserDetailCard({String? title , String? designation }) {
                       child: Center(
                         child: Text(
                          "${title![0]}${title.split(' ')[1][0]}",
-                          // title!.split("")[0][0] + title.split("")[1][0],
-                          // firstName![0]+ lastName![0],
+
                           style: TextStyle(
                               color: AppColors.primaryColor, fontSize: 44.sp),
                         ),
