@@ -16,6 +16,7 @@ import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
+import 'EditAccount.dart';
 
 class AcccountDetails extends StatelessWidget {
   AcccountDetails({Key? key, required this.accountID}) : super(key: key);
@@ -220,7 +221,8 @@ class _MyRowState extends State<AccountDetailRow> {
                       margin: EdgeInsets.only(right: 10.w),
                       child: GestureDetector(
                           onTap: (){
-                            Get.to(() => EditContact());
+                            Get.to(() => EditAccount(
+                            ));
                           },
                           child: Container(
                             child: Center(
@@ -331,6 +333,7 @@ class _MyRowState extends State<AccountDetailRow> {
 
 
                         AccountThirdTypeDetailing(
+
                           title1: 'segment',
                           subTitle1: widget.account.accountSegmentName!.toString(),
                           title2: 'status',

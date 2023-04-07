@@ -17,7 +17,7 @@ class Opportunities extends StatelessWidget {
               children: [
                 Text("Hi Deepak, these Opportunities needs your immediate attention!", textAlign: TextAlign.center, style: TextStyle(
 
-                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 20.sp,
+                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 18.sp,
                 ),),
                 SizedBox(height: 10.h,),
 
@@ -72,7 +72,7 @@ class rowItem extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: const Color(0xffE5F6FF),
               radius: 30.sp,
-              child: Center(child: Text(avatarTitle,style: TextStyle(color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontSize: 37.sp),)),
+              child: Center(child: Text(avatarTitle,style: TextStyle(color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontSize: 32.sp),)),
               // backgroundImage: AssetImage("assets/logo.png"),
             ),
           ),
@@ -86,7 +86,7 @@ class rowItem extends StatelessWidget {
               children: [
                 Text(title, style: TextStyle(
 
-                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 28.sp,
+                  color: const Color(0xff171A63),fontWeight: FontWeight.bold,fontFamily: GoogleFonts.roboto().fontFamily,fontSize: 26.sp,
                 ),),
 
                 SizedBox(height: 5.h,),
