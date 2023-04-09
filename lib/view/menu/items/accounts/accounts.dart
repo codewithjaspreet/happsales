@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/accounts/add_account.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
@@ -103,14 +104,19 @@ _buildEmployeeListView() {
 
               child: Row(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left : 12.sp),
-                    child: Icon(Icons.add , color: Colors.white,),
-                    width: 40.w,
-                    height: 40.w,
-                    decoration: BoxDecoration(
-                        color: Colors.purple,
-                        shape: BoxShape.circle
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(AddAccount());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left : 12.sp),
+                      child: Icon(Icons.add , color: Colors.white,),
+                      width: 40.w,
+                      height: 40.w,
+                      decoration: BoxDecoration(
+                          color: Colors.purple,
+                          shape: BoxShape.circle
+                      ),
                     ),
                   ),
 

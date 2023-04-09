@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 
 import '../../../../../../utils/color.dart';
+import '../views/add_contact.dart';
 
 class HelperRow extends StatelessWidget {
 
