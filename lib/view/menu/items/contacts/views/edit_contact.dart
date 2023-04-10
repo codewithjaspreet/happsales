@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 
 import '../../../../../utils/color.dart';
+import '../../../../../utils/popups/custom_dropdown.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../widgets/AmiRow.dart';
 import '../widgets/CustomAppBar.dart';
@@ -103,7 +104,8 @@ class _MyRowState extends State<DetailRow> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        DropDownInput(hint: 'Title *'),
+                        // DropDownInput(hint: 'Title *'),
+                        CustomDropDown(),
                         Input(title: 'First Name *'),
                         Input(title: 'Middle Name *'),
                         Input(title: 'Last Name *'),

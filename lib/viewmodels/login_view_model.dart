@@ -19,10 +19,13 @@ class LoginController extends GetxController {
   TextEditingController forgotEmailController = TextEditingController();
 
   Future<String> loginWithEmail() async {
+    print("hello");
     var headers = {'Content-Type': 'application/json'};
     try {
       var url = Uri.parse(
           ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.loginEmail);
+
+      print("url is $url");
       Map body = {
         'LoginName': emailController.text.trim(),
         'password': passwordController.text.trim(),
@@ -48,6 +51,8 @@ class LoginController extends GetxController {
         cred.setString('email', emailController.text.trim());
 
         // Navigate to the home screen or other relevant screen
+
+
         Get.off(const DashBoardPage());
 
         return token;
@@ -56,7 +61,7 @@ class LoginController extends GetxController {
 
       } else {
         // If the response is not successful, display an error message
-        // throw Exception('Failed to login: ${response.statusCode}');
+        throw Exception('Failed to login: ${response.statusCode}');
 
         Get.snackbar(
           "Invalid Credentials",
