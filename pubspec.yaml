@@ -46,6 +46,8 @@ dependencies:
   dio:
   google_fonts:
   bubble_tab_indicator: ^0.1.6
+  intl: ^0.17.0
+  search_choices:
   introduction_screen:
   http:
   dropdown_plus: ^0.0.9
@@ -59,8 +61,6 @@ dependencies:
   dropdown_button2:
   connectivity_plus: ^3.0.3
   percent_indicator: ^4.2.3
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

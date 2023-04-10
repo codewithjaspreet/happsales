@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/color.dart';
+import '../../../../../utils/popups/date_picker.dart';
+import '../../../../../utils/popups/search_filter.dart';
 import 'DropDownInput.dart';
 import 'InputOne.dart';
 import 'ToggleButtonRow.dart';
@@ -66,8 +68,12 @@ class _MyRowState extends State<MoreAddDetails> {
 
                   // dob
                   // Input(title: 'last Name',),
+                  DatePickerFeild(),
+
+
                   ToggleButtonRow(title : "BirthDay Reminder"),
-                  Input(title: 'Contact Alignment',),
+                  SearchAndFilter(),
+                  // Input(title: 'Contact Alignment',),
                   DropDownInput(hint : 'Roles & Responsibilities'),
                   DropDownInput(hint : 'Past Accounts'),
                   Input(title: 'past designation',),

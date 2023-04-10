@@ -35,7 +35,10 @@ class BusinessCard extends StatelessWidget {
             ),
             Container(child: Image.asset("assets/contacts/add.png"),),
             Container(
-              child: Text("add business card" , style: TextStyle(fontWeight: FontWeight.w500 , fontFamily: "roboto_medium" , fontSize: 18.sp),),)
+              child: Text("add business card" , style: TextStyle(fontWeight: FontWeight.w500 , fontFamily: "roboto_medium" , fontSize: 18.sp),),
+
+
+            )
 
 
           ],
