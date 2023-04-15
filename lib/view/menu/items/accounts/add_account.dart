@@ -181,26 +181,21 @@ class _MyRowState extends State<MyRow> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  DropDownInput(hint : 'Title *'),
-                  Input(title: 'First Name*',),
-                  Input(title: 'last Name',),
-                  Input(title: 'account name',),
-                  DropDownInput(hint : 'designation'),
-                  DropDownInput(hint : 'Mobile Number'),
-                  Input(title: 'Mobile Number',),
-                  Input(title: 'alternate Mobile Number',),
-                  Input(title: 'Work Phone',),
-                  Input(title: 'residence phone',),
-                  Input(title: 'email address',),
-                  Input(title: 'alternate email address',),
-                  Input(title: 'Address Line',),
-                  Input(title: 'Address Line 2',),
-                  Input(title: 'Address Line 3',),
-                  DropDownInput(hint: 'city',),
-                  DropDownInput(hint:  'state',),
-                  DropDownInput(hint: 'country',),
-                  Input(title: 'pincode',),
-                  Input(title: 'GPS Coordinate',),
+                  DropDownInput(hint : 'Account Name*'),
+                  Input(title: 'Location *',),
+                  Input(title: 'segment',),
+                  Input(title: 'status',),
+                  DropDownInput(hint : 'type'),
+                  DropDownInput(hint : 'industry'),
+                  Input(title: 'work phone',),
+                  Input(title: 'website',),
+                  Input(title: 'Turnover (Cr)',),
+                  Input(title: 'No. Of Employees',),
+                  Input(title: 'Credit Rating',),
+                  Input(title: 'currency',),
+                  Input(title: 'tags',),
+                  Input(title: 'add category',),
+
 
 
 
@@ -210,7 +205,36 @@ class _MyRowState extends State<MyRow> {
 
                 ],
               ),
-            )
+            ),
+          Container(
+            margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                  width: 125.w,
+                  height:48.h,
+                  decoration: BoxDecoration(
+                    borderRadius:  BorderRadius.circular(26.sp),
+                    color: Color(0xff8199AC),
+                  ),
+                ),
+                Container(
+                  child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                  width: 125.w,
+                  height:48.h,
+                  decoration: BoxDecoration(
+                    borderRadius:  BorderRadius.circular(26.sp),
+
+                    shape: BoxShape.rectangle,
+                    color: AppColors.primaryColor,
+                  ),
+                )
+              ],
+            ),
+          )
+
         ]
     );
   }

@@ -45,7 +45,7 @@ class _MyRowState extends State<AddContactDetails> {
                 ),
                 GestureDetector(
                     onTap: _toggleDropdown,
-                    child: Icon(_isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
+                    child: Image.asset(_isOpen ? "assets/contacts/back.png" : "assets/contacts/up.png")),
 
               ],
             ),

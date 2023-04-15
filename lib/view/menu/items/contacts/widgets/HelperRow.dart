@@ -8,8 +8,9 @@ import '../views/add_contact.dart';
 
 class HelperRow extends StatelessWidget {
 
-  const HelperRow({required this.title});
+   HelperRow({required this.title , required this.direct});
   final String title;
+  final Widget direct;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +24,7 @@ class HelperRow extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(direct);
                 },
                 child: Container(
                   margin:  EdgeInsets.only(right: 16.w),

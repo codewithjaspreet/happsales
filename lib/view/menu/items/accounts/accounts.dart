@@ -61,8 +61,8 @@ class _ContactPageState extends State<AccountPage> {
           ? const CircularProgressIndicator()
           : Column(
         children: [
-          const HelperRow(
-            title: "My Accounts",
+           HelperRow(
+            title: "My Accounts", direct: AddAccount(),
           ),
           Image.asset("assets/accounts/banner.png"),
 
