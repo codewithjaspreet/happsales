@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class DatePickerFeild extends StatefulWidget {
-  // const DatePickerFeild({Key? key}) : super(key: key);
+   DatePickerFeild({Key? key , required this.labelText}) : super(key: key);
+
+  final String labelText;
 
   @override
   State<DatePickerFeild> createState() => _DatePickerFeildState();
@@ -31,7 +33,7 @@ class _DatePickerFeildState extends State<DatePickerFeild> {
                       ),
                     ),
                   suffixIcon: Icon(Icons.calendar_today), //icon of text field
-                  labelText: "Enter Date" //label text of field
+                  labelText: widget.labelText//label text of field
               ),
               readOnly: true,  // when true user cannot edit text
               onTap: () async {

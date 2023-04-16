@@ -68,7 +68,7 @@ class _MyRowState extends State<MoreAddDetails> {
 
                   // dob
                   // Input(title: 'last Name',),
-                  DatePickerFeild(),
+                  DatePickerFeild(labelText: 'enter date',),
 
 
                   ToggleButtonRow(title : "BirthDay Reminder"),
