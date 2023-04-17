@@ -32,6 +32,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, a) {
+
+        // Use GetMaterial App instead of Material App when using GetX
         return   GetMaterialApp(
           debugShowCheckedModeBanner: false,
           home: SplashScreen(),
@@ -39,5 +41,7 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+
 }
 

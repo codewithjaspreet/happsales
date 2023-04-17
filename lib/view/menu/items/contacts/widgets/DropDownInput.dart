@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DropDownInput extends StatelessWidget {
 
 
-  DropDownInput({required this.hint});
+   DropDownInput({required this.hint});
   final String hint;
-  TextEditingController _controller = TextEditingController();
-  List<String>items  = [
+  final TextEditingController _controller = TextEditingController();
+  final List<String>items  = [
     "Mr",
     "Mrs",
     "Ms",

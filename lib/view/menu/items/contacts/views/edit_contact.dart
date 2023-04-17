@@ -105,7 +105,21 @@ class _MyRowState extends State<DetailRow> {
                       children: [
 
                         // DropDownInput(hint: 'Title *'),
-                        CustomDropDown(),
+                        CustomDropDown(labelText: 'Gender', items: [
+
+                          DropdownMenuItem(
+                            value: 'Item 1',
+                            child: Text('Item 1'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Item 2',
+                            child: Text('Item 2'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Item 3',
+                            child: Text('Item 3'),
+                          ),
+                        ],),
                         Input(title: 'First Name *'),
                         Input(title: 'Middle Name *'),
                         Input(title: 'Last Name *'),

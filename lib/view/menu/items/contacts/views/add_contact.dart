@@ -9,10 +9,7 @@ import '../../accounts/AccountDetails.dart';
 import '../widgets/AddContactDetails.dart';
 import '../widgets/AmiRow.dart';
 import '../widgets/MoreAddDetails.dart';
-import 'Details.dart';
 class AddContact extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +19,11 @@ class AddContact extends StatelessWidget {
         child: Column(
           children: [
             AmiHeaderRow(title: 'Add Contact',),
-
             GestureDetector(
                 onTap: () {
                   showDialogs(context);
                 },
                 child: const BusinessCard()),
-
             Hdivider(),
             AddContactDetails(),
             Hdivider(),

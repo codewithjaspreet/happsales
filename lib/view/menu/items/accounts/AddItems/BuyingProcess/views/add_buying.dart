@@ -79,6 +79,7 @@ class AddBuying extends StatelessWidget {
             ),
           )
         ],
+
       ),
     );
   }
