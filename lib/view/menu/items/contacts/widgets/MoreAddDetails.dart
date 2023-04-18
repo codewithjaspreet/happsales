@@ -63,20 +63,24 @@ class _MyRowState extends State<MoreAddDetails> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  DropDownInput(hint : 'Reporting To'),
+
+                  Input(title: 'Reporting To',),
                   Input(title: 'LinkedIn link',),
 
                   // dob
                   // Input(title: 'last Name',),
-                  DatePickerFeild(labelText: 'enter date',),
+                  DatePickerFeild(labelText: 'Date of Birth',),
 
 
                   ToggleButtonRow(title : "BirthDay Reminder"),
                   SearchAndFilter(),
                   // Input(title: 'Contact Alignment',),
-                  DropDownInput(hint : 'Roles & Responsibilities'),
-                  DropDownInput(hint : 'Past Accounts'),
-                  Input(title: 'past designation',),
+
+                  Input(title: 'Roles & Responsibilities',),
+                  Input(title: 'Past Accounts',),
+
+
+                  Input(title: 'Past designation',),
                   Input(title: 'Reference History',),
                   Input(title: 'Add a tag',),
                   ToggleButtonRow(title : "Is active"),

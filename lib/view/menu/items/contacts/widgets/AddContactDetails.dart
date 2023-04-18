@@ -1,13 +1,8 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/popups/custom_dropdown.dart';
-
 import '../../../../../utils/color.dart';
-import 'DropDownInput.dart';
 import 'InputOne.dart';
 
 class AddContactDetails extends StatefulWidget {

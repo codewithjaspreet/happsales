@@ -195,220 +195,223 @@ class _MyRowState extends State<AccountDetailRow> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          margin: EdgeInsets.only(top: 15.h, left: 16.w, right: 16.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Account Details',
-                    style: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontFamily: "roboto_medium",
-                        fontSize: 14.sp),
-                  ),
-                ],
-              ),
-              Container(
-
-                child: Row(
-
+      child: GestureDetector(
+        onTap: _toggleDropdown,
+        child: Column(children: [
+          Container(
+            margin: EdgeInsets.only(top: 15.h, left: 16.w, right: 16.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 10.w),
-                      child: GestureDetector(
-                          onTap: (){
-                            Get.to(() => EditAccount(
-                            ));
-                          },
-                          child: Container(
-                            child: Center(
-                              child: Image.asset("assets/contacts/edit.png"),
-                            ),
-                            width: 24.w,
-                            height: 24.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.primaryColor,
-                            ),
-                          )),
+                    Text(
+                      'Account Details',
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontFamily: "roboto_medium",
+                          fontSize: 14.sp),
                     ),
-                    GestureDetector(
-                        onTap: _toggleDropdown,
-                        child:Image.asset(
-                            _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
-
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-        if (_isOpen)
-          SingleChildScrollView(
-            child: Column(
-              children: [
+                Container(
 
-                SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                  child: Row(
 
-                        // ThirdTypeDetailing(),
-                        Padding(
-                          padding:  EdgeInsets.only(left: 8.w,top: 10.h),
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 10.w),
+                        child: GestureDetector(
+                            onTap: (){
+                              Get.to(() => EditAccount(
+                              ));
+                            },
+                            child: Container(
+                              child: Center(
+                                child: Image.asset("assets/contacts/edit.png"),
+                              ),
+                              width: 24.w,
+                              height: 24.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.primaryColor,
+                              ),
+                            )),
+                      ),
+                      GestureDetector(
+                          onTap: _toggleDropdown,
+                          child:Image.asset(
+                              _isOpen ? "assets/contacts/up.png" : "assets/contacts/back.png")),
 
-                                     CircularPercentIndicator(
-
-                                      radius: 60.0,
-                                      backgroundWidth: 6,
-                                      backgroundColor: AppColors.primaryColor,
-                                      lineWidth: 25.0,
-                                      animation: true,
-                                      percent: 0.75,
-                                      center:  Text(
-                                        "75%",
-                                        style:
-                                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp
-
-                                         ,color: AppColors.primaryColor
-                                         ),
-                                      ),
-
-
-                                      linearGradient:const LinearGradient(
-
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-
-                                            Color(0xff5DD7F9),
-                                            Color(0xffE02ADA),
-                                          ]
-                                    ),
-                                    ),
-                                    Text("Incomplete" ,style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold
-                                    ),),
-                                  ],
-                                ),
-
-                                Container(
-                                  margin: EdgeInsets.only(right: 70.sp),
-
-                                  child: Column(
-
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Suvarna Traders",style: TextStyle(color: AppColors.primaryColor,
-
-                                      fontSize: 20.sp , fontWeight: FontWeight.w500),),
-
-                                      SizedBox(height : 5.h),
-                                      Text("Chemicals",style: TextStyle(color: AppColors.primaryColor,
-
-                                      fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
-
-                                      SizedBox(height: 5.h,),
-                                      Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
-
-                                      fontSize: 14.sp , fontWeight: FontWeight.w200),)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-
-                        AccountThirdTypeDetailing(
-
-                          title1: 'segment',
-                          subTitle1: widget.account.accountSegmentName!.toString(),
-                          title2: 'status',
-                          subTitle2: widget.account.accountStatusName!.toString(),
-                        ),
-
-                        AccountFourthTypeDetailing(
-                          title1: 'type',
-                          subTitle1: widget.account.tags!.toString(),
-                          title2: 'industry',
-                          subTitle2: widget.account.industryName!.toString(),
-                        ),
-
-                        SecondTypeDetailing(
-                          title: 'Work phone',
-                          subTitle: widget.account.phone!.toString(),
-                        ),SecondTypeDetailing(
-                          title: 'Website',
-                          subTitle: widget.account.website!.toString(),
-                        ),
-                        AccountFourthTypeDetailing(
-                          title1: 'Turnover (Cr)',
-                          subTitle1: widget.account.turnover!.toString(),
-                          title2: 'No. Of Employees',
-                          subTitle2: widget.account.numberOfEmployees!.toString(),
-                        ),
-
-                        AccountFourthTypeDetailing(
-                          title1: 'Credit Rating',
-                          subTitle1: widget.account.creditRatingName!.toString(),
-                          title2: 'Currency',
-                          subTitle2: widget.account.currencyName!.toString(),
-                        ),
-
-                        AccountFourthTypeDetailing(
-                          title1: 'tags',
-                          subTitle1: widget.account.tags!.toString(),
-                          title2: 'category',
-                          subTitle2: widget.account.companyName!.toString(),
-                        ),
-                        // FourthTypeDetailing(
-                        //   title1: 'Work Phone',
-                        //   subTitle1: widget.contact.workPhone!.toString(),
-                        //   title2: 'Residence Phone',
-                        //   subTitle2: widget.contact.residencePhone!.toString(),
-                        // ),
-
-                        // FifthTypeDetailing(
-                        //   title: 'Email Address',
-                        //   subTitle: widget.contact.email!.toString(),
-                        //   // subTitle: controller.contactList[0].email,
-                        // ),
-
-                        // FifthTypeDetailing(
-                        //   title: 'Alt. Email Address',
-                        //   subTitle:   widget.contact.alternateEmail!.toString(),
-                        // ),
-
-                        // ThirdTypeDetailing(
-                        //     title1: 'Address',
-                        //     subTitle1:
-                        //     widget.contact.addressLine1!.toString(),
-                        //     title2: 'GPS Coordinate',
-                        //     subTitle2: widget.contact.gPSCoordinates!.toString()),
-
-                      ]
+                    ],
                   ),
-                ),
-
-
+                )
               ],
             ),
-          )
-      ]),
+          ),
+          if (_isOpen)
+            SingleChildScrollView(
+              child: Column(
+                children: [
+
+                  SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          // ThirdTypeDetailing(),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 8.w,top: 10.h),
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+
+                                       CircularPercentIndicator(
+
+                                        radius: 60.0,
+                                        backgroundWidth: 6,
+                                        backgroundColor: AppColors.primaryColor,
+                                        lineWidth: 25.0,
+                                        animation: true,
+                                        percent: 0.75,
+                                        center:  Text(
+                                          "75%",
+                                          style:
+                                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp
+
+                                           ,color: AppColors.primaryColor
+                                           ),
+                                        ),
+
+
+                                        linearGradient:const LinearGradient(
+
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomLeft,
+                                            colors: [
+
+                                              Color(0xff5DD7F9),
+                                              Color(0xffE02ADA),
+                                            ]
+                                      ),
+                                      ),
+                                      Text("Incomplete" ,style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.bold
+                                      ),),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    margin: EdgeInsets.only(right: 70.sp),
+
+                                    child: Column(
+
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Suvarna Traders",style: TextStyle(color: AppColors.primaryColor,
+
+                                        fontSize: 20.sp , fontWeight: FontWeight.w500),),
+
+                                        SizedBox(height : 5.h),
+                                        Text("Chemicals",style: TextStyle(color: AppColors.primaryColor,
+
+                                        fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
+
+                                        SizedBox(height: 5.h,),
+                                        Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
+
+                                        fontSize: 14.sp , fontWeight: FontWeight.w200),)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+                          AccountThirdTypeDetailing(
+
+                            title1: 'segment',
+                            subTitle1: widget.account.accountSegmentName!.toString(),
+                            title2: 'status',
+                            subTitle2: widget.account.accountStatusName!.toString(),
+                          ),
+
+                          AccountFourthTypeDetailing(
+                            title1: 'type',
+                            subTitle1: widget.account.tags!.toString(),
+                            title2: 'industry',
+                            subTitle2: widget.account.industryName!.toString(),
+                          ),
+
+                          SecondTypeDetailing(
+                            title: 'Work phone',
+                            subTitle: widget.account.phone!.toString(),
+                          ),SecondTypeDetailing(
+                            title: 'Website',
+                            subTitle: widget.account.website!.toString(),
+                          ),
+                          AccountFourthTypeDetailing(
+                            title1: 'Turnover (Cr)',
+                            subTitle1: widget.account.turnover!.toString(),
+                            title2: 'No. Of Employees',
+                            subTitle2: widget.account.numberOfEmployees!.toString(),
+                          ),
+
+                          AccountFourthTypeDetailing(
+                            title1: 'Credit Rating',
+                            subTitle1: widget.account.creditRatingName!.toString(),
+                            title2: 'Currency',
+                            subTitle2: widget.account.currencyName!.toString(),
+                          ),
+
+                          AccountFourthTypeDetailing(
+                            title1: 'tags',
+                            subTitle1: widget.account.tags!.toString(),
+                            title2: 'category',
+                            subTitle2: widget.account.companyName!.toString(),
+                          ),
+                          // FourthTypeDetailing(
+                          //   title1: 'Work Phone',
+                          //   subTitle1: widget.contact.workPhone!.toString(),
+                          //   title2: 'Residence Phone',
+                          //   subTitle2: widget.contact.residencePhone!.toString(),
+                          // ),
+
+                          // FifthTypeDetailing(
+                          //   title: 'Email Address',
+                          //   subTitle: widget.contact.email!.toString(),
+                          //   // subTitle: controller.contactList[0].email,
+                          // ),
+
+                          // FifthTypeDetailing(
+                          //   title: 'Alt. Email Address',
+                          //   subTitle:   widget.contact.alternateEmail!.toString(),
+                          // ),
+
+                          // ThirdTypeDetailing(
+                          //     title1: 'Address',
+                          //     subTitle1:
+                          //     widget.contact.addressLine1!.toString(),
+                          //     title2: 'GPS Coordinate',
+                          //     subTitle2: widget.contact.gPSCoordinates!.toString()),
+
+                        ]
+                    ),
+                  ),
+
+
+                ],
+              ),
+            )
+        ]),
+      ),
     );
   }
 }

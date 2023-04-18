@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:search_choices/search_choices.dart';
 
 class SearchAndFilter extends StatefulWidget {
@@ -12,20 +13,60 @@ class SearchAndFilter extends StatefulWidget {
   List<DropdownMenuItem<String>> items = [
     DropdownMenuItem(
       value: 'option1',
-      child: Text('Option 1'),
+      child: Container(
+        margin: EdgeInsets.only(top: 10.h, ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Supporter",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
+            SizedBox(height: 3.h,),
+            Divider(
+              color: Colors.grey,
+              thickness: 1,
+              indent: 2,
+            )
+          ],
+        ),
+      ),
     ),
     DropdownMenuItem(
       value: 'option2',
-      child: Text('Option 2'),
+      child: Container(
+        margin: EdgeInsets.only(top: 10.h, ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Neutral",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
+            SizedBox(height: 3.h,),
+           Divider(
+              color: Colors.grey,
+              thickness: 1,
+             indent: 2,
+           )
+          ],
+        ),
+      ),
     ),
     DropdownMenuItem(
+
       value: 'option3',
-      child: Text('Option 3'),
+      child: Container(
+        margin: EdgeInsets.only(top: 10.h, ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Against",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
+            SizedBox(height: 3.h,),
+            Divider(
+              color: Colors.grey,
+              thickness: 1,
+              indent: 2,
+            )
+          ],
+        ),
+      ),
     ),
-    DropdownMenuItem(
-      value: 'option4',
-      child: Text('Option 4'),
-    ),
+
   ];
 
   @override
@@ -38,22 +79,47 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
   @override
   Widget build(BuildContext context) {
     return SearchChoices.single(
+
+
+      underline: Container(),
+
+
+      hint: Container(
+        padding: EdgeInsets.only(left: 8.w , ),
+        child: Text("Select Contact Alignment" ,style: TextStyle(
+          color: AppColors.primaryColor,fontSize: 14.sp , fontFamily: "roboto_regular",
+
+        ),),
+      ),
       displayClearIcon: false,
 
       items: widget.items,
       value: widget.selectedValueSingleDialog,
+      dropDownDialogPadding: EdgeInsets.only( top: 80.h  , bottom: 80.h )
+      ,
+
+      closeButton: Container(),
+
+
       searchInputDecoration: InputDecoration(
+
+
         suffixIcon: Icon(Icons.search, color: AppColors.primaryColor,),
+
+        hintText: "Search",
+
 
         border: OutlineInputBorder(
 
-          borderRadius: BorderRadius.circular(5.sp),
+          borderRadius: BorderRadius.circular(14.sp),
           borderSide: BorderSide(
             color: Color(0xffB4C6D4),
           ),
         ),
 
       ),
+
+
       searchHint:  Row(
         children: [
           Container(
