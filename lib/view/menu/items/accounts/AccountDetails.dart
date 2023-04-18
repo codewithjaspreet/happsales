@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/BusinessPlans/business_process.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountFourthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountMoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountThirdTypeDetailing.dart';
@@ -17,6 +18,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
+import 'AddItems/CompetitionActivities/competititon_process.dart';
 import 'EditAccount.dart';
 
 class AcccountDetails extends StatelessWidget {
@@ -526,9 +528,18 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(() => BusinessProcess());
+                  },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',)),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'business unit',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_12.png', title: 'Competition Activities',),
+              GestureDetector(
+
+                  onTap: (){
+                    Get.to(() => CompetitionProcess());
+                  },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_12.png', title: 'Competition Activities',)),
             ],
           ),
 

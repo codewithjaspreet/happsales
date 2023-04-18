@@ -3,18 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
-import '../../../../contacts/widgets/CustomAppBar.dart';
-import '../../../../contacts/widgets/HelperRow.dart';
-import '../../../../contacts/widgets/InputOne.dart';
-import '../../../../contacts/widgets/ToggleButtonRow.dart';
+import '../../../contacts/widgets/CustomAppBar.dart';
+import '../../../contacts/widgets/ToggleButtonRow.dart';
 
-class AddBuying extends StatelessWidget {
-  const AddBuying({Key? key}) : super(key: key);
+class AddBusiness extends StatelessWidget {
+  const AddBusiness({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      
+
       appBar: CustomAppBar(context),
       body: SingleChildScrollView(
         child: Column(
@@ -23,10 +21,10 @@ class AddBuying extends StatelessWidget {
 
             Container(
               padding: EdgeInsets.all(12.sp),
-              child: Text("New Buying Process" , style: TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 20.sp,
-                fontFamily: 'roboto_bold'
+              child: Text("New Business Plan" , style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontSize: 20.sp,
+                  fontFamily: 'roboto_bold'
               ),),
             ),
 
@@ -39,18 +37,18 @@ class AddBuying extends StatelessWidget {
                 decoration: InputDecoration(
                   // hintText: "Buying Process Name",
 
-                      contentPadding: EdgeInsets.symmetric(vertical: 70.h),
+                  contentPadding: EdgeInsets.symmetric(vertical: 70.h),
                   // labelText: "Buying Process Name",
                   labelStyle: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14.sp,
-                    fontFamily: 'roboto_bold'
+                      color: AppColors.primaryColor,
+                      fontSize: 14.sp,
+                      fontFamily: 'roboto_bold'
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColors.primaryColor,
-                      width: 1.sp
-                    )
+                      borderSide: BorderSide(
+                          color: AppColors.primaryColor,
+                          width: 1.sp
+                      )
                   ),
 
 
@@ -68,7 +66,7 @@ class AddBuying extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -77,7 +75,7 @@ class AddBuying extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

@@ -30,6 +30,10 @@ class BuyingProcess extends StatelessWidget {
                     children: [
 
                       Positioned(child: Container(
+                        child: Center(
+
+                          child: Text("S",style: TextStyle(color: Color(0xff00C6FF),fontSize: 37.sp),),
+                        ),
 
                         width: 68.w,
                         height: 68.h,
@@ -41,27 +45,27 @@ class BuyingProcess extends StatelessWidget {
                       )),
 
                       Positioned(
-                          left: 40.w,
+                          left: 45.w,
 
-                          top: 9.h,
+                          top: 4.h,
                           child: Container(
 
-                        width: 20.w,
-                        height: 20.h,
+                            width: 15.w,
+                            height: 15.h,
 
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xff00C6FF)
-                        ),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff00C6FF)
+                            ),
 
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 12.sp,
-                          ),
-                        ),
-                      ))
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 12.sp,
+                              ),
+                            ),
+                          ))
 
 
 

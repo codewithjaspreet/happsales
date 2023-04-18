@@ -3,18 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
-import '../../../../contacts/widgets/CustomAppBar.dart';
-import '../../../../contacts/widgets/HelperRow.dart';
-import '../../../../contacts/widgets/InputOne.dart';
-import '../../../../contacts/widgets/ToggleButtonRow.dart';
+import '../../../contacts/widgets/CustomAppBar.dart';
+import '../../../contacts/widgets/ToggleButtonRow.dart';
 
-class AddBuying extends StatelessWidget {
-  const AddBuying({Key? key}) : super(key: key);
+class AddCompetition extends StatelessWidget {
+  const AddCompetition({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      
+
       appBar: CustomAppBar(context),
       body: SingleChildScrollView(
         child: Column(
@@ -24,9 +22,9 @@ class AddBuying extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.sp),
               child: Text("New Buying Process" , style: TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 20.sp,
-                fontFamily: 'roboto_bold'
+                  color: AppColors.primaryColor,
+                  fontSize: 20.sp,
+                  fontFamily: 'roboto_bold'
               ),),
             ),
 
@@ -39,18 +37,18 @@ class AddBuying extends StatelessWidget {
                 decoration: InputDecoration(
                   // hintText: "Buying Process Name",
 
-                      contentPadding: EdgeInsets.symmetric(vertical: 70.h),
+                  contentPadding: EdgeInsets.symmetric(vertical: 70.h),
                   // labelText: "Buying Process Name",
                   labelStyle: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14.sp,
-                    fontFamily: 'roboto_bold'
+                      color: AppColors.primaryColor,
+                      fontSize: 14.sp,
+                      fontFamily: 'roboto_bold'
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColors.primaryColor,
-                      width: 1.sp
-                    )
+                      borderSide: BorderSide(
+                          color: AppColors.primaryColor,
+                          width: 1.sp
+                      )
                   ),
 
 

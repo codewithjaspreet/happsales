@@ -76,9 +76,9 @@ class _MyRowState extends State<AddContactDetails> {
                   // DropDownInput(hint : 'Title *'),
                   Input(title: 'First Name*',),
                   Input(title: 'last Name',),
-                  Input(title: 'account name',),
-                  // DropDownInput(hint : 'designation'),
-                  CustomDropDown(labelText : 'designation',items: [ DropdownMenuItem(
+                  Input(title: 'Account name',),
+
+                  CustomDropDown(items: [DropdownMenuItem(
                     value: 'Item 1',
                     child: Text('Administration'),
                   ),
@@ -102,7 +102,10 @@ class _MyRowState extends State<AddContactDetails> {
                     DropdownMenuItem(
                       value: 'Item 7',
                       child: Text('Maintainance'),
-                    ),DropdownMenuItem(
+                    ),], labelText: 'Department'),
+
+                  // DropDownInput(hint : 'designation'),
+                  CustomDropDown(labelText : 'designation',items: [ DropdownMenuItem(
                       value: 'Item 8',
                       child: Text('Accountant'),
                     ),DropdownMenuItem(
@@ -138,8 +141,33 @@ class _MyRowState extends State<AddContactDetails> {
                   // Input(hint: 'city',),
                   // DropDownInput(hint:  'state',),
                   // DropDownInput(hint: 'country',),
-                  // Input(title: 'pincode',),
-                  // Input(title: 'GPS Coordinate',),
+
+                  Input(title: 'City',),
+                  Input(title: 'State',),
+                  CustomDropDown(items: [
+                    DropdownMenuItem(
+                      value: 'Item 1',
+                      child: Text('India'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Item 2',
+                      child: Text('USA'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Item 3',
+                      child: Text('Australia'),
+                    ),DropdownMenuItem(
+                      value: 'Item 4',
+                      child: Text('Canada'),
+                    ),DropdownMenuItem(
+                      value: 'Item 5',
+                      child: Text('UK'),
+                    ),
+
+                  ], labelText: 'Country'),
+                  Input(title: 'Pin',),
+
+                  Input(title: 'GPS Coordinate',),
 
 
 
