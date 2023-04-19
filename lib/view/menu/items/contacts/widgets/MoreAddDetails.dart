@@ -30,75 +30,80 @@ class _MyRowState extends State<MoreAddDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children:[
-          Container(
-            margin: EdgeInsets.only(top: 15.h  , left: 16.w , right: 16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+    return GestureDetector(
+      onTap: (){
+        _toggleDropdown();
+      },
+      child: Column(
+          children:[
+            Container(
+              margin: EdgeInsets.only(top: 15.h  , left: 16.w , right: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('More Details' ,style: TextStyle(color: AppColors.primaryColor,fontFamily: "roboto_bold" ,
+                          fontSize: 14.sp),),
+
+
+                    ],
+                  ),
+                  GestureDetector(
+                      onTap: _toggleDropdown,
+                      child: Image.asset(_isOpen ? "assets/contacts/back.png" : "assets/contacts/up.png")),
+
+                ],
+              ),
+
+            ),
+
+
+
+
+            if(_isOpen)
+              SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text('More Details' ,style: TextStyle(color: AppColors.primaryColor,fontFamily: "roboto_bold" ,
-                        fontSize: 14.sp),),
+
+                    Input(title: 'Reporting To',),
+                    Input(title: 'LinkedIn link',),
+
+                    // dob
+                    // Input(title: 'last Name',),
+                    DatePickerFeild(labelText: 'Date of Birth',),
+
+
+                    ToggleButtonRow(title : "BirthDay Reminder"),
+                    SearchAndFilter(),
+                    // Input(title: 'Contact Alignment',),
+
+                    Input(title: 'Roles & Responsibilities',),
+                    Input(title: 'Past Accounts',),
+
+
+                    Input(title: 'Past designation',),
+                    Input(title: 'Reference History',),
+                    Input(title: 'Add a tag',),
+                    ToggleButtonRow(title : "Is active"),
+                    ToggleButtonRow(title : "Is Primary Contact"),
+
+
+
+
+
+
 
 
                   ],
                 ),
-                GestureDetector(
-                    onTap: _toggleDropdown,
-                    child: Image.asset(_isOpen ? "assets/contacts/back.png" : "assets/contacts/up.png")),
-
-              ],
-            ),
-
-          ),
-
-
-
-
-          if(_isOpen)
-            SingleChildScrollView(
-              child: Column(
-                children: [
-
-                  Input(title: 'Reporting To',),
-                  Input(title: 'LinkedIn link',),
-
-                  // dob
-                  // Input(title: 'last Name',),
-                  DatePickerFeild(labelText: 'Date of Birth',),
-
-
-                  ToggleButtonRow(title : "BirthDay Reminder"),
-                  SearchAndFilter(),
-                  // Input(title: 'Contact Alignment',),
-
-                  Input(title: 'Roles & Responsibilities',),
-                  Input(title: 'Past Accounts',),
-
-
-                  Input(title: 'Past designation',),
-                  Input(title: 'Reference History',),
-                  Input(title: 'Add a tag',),
-                  ToggleButtonRow(title : "Is active"),
-                  ToggleButtonRow(title : "Is Primary Contact"),
-
-
-
-
-
-
-
-
-                ],
               ),
-            ),
 
 
-        ]
+          ]
+      ),
     );
   }
 

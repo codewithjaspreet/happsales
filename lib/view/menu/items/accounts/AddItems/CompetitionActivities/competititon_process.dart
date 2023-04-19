@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-
 import '../../../../../../../utils/color.dart';
 import '../BuyingProcess/widgets/buy_row.dart';
 import 'add_competition.dart';
@@ -12,9 +11,7 @@ class CompetitionProcess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-
         appBar: CustomAppBar(context),
-
         body : Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

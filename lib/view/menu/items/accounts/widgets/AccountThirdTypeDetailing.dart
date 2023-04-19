@@ -49,26 +49,28 @@ class AccountThirdTypeDetailing extends StatelessWidget {
                         ),
 
             ],
-          ),Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title2,
-                  style: TextStyle(
-                      color: Color(0xff00A6D6),
-                      fontFamily: "roboto_bold",
-                      fontSize: 13.sp)),
+          ),Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title2,
+                    style: TextStyle(
+                        color: Color(0xff00A6D6),
+                        fontFamily: "roboto_bold",
+                        fontSize: 13.sp)),
       AutoSizeText(
-                          subTitle2,
+                            subTitle2,
 
-                          style: TextStyle(
-                            fontSize: 16.sp,
+                            style: TextStyle(
+                              fontSize: 16.sp,
 
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w400,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
 
-            ],
+              ],
+            ),
           ),
         ],
       ),

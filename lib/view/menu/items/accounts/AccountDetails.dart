@@ -339,38 +339,31 @@ class _MyRowState extends State<AccountDetailRow> {
 
                           AccountThirdTypeDetailing(
 
-                            title1: 'segment',
+                            title1: 'Segment',
                             subTitle1: widget.account.accountSegmentName!.toString(),
-                            title2: 'status',
+                            title2: 'Status',
                             subTitle2: widget.account.accountStatusName!.toString(),
                           ),
 
                           AccountFourthTypeDetailing(
-                            title1: 'type',
+                            title1: 'Type',
                             subTitle1: widget.account.tags!.toString(),
-                            title2: 'industry',
+                            title2: 'Industry',
                             subTitle2: widget.account.industryName!.toString(),
                           ),
 
                           SecondTypeDetailing(
-                            title: 'Work phone',
+                            title: 'Work Phone',
                             subTitle: widget.account.phone!.toString(),
                           ),SecondTypeDetailing(
                             title: 'Website',
                             subTitle: widget.account.website!.toString(),
-                          ),
-                          AccountFourthTypeDetailing(
-                            title1: 'Turnover (Cr)',
-                            subTitle1: widget.account.turnover!.toString(),
-                            title2: 'No. Of Employees',
-                            subTitle2: widget.account.numberOfEmployees!.toString(),
-                          ),
-
-                          AccountFourthTypeDetailing(
-                            title1: 'Credit Rating',
-                            subTitle1: widget.account.creditRatingName!.toString(),
-                            title2: 'Currency',
-                            subTitle2: widget.account.currencyName!.toString(),
+                          ),SecondTypeDetailing(
+                            title: 'No. Of Employees',
+                            subTitle: widget.account.numberOfEmployees!.toString(),
+                          ),SecondTypeDetailing(
+                            title: 'Currency',
+                            subTitle: widget.account.currencyName!.toString(),
                           ),
 
                           AccountFourthTypeDetailing(
@@ -487,7 +480,7 @@ class AccountDetailItems extends StatelessWidget {
             children: [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_1.png', title: 'Activity',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_2.png', title: 'Opportunity',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'notes',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'Notes',),
             ],
           ),
 
@@ -498,7 +491,7 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_4.png', title: 'contacts',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_4.png', title: 'Contacts',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_5.png', title: 'Opportunities',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_6.png', title: 'Activities',),
             ],
@@ -511,8 +504,8 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'notes',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hirarchy',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'Notes',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hierarchy',),
               GestureDetector(
                   onTap: () {
                     Get.to(() => BuyingProcess());
@@ -533,7 +526,7 @@ class AccountDetailItems extends StatelessWidget {
                     Get.to(() => BusinessProcess());
                   },
                   child: AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',)),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'business unit',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'Business Unit',),
               GestureDetector(
 
                   onTap: (){
@@ -549,8 +542,8 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'documents',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'forms',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'Forms',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',),
             ],
           ),
@@ -563,7 +556,7 @@ class AccountDetailItems extends StatelessWidget {
             children: [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'chat history',),
+              AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'Chat History',),
             ],
           ),
 
