@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/utils/popups/custom_dropdown.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
@@ -179,22 +180,42 @@ class _MyRowState extends State<MyRow> {
 
           if(!_isOpen)
             SingleChildScrollView(
-              child: Column(
-                children: [
-                  DropDownInput(hint : 'Account Name*'),
-                  Input(title: 'Location *',),
-                  Input(title: 'segment',),
-                  Input(title: 'status',),
-                  DropDownInput(hint : 'type'),
-                  DropDownInput(hint : 'industry'),
-                  Input(title: 'work phone',),
-                  Input(title: 'website',),
-                  Input(title: 'Turnover (Cr)',),
-                  Input(title: 'No. Of Employees',),
-                  Input(title: 'Credit Rating',),
-                  Input(title: 'currency',),
-                  Input(title: 'tags',),
-                  Input(title: 'add category',),
+              child: GestureDetector(
+                onTap: (){
+                  _toggleDropdown();
+                },
+                child: Column(
+                  children: [
+                    CustomDropDown(items: [
+
+                      DropdownMenuItem(child:
+
+                          Text("Account 1"),
+                          value: "account 1",
+
+                      ),
+
+
+                    ],
+                      labelText: "AccountName *",
+
+
+                    ),
+                    Input(title: 'Location *',),
+                    Input(title: 'Segment',),
+                    Input(title: 'Status',),
+                    CustomDropDown(items: [], labelText: "Type"),
+                    CustomDropDown(items: [], labelText: "Industry"),
+                    // DropDownInput(hint : 'Type'),
+                    // DropDownInput(hint : 'Industry'),
+                    Input(title: 'Work phone',),
+                    Input(title: 'Website',),
+                    Input(title: 'Turnover (Cr)',),
+                    Input(title: 'No. Of Employees',),
+                    Input(title: 'Credit Rating',),
+                    Input(title: 'Currency',),
+                    Input(title: 'Tags',),
+                    Input(title: 'Add Category',),
 
 
 
@@ -203,7 +224,8 @@ class _MyRowState extends State<MyRow> {
 
 
 
-                ],
+                  ],
+                ),
               ),
             ),
           Container(
@@ -212,7 +234,7 @@ class _MyRowState extends State<MyRow> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(
@@ -221,7 +243,7 @@ class _MyRowState extends State<MyRow> {
                   ),
                 ),
                 Container(
-                  child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(

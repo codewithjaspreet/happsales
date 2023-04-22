@@ -382,7 +382,7 @@ class DetailItems extends StatelessWidget {
         children: [
           IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
           IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
-          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'notes',),
+          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'Notes',),
         ],
       ),
 

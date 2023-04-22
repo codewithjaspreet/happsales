@@ -6,6 +6,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import '../../../../../../../utils/color.dart';
 import '../widgets/buy_row.dart';
 import 'add_buying.dart';
+import 'buy_detail.dart';
 class BuyingProcess extends StatelessWidget {
   const BuyingProcess({Key? key}) : super(key: key);
 
@@ -100,17 +101,17 @@ class BuyingProcess extends StatelessWidget {
 
                     padding :  EdgeInsets.all(10.sp),
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.",   route: BuyDetails(),)),
                 Container(
 
                     padding :  EdgeInsets.all(10.sp),
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
                 Container(
 
                     padding :  EdgeInsets.all(10.sp),
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
 
               ],
             )

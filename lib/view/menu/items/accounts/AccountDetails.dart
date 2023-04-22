@@ -342,34 +342,38 @@ class _MyRowState extends State<AccountDetailRow> {
                             title1: 'Segment',
                             subTitle1: widget.account.accountSegmentName!.toString(),
                             title2: 'Status',
-                            subTitle2: widget.account.accountStatusName!.toString(),
+                            subTitle2: widget.account.accountStatusName!.toString() ,
                           ),
 
                           AccountFourthTypeDetailing(
                             title1: 'Type',
                             subTitle1: widget.account.tags!.toString(),
                             title2: 'Industry',
-                            subTitle2: widget.account.industryName!.toString(),
+                            subTitle2: "-",
+                            // subTitle2: widget.account.industryName!.toString(),
                           ),
 
                           SecondTypeDetailing(
                             title: 'Work Phone',
-                            subTitle: widget.account.phone!.toString(),
+                            subTitle: "-",
+                            // subTitle: widget.account.phone!.toString()  ,
                           ),SecondTypeDetailing(
                             title: 'Website',
-                            subTitle: widget.account.website!.toString(),
+                            subTitle: "-",
+                            // subTitle: widget.account.website!.toString(),
                           ),SecondTypeDetailing(
                             title: 'No. Of Employees',
-                            subTitle: widget.account.numberOfEmployees!.toString(),
+                            subTitle: "-",
+                            // subTitle: widget.account.numberOfEmployees!.toString(),
                           ),SecondTypeDetailing(
                             title: 'Currency',
                             subTitle: widget.account.currencyName!.toString(),
                           ),
 
                           AccountFourthTypeDetailing(
-                            title1: 'tags',
+                            title1: 'Tags',
                             subTitle1: widget.account.tags!.toString(),
-                            title2: 'category',
+                            title2: 'Category',
                             subTitle2: widget.account.companyName!.toString(),
                           ),
                           // FourthTypeDetailing(

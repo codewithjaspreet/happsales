@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
@@ -100,17 +101,17 @@ class BusinessProcess extends StatelessWidget {
 
                       padding :  EdgeInsets.all(10.sp),
 
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails(),)),
                   Container(
 
                       padding :  EdgeInsets.all(10.sp),
 
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
                   Container(
 
                       padding :  EdgeInsets.all(10.sp),
 
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
 
                 ],
               )

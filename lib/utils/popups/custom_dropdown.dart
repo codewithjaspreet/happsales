@@ -21,7 +21,9 @@ class _CustomDropDownState extends State<CustomDropDown> {
     return Container(
       padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
       child: TextField(
+
         decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(

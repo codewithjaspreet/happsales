@@ -37,7 +37,7 @@ class AddContact extends StatelessWidget {
                 children: [
                   AccountIndividualItem(imageUrl: 'assets/accounts/more_1.png', title: 'Activity',),
                   AccountIndividualItem(imageUrl: 'assets/accounts/more_2.png', title: 'Opportunity',),
-                  AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'notes',),
+                  AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'Notes',),
                 ],
               ),
             ),
@@ -48,7 +48,7 @@ class AddContact extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class AddContact extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

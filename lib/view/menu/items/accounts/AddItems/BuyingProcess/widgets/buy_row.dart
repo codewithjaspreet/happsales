@@ -12,21 +12,23 @@ class BuyRow extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.date,
+        required this.route,
       required this.content})
       : super(key: key);
 
   final String title;
   final String date;
   final String content;
+  final Widget route;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Get.to(() => BuyDetails());
+        Get.to(() => route);
       },
       child: Container(
         width: 336.w,
-        height: 86.h,
+        height: 100.h,
         decoration: BoxDecoration(
           color: Color(0xffE5F6FF),
           borderRadius: BorderRadius.circular(8.r),

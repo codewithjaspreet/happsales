@@ -63,7 +63,7 @@ class AccountFourthTypeDetailing extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 55.w),
+                    margin: EdgeInsets.only(left: 45.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -76,7 +76,7 @@ class AccountFourthTypeDetailing extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 55.w),
+                    margin: EdgeInsets.only(left: 45.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

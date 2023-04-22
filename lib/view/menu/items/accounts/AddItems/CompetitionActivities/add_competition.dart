@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 
 import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
@@ -21,52 +22,57 @@ class AddCompetition extends StatelessWidget {
 
             Container(
               padding: EdgeInsets.all(12.sp),
-              child: Text("New Buying Process" , style: TextStyle(
+              child: Text("New Competition Acivity" , style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 20.sp,
                   fontFamily: 'roboto_bold'
               ),),
             ),
 
+            Column(
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15.w),
-              child: TextFormField(
+              children: [
+                Input(title: "Account Name"),
 
+                Container(
+                    margin: EdgeInsets.only(top: 10.h),
+                    child: Input(title: "Competition Name")),
+      Container(
 
-                decoration: InputDecoration(
-                  // hintText: "Buying Process Name",
+        padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 15.h),
+        child: TextFormField(
 
-                  contentPadding: EdgeInsets.symmetric(vertical: 70.h),
-                  // labelText: "Buying Process Name",
-                  labelStyle: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontSize: 14.sp,
-                      fontFamily: 'roboto_bold'
-                  ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: AppColors.primaryColor,
-                          width: 1.sp
-                      )
-                  ),
+          decoration: InputDecoration(
 
+            labelText: "Competition Activity",
+            hintText: "Competition Activity",
+            hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+            border: OutlineInputBorder(
 
-                ),
+              borderRadius: BorderRadius.circular(8.sp),
+              borderSide: BorderSide(
+                color: Color(0xffB4C6D4),
               ),
             ),
 
+          ),
+        ),
+      ),
+
+              ],
+            )
 
 
-            DatePickerFeild(labelText: 'Customer Target Date',),
-            ToggleButtonRow(title: 'Is Active',),
+
+
+           , ToggleButtonRow(title: 'Is Active',),
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -75,7 +81,7 @@ class AddCompetition extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

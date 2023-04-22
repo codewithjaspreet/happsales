@@ -5,6 +5,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import '../../../../../../../utils/color.dart';
 import '../BuyingProcess/widgets/buy_row.dart';
 import 'add_competition.dart';
+import 'competition_details.dart';
 class CompetitionProcess extends StatelessWidget {
   const CompetitionProcess({Key? key}) : super(key: key);
 
@@ -23,52 +24,16 @@ class CompetitionProcess extends StatelessWidget {
                 padding: EdgeInsets.all(20.sp),
                 child: Row(
                   children: [
-                    Stack(
-                      children: [
-
-                        Positioned(child: Container(
-                          child: Center(
-
-                            child: Text("S",style: TextStyle(color: Color(0xff00C6FF),fontSize: 37.sp),),
-                          ),
-
-                          width: 68.w,
-                          height: 68.h,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE5F6FF),
-                            borderRadius: BorderRadius.circular(9.sp),
-
-                          ),
-                        )),
-
-                        Positioned(
-                            left: 45.w,
-
-                            top: 4.h,
-                            child: Container(
-
-                              width: 15.w,
-                              height: 15.h,
-
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xff00C6FF)
-                              ),
-
-                              child: Center(
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 12.sp,
-                                ),
-                              ),
-                            ))
-
-
-
-                      ],
+                    CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      radius: 35.r,
+                      child: Center(
+                        child:Text("a", style: TextStyle(
+                          color: Colors.white , fontSize: 30.sp , fontWeight: FontWeight.w500
+                        ),)
+                      ),
                     ),
-                    SizedBox(width: 20.w,),
+                    SizedBox(width: 10.w,),
                     Column(
 
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,19 +60,9 @@ class CompetitionProcess extends StatelessWidget {
                 children: [
                   Container(
 
-                      padding :  EdgeInsets.all(10.sp),
+                      padding :  EdgeInsets.all(20.sp),
 
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
-                  Container(
-
-                      padding :  EdgeInsets.all(10.sp),
-
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
-                  Container(
-
-                      padding :  EdgeInsets.all(10.sp),
-
-                      child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.")),
+                      child: BuyRow(title: "T" , date: "25 Mar 2023", content : "T", route: CompetitionDetails(),)),
 
                 ],
               )

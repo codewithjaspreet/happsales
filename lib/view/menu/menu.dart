@@ -43,7 +43,7 @@ class Menu extends StatelessWidget {
             crossAxisSpacing: 8,
           ),
           children:   <Widget>[
-            _buildGridItem(title : 'home', image: 'assets/home.png' ),
+            _buildGridItem(title : 'Home', image: 'assets/home.png' ),
             GestureDetector(
                 onTap: () {
                   Get.to(() => AccountPage());
@@ -60,9 +60,9 @@ class Menu extends StatelessWidget {
             _buildGridItem(title : 'Notes', image: 'assets/notes.png' ),
             _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
             _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' ),
-            _buildGridItem(title : 'expense', image: 'assets/expense.png' ),
+            _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
             _buildGridItem(title : 'Settings', image: 'assets/settings.png' ),
-            _buildGridItem(title : 'manager', image: 'assets/manager.png' ),
+            _buildGridItem(title : 'Manager', image: 'assets/manager.png' ),
           ],
         ),
       ),

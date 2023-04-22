@@ -18,11 +18,11 @@ class SearchAndFilter extends StatefulWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 30.h),
             Text("Supporter",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
             Divider(
-              color: Colors.grey,
-              thickness: 1,
+              color: Colors.grey.withOpacity(0.3),
               indent: 2,
             )
           ],
@@ -39,8 +39,7 @@ class SearchAndFilter extends StatefulWidget {
             Text("Neutral",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
            Divider(
-              color: Colors.grey,
-              thickness: 1,
+             color: Colors.grey.withOpacity(0.3),
              indent: 2,
            )
           ],
@@ -58,8 +57,7 @@ class SearchAndFilter extends StatefulWidget {
             Text("Against",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
             Divider(
-              color: Colors.grey,
-              thickness: 1,
+              color: Colors.grey.withOpacity(0.3),
               indent: 2,
             )
           ],
@@ -111,7 +109,7 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
 
         border: OutlineInputBorder(
 
-          borderRadius: BorderRadius.circular(14.sp),
+          borderRadius: BorderRadius.circular(20.sp),
           borderSide: BorderSide(
             color: Color(0xffB4C6D4),
           ),
