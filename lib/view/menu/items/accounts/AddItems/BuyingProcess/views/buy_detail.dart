@@ -139,7 +139,9 @@ class BuyDetails extends StatelessWidget {
 
               ],
             ),
-          ), Container(
+          ),
+
+          Container(
             padding: EdgeInsets.all(20),
             child: Row(
               children: [

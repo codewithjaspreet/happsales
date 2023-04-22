@@ -86,9 +86,16 @@ class _MyRowState extends State<MoreDetail> {
                           SecondTypeDetailing(title: 'Tags', subTitle: "Open",),
                           SecondTypeDetailing(title: 'Remarks', subTitle: widget.contact.remarks.toString(),),
                           Hdivider(),
+                          SizedBox(height: 12.h,),
+
                           ThirdTypeDetailing(title1: 'is active', subTitle1: widget.contact.isPrimaryContact.toString(), title2: 'is primary contact', subTitle2: 'no'),
+
                           Hdivider(),
+                          SizedBox(height: 12.h,),
+
                           ThirdTypeDetailing(title1: 'created by', subTitle1: widget.contact.createdBy!.toString(), title2: 'modified by', subTitle2: 'Suvarna Traders'),
+                          SizedBox(height: 12.h,),
+
                           ThirdTypeDetailing(title1: 'created on', subTitle1: widget.contact.createdOn!.toString(), title2: 'modified on', subTitle2: '29 Dec 2021'),
 
 

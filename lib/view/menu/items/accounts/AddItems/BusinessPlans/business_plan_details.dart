@@ -142,7 +142,8 @@ class BusinessPlanDetails extends StatelessWidget {
 
               ],
             ),
-          ), Container(
+          ),
+          Container(
             padding: EdgeInsets.all(20.sp),
             child: Row(
               children: [

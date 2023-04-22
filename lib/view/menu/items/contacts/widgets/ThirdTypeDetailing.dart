@@ -19,133 +19,101 @@ class ThirdTypeDetailing extends StatelessWidget {
   final String subTitle2;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 16.h,
 
-        top: 20.h,
-        right: 20.h,
-      ),
+
+    return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title1,
-                  style: TextStyle(
-                      color: Color(0xff00A6D6),
-                      fontFamily: "roboto_bold",
-                      fontSize: 13.sp)),
-      AutoSizeText(
-                          subTitle1,
 
-                          style: TextStyle(
-                            fontSize: 16.sp,
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 16.w,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title1,style: TextStyle(
+                  fontSize: 13.sp ,
+                  color: Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text(subTitle1),
+              ],
+            ),
+          ) ),
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 32.w,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title2,style:  TextStyle(
+                  fontSize: 13.sp ,
+                  color: Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text(subTitle2),
+              ],
+            ),
+          ) ),
 
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-
-            ],
-          ),Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title2,
-                  style: TextStyle(
-                      color: Color(0xff00A6D6),
-                      fontFamily: "roboto_bold",
-                      fontSize: 13.sp)),
-      AutoSizeText(
-                          subTitle2,
-
-                          style: TextStyle(
-                            fontSize: 16.sp,
-
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-
-            ],
-          ),
-        ],
-      ),
-      // child: Column(
-      //   children: [
-      //     Row(
+      //     Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
       //       children: [
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Row(
-      //               mainAxisAlignment: MainAxisAlignment.start,
-      //               children: [
-      //                 Text(title1,
-      //                     style: TextStyle(
-      //                         color: Color(0xff00A6D6),
-      //                         fontFamily: "roboto_bold",
-      //                         fontSize: 13.sp)),
-      //               ],
-      //             ),
-      //             Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 AutoSizeText(
-      //                   subTitle1,
+      //         Text(
+      //             title1,
+      //             style: TextStyle(
+      //                 color: Color(0xff00A6D6),
+      //                 fontFamily: "roboto_bold",
+      //                 fontSize: 13.sp)),
       //
-      //                   style: TextStyle(
-      //                     fontSize: 16.sp,
       //
-      //                     color: AppColors.primaryColor,
-      //                     fontWeight: FontWeight.w400,
-      //                   ),
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Container(
-      //               margin: EdgeInsets.only(left: 80.w),
-      //               child: Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: [
-      //                   Text(title2,
-      //                       style: TextStyle(
-      //                           color: Color(0xff00A6D6),
-      //                           fontFamily: "roboto_bold",
-      //                           fontSize: 13.sp)),
-      //                 ],
-      //               ),
-      //             ),
-      //             Container(
-      //               margin: EdgeInsets.only(left: 100.w),
-      //               child: Row(
-      //                 children: [
-      //                   AutoSizeText(
-      //                     subTitle2,
+      //
+      //         AutoSizeText(
+      //                     subTitle1,
+      //
       //                     style: TextStyle(
       //                       fontSize: 16.sp,
+      //
       //                       color: AppColors.primaryColor,
       //                       fontWeight: FontWeight.w400,
       //                     ),
       //                   ),
       //
-      //
-      //
-      //                 ],
-      //               ),
-      //             )
-      //           ],
-      //         ),
       //       ],
-      //     )
-      //   ],
-      // ),
+      //     ),
+      //     Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: [
+      //         Text(title2,
+      //             style: TextStyle(
+      //                 color: Color(0xff00A6D6),
+      //                 fontFamily: "roboto_bold",
+      //                 fontSize: 13.sp)),
+      // AutoSizeText(
+      //                     subTitle2,
+      //
+      //                     style: TextStyle(
+      //                       fontSize: 16.sp,
+      //
+      //                       color: AppColors.primaryColor,
+      //                       fontWeight: FontWeight.w400,
+      //                     ),
+      //                   ),
+      //
+      //       ],
+      //     ),
+        ],
+      ),
     );
   }
 }
+
