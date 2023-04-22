@@ -1,126 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/add_buying.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-
 import '../../../../../../../utils/color.dart';
+import '../../CompetitionActivities/competition_details.dart';
 import '../widgets/buy_row.dart';
-import 'add_buying.dart';
-import 'buy_detail.dart';
 class BuyingProcess extends StatelessWidget {
   const BuyingProcess({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      
-      appBar: CustomAppBar(context),
-      
-      body : Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        appBar: CustomAppBar(context),
+        body : Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            HelperRow(title: "Buying Process", direct: AddBuying()),
+              HelperRow(title: "Buying Process", direct: AddBuying()),
 
-            Container(
-              padding: EdgeInsets.all(20.sp),
-              child: Row(
-                children: [
-                  Stack(
-                    children: [
+              Container(
+                padding: EdgeInsets.all(20.sp),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      radius: 35.r,
+                      child: Center(
+                          child:Text("a", style: TextStyle(
+                              color: Colors.white , fontSize: 30.sp , fontWeight: FontWeight.w500
+                          ),)
+                      ),
+                    ),
+                    SizedBox(width: 10.w,),
+                    Column(
 
-                      Positioned(child: Container(
-                        child: Center(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("account owner to Deepak",style: TextStyle(color: AppColors.primaryColor,
 
-                          child: Text("S",style: TextStyle(color: Color(0xff00C6FF),fontSize: 37.sp),),
-                        ),
+                            fontSize: 20.sp , fontWeight: FontWeight.w500),),
 
-                        width: 68.w,
-                        height: 68.h,
-                        decoration: BoxDecoration(
-                          color: Color(0xffE5F6FF),
-                          borderRadius: BorderRadius.circular(9.sp),
+                        SizedBox(height : 5.h),
+                        Text("Aerospace".toUpperCase(),style: TextStyle(color: AppColors.primaryColor,
 
-                        ),
-                      )),
+                            fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
 
-                      Positioned(
-                          left: 45.w,
+                        SizedBox(height: 5.h,),
+                        Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
 
-                          top: 4.h,
-                          child: Container(
-
-                            width: 15.w,
-                            height: 15.h,
-
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xff00C6FF)
-                            ),
-
-                            child: Center(
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 12.sp,
-                              ),
-                            ),
-                          ))
-
-
-
-                    ],
-                  ),
-                  SizedBox(width: 20.w,),
-                  Column(
-
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Suvarna Traders",style: TextStyle(color: AppColors.primaryColor,
-
-                          fontSize: 20.sp , fontWeight: FontWeight.w500),),
-
-                      SizedBox(height : 5.h),
-                      Text("Chemicals",style: TextStyle(color: AppColors.primaryColor,
-
-                          fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
-
-                      SizedBox(height: 5.h,),
-                      Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
-
-                          fontSize: 14.sp , fontWeight: FontWeight.w200),)
-                    ],
-                  )
-                ],
+                            fontSize: 14.sp , fontWeight: FontWeight.w200),)
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Column(
-              children: [
-                Container(
+              Column(
+                children: [
+                  Container(
 
-                    padding :  EdgeInsets.all(10.sp),
+                      padding :  EdgeInsets.all(20.sp),
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.",   route: BuyDetails(),)),
-                Container(
+                      child: BuyRow(title: "HAPPSALES-ACBUY-00000000074" , date: "25 Mar 2023", content : "T", route: BuyDetails(),)),
 
-                    padding :  EdgeInsets.all(10.sp),
+                ],
+              )
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
-                Container(
+            ],
+          ),
+        )
 
-                    padding :  EdgeInsets.all(10.sp),
 
-                    child: BuyRow(title: "HPSTBP001" , date: "2021-09-01", content : "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod ….. invidunt ut labore et dolore magna.", route: BuyDetails())),
-
-              ],
-            )
-
-          ],
-        ),
-      )
-      
-      
     );
   }
 }

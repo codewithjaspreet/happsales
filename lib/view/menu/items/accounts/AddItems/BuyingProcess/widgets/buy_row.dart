@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 
+import '../../../../../../../utils/color.dart';
 import '../views/add_buying.dart';
 
 class BuyRow extends StatelessWidget {
@@ -33,50 +34,57 @@ class BuyRow extends StatelessWidget {
           color: Color(0xffE5F6FF),
           borderRadius: BorderRadius.circular(8.r),
         ),
-        child: Container(
-          margin: EdgeInsets.only(top: 10.h, ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.sp),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(title,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff1F2937),
-                        )),
-                    Text(
+                    title,
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 12.sp,
+                      fontFamily: "roboto_medium",
+                    ),
+                  ),),
+                  Expanded(
+                    flex: 0,
+                    child: Text(
                       date,
                       style: TextStyle(
+                        color: AppColors.primaryColor,
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff1F2937),
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 12.h),
-                child: AutoSizeText(
-                  content,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff1F2937),
                   ),
-                  maxLines: 2,
-                ),
-              )
-            ],
-          ),
-        ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.sp),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+
+                    content,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
+                      fontSize: 12.sp,
+                    ),
+                  ),),
+
+                ],
+              ),
+            ),
+          ],
+        )
       ),
     );
   }

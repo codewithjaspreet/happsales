@@ -31,36 +31,12 @@ class AddBuying extends StatelessWidget {
             ),
 
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15.w),
-              child: TextFormField(
-
-
-                decoration: InputDecoration(
-                  // hintText: "Buying Process Name",
-
-                      contentPadding: EdgeInsets.symmetric(vertical: 70.h),
-                  // labelText: "Buying Process Name",
-                  labelStyle: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 14.sp,
-                    fontFamily: 'roboto_bold'
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColors.primaryColor,
-                      width: 1.sp
-                    )
-                  ),
-
-
-                ),
-              ),
-            ),
+            Input(title: 'Account Name *'),
+            SizedBox(height: 12.h,),
+            Input(title: 'Buying Process * '),
 
 
 
-            DatePickerFeild(labelText: 'Customer Target Date',),
             ToggleButtonRow(title: 'Is Active',),
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
@@ -68,7 +44,7 @@ class AddBuying extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -77,7 +53,7 @@ class AddBuying extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

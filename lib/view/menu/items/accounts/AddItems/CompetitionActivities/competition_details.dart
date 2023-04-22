@@ -17,7 +17,7 @@ class CompetitionDetails extends StatelessWidget {
         children: [
 
       Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.sp),
         child: Row(
         children: [
         Expanded(

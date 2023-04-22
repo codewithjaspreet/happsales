@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:happsales_crm/utils/color.dart';
-import 'package:happsales_crm/view/menu/items/accounts/AddItems/CompetitionActivities/widgets/competition_row.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 
-import '../widgets/buy_sec_row.dart';
-class BuyDetails extends StatelessWidget {
-  const BuyDetails({Key? key}) : super(key: key);
+import '../../../../../../utils/color.dart';
+import '../../../contacts/widgets/CustomAppBar.dart';
+import '../../../contacts/widgets/HDivider.dart';
+import '../BuyingProcess/widgets/buy_sec_row.dart';
+class BusinessPlanDetails extends StatelessWidget {
+  const BusinessPlanDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class BuyDetails extends StatelessWidget {
                         height: 5.h,
                       ),
                       Text(
-                        'HAPPSALES-ACCMP-00000000074',
+                        'HAPPSALES-ACBPL-00000000034',
                         style: TextStyle(
                           color: AppColors.primaryColor,
                           fontSize: 14.sp,
@@ -64,12 +63,16 @@ class BuyDetails extends StatelessWidget {
           ),
           BuySecondRow(
             compTitle: "Account Name",
-            compSubTitle: "account owner to Deepak",
+            compSubTitle: "ABC Logistics",
           ),
 
           BuySecondRow(
-            compTitle: "Buying Process",
-            compSubTitle: "Navigation",
+            compTitle: "Business Plan",
+            compSubTitle: "kishore",
+          ),
+          BuySecondRow(
+            compTitle: "Customer Target Date",
+            compSubTitle: "16 Feb 2022",
           ),
 
 
@@ -140,7 +143,7 @@ class BuyDetails extends StatelessWidget {
               ],
             ),
           ), Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20.sp),
             child: Row(
               children: [
                 Expanded(
@@ -161,7 +164,7 @@ class BuyDetails extends StatelessWidget {
                         height: 5.h,
                       ),
                       Text(
-                        '25 Mar 2023',
+                        '21 Sep 2022',
                         style: TextStyle(
                           color: AppColors.primaryColor,
                           fontSize: 14.sp,

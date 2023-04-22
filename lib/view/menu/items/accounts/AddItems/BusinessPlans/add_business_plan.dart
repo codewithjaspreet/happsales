@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 
 import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
@@ -29,36 +30,15 @@ class AddBusiness extends StatelessWidget {
             ),
 
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15.w),
-              child: TextFormField(
-
-
-                decoration: InputDecoration(
-                  // hintText: "Buying Process Name",
-
-                  contentPadding: EdgeInsets.symmetric(vertical: 70.h),
-                  // labelText: "Buying Process Name",
-                  labelStyle: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontSize: 14.sp,
-                      fontFamily: 'roboto_bold'
-                  ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: AppColors.primaryColor,
-                          width: 1.sp
-                      )
-                  ),
-
-
-                ),
-              ),
+Input(title: 'Account Name',),
+            SizedBox(
+              height: 10.h,
             ),
 
+            Input(title: 'Business Plan ',),
 
+            DatePickerFeild(labelText: 'Customer Target Date'),
 
-            DatePickerFeild(labelText: 'Customer Target Date',),
             ToggleButtonRow(title: 'Is Active',),
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
