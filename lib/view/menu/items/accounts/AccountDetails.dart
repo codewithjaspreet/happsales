@@ -17,6 +17,7 @@ import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
+import 'AddItems/BusinessUnits/business_unit.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
 import 'AddItems/CompetitionActivities/competititon_process.dart';
 import 'EditAccount.dart';
@@ -530,7 +531,11 @@ class AccountDetailItems extends StatelessWidget {
                     Get.to(() => BusinessProcess());
                   },
                   child: AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',)),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'Business Unit',),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(() => BusinessUnit());
+                  },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'Business Unit',)),
               GestureDetector(
 
                   onTap: (){

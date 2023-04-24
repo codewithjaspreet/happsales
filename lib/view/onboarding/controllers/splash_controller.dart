@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../login.dart';
 
 class SplashController extends GetxController {
-
   @override
   void onInit() {
     super.onInit();
@@ -19,6 +18,8 @@ class SplashController extends GetxController {
       checkFirstSeen();
     });
   }
+
+
 
   Future<void> checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

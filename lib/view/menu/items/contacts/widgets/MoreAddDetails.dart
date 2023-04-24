@@ -45,7 +45,7 @@ class _MyRowState extends State<MoreAddDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('More Details' ,style: TextStyle(color: AppColors.primaryColor,fontFamily: "roboto_bold" ,
+                      Text('Additional Section' ,style: TextStyle(color: AppColors.primaryColor,fontFamily: "roboto_bold" ,
                           fontSize: 14.sp),),
 
 

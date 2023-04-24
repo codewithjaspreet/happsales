@@ -17,6 +17,7 @@ class Input extends StatelessWidget {
 
 
         decoration: InputDecoration(
+
           labelText: title,
           hintText: title,
           hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),

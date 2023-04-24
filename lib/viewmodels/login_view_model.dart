@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/parent.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +13,46 @@ import '../utils/api_endpoints.dart';
 class LoginController extends GetxController {
 
   TextEditingController emailController = TextEditingController();
+  RxBool location = false.obs;
   TextEditingController passwordController = TextEditingController();
   TextEditingController orgController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController forgotOrgController = TextEditingController();
   TextEditingController forgotEmailController = TextEditingController();
+
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Get.snackbar('Enable Location',
+          'Location services are disabled. Please enable the services');
+      location.value = false;
+      return location.value;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Get.snackbar('Denial', 'Location permissions are denied');
+        location.value = false;
+        return location.value;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      Get.snackbar('Permanent Denial',
+          'Location permissions are permanently denied, we cannot request permissions.');
+      location.value = false;
+      return location.value;
+    }
+
+    location.value = true;
+    print("Location access is given -  ${location.value}");
+    return location.value;
+  }
+
 
   Future<String> loginWithEmail() async {
     print("hello");
@@ -54,6 +90,8 @@ class LoginController extends GetxController {
 
 
         Get.off(const DashBoardPage());
+
+        _handleLocationPermission();
 
         return token;
 
