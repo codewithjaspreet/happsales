@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/parent.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../utils/api_endpoints.dart';
 
 class LoginController extends GetxController {

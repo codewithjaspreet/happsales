@@ -255,12 +255,12 @@ class _MyRowState extends State<DetailRow> {
 
                             Detaling(
                               imgUrl: "assets/contacts/web.png",
-                              title: 'contact name',
+                              title: 'Contact Name',
                               // subTitle: widget.contactViewModel.contactList[0].contactName,
                               subTitle: widget.contact.contactName!.toString(),
                             ),
                             SecondTypeDetailing(
-                              title: 'Account name',
+                              title: 'Account Name',
                               subTitle: widget.contact.accountName!.toString(),
                             ),
                             // ThirdTypeDetailing(),

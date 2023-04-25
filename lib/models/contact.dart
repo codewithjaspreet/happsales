@@ -189,8 +189,8 @@ class Contact {
     alternateMobileNumber = json['AlternateMobileNumber'] ?? "9984822215";
     workPhone = json['WorkPhone'] ?? "-";
     residencePhone = json['ResidencePhone'] ?? "-";
-    email = json['Email'] ?? "-";
-    alternateEmail = json['AlternateEmail'] ?? "-";
+    email = json['Email'] ?? "jaspreetsodhi02@gmail.com";
+    alternateEmail = json['AlternateEmail'] ?? "jaspreetsodhi02@gmail.com";
     addressLine1 = json['AddressLine1'] ?? "-";
     addressLine2 = json['AddressLine2'] ?? "-";
     addressLine3 = json['AddressLine3'] ?? "-";
@@ -199,7 +199,7 @@ class Contact {
     country = json['Country'] ?? "-";
     pIN = json['PIN'] ?? "-";
     gPSCoordinates = json['GPSCoordinates'] ?? "-";
-    linkedIn = json['LinkedIn'] ?? "-";
+    linkedIn = json['LinkedIn'] ?? "jaspreetsodhi02/linkedin.com";
     pastAccounts = json['PastAccounts'] ?? "-";
     pastDesignations = json['PastDesignations'] ?? "-";
     dateOfBirth = json['DateOfBirth'] ?? "-";

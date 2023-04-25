@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/Addresses/account_addresses.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BusinessPlans/business_process.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/Media/media.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountFourthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountMoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountThirdTypeDetailing.dart';
@@ -17,6 +19,7 @@ import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
 import '../contacts/views/edit_contact.dart';
+import 'AddItems/Addresses/add_address.dart';
 import 'AddItems/BusinessUnits/business_unit.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
 import 'AddItems/CompetitionActivities/competititon_process.dart';
@@ -553,7 +556,11 @@ class AccountDetailItems extends StatelessWidget {
             children: [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'Forms',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(() => MediaPage());
+                  },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',)),
             ],
           ),
 
@@ -564,7 +571,11 @@ class AccountDetailItems extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',),
+              GestureDetector(
+                 onTap: () {
+                   Get.to(() => AccountAddress());
+                 },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',)),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'Chat History',),
             ],
           ),
