@@ -24,6 +24,7 @@ import 'AddItems/BusinessUnits/business_unit.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
 import 'AddItems/CompetitionActivities/competititon_process.dart';
 import 'AddItems/Documents/document.dart';
+import 'AddItems/ShareAccounts/share_account.dart';
 import 'EditAccount.dart';
 
 class AcccountDetails extends StatelessWidget {
@@ -576,7 +577,12 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',),
+              GestureDetector(
+                onTap: () {
+
+                  Get.to(() => ShareAccount());
+    },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',)),
               GestureDetector(
                  onTap: () {
                    Get.to(() => AccountAddress());
