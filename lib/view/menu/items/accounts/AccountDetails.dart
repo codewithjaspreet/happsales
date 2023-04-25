@@ -23,6 +23,7 @@ import 'AddItems/Addresses/add_address.dart';
 import 'AddItems/BusinessUnits/business_unit.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
 import 'AddItems/CompetitionActivities/competititon_process.dart';
+import 'AddItems/Documents/document.dart';
 import 'EditAccount.dart';
 
 class AcccountDetails extends StatelessWidget {
@@ -554,7 +555,12 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',),
+              GestureDetector(
+                onTap: () {
+
+                  Get.to(DocumentPage());
+    },
+                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',)),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'Forms',),
               GestureDetector(
                   onTap: () {
