@@ -346,7 +346,7 @@ class Detaling extends StatelessWidget {
                             color: Colors.blue,
 
 
-                            fontSize: 12.sp,
+                            fontSize: 13.sp,
                           ),
                         ),
                         SizedBox(

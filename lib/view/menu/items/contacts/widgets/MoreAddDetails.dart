@@ -3,6 +3,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/color.dart';
@@ -11,6 +12,7 @@ import '../../../../../utils/popups/search_filter.dart';
 import 'DropDownInput.dart';
 import 'InputOne.dart';
 import 'ToggleButtonRow.dart';
+import 'add_tag.dart';
 
 class MoreAddDetails extends StatefulWidget {
   @override
@@ -86,9 +88,30 @@ class _MyRowState extends State<MoreAddDetails> {
 
                     Input(title: 'Past designation',),
                     Input(title: 'Reference History',),
-                    Input(title: 'Add a tag',),
+                    Input(title: 'Remarks',),
+
                     ToggleButtonRow(title : "Is active"),
                     ToggleButtonRow(title : "Is Primary Contact"),
+
+
+                    Container(
+
+                      child: Column(
+
+                        children: [
+
+                          TagInputWidget()
+                        ],
+                      ),
+
+                      margin: EdgeInsets.only(right: 2.w),
+                      height: 190.h,
+                      width: 340.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.sp),
+                        border: Border.all(color: Colors.blue.withOpacity(0.5),),
+                      ),
+                    )
 
 
 

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,7 +28,7 @@ class FifthTypeDetailing extends StatelessWidget {
             style: TextStyle(
               fontSize: 13.sp,
               fontFamily: "roboto_bold",
-              color: Color(0xff00A6D6),
+             color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -41,7 +42,7 @@ class FifthTypeDetailing extends StatelessWidget {
                 child: Text(subTitle,style: TextStyle(
                     fontSize: 16.sp,
                     fontFamily: "roboto_bold",
-                    color: AppColors.primaryColor,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w400),),
 
               ),

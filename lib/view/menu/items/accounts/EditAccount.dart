@@ -108,17 +108,7 @@ class _MyRowState extends State<DetailRow> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          CustomDropDown(items: [
-
-                            DropdownMenuItem(
-                              child: Text('Active'),
-                              value: 'Active',
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Inactive'),
-                              value: 'Inactive',
-                            ),
-                          ], labelText: 'Account Name', ),
+                         Input(title: 'Account Name'),
                           Input(title: 'Location *'),
                           Input(title: 'Segment'),
                           Input(title: 'Status'),
