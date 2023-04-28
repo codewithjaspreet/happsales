@@ -43,7 +43,7 @@ class _MyRowState extends State<MoreDetail> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'More Details',
+                      'Additional Section',
                       style: TextStyle(
                           color: AppColors.primaryColor,
                           fontFamily: "roboto_medium",
@@ -74,29 +74,8 @@ class _MyRowState extends State<MoreDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
+                          DetailItems(),
 
-                          SecondTypeDetailing(title: 'Reporting To', subTitle: widget.contact.reportingManager!.toString(),),
-                          Detaling(title: 'LinkedIn', subTitle: widget.contact.linkedIn.toString(), imgUrl: 'assets/contacts/linkdeln.png',),
-                          ThirdTypeDetailing(title1: 'DoB', subTitle1: widget.contact.dateOfBirth!.toString(), title2: 'Reminder', subTitle2: 'no'),
-                          SecondTypeDetailing(title: 'Contact Alignment', subTitle: widget.contact.contactAlignmentID!.toString(),),
-                          SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle: widget.contact.rolesAndResponsibilities!.toString(),),
-                          SecondTypeDetailing(title: 'Past Accounts', subTitle: widget.contact.pastAccounts!.toString(),),
-                          SecondTypeDetailing(title: 'Past Designations', subTitle: widget.contact.pastDesignations!.toString(),),
-                          SecondTypeDetailing(title: 'Reference History', subTitle: '-'),
-                          SecondTypeDetailing(title: 'Tags', subTitle: "Open",),
-                          SecondTypeDetailing(title: 'Remarks', subTitle: widget.contact.remarks.toString(),),
-                          Hdivider(),
-                          SizedBox(height: 12.h,),
-
-                          ThirdTypeDetailing(title1: 'is active', subTitle1: widget.contact.isPrimaryContact.toString(), title2: 'is primary contact', subTitle2: 'no'),
-
-                          Hdivider(),
-                          SizedBox(height: 12.h,),
-
-                          ThirdTypeDetailing(title1: 'created by', subTitle1: widget.contact.createdBy!.toString(), title2: 'modified by', subTitle2: 'Suvarna Traders'),
-                          SizedBox(height: 12.h,),
-
-                          ThirdTypeDetailing(title1: 'created on', subTitle1: widget.contact.createdOn!.toString(), title2: 'modified on', subTitle2: '29 Dec 2021'),
 
 
 
@@ -108,6 +87,93 @@ class _MyRowState extends State<MoreDetail> {
             )
         ]),
       ),
+    );
+  }
+}
+
+
+class DetailItems extends StatelessWidget {
+  const DetailItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
+          IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
+          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'Notes',),
+        ],
+      ),
+
+    );
+
+  }
+}
+class IndividualItem extends StatelessWidget {
+  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+
+  final String imageUrl;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: Color(0xffF5F6F9),
+
+            borderRadius: BorderRadius.circular(12.sp),
+          ),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(imageUrl),
+                Text(
+
+                  title,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: "roboto_bold",
+                    color: Color(0xff00A6D6),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: 10.h,
+          left: 70.w,
+          child: Container(
+            child: Center(
+              child: Text(
+                '2',
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontFamily: "roboto_bold",
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            width: 20.w,
+            height: 20.h,
+            decoration: BoxDecoration(
+              color: Color(0xff00A6D6),
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

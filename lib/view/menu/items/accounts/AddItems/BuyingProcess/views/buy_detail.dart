@@ -19,7 +19,7 @@ class BuyDetails extends StatelessWidget {
         children: [
 
           Container(
-            padding: EdgeInsets.all(20.sp),
+            padding: EdgeInsets.symmetric(horizontal : 20.w,vertical: 5.h),
             child: Row(
               children: [
                 Expanded(
@@ -30,7 +30,8 @@ class BuyDetails extends StatelessWidget {
                         'Business Process Code',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
+
 
 
                           fontSize: 12.sp,
@@ -73,10 +74,20 @@ class BuyDetails extends StatelessWidget {
           ),
 
 
-          Hdivider(),
+          Divider(
+            color: Color(0xffB4C6D4),
+            indent: 20,
+            endIndent: 20,
+            thickness: 1,
+          ),
 
           BuySecondRow(compTitle: 'Is Active', compSubTitle: 'Yes'),
-          Hdivider(),
+          Divider(
+            color: Color(0xffB4C6D4),
+              indent: 20,
+            endIndent: 20,
+            thickness: 1,
+          ),
 
           Container(
             padding: EdgeInsets.all(20.sp),
@@ -90,7 +101,7 @@ class BuyDetails extends StatelessWidget {
                         'Created By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -117,7 +128,7 @@ class BuyDetails extends StatelessWidget {
                         'Modified By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -142,7 +153,7 @@ class BuyDetails extends StatelessWidget {
           ),
 
           Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
               children: [
                 Expanded(
@@ -153,7 +164,7 @@ class BuyDetails extends StatelessWidget {
                         'Created On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -180,7 +191,7 @@ class BuyDetails extends StatelessWidget {
                         'Modified On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,

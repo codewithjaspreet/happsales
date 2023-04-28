@@ -11,7 +11,8 @@ class CompetitionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(horizontal: 20.w , vertical:14.h
+      ),
       child: Row(
         children: [
           Expanded(
@@ -22,7 +23,7 @@ class CompetitionRow extends StatelessWidget {
                   compTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Color(0xff00A6D6),
 
 
                     fontSize: 12.sp,

@@ -6,6 +6,7 @@ import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
 import '../../../contacts/widgets/ToggleButtonRow.dart';
+import '../widgets/new_process_add_feild.dart';
 
 class AddCompetition extends StatelessWidget {
   const AddCompetition({Key? key}) : super(key: key);
@@ -37,27 +38,8 @@ class AddCompetition extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.only(top: 10.h),
                     child: Input(title: "Competition Name")),
-      Container(
-
-        padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 15.h),
-        child: TextFormField(
-
-          decoration: InputDecoration(
-
-            labelText: "Competition Activity",
-            hintText: "Competition Activity",
-            hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
-            border: OutlineInputBorder(
-
-              borderRadius: BorderRadius.circular(8.sp),
-              borderSide: BorderSide(
-                color: Color(0xffB4C6D4),
-              ),
-            ),
-
-          ),
-        ),
-      ),
+                SizedBox(height: 12.h,),
+                NewProcessAddFeild(title: "Competition Activity",),
 
               ],
             )
@@ -72,7 +54,7 @@ class AddCompetition extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -81,7 +63,7 @@ class AddCompetition extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

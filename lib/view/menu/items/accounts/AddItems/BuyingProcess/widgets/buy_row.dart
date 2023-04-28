@@ -48,7 +48,7 @@ class BuyRow extends StatelessWidget {
                     style: TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: 12.sp,
-                      fontFamily: "roboto_medium",
+                      fontWeight: FontWeight.w500,
                     ),
                   ),),
                   Expanded(
@@ -56,8 +56,8 @@ class BuyRow extends StatelessWidget {
                     child: Text(
                       date,
                       style: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ),
@@ -76,7 +76,7 @@ class BuyRow extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryColor,
-                      fontSize: 12.sp,
+                      fontSize: 14.sp,
                     ),
                   ),),
 

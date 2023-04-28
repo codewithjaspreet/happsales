@@ -21,8 +21,8 @@ class AddContact extends StatelessWidget {
             AmiHeaderRow(title: 'Add Contact',),
             GestureDetector(
                 onTap: () {
-                  showDialogs(context);
-                },
+              showDialogs(context);
+            },
                 child: const BusinessCard()),
             Hdivider(),
             AddContactDetails(),

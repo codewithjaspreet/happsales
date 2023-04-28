@@ -40,8 +40,8 @@ class ContactDetails extends StatelessWidget {
               DetailRow(contact : contact),
               Hdivider(),
               MoreDetail(contact : contact),
+              SizedBox(height: 12.h,),
               Hdivider(),
-              const DetailItems(),
             ],
           ),
         ));
@@ -179,10 +179,18 @@ class DetailRow extends StatefulWidget {
 
 class _MyRowState extends State<DetailRow> {
   bool _isOpen = false;
+  bool seeMore = false;
 
   void _toggleDropdown() {
     setState(() {
       _isOpen = !_isOpen;
+    });
+  }
+
+
+  void _toggleSeeMore() {
+    setState(() {
+      seeMore = !seeMore;
     });
   }
 
@@ -302,7 +310,61 @@ class _MyRowState extends State<DetailRow> {
                                 title2: 'GPS Coordinate',
                                 subTitle2: widget.contact.gPSCoordinates!.toString()),
 
-                          ]
+
+                        seeMore ? const SizedBox.shrink() :       GestureDetector(
+                              onTap: (){
+                                _toggleSeeMore();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10.h, left: 16.w),
+                                child: Center(child: Text("See More" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                                width: 125.w,
+                                height:48.h,
+                                decoration: BoxDecoration(
+                                  borderRadius:  BorderRadius.circular(26.sp),
+
+                                  shape: BoxShape.rectangle,
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),
+
+                              if(seeMore)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SecondTypeDetailing(title: 'Reporting To', subTitle: widget.contact.reportingManager!.toString(),),
+                                    Detaling(title: 'LinkedIn', subTitle: widget.contact.linkedIn.toString(), imgUrl: 'assets/contacts/linkdeln.png',),
+                                    ThirdTypeDetailing(title1: 'DoB', subTitle1: widget.contact.dateOfBirth!.toString(), title2: 'Reminder', subTitle2: 'no'),
+                                    SecondTypeDetailing(title: 'Contact Alignment', subTitle: widget.contact.contactAlignmentID!.toString(),),
+                                    SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle: widget.contact.rolesAndResponsibilities!.toString(),),
+                                    SecondTypeDetailing(title: 'Past Accounts', subTitle: widget.contact.pastAccounts!.toString(),),
+                                    SecondTypeDetailing(title: 'Past Designations', subTitle: widget.contact.pastDesignations!.toString(),),
+                                    SecondTypeDetailing(title: 'Reference History', subTitle: '-'),
+                                    SecondTypeDetailing(title: 'Tags', subTitle: "Open",),
+                                    SecondTypeDetailing(title: 'Remarks', subTitle: widget.contact.remarks.toString(),),
+                                    SecondTypeDetailing(title: 'Is Primary Contact', subTitle: widget.contact.isPrimaryContact.toString() ?? "-",),
+                                    !seeMore ? const SizedBox.shrink() :       GestureDetector(
+                                      onTap: (){
+                                        _toggleSeeMore();
+                                      },
+                                      child:  Container(
+                                        margin: EdgeInsets.only(top: 10.h, left: 30.w),
+                                        child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                                        width: 125.w,
+                                        height:48.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:  BorderRadius.circular(26.sp),
+
+                                          shape: BoxShape.rectangle,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+
+],
                       ),
                     ),
 
@@ -315,7 +377,6 @@ class _MyRowState extends State<DetailRow> {
     );
   }
 }
-
 class Detaling extends StatelessWidget {
   const Detaling({Key? key, required this.title, required this.subTitle, required this.imgUrl})
       : super(key: key);
@@ -367,126 +428,9 @@ class Detaling extends StatelessWidget {
                 ],
               ),
             ),
-            // Container(
-            //   padding: EdgeInsets.only(left: 16.h, top: 10.h, right: 16.w),
-            //   child: Column(
-            //     children: [
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         children: [
-            //           Text(title,
-            //               style: TextStyle(
-            //                   color: Color(0xff00A6D6),
-            //                   fontFamily: "roboto_bold",
-            //                   fontSize: 13.sp)),
-            //         ],
-            //       ),
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //         children: [
-            //           Flexible(
-            //             child: Text(
-            //               subTitle,
-            //               style: TextStyle(
-            //                 fontSize: 16.sp,
-            //                 color: AppColors.primaryColor,
-            //                 fontWeight: FontWeight.w400,
-            //               ),
-            //             ),
-            //           ),
-            //           Image.asset(imgUrl)
-            //         ],
-            //       )
-            //     ],
-            //   ),
-            // )
+
           ],
         )
-      ],
-    );
-  }
-}
-class DetailItems extends StatelessWidget {
-  const DetailItems({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 20.h),
-      padding: EdgeInsets.symmetric(horizontal: 14.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
-          IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
-          IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'Notes',),
-        ],
-      ),
-
-    );
-
-  }
-}
-class IndividualItem extends StatelessWidget {
-  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
-
-  final String imageUrl;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: 100.w,
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: Color(0xffF5F6F9),
-
-            borderRadius: BorderRadius.circular(12.sp),
-          ),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset(imageUrl),
-                Text(
-
-                  title,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontFamily: "roboto_bold",
-                    color: Color(0xff00A6D6),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          top: 10.h,
-          left: 70.w,
-          child: Container(
-            child: Center(
-              child: Text(
-                '2',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontFamily: "roboto_bold",
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(
-              color: Color(0xff00A6D6),
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
       ],
     );
   }

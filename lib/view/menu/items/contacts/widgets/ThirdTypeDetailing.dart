@@ -31,6 +31,7 @@ class ThirdTypeDetailing extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(
               left: 19.w,
+              top: 10.h,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,6 +51,7 @@ class ThirdTypeDetailing extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(
               left: 18.w,
+              top: 10.h
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,52 +68,7 @@ class ThirdTypeDetailing extends StatelessWidget {
             ),
           ) ),
 
-      //     Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Text(
-      //             title1,
-      //             style: TextStyle(
-      //                 color: Color(0xff00A6D6),
-      //                 fontFamily: "roboto_bold",
-      //                 fontSize: 13.sp)),
-      //
-      //
-      //
-      //         AutoSizeText(
-      //                     subTitle1,
-      //
-      //                     style: TextStyle(
-      //                       fontSize: 16.sp,
-      //
-      //                       color: AppColors.primaryColor,
-      //                       fontWeight: FontWeight.w400,
-      //                     ),
-      //                   ),
-      //
-      //       ],
-      //     ),
-      //     Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Text(title2,
-      //             style: TextStyle(
-      //                 color: Color(0xff00A6D6),
-      //                 fontFamily: "roboto_bold",
-      //                 fontSize: 13.sp)),
-      // AutoSizeText(
-      //                     subTitle2,
-      //
-      //                     style: TextStyle(
-      //                       fontSize: 16.sp,
-      //
-      //                       color: AppColors.primaryColor,
-      //                       fontWeight: FontWeight.w400,
-      //                     ),
-      //                   ),
-      //
-      //       ],
-      //     ),
+
         ],
       ),
     );

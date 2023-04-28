@@ -269,7 +269,6 @@ class _MyRowState extends State<AddContactDetails> {
                 Input(
                   title: 'Pin',
                 ),
-
                 Input(
                   title: 'GPS Coordinate',
                 ),

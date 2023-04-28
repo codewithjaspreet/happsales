@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 
 import '../../../../../../utils/color.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
@@ -29,20 +30,20 @@ class BusinessUnit extends StatelessWidget {
           Text('Business Units' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
           Row(
             children: [
-              GestureDetector(
-                onTap: (){
-                  Get.to(AddBusinessUnits());
-                },
-                child: Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff171A63),
+              Container(
+                margin:  EdgeInsets.only(right: 16.w),
+                width: 30.w,
+                height: 30.h,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xff171A63),
 
-                  ),
-                  child: const Center(
+                ),
+                child:  GestureDetector(
+                  onTap: (){
+                    showDialogs(context);
+                  },
+                  child: Center(
                     child: Icon(Icons.add ,color: Colors.white,),
                   ),
                 ),

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../utils/color.dart';
-
 class SecondTypeDetailing extends StatelessWidget {
   const SecondTypeDetailing(
       {Key? key, required this.title, required this.subTitle})

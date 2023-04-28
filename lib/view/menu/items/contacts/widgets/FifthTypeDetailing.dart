@@ -20,7 +20,7 @@ class FifthTypeDetailing extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(
-            left: 14.w,
+            left: 18.w,
             top: 20.h,
           ),
           child: Text(

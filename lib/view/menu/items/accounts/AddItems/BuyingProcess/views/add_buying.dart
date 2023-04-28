@@ -7,6 +7,7 @@ import '../../../../contacts/widgets/CustomAppBar.dart';
 import '../../../../contacts/widgets/HelperRow.dart';
 import '../../../../contacts/widgets/InputOne.dart';
 import '../../../../contacts/widgets/ToggleButtonRow.dart';
+import '../../widgets/new_process_add_feild.dart';
 
 class AddBuying extends StatelessWidget {
   const AddBuying({Key? key}) : super(key: key);
@@ -33,7 +34,9 @@ class AddBuying extends StatelessWidget {
 
             Input(title: 'Account Name *'),
             SizedBox(height: 12.h,),
-            Input(title: 'Buying Process * '),
+
+            NewProcessAddFeild(title: 'Buying Process Code *',),
+
 
 
 
@@ -44,7 +47,7 @@ class AddBuying extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -53,7 +56,7 @@ class AddBuying extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
