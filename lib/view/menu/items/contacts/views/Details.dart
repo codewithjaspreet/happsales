@@ -42,6 +42,15 @@ class ContactDetails extends StatelessWidget {
               MoreDetail(contact : contact),
               SizedBox(height: 12.h,),
               Hdivider(),
+
+            SecondTypeDetailing(title: 'Is Active', subTitle: contact.isPrimaryContact.toString(),),
+
+
+              ThirdTypeDetailing(title1: 'Created By', subTitle1: contact.createdBy.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+              SizedBox(height: 12.h,),
+
+              ThirdTypeDetailing(title1: 'Created On', subTitle1: contact.createdOn.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+
             ],
           ),
         ));
@@ -178,7 +187,7 @@ class DetailRow extends StatefulWidget {
 }
 
 class _MyRowState extends State<DetailRow> {
-  bool _isOpen = false;
+  bool _isOpen = true;
   bool seeMore = false;
 
   void _toggleDropdown() {
@@ -262,7 +271,6 @@ class _MyRowState extends State<DetailRow> {
                           children: [
 
                             Detaling(
-                              imgUrl: "assets/contacts/web.png",
                               title: 'Contact Name',
                               // subTitle: widget.contactViewModel.contactList[0].contactName,
                               subTitle: widget.contact.contactName!.toString(),
@@ -287,28 +295,21 @@ class _MyRowState extends State<DetailRow> {
                             ),
                             FourthTypeDetailing(
                               title1: 'Work Phone',
-                              subTitle1: widget.contact.workPhone!.toString(),
+                              subTitle1:  widget.contact.workPhone!.toString().isEmpty ? "-" : widget.contact.workPhone!.toString(),
                               title2: 'Residence Phone',
-                              subTitle2: widget.contact.residencePhone!.toString(),
+                              subTitle2:  widget.contact.residencePhone!.toString().isEmpty ? "-" : widget.contact.residencePhone!.toString(),
                             ),
 
-                            FifthTypeDetailing(
-                              title: 'Email Address',
-                              subTitle: widget.contact.email!.toString(),
-                              // subTitle: controller.contactList[0].email,
-                            ),
+                           SecondTypeDetailing(title: 'Email Address', subTitle: widget.contact.email!.toString().isEmpty ? "-" : widget.contact.email!.toString() ),
+                            SecondTypeDetailing(title: 'Alt. Email Address', subTitle: widget.contact.alternateEmail!.toString().isEmpty ? "-" : widget.contact.alternateEmail!.toString() ),
 
-                            FifthTypeDetailing(
-                              title: 'Alt. Email Address',
-                              subTitle:   widget.contact.alternateEmail!.toString(),
-                            ),
 
                             ThirdTypeDetailing(
                                 title1: 'Address',
                                 subTitle1:
-                                widget.contact.addressLine1!.toString(),
+                                widget.contact.addressLine1!.toString().isEmpty ? "-" : widget.contact.addressLine1!.toString(),
                                 title2: 'GPS Coordinate',
-                                subTitle2: widget.contact.gPSCoordinates!.toString()),
+                                subTitle2:   widget.contact.gPSCoordinates!.toString().isEmpty ? "-" : widget.contact.gPSCoordinates!.toString(),),
 
 
                         seeMore ? const SizedBox.shrink() :       GestureDetector(
@@ -333,17 +334,17 @@ class _MyRowState extends State<DetailRow> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SecondTypeDetailing(title: 'Reporting To', subTitle: widget.contact.reportingManager!.toString(),),
-                                    Detaling(title: 'LinkedIn', subTitle: widget.contact.linkedIn.toString(), imgUrl: 'assets/contacts/linkdeln.png',),
-                                    ThirdTypeDetailing(title1: 'DoB', subTitle1: widget.contact.dateOfBirth!.toString(), title2: 'Reminder', subTitle2: 'no'),
-                                    SecondTypeDetailing(title: 'Contact Alignment', subTitle: widget.contact.contactAlignmentID!.toString(),),
-                                    SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle: widget.contact.rolesAndResponsibilities!.toString(),),
-                                    SecondTypeDetailing(title: 'Past Accounts', subTitle: widget.contact.pastAccounts!.toString(),),
-                                    SecondTypeDetailing(title: 'Past Designations', subTitle: widget.contact.pastDesignations!.toString(),),
-                                    SecondTypeDetailing(title: 'Reference History', subTitle: '-'),
-                                    SecondTypeDetailing(title: 'Tags', subTitle: "Open",),
-                                    SecondTypeDetailing(title: 'Remarks', subTitle: widget.contact.remarks.toString(),),
-                                    SecondTypeDetailing(title: 'Is Primary Contact', subTitle: widget.contact.isPrimaryContact.toString() ?? "-",),
+                                    SecondTypeDetailing(title: 'Reporting To', subTitle:  widget.contact.reportingManager!.toString().isEmpty ? "-" : widget.contact.reportingManager!.toString(),),
+                                    Detaling(title: 'LinkedIn', subTitle:widget.contact.linkedIn!.toString().isEmpty ? "-" : widget.contact.linkedIn!.toString(),),
+                                    ThirdTypeDetailing(title1: 'DoB', subTitle1: widget.contact.dateOfBirth!.toString().isEmpty ? "-" : widget.contact.dateOfBirth!.toString(), title2: 'Reminder', subTitle2: 'no'),
+                                    SecondTypeDetailing(title: 'Contact Alignment', subTitle:widget.contact.contactAlignmentID!.toString().isEmpty ? "-" : widget.contact.contactAlignmentID!.toString(),),
+                                    SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle:widget.contact.rolesAndResponsibilities!.toString().isEmpty ? "-" : widget.contact.rolesAndResponsibilities!.toString(),),
+                                    SecondTypeDetailing(title: 'Past Accounts', subTitle: widget.contact.pastAccounts!.toString().isEmpty ? "-" : widget.contact.pastAccounts!.toString(),),
+                                    SecondTypeDetailing(title: 'Past Designations', subTitle: widget.contact.pastDesignations!.toString().isEmpty ? "-" : widget.contact.pastDesignations!.toString(),),
+                                    SecondTypeDetailing(title: 'Reference History', subTitle: widget.contact.referenceHistory.toString().isNull ? "-" : widget.contact.referenceHistory.toString()),
+                                    SecondTypeDetailing(title: 'Tags', subTitle: widget.contact.tags.toString().isEmpty ? "-" : widget.contact.tags.toString(),),
+                                    SecondTypeDetailing(title: 'Remarks', subTitle: widget.contact.remarks.toString().isEmpty ? "-" : widget.contact.remarks.toString(),),
+                                    SecondTypeDetailing(title: 'Is Primary Contact', subTitle:  widget.contact.isPrimaryContact.toString().isEmpty ? "-" : widget.contact.isPrimaryContact.toString(),),
                                     !seeMore ? const SizedBox.shrink() :       GestureDetector(
                                       onTap: (){
                                         _toggleSeeMore();
@@ -378,12 +379,11 @@ class _MyRowState extends State<DetailRow> {
   }
 }
 class Detaling extends StatelessWidget {
-  const Detaling({Key? key, required this.title, required this.subTitle, required this.imgUrl})
+  const Detaling({Key? key, required this.title, required this.subTitle})
       : super(key: key);
 
   final String title;
   final String subTitle;
-  final String imgUrl;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -423,7 +423,7 @@ class Detaling extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Image.asset(imgUrl),
+
 
                 ],
               ),

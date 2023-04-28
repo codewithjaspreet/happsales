@@ -56,8 +56,7 @@ class FourthTypeDetailing extends StatelessWidget {
                 Row(
                   children: [
                     Text("8348234924"),
-                    SizedBox(width: 10.w,),
-                    Image.asset("assets/contacts/call.png",)
+
                   ],
                 )
               ],
@@ -81,8 +80,7 @@ class FourthTypeDetailing extends StatelessWidget {
                 Row(
                   children: [
                     Text("8348234924"),
-                    SizedBox(width: 10.w,),
-                    Image.asset("assets/contacts/call.png",)
+
                   ],
                 )
               ],

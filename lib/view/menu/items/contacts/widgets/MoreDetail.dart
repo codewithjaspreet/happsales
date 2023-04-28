@@ -20,7 +20,7 @@ class MoreDetail extends StatefulWidget {
 }
 
 class _MyRowState extends State<MoreDetail> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   void _toggleDropdown() {
     setState(() {
@@ -75,6 +75,7 @@ class _MyRowState extends State<MoreDetail> {
                         children: [
 
                           DetailItems(),
+
 
 
 
