@@ -171,7 +171,9 @@ class MediaPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                  child: Center(child: Text(
+
+                    "Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(
@@ -180,7 +182,10 @@ class MediaPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",
+                      fontSize: 18.sp
+
+                  ),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(

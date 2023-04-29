@@ -78,6 +78,7 @@ class _MyRowState extends State<MoreAddDetails> {
                     DatePickerFeild(labelText: 'Date of Birth',),
 
 
+
                     ToggleButtonRow(title : "BirthDay Reminder",isAlreadyActive: false,),
                     SearchAndFilter(),
                     // Input(title: 'Contact Alignment',),

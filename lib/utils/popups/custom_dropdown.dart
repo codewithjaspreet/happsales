@@ -23,7 +23,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
       child: TextField(
 
         decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.grey),
+          labelStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
@@ -31,29 +31,27 @@ class _CustomDropDownState extends State<CustomDropDown> {
             ),
           ),
           suffixIcon: Container(
-            child: Container(
-              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-              child: DropdownButtonFormField(
-                dropdownColor: AppColors.secColor,
-                hint: Text(widget.labelText,),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                ),
-
-                value: dropdownValue.isNotEmpty ? dropdownValue : null,
-
-                onChanged: (newValue) {
-                  setState(() {
-                    dropdownValue = newValue.toString();
-                  });
-                },
-                items: widget.items,
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontFamily: "roboto_bold",
-                  fontSize: 14.sp,
-                )
+            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+            child: DropdownButtonFormField(
+              dropdownColor: AppColors.secColor,
+              hint: Text(widget.labelText,),
+              decoration: InputDecoration(
+                border: InputBorder.none,
               ),
+
+              value: dropdownValue.isNotEmpty ? dropdownValue : null,
+
+              onChanged: (newValue) {
+                setState(() {
+                  dropdownValue = newValue.toString();
+                });
+              },
+              items: widget.items,
+              style: TextStyle(
+                color: AppColors.primaryColor,
+                fontFamily: "roboto_bold",
+                fontSize: 14.sp,
+              )
             ),
           ),
         ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/BusinessUnits/widgets/business_alert.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 
 import '../../../../../../utils/color.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
-import 'add_business_units.dart';
 
 class BusinessUnit extends StatelessWidget {
   const BusinessUnit({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class BusinessUnit extends StatelessWidget {
                 ),
                 child:  GestureDetector(
                   onTap: (){
-                    showDialogs(context);
+                    showBusinessDialogs(context);
                   },
                   child: Center(
                     child: Icon(Icons.add ,color: Colors.white,),
@@ -101,7 +101,7 @@ class BusinessUnit extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                          child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                           width: 125.w,
                           height:48.h,
                           decoration: BoxDecoration(
@@ -110,7 +110,7 @@ class BusinessUnit extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                          child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                           width: 125.w,
                           height:48.h,
                           decoration: BoxDecoration(

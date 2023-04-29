@@ -338,7 +338,7 @@ class _MyRowState extends State<AccountDetailRow> {
                             ),
                           ),
 
-                          SizedBox(height: 15.h,),
+                          SizedBox(height: 5.h,),
 
 
                           AccountThirdTypeDetailing(
@@ -348,6 +348,7 @@ class _MyRowState extends State<AccountDetailRow> {
                             title2: 'Status',
                             subTitle2: widget.account.accountStatusName!.toString() ,
                           ),
+                          SizedBox(height: 12.h,),
 
                           AccountThirdTypeDetailing(
 
@@ -383,6 +384,7 @@ class _MyRowState extends State<AccountDetailRow> {
                             title2: 'Category',
                             subTitle2: widget.account.companyName!.toString(),
                           ),
+                          SizedBox(height: 10.h,),
 
                           AccountDetailItems()
 

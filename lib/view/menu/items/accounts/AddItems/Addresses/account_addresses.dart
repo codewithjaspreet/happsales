@@ -18,7 +18,39 @@ class AccountAddress extends StatelessWidget {
       appBar: CustomAppBar(context),
       body: Column(
         children: [
-          HelperRow(title: 'Account Addresses', direct: AddAddress()),
+      Container(
+      padding: EdgeInsets.all(12.sp),
+      child: Row(
+
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Account Address' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Get.to(AddAddress());
+                },
+                child: Container(
+                  margin:  EdgeInsets.only(right: 16.w),
+                  width: 30.w,
+                  height: 30.h,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xff171A63),
+
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.add ,color: Colors.white,),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ],
+      ),
+    ),
           Container(
             padding: EdgeInsets.all(20.sp),
             child: Row(

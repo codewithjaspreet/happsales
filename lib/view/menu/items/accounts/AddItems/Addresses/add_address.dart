@@ -156,7 +156,11 @@ class AddAddress extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text(
+
+                      "Cancel" , style:   TextStyle(
+                        fontSize: 18.sp,
+                        color: Colors.white),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -165,7 +169,12 @@ class AddAddress extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text(
+
+                      "Save" , style:   TextStyle(
+
+                        fontSize: 18.sp,
+                        color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

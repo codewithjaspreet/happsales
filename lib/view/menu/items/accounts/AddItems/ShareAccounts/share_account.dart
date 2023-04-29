@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/view/menu/items/accounts/AddItems/ShareAccounts/widgets/share_alert.dart';
 import '../../../../../../utils/color.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
-import 'add_share_account.dart';
 class ShareAccount extends StatelessWidget {
   const ShareAccount({Key? key}) : super(key: key);
 
@@ -12,91 +12,95 @@ class ShareAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
 
+
       appBar: CustomAppBar(context),
 
-      body: Column(
+      body: SingleChildScrollView(
 
-        children: [
+        child: Column(
 
-      Container(
-      padding: EdgeInsets.all(12.sp),
-      child: Row(
+          children: [
 
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Share Account' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-                  Get.to(AddShareAccount());
-                },
-                child: Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff171A63),
+        Container(
+        padding: EdgeInsets.all(12.sp),
+        child: Row(
 
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.add ,color: Colors.white,),
-                  ),
-                ),
-              ),
-
-            ],
-          ),
-        ],
-      ),
-    ),
-          Container(
-            padding: EdgeInsets.all(20.sp),
-            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Share Account' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+            Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 35.r,
-                  child: Center(
-                      child:Text("a", style: TextStyle(
-                          color: Colors.white , fontSize: 30.sp , fontWeight: FontWeight.w500
-                      ),)
+                GestureDetector(
+                  onTap: (){
+                    showShareDialogs(context);
+                  },
+                  child: Container(
+                    margin:  EdgeInsets.only(right: 16.w),
+                    width: 30.w,
+                    height: 30.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xff171A63),
+
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add ,color: Colors.white,),
+                    ),
                   ),
                 ),
-                SizedBox(width: 10.w,),
-                Column(
 
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("account owner to Deepak",style: TextStyle(color: AppColors.primaryColor,
-
-                        fontSize: 20.sp , fontWeight: FontWeight.w500),),
-
-                    SizedBox(height : 5.h),
-                    Text("Aerospace".toUpperCase(),style: TextStyle(color: AppColors.primaryColor,
-
-                        fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
-
-                    SizedBox(height: 5.h,),
-                    Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
-
-                        fontSize: 14.sp , fontWeight: FontWeight.w200),)
-                  ],
-                )
               ],
             ),
-          ),
+          ],
+        ),
+    ),
+            Container(
+              padding: EdgeInsets.all(20.sp),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    radius: 35.r,
+                    child: Center(
+                        child:Text("a", style: TextStyle(
+                            color: Colors.white , fontSize: 30.sp , fontWeight: FontWeight.w500
+                        ),)
+                    ),
+                  ),
+                  SizedBox(width: 10.w,),
+                  Column(
 
-          ShareRow(title: 'Administrator', subtitle: 'Sales Manager'),
-          ShareRow(title: 'Fazil', subtitle: 'Developer'),
-          ShareRow(title: 'Sunanda', subtitle: 'Sales Manager'),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("account owner to Deepak",style: TextStyle(color: AppColors.primaryColor,
+
+                          fontSize: 20.sp , fontWeight: FontWeight.w500),),
+
+                      SizedBox(height : 5.h),
+                      Text("Aerospace".toUpperCase(),style: TextStyle(color: AppColors.primaryColor,
+
+                          fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
+
+                      SizedBox(height: 5.h,),
+                      Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
+
+                          fontSize: 14.sp , fontWeight: FontWeight.w200),)
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+            ShareRow(title: 'Administrator', subtitle: 'Sales Manager'),
+            ShareRow(title: 'Fazil', subtitle: 'Developer'),
+            ShareRow(title: 'Sunanda', subtitle: 'Sales Manager'),
 
 
 
 
 
-        ],
+          ],
+        ),
       ),
 
     );
