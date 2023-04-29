@@ -22,19 +22,27 @@ class _CustomDropDownState extends State<CustomDropDown> {
       padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
       child: TextField(
 
+
         decoration: InputDecoration(
-          labelStyle: const TextStyle(color: Colors.grey),
+          suffixIcon: Image.asset('assets/accounts/down.png'),
+
+          labelStyle: const TextStyle(color: Colors.blue),
                     border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
               color: Color(0xffB4C6D4),
             ),
           ),
-          suffixIcon: Container(
-            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          suffix: Container(
+            height: 10.h,
             child: DropdownButtonFormField(
+              icon:  Image.asset('assets/accounts/down.png'),
               dropdownColor: AppColors.secColor,
-              hint: Text(widget.labelText,),
+              hint: Text(widget.labelText,style: TextStyle(
+                color: AppColors.primaryColor,
+                fontFamily: "roboto_bold",
+                fontSize: 14.sp,
+              ),),
               decoration: InputDecoration(
                 border: InputBorder.none,
               ),

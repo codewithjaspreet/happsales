@@ -92,7 +92,7 @@ class _MyRowState extends State<AddContactDetails> {
                   title: 'First Name*',
                 ),
                 Input(
-                  title: 'last Name',
+                  title: 'Last Name',
                 ),
                 Input(
                   title: 'Account name',

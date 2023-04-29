@@ -24,7 +24,7 @@ class Input extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
             borderSide: BorderSide(
-              color: Color(0xff8F9BB3),
+              color: Color(0xffB4C6D4),
             ),
           ),
 
