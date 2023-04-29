@@ -8,8 +8,6 @@ import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/Addresses/account_addresses.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BusinessPlans/business_process.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/Media/media.dart';
-import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountFourthTypeDetailing.dart';
-import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountMoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountThirdTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountUserDetailCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
@@ -18,8 +16,6 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetaili
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
-import '../contacts/views/edit_contact.dart';
-import 'AddItems/Addresses/add_address.dart';
 import 'AddItems/BusinessUnits/business_unit.dart';
 import 'AddItems/BuyingProcess/views/buying_process.dart';
 import 'AddItems/CompetitionActivities/competititon_process.dart';
@@ -55,7 +51,7 @@ class AcccountDetails extends StatelessWidget {
               Hdivider(),
               AccountDetailRow(account:account!,),
               Hdivider(),
-              AccountMoreDetail(account: account,)
+              // AccountMoreDetail(account: account,)
             ],
           ),
         ));
@@ -192,7 +188,7 @@ class AccountDetailRow extends StatefulWidget {
 }
 
 class _MyRowState extends State<AccountDetailRow> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   void _toggleDropdown() {
     setState(() {
@@ -270,7 +266,7 @@ class _MyRowState extends State<AccountDetailRow> {
 
                           // ThirdTypeDetailing(),
                           Padding(
-                            padding:  EdgeInsets.only(left: 8.w,top: 10.h),
+                            padding:  EdgeInsets.only(top: 10.h),
                             child: Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,31 +303,31 @@ class _MyRowState extends State<AccountDetailRow> {
                                             ]
                                       ),
                                       ),
-                                      Text("Incomplete" ,style: TextStyle(
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.bold
-                                      ),),
+                                      Container(
+                                        margin:   EdgeInsets.symmetric(horizontal :  12.w ,vertical: 10.h),
+                                        child: Text("Profile Completion" ,style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.normal
+                                        ),),
+                                      ),
                                     ],
                                   ),
 
                                   Container(
-                                    margin: EdgeInsets.only(right: 70.sp),
+                                    margin: EdgeInsets.only(right: 120.sp),
 
                                     child: Column(
 
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Suvarna Traders",style: TextStyle(color: AppColors.primaryColor,
+                                        Text("ABC limited",style: TextStyle(color: AppColors.primaryColor,
 
                                         fontSize: 20.sp , fontWeight: FontWeight.w500),),
 
-                                        SizedBox(height : 5.h),
-                                        Text("Chemicals",style: TextStyle(color: AppColors.primaryColor,
-
-                                        fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
 
                                         SizedBox(height: 5.h,),
-                                        Text("Bangalore",style: TextStyle(color: AppColors.primaryColor,
+                                        Text("Madurai banglore",style: TextStyle(color: AppColors.primaryColor,
 
                                         fontSize: 14.sp , fontWeight: FontWeight.w200),)
                                       ],
@@ -342,6 +338,8 @@ class _MyRowState extends State<AccountDetailRow> {
                             ),
                           ),
 
+                          SizedBox(height: 15.h,),
+
 
                           AccountThirdTypeDetailing(
 
@@ -351,18 +349,20 @@ class _MyRowState extends State<AccountDetailRow> {
                             subTitle2: widget.account.accountStatusName!.toString() ,
                           ),
 
-                          AccountFourthTypeDetailing(
+                          AccountThirdTypeDetailing(
+
                             title1: 'Type',
-                            subTitle1: widget.account.tags!.toString(),
+                            subTitle1: widget.account.accountSegmentName!.toString(),
                             title2: 'Industry',
-                            subTitle2: "-",
-                            // subTitle2: widget.account.industryName!.toString(),
+                            subTitle2: widget.account.accountStatusName!.toString() ,
                           ),
+
+
 
                           SecondTypeDetailing(
                             title: 'Work Phone',
                             subTitle: "-",
-                            // subTitle: widget.account.phone!.toString()  ,
+
                           ),SecondTypeDetailing(
                             title: 'Website',
                             subTitle: "-",
@@ -376,36 +376,15 @@ class _MyRowState extends State<AccountDetailRow> {
                             subTitle: widget.account.currencyName!.toString(),
                           ),
 
-                          AccountFourthTypeDetailing(
+
+                          AccountThirdTypeDetailing(
                             title1: 'Tags',
                             subTitle1: widget.account.tags!.toString(),
                             title2: 'Category',
                             subTitle2: widget.account.companyName!.toString(),
                           ),
-                          // FourthTypeDetailing(
-                          //   title1: 'Work Phone',
-                          //   subTitle1: widget.contact.workPhone!.toString(),
-                          //   title2: 'Residence Phone',
-                          //   subTitle2: widget.contact.residencePhone!.toString(),
-                          // ),
 
-                          // FifthTypeDetailing(
-                          //   title: 'Email Address',
-                          //   subTitle: widget.contact.email!.toString(),
-                          //   // subTitle: controller.contactList[0].email,
-                          // ),
-
-                          // FifthTypeDetailing(
-                          //   title: 'Alt. Email Address',
-                          //   subTitle:   widget.contact.alternateEmail!.toString(),
-                          // ),
-
-                          // ThirdTypeDetailing(
-                          //     title1: 'Address',
-                          //     subTitle1:
-                          //     widget.contact.addressLine1!.toString(),
-                          //     title2: 'GPS Coordinate',
-                          //     subTitle2: widget.contact.gPSCoordinates!.toString()),
+                          AccountDetailItems()
 
                         ]
                     ),

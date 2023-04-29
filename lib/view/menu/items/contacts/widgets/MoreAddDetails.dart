@@ -78,7 +78,7 @@ class _MyRowState extends State<MoreAddDetails> {
                     DatePickerFeild(labelText: 'Date of Birth',),
 
 
-                    ToggleButtonRow(title : "BirthDay Reminder"),
+                    ToggleButtonRow(title : "BirthDay Reminder",isAlreadyActive: false,),
                     SearchAndFilter(),
                     // Input(title: 'Contact Alignment',),
 
@@ -90,8 +90,8 @@ class _MyRowState extends State<MoreAddDetails> {
                     Input(title: 'Reference History',),
                     Input(title: 'Remarks',),
 
-                    ToggleButtonRow(title : "Is active"),
-                    ToggleButtonRow(title : "Is Primary Contact"),
+                    ToggleButtonRow(title : "Is Active" ,isAlreadyActive: false,),
+                    ToggleButtonRow(title : "Is Primary Contact" ,isAlreadyActive: false,),
 
 
                     Container(

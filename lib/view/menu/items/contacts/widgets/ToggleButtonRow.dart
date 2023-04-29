@@ -6,10 +6,11 @@ import '../../../../../utils/color.dart';
 class ToggleButtonRow extends StatefulWidget {
 
   ToggleButtonRow({
-    required this.title
+    required this.title,
+    required this.isAlreadyActive
 });
 
-  bool forAndroid = false;
+  bool isAlreadyActive;
 
   final String title;
   @override
@@ -34,9 +35,9 @@ class _ToggleButtonRowState extends State<ToggleButtonRow> {
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.grey,
             // boolean variable value
-            value: widget.forAndroid,
+            value: widget.isAlreadyActive,
             // changes the state of the switch
-            onChanged: (value) => setState(() => widget.forAndroid = value),
+            onChanged: (value) => setState(() => widget.isAlreadyActive = value),
           ),
 
 

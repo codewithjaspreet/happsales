@@ -4,10 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../models/contact.dart';
 import '../../../../../utils/color.dart';
-import '../views/Details.dart';
-import 'HDivider.dart';
-import 'SecondTypeDetailing.dart';
-import 'ThirdTypeDetailing.dart';
 
 class MoreDetail extends StatefulWidget {
 

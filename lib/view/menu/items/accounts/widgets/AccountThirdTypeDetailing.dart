@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/color.dart';
+
 
 class AccountThirdTypeDetailing extends StatelessWidget {
   AccountThirdTypeDetailing(
@@ -19,135 +21,57 @@ class AccountThirdTypeDetailing extends StatelessWidget {
   final String subTitle2;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 16.h,
 
-        top: 20.h,
-        right: 20.h,
-      ),
+
+    return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title1,
-                  style: TextStyle(
-                      color: Color(0xff00A6D6),
-                      fontFamily: "roboto_bold",
-                      fontSize: 13.sp)),
-      AutoSizeText(
-                          subTitle1,
 
-                          style: TextStyle(
-                            fontSize: 16.sp,
-
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-
-            ],
-          ),Container(
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 19.w,
+              top: 10.h,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title2,
-                    style: TextStyle(
-                        color: Color(0xff00A6D6),
-                        fontFamily: "roboto_bold",
-                        fontSize: 13.sp)),
-      AutoSizeText(
-                            subTitle2,
-
-                            style: TextStyle(
-                              fontSize: 16.sp,
-
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-
+                Text(title1,style: TextStyle(
+                  fontSize: 13.sp ,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text(subTitle1),
               ],
             ),
-          ),
+          ) ),
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+                left: 18.w,
+                top: 10.h
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title2,style:  TextStyle(
+                  fontSize: 13.sp ,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text(subTitle2),
+              ],
+            ),
+          ) ),
+
+
         ],
       ),
-      // child: Column(
-      //   children: [
-      //     Row(
-      //       children: [
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Row(
-      //               mainAxisAlignment: MainAxisAlignment.start,
-      //               children: [
-      //                 Text(title1,
-      //                     style: TextStyle(
-      //                         color: Color(0xff00A6D6),
-      //                         fontFamily: "roboto_bold",
-      //                         fontSize: 13.sp)),
-      //               ],
-      //             ),
-      //             Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 AutoSizeText(
-      //                   subTitle1,
-      //
-      //                   style: TextStyle(
-      //                     fontSize: 16.sp,
-      //
-      //                     color: AppColors.primaryColor,
-      //                     fontWeight: FontWeight.w400,
-      //                   ),
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //         Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             Container(
-      //               margin: EdgeInsets.only(left: 80.w),
-      //               child: Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: [
-      //                   Text(title2,
-      //                       style: TextStyle(
-      //                           color: Color(0xff00A6D6),
-      //                           fontFamily: "roboto_bold",
-      //                           fontSize: 13.sp)),
-      //                 ],
-      //               ),
-      //             ),
-      //             Container(
-      //               margin: EdgeInsets.only(left: 100.w),
-      //               child: Row(
-      //                 children: [
-      //                   AutoSizeText(
-      //                     subTitle2,
-      //                     style: TextStyle(
-      //                       fontSize: 16.sp,
-      //                       color: AppColors.primaryColor,
-      //                       fontWeight: FontWeight.w400,
-      //                     ),
-      //                   ),
-      //
-      //
-      //
-      //                 ],
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ],
-      //     )
-      //   ],
-      // ),
     );
   }
 }

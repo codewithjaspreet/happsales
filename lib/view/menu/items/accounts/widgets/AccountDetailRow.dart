@@ -23,7 +23,7 @@ class AccountDetailRow extends StatefulWidget {
 }
 
 class _MyRowState extends State<AccountDetailRow> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   void _toggleDropdown() {
     setState(() {
@@ -96,7 +96,6 @@ class _MyRowState extends State<AccountDetailRow> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Detaling(
-                          imgUrl: "assets/contacts/web.png",
                           title: 'contact name',
                           // subTitle: widget.contactViewModel.contactList[0].contactName,
                           subTitle: widget.contact.contactName!.toString(),

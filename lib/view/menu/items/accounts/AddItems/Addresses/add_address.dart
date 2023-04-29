@@ -144,7 +144,7 @@ class AddAddress extends StatelessWidget {
                 Input(
                   title: 'GPS Coordinates',
                 ),
-                ToggleButtonRow(title: 'Is Active'),
+                ToggleButtonRow(title: 'Is Active',isAlreadyActive : true,),
 
 
               ],

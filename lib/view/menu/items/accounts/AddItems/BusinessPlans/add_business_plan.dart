@@ -39,7 +39,7 @@ Input(title: 'Account Name',),
 
             DatePickerFeild(labelText: 'Customer Target Date'),
 
-            ToggleButtonRow(title: 'Is Active',),
+            ToggleButtonRow(title: 'Is Active',isAlreadyActive  :true),
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
               child: Row(
