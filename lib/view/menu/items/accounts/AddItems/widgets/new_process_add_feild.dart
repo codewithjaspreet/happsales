@@ -17,14 +17,14 @@ class NewProcessAddFeild extends StatelessWidget {
         maxLines: 10,
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          contentPadding: EdgeInsets.all(15.sp),
+          contentPadding: EdgeInsets.all(12.sp),
           hintText: title,
           hintStyle: TextStyle(
               color: Color(0xff8F9BB3),
               fontWeight: FontWeight.normal,
-              fontSize: 14.sp),
+              fontSize: 15.sp),
         ),
       ),
     );

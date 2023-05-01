@@ -287,11 +287,19 @@ class _MyRowState extends State<DetailRow> {
                               subTitle2: widget.contact.designation!.toString(),
                             ),
 
+                            SizedBox(
+                              height: 5.h,
+                            ),
+
+
                             FourthTypeDetailing(
                               title1: 'Mobile number',
                               subTitle1: widget.contact.mobileNumber!.toString(),
                               title2: 'Mobile number',
                               subTitle2: widget.contact.alternateMobileNumber!.toString(),
+                            ),
+                            SizedBox(
+                              height: 10.h,
                             ),
                             FourthTypeDetailing(
                               title1: 'Work Phone',
@@ -404,7 +412,7 @@ class Detaling extends StatelessWidget {
                           title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: Color(0xff00A6D6),
 
 
                             fontSize: 13.sp,

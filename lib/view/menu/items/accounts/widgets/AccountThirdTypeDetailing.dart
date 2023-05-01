@@ -39,7 +39,7 @@ class AccountThirdTypeDetailing extends StatelessWidget {
               children: [
                 Text(title1,style: TextStyle(
                   fontSize: 13.sp ,
-                  color: Colors.blue,
+                  color: Color(0xff00A6D6),
                   fontWeight: FontWeight.bold,
                   fontFamily: "roboto_bold",
                 ),),
@@ -59,7 +59,7 @@ class AccountThirdTypeDetailing extends StatelessWidget {
               children: [
                 Text(title2,style:  TextStyle(
                   fontSize: 13.sp ,
-                  color: Colors.blue,
+                  color: Color(0xff00A6D6),
                   fontWeight: FontWeight.bold,
                   fontFamily: "roboto_bold",
                 ),),

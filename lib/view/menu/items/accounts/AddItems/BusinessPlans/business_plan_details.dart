@@ -15,10 +15,11 @@ class BusinessPlanDetails extends StatelessWidget {
       appBar: CustomAppBar(context),
 
       body: Column(
+
         children: [
 
           Container(
-            padding: EdgeInsets.all(20.sp),
+            padding: EdgeInsets.symmetric(horizontal : 20.w,vertical: 5.h),
             child: Row(
               children: [
                 Expanded(
@@ -29,7 +30,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Business Process Code',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -93,7 +94,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Created By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -120,7 +121,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Modified By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -144,7 +145,7 @@ class BusinessPlanDetails extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20.sp),
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
             child: Row(
               children: [
                 Expanded(
@@ -155,7 +156,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Created On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -182,7 +183,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Modified On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,

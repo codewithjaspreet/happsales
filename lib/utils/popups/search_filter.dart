@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class SearchAndFilter extends StatefulWidget {
             Text("Supporter",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
             Divider(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withOpacity(0.6),
               indent: 2,
             )
           ],
@@ -39,7 +40,7 @@ class SearchAndFilter extends StatefulWidget {
             Text("Neutral",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
            Divider(
-             color: Colors.grey.withOpacity(0.3),
+             color: Colors.grey.withOpacity(0.6),
              indent: 2,
            )
           ],
@@ -57,7 +58,7 @@ class SearchAndFilter extends StatefulWidget {
             Text("Against",style: TextStyle(fontSize: 14.sp, fontFamily: "roboto_bold" , color: AppColors.primaryColor),),
             SizedBox(height: 3.h,),
             Divider(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withOpacity(0.6),
               indent: 2,
             )
           ],
@@ -83,7 +84,7 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
 
 
       hint: Container(
-        padding: EdgeInsets.only(left: 8.w , ),
+        padding: EdgeInsets.only(left: 8.w , top:12.h),
         child: Text("Select Contact Alignment" ,style: TextStyle(
           color: AppColors.primaryColor,fontSize: 14.sp , fontFamily: "roboto_regular",
 
@@ -100,22 +101,20 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
 
 
       searchInputDecoration: InputDecoration(
+          suffixIcon: Icon(Icons.search , color: AppColors.primaryColor,),
+          border: OutlineInputBorder(
 
-
-        suffixIcon: Icon(Icons.search, color: AppColors.primaryColor,),
-
-        hintText: "Search",
-
-
-        border: OutlineInputBorder(
-
-          borderRadius: BorderRadius.circular(20.sp),
-          borderSide: BorderSide(
-            color: Color(0xffB4C6D4),
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(15.sp),
           ),
-        ),
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: 10.w
+          ),
+          hintStyle: TextStyle(color: Color(0xff707070)),
+          hintText: "Search",
 
-      ),
+          fillColor: Color(0xffF5F6F9)),
 
 
       searchHint:  Row(
@@ -123,13 +122,9 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
           Container(
               width: 25.w,
               height: 25.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey),
 
-              ),
 
-              child: Icon(Icons.close,color: Colors.grey,)),
+              child:Image.asset('assets/accounts/close.png')),
           SizedBox(width: 15.w,),
           Text("Select Contact Alignment" ,style: TextStyle(
             color: AppColors.primaryColor,fontSize: 18.sp , fontFamily: "roboto_bold",

@@ -14,7 +14,7 @@ class AddContactDetails extends StatefulWidget {
 }
 
 class _MyRowState extends State<AddContactDetails> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   void _toggleDropdown() {
     setState(() {
@@ -131,7 +131,7 @@ class _MyRowState extends State<AddContactDetails> {
 
                 // DropDownInput(hint : 'designation'),
                 CustomDropDown(
-                  labelText: 'designation',
+                  labelText: 'Designation',
                   items: [
                     DropdownMenuItem(
                       value: 'Item 8',
@@ -185,6 +185,7 @@ class _MyRowState extends State<AddContactDetails> {
                 Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                   child: TextFormField(
+
                     decoration: InputDecoration(
                       suffixIcon: GestureDetector(
                         onTap: () {
@@ -197,6 +198,11 @@ class _MyRowState extends State<AddContactDetails> {
                       ),
                       labelText: 'Address Line 1',
                       hintText: 'Address Line 1',
+                      labelStyle: TextStyle(
+    color: Color(0xff8F9BB3),
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    fontFamily: "roboto_regular"),
                       hintStyle: TextStyle(
                           color: Color(0xff8F9BB3),
                           fontSize: 14.sp,
@@ -227,6 +233,14 @@ class _MyRowState extends State<AddContactDetails> {
                       ),
                       labelText: 'City',
                       hintText: 'City',
+                      floatingLabelStyle: TextStyle(
+                        color : Color(0xff00A6D6),
+                      ),
+                      labelStyle: TextStyle(
+                          color: Color(0xff8F9BB3),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "roboto_regular"),
                       hintStyle: TextStyle(
                           color: Color(0xff8F9BB3),
                           fontSize: 14.sp,

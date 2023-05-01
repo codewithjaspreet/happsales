@@ -30,7 +30,7 @@ class SecondTypeDetailing extends StatelessWidget {
                           title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: Color(0xff00A6D6),
                             fontSize: 13.sp,
                           ),
                         ),

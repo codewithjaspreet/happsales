@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
@@ -22,7 +24,39 @@ class BusinessProcess extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              HelperRow(title: "Business Plans", direct: AddBusiness()),
+          Container(
+          padding: EdgeInsets.all(12.sp),
+          child: Row(
+
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Business Plans' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(AddBusiness());
+                    },
+                    child: Container(
+                      margin:  EdgeInsets.only(right: 12.w),
+                      width: 30.w,
+                      height: 30.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xff171A63),
+
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.add ,color: Colors.white,),
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+            ],
+          ),
+        ),
 
               Container(
                 padding: EdgeInsets.all(20.sp),

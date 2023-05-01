@@ -48,7 +48,7 @@ class DetailRow extends StatefulWidget {
 }
 
 class _MyRowState extends State<DetailRow> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   void _toggleDropdown() {
     setState(() {
@@ -127,19 +127,19 @@ class _MyRowState extends State<DetailRow> {
                         Input(title: 'Account Name *'),
                         Input(title: 'Department Name *'),
                         Input(title: 'Designation Name *'),
-                        Input(title: 'mobile number. *'),
-                        Input(title: 'alternate mbile No. *'),
-                        Input(title: 'work phone*'),
-                        Input(title: 'residence phone'),
-                        Input(title: 'alternate Email Address'),
+                        Input(title: 'Mobile Number *'),
+                        Input(title: 'Alternate Mobile No. *'),
+                        Input(title: 'Work Phone*'),
+                        Input(title: 'Residence Phone'),
+                        Input(title: 'Alternate Email Address'),
                         Input(title: 'Address line 1'),
                         Input(title: 'Address line 2'),
                         Input(title: 'Address line 3'),
-                        Input(title: 'city'),
-                        Input(title: 'state'),
-                        Input(title: 'country'),
-                        Input(title: 'pincode'),
-                        Input(title: 'description'),
+                        Input(title: 'City'),
+                        Input(title: 'State'),
+                        Input(title: 'Country'),
+                        Input(title: 'Pincode'),
+                        Input(title: 'Description'),
 
 
                       ]

@@ -8,59 +8,101 @@ class TagInputWidget extends StatefulWidget {
 }
 
 class _TagInputWidgetState extends State<TagInputWidget> {
-  final TextEditingController _textEditingController = TextEditingController();
-  List<String> _selectedTags = [];
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 16.sp , vertical: 50.sp),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
-            controller: _textEditingController,
-            decoration: InputDecoration(
-              hintText: 'Enter tags',
-            ),
-            onSubmitted: (value) {
-              setState(() {
-                _selectedTags.add(value);
-                _textEditingController.clear();
-              });
-            },
-          ),
-          Container(
-              margin: EdgeInsets.only(top: 10.h),
-              child: Text('Contacts',style: TextStyle(color: Colors.black),)),
-          Wrap(
-            spacing: 8,
-            children: _buildTagChips(),
-          ),
+
+       Row(
+
+            children: [
+
+            ],
+
+          ) ,
+          Divider(
+            color: Colors.grey,
+            thickness: 1.2,
+
+          )
+
+          ,Text('contact'),
+          SizedBox(height: 10.h,),
+
+
+         Row(
+           children: [
+             GestureDetector(
+               onTap: (){
+
+               },
+               child: Container(
+
+                 width: 88.w,
+                 height: 44.h,
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Text('contact2' , style: TextStyle(
+                       color: AppColors.primaryColor,
+                       fontSize: 12.sp,
+                       fontWeight: FontWeight.bold,
+                     ),),
+                     SizedBox(width: 5.w,),
+                     Image.asset('assets/accounts/close2.png')
+                   ],
+                 ),
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(12.r),
+                   border: Border.all(color: AppColors.primaryColor),
+                   color: Color(0xffE5F6FF),
+                 ),
+               ),
+             ),
+             SizedBox(width: 10.w,),
+             GestureDetector(
+               onTap: (){
+
+               },
+               child: Container(
+
+                 width: 88.w,
+                 height: 44.h,
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Text('contact2' , style: TextStyle(
+                       color: AppColors.primaryColor,
+                       fontSize: 12.sp,
+                       fontWeight: FontWeight.bold,
+                     ),),
+                     SizedBox(width: 5.w,),
+                     Image.asset('assets/accounts/close2.png')
+                   ],
+                 ),
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(12.r),
+                   border: Border.all(color: AppColors.primaryColor),
+                   color: Color(0xffE5F6FF),
+                 ),
+               ),
+             ),
+           ],
+         )
+
+
+
+
+
         ],
       ),
     );
   }
 
-  List<Widget> _buildTagChips() {
-    return _selectedTags.map((tag) {
-      final bool isSelected = _textEditingController.text.contains(tag);
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            if (isSelected) {
-              _textEditingController.text = _textEditingController.text.replaceAll(tag, '').trim();
-            } else {
-              _textEditingController.text += '${tag.trim()} ';
-            }
-          });
-        },
-        child: Chip(
-          label: Text(tag),
-          backgroundColor: isSelected ? Colors.blue : Colors.white,
-          labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
-        ),
-      );
-    }).toList();
-  }
+
 }

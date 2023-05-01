@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/date_picker.dart';
@@ -13,6 +15,7 @@ import 'DropDownInput.dart';
 import 'InputOne.dart';
 import 'ToggleButtonRow.dart';
 import 'add_tag.dart';
+import 'alert.dart';
 
 class MoreAddDetails extends StatefulWidget {
   @override
@@ -20,7 +23,7 @@ class MoreAddDetails extends StatefulWidget {
 }
 
 class _MyRowState extends State<MoreAddDetails> {
-  bool _isOpen = false;
+  bool _isOpen = true;
   bool forAndroid = false;
 
   void _toggleDropdown() {
@@ -32,13 +35,13 @@ class _MyRowState extends State<MoreAddDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        _toggleDropdown();
-      },
-      child: Column(
-          children:[
-            Container(
+    return Column(
+        children:[
+          GestureDetector(
+            onTap: (){
+              _toggleDropdown();
+            },
+            child: Container(
               margin: EdgeInsets.only(top: 15.h  , left: 16.w , right: 16.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,58 +64,55 @@ class _MyRowState extends State<MoreAddDetails> {
               ),
 
             ),
+          ),
 
 
 
 
-            if(_isOpen)
-              SingleChildScrollView(
-                child: Column(
-                  children: [
+          if(_isOpen)
+            SingleChildScrollView(
+              child: Column(
+                children: [
 
-                    Input(title: 'Reporting To',),
-                    Input(title: 'LinkedIn link',),
+                  Input(title: 'Reporting To',),
+                  Input(title: 'LinkedIn link',),
 
-                    // dob
-                    // Input(title: 'last Name',),
-                    DatePickerFeild(labelText: 'Date of Birth',),
-
-
-
-                    ToggleButtonRow(title : "BirthDay Reminder",isAlreadyActive: false,),
-                    SearchAndFilter(),
-                    // Input(title: 'Contact Alignment',),
-
-                    Input(title: 'Roles & Responsibilities',),
-                    Input(title: 'Past Accounts',),
+                  // dob
+                  // Input(title: 'last Name',),
+                  DatePickerFeild(labelText: 'Date of Birth',),
 
 
-                    Input(title: 'Past designation',),
-                    Input(title: 'Reference History',),
-                    Input(title: 'Remarks',),
 
-                    ToggleButtonRow(title : "Is Active" ,isAlreadyActive: false,),
-                    ToggleButtonRow(title : "Is Primary Contact" ,isAlreadyActive: false,),
+                  ToggleButtonRow(title : "BirthDay Reminder",isAlreadyActive: false,),
 
 
-                    Container(
+                  SearchAndFilter(),
+                  // Input(title: 'Contact Alignment',),
 
-                      child: Column(
+                  Input(title: 'Roles & Responsibilities',),
+                  Input(title: 'Past Accounts',),
 
-                        children: [
 
-                          TagInputWidget()
-                        ],
-                      ),
+                  Input(title: 'Past designation',),
+                  Input(title: 'Reference History',),
+                  Input(title: 'Remarks',),
 
-                      margin: EdgeInsets.only(right: 2.w),
-                      height: 190.h,
-                      width: 340.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.sp),
-                        border: Border.all(color: Colors.blue.withOpacity(0.5),),
-                      ),
-                    )
+                  ToggleButtonRow(title : "Is Active" ,isAlreadyActive: true,),
+                  ToggleButtonRow(title : "Is Primary Contact" ,isAlreadyActive: false,),
+
+
+                  Container(
+
+                    child: TagInputWidget(),
+
+                    margin: EdgeInsets.only(right: 2.w),
+                    height: 190.h,
+                    width: 340.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.sp),
+                      border: Border.all(color: Colors.blue.withOpacity(0.5),),
+                    ),
+                  )
 
 
 
@@ -121,13 +121,12 @@ class _MyRowState extends State<MoreAddDetails> {
 
 
 
-                  ],
-                ),
+                ],
               ),
+            ),
 
 
-          ]
-      ),
+        ]
     );
   }
 

@@ -178,7 +178,7 @@ class _MyRowState extends State<MyRow> {
           ),
 
 
-          if(!_isOpen)
+          if(_isOpen)
             SingleChildScrollView(
               child: GestureDetector(
                 onTap: (){
@@ -217,13 +217,6 @@ class _MyRowState extends State<MyRow> {
                     Input(title: 'Tags',),
                     Input(title: 'Add Category',),
 
-
-
-
-
-
-
-
                   ],
                 ),
               ),
@@ -234,7 +227,7 @@ class _MyRowState extends State<MyRow> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(
@@ -243,7 +236,7 @@ class _MyRowState extends State<MyRow> {
                   ),
                 ),
                 Container(
-                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(

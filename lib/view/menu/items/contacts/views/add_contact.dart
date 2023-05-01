@@ -5,7 +5,6 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 import '../../../../../utils/color.dart';
-import '../../accounts/AccountDetails.dart';
 import '../widgets/AddContactDetails.dart';
 import '../widgets/AmiRow.dart';
 import '../widgets/MoreAddDetails.dart';
@@ -14,7 +13,6 @@ class AddContact extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(context),
-
       body:  SingleChildScrollView(
         child: Column(
           children: [
@@ -27,28 +25,15 @@ class AddContact extends StatelessWidget {
             Hdivider(),
             AddContactDetails(),
             Hdivider(),
-
             MoreAddDetails(),
             Hdivider(),
-            Container(
-              padding: EdgeInsets.only(top: 12.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  AccountIndividualItem(imageUrl: 'assets/accounts/more_1.png', title: 'Activity',),
-                  AccountIndividualItem(imageUrl: 'assets/accounts/more_2.png', title: 'Opportunity',),
-                  AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'Notes',),
-                ],
-              ),
-            ),
-
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 15.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -57,7 +42,9 @@ class AddContact extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"
+                    ,fontSize: 18.sp
+                    ),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

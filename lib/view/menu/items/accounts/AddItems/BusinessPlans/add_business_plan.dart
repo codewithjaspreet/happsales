@@ -6,6 +6,7 @@ import '../../../../../../../utils/color.dart';
 import '../../../../../../../utils/popups/date_picker.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
 import '../../../contacts/widgets/ToggleButtonRow.dart';
+import '../widgets/new_process_add_feild.dart';
 
 class AddBusiness extends StatelessWidget {
   const AddBusiness({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ Input(title: 'Account Name',),
               height: 10.h,
             ),
 
-            Input(title: 'Business Plan ',),
+            NewProcessAddFeild(title: 'Business Plan',),
 
             DatePickerFeild(labelText: 'Customer Target Date'),
 
@@ -46,7 +47,7 @@ Input(title: 'Account Name',),
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white),)),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -55,7 +56,7 @@ Input(title: 'Account Name',),
                     ),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"),)),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(

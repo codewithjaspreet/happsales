@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/ShareAccounts/widgets/share_alert.dart';
 import '../../../../../../utils/color.dart';
+import 'dart:math' as math;
 import '../../../contacts/widgets/CustomAppBar.dart';
 class ShareAccount extends StatelessWidget {
   const ShareAccount({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -90,15 +90,9 @@ class ShareAccount extends StatelessWidget {
                 ],
               ),
             ),
-
             ShareRow(title: 'Administrator', subtitle: 'Sales Manager'),
             ShareRow(title: 'Fazil', subtitle: 'Developer'),
             ShareRow(title: 'Sunanda', subtitle: 'Sales Manager'),
-
-
-
-
-
           ],
         ),
       ),
@@ -108,14 +102,18 @@ class ShareAccount extends StatelessWidget {
 }
 class ShareRow extends StatelessWidget {
   const ShareRow({Key? key, required this.title, required this.subtitle}) : super(key: key);
-
   final String title;
   final String subtitle;
-
   @override
   Widget build(BuildContext context) {
     return           Container(
       margin: EdgeInsets.symmetric(vertical: 5.h),
+      width: 337.w,
+      height: 90.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: Colors.grey, width: 1.5),
+      ),
       child: Container(
           margin: EdgeInsets.symmetric(horizontal: 12.w,vertical: 12.h),
           child:Column(
@@ -130,7 +128,7 @@ class ShareRow extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                           radius: 28.r,
                           child: Center(
                               child:Text(title[0].toUpperCase(), style: TextStyle(
@@ -179,12 +177,6 @@ class ShareRow extends StatelessWidget {
 
             ],
           )
-      ),
-      width: 337.w,
-      height: 90.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: Colors.grey, width: 1.5),
       ),
     );
 
