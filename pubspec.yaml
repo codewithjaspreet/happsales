@@ -103,6 +103,7 @@ flutter:
      - assets/
      - assets/contacts/
      - assets/accounts/
+     - assets/notes/
      - assets/ami/
      - assets/recommend.png
 

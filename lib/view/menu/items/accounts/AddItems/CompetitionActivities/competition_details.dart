@@ -149,7 +149,8 @@ class CompetitionDetails extends StatelessWidget {
 
               ],
             ),
-          ), Container(
+          ),
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 18.w),
             child: Row(
               children: [
