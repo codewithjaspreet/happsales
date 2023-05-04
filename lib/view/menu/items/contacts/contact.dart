@@ -5,7 +5,7 @@ import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
-import '../../menu.dart';
+import '../../views/menu.dart';
 class ContactPage extends StatefulWidget {
   @override
   State<ContactPage> createState() => _ContactPageState();

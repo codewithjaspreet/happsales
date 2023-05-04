@@ -2,38 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-
 import '../../../../../utils/color.dart';
 import 'add_notes.dart';
 class NotesListing extends StatelessWidget {
-  const NotesListing({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-
       appBar: CustomAppBar(context),
-
       body: Column(
         children: [
           HelperRow(title: 'Notes', direct: AddNotes()),
-
           Image.asset("assets/contacts/contact_banner.png"),
           buildNotesList(),
-
         ],
       ),
-
     );
   }
 }
 buildNotesList() {
-
   return  Expanded(
       child: ListView.builder(
         padding: EdgeInsets.all(12.sp),
-
-        // padding: EdgeInsets.only(top : 12.sp),
         itemCount:6,
         itemBuilder: (context, index) {
           return Container(
@@ -42,11 +32,8 @@ buildNotesList() {
             width: 336.w,
             decoration: BoxDecoration(
               border: Border.all(color: Color(0xffB4C6D4).withOpacity(0.8)),
-
               borderRadius: BorderRadius.circular(10.r),
-
             ),
-
             child: Row(
               children: [
                 Container(
@@ -59,9 +46,7 @@ buildNotesList() {
                   ),
                   child: Image.asset('assets/notes/photo.png',scale: 0.7,),
                 ),
-
                 Column(
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

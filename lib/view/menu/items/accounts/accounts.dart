@@ -7,7 +7,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 
-import '../../menu.dart';
+import '../../views/menu.dart';
 import 'AccountDetails.dart';
 
 class AccountPage extends StatefulWidget {

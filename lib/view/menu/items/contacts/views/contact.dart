@@ -7,7 +7,7 @@ import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 import '../../../../../models/database.dart';
-import '../../../menu.dart';
+import '../../../views/menu.dart';
 import 'Details.dart';
 import 'add_contact.dart';
 

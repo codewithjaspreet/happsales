@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
 import '../items/accounts/accounts.dart';
+import '../items/notes/views/notes_listing.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
 
@@ -58,7 +59,11 @@ class Menu extends StatelessWidget {
             _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' ),
             _buildGridItem(title : 'Activities', image: 'assets/activities.png' ),
             _buildGridItem(title : 'Resources', image: 'assets/resources.png' ),
-            _buildGridItem(title : 'Notes', image: 'assets/notes.png' ),
+            GestureDetector(
+                onTap: () {
+                  Get.to(() => NotesListing());
+                },
+                child: _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
             _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
             _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' ),
             _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
