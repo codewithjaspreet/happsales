@@ -41,34 +41,34 @@ class Menu extends StatelessWidget {
             crossAxisSpacing: 8,
           ),
           children:   <Widget>[
-            _buildGridItem(title : 'Home', image: 'assets/home.png' ),
+            const _buildGridItem(title : 'Home', image: 'assets/home.png' ),
             GestureDetector(
                 onTap: () {
-                  Get.to(() => AccountPage());
+                  Get.to(() => const AccountPage());
                 },
-                child: _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' )),
+                child: const _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' )),
 
             GestureDetector(
 
-              child:             _buildGridItem(title : 'Contacts', image: 'assets/contacts.png' ),
+              child:             const _buildGridItem(title : 'Contacts', image: 'assets/contacts.png' ),
               onTap: () {
-                Get.to(ContactPage());
+                Get.to(const ContactPage());
               },
             ),
 
-            _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' ),
-            _buildGridItem(title : 'Activities', image: 'assets/activities.png' ),
-            _buildGridItem(title : 'Resources', image: 'assets/resources.png' ),
+            const _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' ),
+            const _buildGridItem(title : 'Activities', image: 'assets/activities.png' ),
+            const _buildGridItem(title : 'Resources', image: 'assets/resources.png' ),
             GestureDetector(
                 onTap: () {
-                  Get.to(() => NotesListing());
+                  Get.to(() => const NotesListing());
                 },
-                child: _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
-            _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
-            _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' ),
-            _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
-            _buildGridItem(title : 'Settings', image: 'assets/settings.png' ),
-            _buildGridItem(title : 'Manager', image: 'assets/manager.png' ),
+                child: const _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
+            const _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
+            const _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' ),
+            const _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
+            const _buildGridItem(title : 'Settings', image: 'assets/settings.png' ),
+            const _buildGridItem(title : 'Manager', image: 'assets/manager.png' ),
           ],
         ),
       ),

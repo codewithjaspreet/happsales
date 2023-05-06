@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../../utils/color.dart';
-import '../views/add_contact.dart';
 
 class HelperRow extends StatelessWidget {
 
-   HelperRow({required this.title , required this.direct});
+   const HelperRow({super.key, required this.title , required this.direct});
   final String title;
   final Widget direct;
   @override

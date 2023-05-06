@@ -6,6 +6,8 @@ import 'package:happsales_crm/view/login.dart';
 import 'content_model.dart';
 
 class OnBoarding extends StatefulWidget {
+  const OnBoarding({super.key});
+
   @override
   _OnbordingState createState() => _OnbordingState();
 }

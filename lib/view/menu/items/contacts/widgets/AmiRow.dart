@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,13 +47,13 @@ Container AmiHeaderRow({required String title}) {
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 12.w),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xffB4C6D4),
                     shape: BoxShape.circle,
                   ),
                   width: 24.w,
                   height: 24.h,
-                  child: Center(
+                  child: const Center(
                     child:Icon(
                       Icons.cancel_outlined,
                       color: Colors.white,

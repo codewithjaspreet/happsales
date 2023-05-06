@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../../../utils/color.dart';
 import '../BuyingProcess/widgets/buy_row.dart';
@@ -35,7 +32,7 @@ class BusinessProcess extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(AddBusiness());
+                      Get.to(const AddBusiness());
                     },
                     child: Container(
                       margin:  EdgeInsets.only(right: 12.w),
@@ -97,7 +94,7 @@ class BusinessProcess extends StatelessWidget {
 
                       padding :  EdgeInsets.all(10.sp),
 
-                      child: BuyRow(title: 'HAPPSALES-SCBPL-00000000034' , date: "21 Sep 2022", content : "kishore", route: BusinessPlanDetails(),)),
+                      child: const BuyRow(title: 'HAPPSALES-SCBPL-00000000034' , date: "21 Sep 2022", content : "kishore", route: BusinessPlanDetails(),)),
 
                 ],
               )

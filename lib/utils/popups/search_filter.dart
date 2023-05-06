@@ -1,9 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:search_choices/search_choices.dart';
 
 class SearchAndFilter extends StatefulWidget {
@@ -68,6 +66,8 @@ class SearchAndFilter extends StatefulWidget {
 
   ];
 
+  SearchAndFilter({super.key});
+
   @override
   State<SearchAndFilter> createState() => _SearchAndFilterState();
 
@@ -101,7 +101,7 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
 
 
       searchInputDecoration: InputDecoration(
-          suffixIcon: Icon(Icons.search , color: AppColors.primaryColor,),
+          suffixIcon: const Icon(Icons.search , color: AppColors.primaryColor,),
           border: OutlineInputBorder(
 
             borderSide: BorderSide.none,
@@ -111,15 +111,15 @@ class _SearchAndFilterState extends State<SearchAndFilter> {
           contentPadding: EdgeInsets.symmetric(
               horizontal: 10.w
           ),
-          hintStyle: TextStyle(color: Color(0xff707070)),
+          hintStyle: const TextStyle(color: Color(0xff707070)),
           hintText: "Search",
 
-          fillColor: Color(0xffF5F6F9)),
+          fillColor: const Color(0xffF5F6F9)),
 
 
       searchHint:  Row(
         children: [
-          Container(
+          SizedBox(
               width: 25.w,
               height: 25.h,
 

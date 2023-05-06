@@ -31,7 +31,7 @@ class AccountSecondTypeDetailing extends StatelessWidget {
                       children: [
                         Text(title,
                             style: TextStyle(
-                                color: Color(0xff00A6D6),
+                                color: const Color(0xff00A6D6),
                                 fontFamily: "roboto_bold",
                                 fontSize: 13.sp)),
                       ],

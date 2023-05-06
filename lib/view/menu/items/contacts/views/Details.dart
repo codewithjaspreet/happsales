@@ -1,12 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/FifthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/FourthTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
@@ -69,7 +65,7 @@ class ContactDetails extends StatelessWidget {
           height: 216.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -121,7 +117,7 @@ class ContactDetails extends StatelessWidget {
                       Container(
                         child: Text(
 
-                          title!,
+                          title,
 
                           // name of the user getting accessed
                           style: TextStyle(
@@ -179,7 +175,7 @@ class ContactDetails extends StatelessWidget {
 
 class DetailRow extends StatefulWidget {
 
-  DetailRow({Key? key, required this.contact}) : super(key: key);
+  const DetailRow({Key? key, required this.contact}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
   final  Contact contact;
   @override
@@ -238,14 +234,14 @@ class _MyRowState extends State<DetailRow> {
                               Get.to(() => EditContact());
                            },
                            child: Container(
-                             child: Center(
-                               child: Image.asset("assets/contacts/edit.png"),
-                             ),
                              width: 24.w,
                              height: 24.h,
-                             decoration: BoxDecoration(
+                             decoration: const BoxDecoration(
                                shape: BoxShape.circle,
                                color: AppColors.primaryColor,
+                             ),
+                             child: Center(
+                               child: Image.asset("assets/contacts/edit.png"),
                              ),
                            )),
                      ),
@@ -326,7 +322,6 @@ class _MyRowState extends State<DetailRow> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(top: 10.h, left: 16.w),
-                                child: Center(child: Text("See More" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                                 width: 125.w,
                                 height:48.h,
                                 decoration: BoxDecoration(
@@ -335,6 +330,7 @@ class _MyRowState extends State<DetailRow> {
                                   shape: BoxShape.rectangle,
                                   color: AppColors.primaryColor,
                                 ),
+                                child: Center(child: Text("See More" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                               ),
                             ),
 
@@ -359,7 +355,6 @@ class _MyRowState extends State<DetailRow> {
                                       },
                                       child:  Container(
                                         margin: EdgeInsets.only(top: 10.h, left: 30.w),
-                                        child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                                         width: 125.w,
                                         height:48.h,
                                         decoration: BoxDecoration(
@@ -368,6 +363,7 @@ class _MyRowState extends State<DetailRow> {
                                           shape: BoxShape.rectangle,
                                           color: AppColors.primaryColor,
                                         ),
+                                        child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                                       ),
                                     ),
                                   ],
@@ -412,7 +408,7 @@ class Detaling extends StatelessWidget {
                           title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xff00A6D6),
+                            color: const Color(0xff00A6D6),
 
 
                             fontSize: 13.sp,

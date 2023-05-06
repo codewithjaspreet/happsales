@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/notes/views/view_notes.dart';
-import 'package:popover/popover.dart';
 import '../../../../../utils/color.dart';
 import '../widgets/notes_popup.dart';
 import 'add_notes.dart';
 class NotesListing extends StatelessWidget {
+  const NotesListing({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ Container(
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.to(AddNotes());
+                  Get.to(const AddNotes());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(right: 16.w),
@@ -44,7 +44,7 @@ Container(
                   ),
                 ),
               ),
-              NotePopup(),
+              const NotePopup(),
             ],
           ),
         ],
@@ -64,14 +64,14 @@ buildNotesList() {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
-              Get.to(ViewnNotes());
+              Get.to(const ViewnNotes());
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 13.w  , vertical: 6.h),
               height: 99.h,
               width: 336.w,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xffB4C6D4).withOpacity(0.8)),
+                border: Border.all(color: const Color(0xffB4C6D4).withOpacity(0.8)),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
@@ -115,7 +115,7 @@ buildNotesList() {
                                     fontFamily: 'roboto_regular',
           
                                     fontWeight: FontWeight.normal,
-                                    color: Color(0xff00A6D6),
+                                    color: const Color(0xff00A6D6),
           
           
                                     fontSize: 12.sp,
@@ -143,7 +143,7 @@ buildNotesList() {
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontFamily: 'roboto_regular',
-                                    color: Color(0xff00A6D6),
+                                    color: const Color(0xff00A6D6),
           
           
                                     fontSize: 12.sp,

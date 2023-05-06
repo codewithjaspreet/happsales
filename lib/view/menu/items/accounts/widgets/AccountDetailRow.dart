@@ -2,7 +2,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../models/contact.dart';
 import '../../../../../utils/color.dart';
@@ -15,7 +14,7 @@ import '../../contacts/widgets/ThirdTypeDetailing.dart';
 
 class AccountDetailRow extends StatefulWidget {
 
-  AccountDetailRow({Key? key, required this.contact}) : super(key: key);
+  const AccountDetailRow({Key? key, required this.contact}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
   final  Contact contact;
   @override
@@ -64,14 +63,14 @@ class _MyRowState extends State<AccountDetailRow> {
                             Get.to(() => EditContact());
                           },
                           child: Container(
-                            child: Center(
-                              child: Image.asset("assets/contacts/edit.png"),
-                            ),
                             width: 24.w,
                             height: 24.h,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: AppColors.primaryColor,
+                            ),
+                            child: Center(
+                              child: Image.asset("assets/contacts/edit.png"),
                             ),
                           )),
                     ),

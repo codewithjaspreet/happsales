@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../utils/color.dart';
-import '../../../../contacts/widgets/HDivider.dart';
 
 
 class MyBusinessAlert extends StatelessWidget {
+  const MyBusinessAlert({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -33,9 +34,15 @@ class MyBusinessAlert extends StatelessWidget {
               children: [
 
                 Container(
+                  width: 337.w,
+                  height: 35.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: const Color(0xffF5F6F9)
+                  ),
                   child: TextField(
                     decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.search , color: AppColors.primaryColor,),
+                        suffixIcon: const Icon(Icons.search , color: AppColors.primaryColor,),
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(8.sp),
@@ -44,24 +51,17 @@ class MyBusinessAlert extends StatelessWidget {
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 10.w
                         ),
-                        hintStyle: TextStyle(color: Color(0xff707070)),
+                        hintStyle: const TextStyle(color: Color(0xff707070)),
                         hintText: "Search",
 
-                        fillColor: Color(0xffF5F6F9)),
-                  ),
-
-                  width: 337.w,
-                  height: 35.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: Color(0xffF5F6F9)
+                        fillColor: const Color(0xffF5F6F9)),
                   ),
                 ),
 
                 SizedBox(height: 12.h,),
-                NoteItem(),
-                NoteItem(),
-                NoteItem(),
+                const NoteItem(),
+                const NoteItem(),
+                const NoteItem(),
 
 
               ],
@@ -74,6 +74,8 @@ class MyBusinessAlert extends StatelessWidget {
 }
 
 class NoteItem extends StatefulWidget {
+  const NoteItem({super.key});
+
   @override
   _NoteItemState createState() => _NoteItemState();
 }
@@ -112,7 +114,7 @@ class _NoteItemState extends State<NoteItem> {
               ),
             ],
           ),
-          Divider(
+          const Divider(
             color: Colors.grey,
           )
         ],
@@ -122,12 +124,12 @@ class _NoteItemState extends State<NoteItem> {
 }
 
 Container getNotecheckList() {
-  return Container(
+  return SizedBox(
     height: 450.h,
     child: ListView.builder(
       itemCount: 3,
       itemBuilder: (_, int index) {
-        return NoteItem();
+        return const NoteItem();
       },
     ),
   );

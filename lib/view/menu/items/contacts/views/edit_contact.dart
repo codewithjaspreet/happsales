@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/custom_dropdown.dart';
@@ -17,6 +14,8 @@ class EditContact extends StatelessWidget {
 
 
   ContactViewModel contactViewModel = Get.put(ContactViewModel());
+
+  EditContact({super.key});
   // final int Id;
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class EditContact extends StatelessWidget {
         child: Column(
           children: [
             AmiHeaderRow(title: 'Edit Contact',),
-            DetailRow(),
+            const DetailRow(),
           ],
         ),
       ),
@@ -39,6 +38,8 @@ class EditContact extends StatelessWidget {
 }
 
 class DetailRow extends StatefulWidget {
+  const DetailRow({super.key});
+
 
   // DetailRow({Key? key, required this.contact}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
@@ -102,7 +103,7 @@ class _MyRowState extends State<DetailRow> {
                 SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
 
                         // DropDownInput(hint: 'Title *'),
                         CustomDropDown(labelText: 'Gender', items: [

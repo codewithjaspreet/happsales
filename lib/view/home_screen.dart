@@ -10,6 +10,8 @@ class HomeScreen extends StatelessWidget {
   AccountViewModel accountViewModel = Get.put(AccountViewModel());
   ContactViewModel contactViewModel = Get.put(ContactViewModel());
 
+  HomeScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {

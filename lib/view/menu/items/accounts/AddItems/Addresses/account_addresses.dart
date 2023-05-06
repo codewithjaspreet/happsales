@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/Addresses/address_details_page.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../../utils/color.dart';
 import 'add_address.dart';
@@ -29,7 +27,7 @@ class AccountAddress extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.to(AddAddress());
+                  Get.to(const AddAddress());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(right: 16.w),
@@ -90,6 +88,13 @@ class AccountAddress extends StatelessWidget {
 
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
+            height: 180.h,
+            width: 337.w,
+            decoration: BoxDecoration(
+              color: const Color(0xffE5F6FF),
+              borderRadius: BorderRadius.circular(10.r),
+
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,9 +102,9 @@ class AccountAddress extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: (){
-                    Get.to(AddressDetailsPage());
+                    Get.to(const AddressDetailsPage());
                   },
-                  child: AddressDetails(
+                  child: const AddressDetails(
 
                     info1: 'account owner to Deepak',
                     info2: 'Miss Sunanda Bamnalli',
@@ -114,13 +119,6 @@ class AccountAddress extends StatelessWidget {
                 )
 
               ],
-            ),
-            height: 180.h,
-            width: 337.w,
-            decoration: BoxDecoration(
-              color: Color(0xffE5F6FF),
-              borderRadius: BorderRadius.circular(10.r),
-
             ),
           ),
           //
@@ -152,7 +150,7 @@ class AddressDetails extends StatelessWidget {
       height: 180.h,
       width: 337.w,
       decoration: BoxDecoration(
-        color: Color(0xffE5F6FF),
+        color: const Color(0xffE5F6FF),
         borderRadius: BorderRadius.circular(10.r),
 
       ),
@@ -166,26 +164,26 @@ class AddressDetails extends StatelessWidget {
 
               fontSize: 14.sp , fontWeight: FontWeight.bold),
           ),
-          Text(info2,style: TextStyle(
+          Text(info2,style: const TextStyle(
             color: AppColors.primaryColor,
             fontFamily: "roboto_medium"
           ),),
-          Text(info3,style: TextStyle(
+          Text(info3,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
-          Text(info4,style: TextStyle(
+          Text(info4,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
-          Text(info5,style: TextStyle(
+          Text(info5,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
-          Text(info6,style: TextStyle(
+          Text(info6,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
-          Text(info7,style: TextStyle(
+          Text(info7,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
-          Text(info8,style: TextStyle(
+          Text(info8,style: const TextStyle(
             color: AppColors.primaryColor,
           ),),
         ],

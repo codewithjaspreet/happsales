@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommonNavBar extends StatelessWidget {
+  const CommonNavBar({super.key});
+
 
   @override
   Widget build(BuildContext context) {

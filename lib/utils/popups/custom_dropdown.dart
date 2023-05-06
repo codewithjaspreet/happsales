@@ -29,11 +29,11 @@ class _CustomDropDownState extends State<CustomDropDown> {
           labelStyle: const TextStyle(color: Colors.blue),
                     border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xffB4C6D4),
             ),
           ),
-          suffix: Container(
+          suffix: SizedBox(
             height: 10.h,
             child: DropdownButtonFormField(
               icon:  Image.asset('assets/accounts/down.png'),
@@ -43,7 +43,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                 fontFamily: "roboto_bold",
                 fontSize: 14.sp,
               ),),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
 

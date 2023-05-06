@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
@@ -23,6 +22,7 @@ class AccountViewModel extends GetxController {
     return false;
   }
 
+  @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
@@ -59,14 +59,14 @@ class AccountViewModel extends GetxController {
       ),
     );
     print(response.data);
-    (response.data as List).forEach((employee) {
+    for (var employee in (response.data as List)) {
       Account account = Account.fromJson(employee);
       accounts.add(account);
       // Uncomment the following line if DBProvider is properly configured
       DBProvider.db.createAccount(account);
 
 
-    });
+    }
 
     return accounts;
   }

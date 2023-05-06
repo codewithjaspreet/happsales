@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BusinessUnits/widgets/business_alert.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 
 import '../../../../../../utils/color.dart';
 import '../../../contacts/widgets/CustomAppBar.dart';
@@ -43,7 +39,7 @@ class BusinessUnit extends StatelessWidget {
                   onTap: (){
                     showBusinessDialogs(context);
                   },
-                  child: Center(
+                  child: const Center(
                     child: Icon(Icons.add ,color: Colors.white,),
                   ),
                 ),
@@ -87,8 +83,8 @@ class BusinessUnit extends StatelessWidget {
               ],
             ),
           ),
-          BusinessUnitRow(title: 'Cloud'),
-          BusinessUnitRow(title: 'IDC Infra'),
+          const BusinessUnitRow(title: 'Cloud'),
+          const BusinessUnitRow(title: 'IDC Infra'),
 
           Expanded(
 
@@ -101,16 +97,15 @@ class BusinessUnit extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                           width: 125.w,
                           height:48.h,
                           decoration: BoxDecoration(
                             borderRadius:  BorderRadius.circular(26.sp),
-                            color: Color(0xff8199AC),
+                            color: const Color(0xff8199AC),
                           ),
+                          child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                         ),
                         Container(
-                          child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                           width: 125.w,
                           height:48.h,
                           decoration: BoxDecoration(
@@ -119,6 +114,7 @@ class BusinessUnit extends StatelessWidget {
                             shape: BoxShape.rectangle,
                             color: AppColors.primaryColor,
                           ),
+                          child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                         )
                       ],
                     ),
@@ -144,6 +140,12 @@ class BusinessUnitRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       margin: EdgeInsets.symmetric(vertical: 5.h),
+      width: 337.w,
+      height: 45.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: Colors.grey,width: 1),
+      ),
 
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 12.w),
@@ -156,15 +158,9 @@ class BusinessUnitRow extends StatelessWidget {
               fontWeight: FontWeight.w500,
 
             ),),
-            Icon(Icons.delete_outline ,color: AppColors.primaryColor,),
+            const Icon(Icons.delete_outline ,color: AppColors.primaryColor,),
           ],
         ),
-      ),
-      width: 337.w,
-      height: 45.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: Colors.grey,width: 1),
       ),
     );
   }

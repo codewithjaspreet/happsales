@@ -5,11 +5,8 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/pages/dashboard.dart';
 import 'package:happsales_crm/view/dashboard/pages/opportunities.dart';
 import 'package:happsales_crm/view/dashboard/pages/recommendations.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../menu/views/menu.dart';
-import '../voiceassistant/collapsed.dart';
-import '../voiceassistant/floating.dart';
 import '../voiceassistant/parent.dart';
 
 

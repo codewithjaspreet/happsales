@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/ShareAccounts/widgets/share_alert.dart';
 import '../../../../../../utils/color.dart';
 import 'dart:math' as math;
@@ -90,9 +88,9 @@ class ShareAccount extends StatelessWidget {
                 ],
               ),
             ),
-            ShareRow(title: 'Administrator', subtitle: 'Sales Manager'),
-            ShareRow(title: 'Fazil', subtitle: 'Developer'),
-            ShareRow(title: 'Sunanda', subtitle: 'Sales Manager'),
+            const ShareRow(title: 'Administrator', subtitle: 'Sales Manager'),
+            const ShareRow(title: 'Fazil', subtitle: 'Developer'),
+            const ShareRow(title: 'Sunanda', subtitle: 'Sales Manager'),
           ],
         ),
       ),
@@ -163,7 +161,7 @@ class ShareRow extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 16.h ,left: 2.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Icon(Icons.delete_outline,color: AppColors.primaryColor,)
                         ],
                       ),

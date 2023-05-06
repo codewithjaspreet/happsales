@@ -1,9 +1,7 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../views/menu.dart';
 
@@ -30,7 +28,7 @@ AppBar CustomAppBar(BuildContext context) {
     actions: [
       IconButton(
         onPressed: () {
-          Get.to(() => Menu());
+          Get.to(() => const Menu());
         },
         icon: const Icon(
           Icons.menu,

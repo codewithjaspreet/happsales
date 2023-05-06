@@ -1,14 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/utils/popups/custom_dropdown.dart';
 import '../../../../../utils/color.dart';
 import '../controllers/location_controller.dart';
 import 'InputOne.dart';
 
 class AddContactDetails extends StatefulWidget {
+  const AddContactDetails({super.key});
+
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -62,7 +62,7 @@ class _MyRowState extends State<AddContactDetails> {
           SingleChildScrollView(
             child: Column(
               children: [
-                CustomDropDown(
+                const CustomDropDown(
                   labelText: 'Title *',
                   items: [
                     DropdownMenuItem(
@@ -88,17 +88,17 @@ class _MyRowState extends State<AddContactDetails> {
                   ],
                 ),
                 // DropDownInput(hint : 'Title *'),
-                Input(
+                const Input(
                   title: 'First Name*',
                 ),
-                Input(
+                const Input(
                   title: 'Last Name',
                 ),
-                Input(
+                const Input(
                   title: 'Account name',
                 ),
 
-                CustomDropDown(items: [
+                const CustomDropDown(items: [
                   DropdownMenuItem(
                     value: 'Item 1',
                     child: Text('Administration'),
@@ -130,7 +130,7 @@ class _MyRowState extends State<AddContactDetails> {
                 ], labelText: 'Department'),
 
                 // DropDownInput(hint : 'designation'),
-                CustomDropDown(
+                const CustomDropDown(
                   labelText: 'Designation',
                   items: [
                     DropdownMenuItem(
@@ -164,22 +164,22 @@ class _MyRowState extends State<AddContactDetails> {
                   ],
                 ),
                 // DropDownInput(hint : 'Mobile Number'),
-                Input(
+                const Input(
                   title: 'Mobile Number',
                 ),
-                Input(
+                const Input(
                   title: 'Alternate Mobile Number',
                 ),
-                Input(
+                const Input(
                   title: 'Work Phone',
                 ),
-                Input(
+                const Input(
                   title: 'Residence Phone',
                 ),
-                Input(
+                const Input(
                   title: 'Email Address',
                 ),
-                Input(
+                const Input(
                   title: 'Alternate Email Address',
                 ),
                 Container(
@@ -191,7 +191,7 @@ class _MyRowState extends State<AddContactDetails> {
                         onTap: () {
                           // locationController.getCurrentLocation();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.gps_fixed,
                           color: Color(0xff8F9BB3),
                         ),
@@ -199,66 +199,66 @@ class _MyRowState extends State<AddContactDetails> {
                       labelText: 'Address Line 1',
                       hintText: 'Address Line 1',
                       labelStyle: TextStyle(
-    color: Color(0xff8F9BB3),
+    color: const Color(0xff8F9BB3),
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     fontFamily: "roboto_regular"),
                       hintStyle: TextStyle(
-                          color: Color(0xff8F9BB3),
+                          color: const Color(0xff8F9BB3),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: "roboto_regular"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.sp),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xffB4C6D4),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Input(
+                const Input(
                   title: 'Address Line2',
                 ),
-                Input(
+                const Input(
                   title: 'Address Line3',
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      suffixIcon: Icon(
+                      suffixIcon: const Icon(
                         Icons.search,
                         color: Color(0xff8F9BB3),
                       ),
                       labelText: 'City',
                       hintText: 'City',
-                      floatingLabelStyle: TextStyle(
+                      floatingLabelStyle: const TextStyle(
                         color : Color(0xff00A6D6),
                       ),
                       labelStyle: TextStyle(
-                          color: Color(0xff8F9BB3),
+                          color: const Color(0xff8F9BB3),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: "roboto_regular"),
                       hintStyle: TextStyle(
-                          color: Color(0xff8F9BB3),
+                          color: const Color(0xff8F9BB3),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: "roboto_regular"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.sp),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xffB4C6D4),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Input(
+                const Input(
                   title: 'State',
                 ),
-                CustomDropDown(items: [
+                const CustomDropDown(items: [
                   DropdownMenuItem(
                     value: 'Item 1',
                     child: Text('India'),
@@ -280,10 +280,10 @@ class _MyRowState extends State<AddContactDetails> {
                     child: Text('UK'),
                   ),
                 ], labelText: 'Country'),
-                Input(
+                const Input(
                   title: 'Pin',
                 ),
-                Input(
+                const Input(
                   title: 'GPS Coordinate',
                 ),
               ],

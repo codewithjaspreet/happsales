@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/notes/widgets/search_alert.dart';
 import 'package:popover/popover.dart';
 
 
@@ -14,6 +15,7 @@ class NotePopup extends StatelessWidget {
      onTap: () {
         showPopover(
           arrowWidth: 10.w,
+          radius: 0.0,
           context: context,
           bodyBuilder: (context) => const ListItems(),
           onPop: () => print('Popover was popped!'),
@@ -42,7 +44,7 @@ class ListItems extends StatelessWidget {
                   ..pop()
                   ..push(
                     MaterialPageRoute<SecondRoute>(
-                      builder: (context) => SecondRoute(),
+                      builder: (context) => const SecondRoute(),
                     ),
                   );
               },
@@ -51,7 +53,7 @@ class ListItems extends StatelessWidget {
                   children: [
                    Image.asset('assets/notes/refresh.png'),
                   
-                  SizedBox(width: 10.w,),
+                  SizedBox(width: 5.w,),
                   const Text('Refresh',style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -63,32 +65,34 @@ class ListItems extends StatelessWidget {
               )
             ),
             SizedBox(height: 15.h,),
-             InkWell(
-                child: Row(
-                  children: [
-                   Image.asset('assets/notes/search.png'),
-                                   SizedBox(width: 10.w,),
-
-                  const Text('Search',style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    
-
-                  ),),
-                
-                ],),
-              ),
+             GestureDetector(
+              onTap: (){
+                showSearchAlert(  context);
+              },
+               child: Row(
+                 children: [
+                  Image.asset('assets/notes/search.png'),
+                                  SizedBox(width: 5.w,),
+             
+                 const Text('Search',style: TextStyle(
+                   fontWeight: FontWeight.w500,
+                   fontSize: 14,
+                   
+             
+                 ),),
+               
+               ],),
+             ),
                SizedBox(height: 15.h,),
 
                 InkWell(
                 child: Row(
                   children: [
                    Image.asset('assets/notes/sort.png'),
-                                    SizedBox(width: 10.w,),
-
-                  const Text('Sort',style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                   SizedBox(width: 5.w,),
+                   const Text('Sort',style: TextStyle(
+                   fontWeight: FontWeight.w500,
+                   fontSize: 14,
                     
 
                   ),),
@@ -102,6 +106,8 @@ class ListItems extends StatelessWidget {
 }
 
 class SecondRoute extends StatelessWidget {
+  const SecondRoute({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,7 +26,7 @@ class AccountFifthTypeDetailing extends StatelessWidget {
             style: TextStyle(
               fontSize: 13.sp,
               fontFamily: "roboto_bold",
-              color: Color(0xff00A6D6),
+              color: const Color(0xff00A6D6),
               fontWeight: FontWeight.bold,
             ),
           ),

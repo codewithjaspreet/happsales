@@ -38,7 +38,7 @@ class DocumentPage extends StatelessWidget {
                   width: 126.w,
                   height: 126.h,
                   decoration: BoxDecoration(
-                    color: Color(0xffF5F6F9),
+                    color: const Color(0xffF5F6F9),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -47,7 +47,7 @@ class DocumentPage extends StatelessWidget {
                     children: [
                       Image.asset('assets/accounts/media_add.png'),
                       Image.asset('assets/accounts/media_camera.png'),
-                      Text(
+                      const Text(
                         'Document',
                         style: TextStyle(
                             color: AppColors.primaryColor,
@@ -62,6 +62,12 @@ class DocumentPage extends StatelessWidget {
 
           Container(
             margin: EdgeInsets.symmetric(vertical: 5.h),
+            width: 337.w,
+            height: 70.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6.r),
+              border: Border.all(color: Colors.grey, width: 1),
+            ),
             child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 12.w),
                 child:Column(
@@ -83,7 +89,7 @@ class DocumentPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.delete_outline,
                             color: AppColors.primaryColor,
                           ),
@@ -91,15 +97,9 @@ class DocumentPage extends StatelessWidget {
                       ),
                     ),
 
-                    Text('-')
+                    const Text('-')
                   ],
                 )
-            ),
-            width: 337.w,
-            height: 70.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6.r),
-              border: Border.all(color: Colors.grey, width: 1),
             ),
           ),
 
@@ -110,19 +110,18 @@ class DocumentPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text(
-
-
-                      "Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
                       borderRadius:  BorderRadius.circular(26.sp),
-                      color: Color(0xff8199AC),
+                      color: const Color(0xff8199AC),
                     ),
+                    child: Center(child: Text(
+
+
+                      "Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -131,6 +130,7 @@ class DocumentPage extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       color: AppColors.primaryColor,
                     ),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                   )
                 ],
               ),

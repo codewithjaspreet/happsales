@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
 
 class TagInputWidget extends StatefulWidget {
+  const TagInputWidget({super.key});
+
   @override
   _TagInputWidgetState createState() => _TagInputWidgetState();
 }
@@ -20,18 +22,18 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
        Row(
 
-            children: [
+            children: const [
 
             ],
 
           ) ,
-          Divider(
+          const Divider(
             color: Colors.grey,
             thickness: 1.2,
 
           )
 
-          ,Text('contact'),
+          ,const Text('contact'),
           SizedBox(height: 10.h,),
 
 
@@ -45,6 +47,11 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
                  width: 88.w,
                  height: 44.h,
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(12.r),
+                   border: Border.all(color: AppColors.primaryColor),
+                   color: const Color(0xffE5F6FF),
+                 ),
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
@@ -56,11 +63,6 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                      SizedBox(width: 5.w,),
                      Image.asset('assets/accounts/close2.png')
                    ],
-                 ),
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(12.r),
-                   border: Border.all(color: AppColors.primaryColor),
-                   color: Color(0xffE5F6FF),
                  ),
                ),
              ),
@@ -73,6 +75,11 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
                  width: 88.w,
                  height: 44.h,
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(12.r),
+                   border: Border.all(color: AppColors.primaryColor),
+                   color: const Color(0xffE5F6FF),
+                 ),
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
@@ -84,11 +91,6 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                      SizedBox(width: 5.w,),
                      Image.asset('assets/accounts/close2.png')
                    ],
-                 ),
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(12.r),
-                   border: Border.all(color: AppColors.primaryColor),
-                   color: Color(0xffE5F6FF),
                  ),
                ),
              ),

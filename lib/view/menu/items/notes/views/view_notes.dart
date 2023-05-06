@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
-import 'package:happsales_crm/view/menu/items/accounts/AddItems/CompetitionActivities/widgets/competition_row.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 
 import '../../accounts/AddItems/BuyingProcess/widgets/buy_sec_row.dart';
 
@@ -31,7 +29,7 @@ class ViewnNotes extends StatelessWidget {
                         'Note Code',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
 
@@ -55,21 +53,21 @@ class ViewnNotes extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10.h),
                   width: 25.w,
                   height: 25.h,
-                  child: Image.asset('assets/contacts/edit.png'),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.primaryColor,
                     shape: BoxShape.circle,
                   ),
+                  child: Image.asset('assets/contacts/edit.png'),
                 )
               ],
             ),
           ),
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Note Content",
             compSubTitle: "new test activity cell",
           ),
 
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Note Date",
             compSubTitle: "07 Apr 2023",
           ),
@@ -86,7 +84,7 @@ class ViewnNotes extends StatelessWidget {
                   'Activity Title',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff00A6D6),
+                    color: const Color(0xff00A6D6),
 
 
                     fontSize: 12.sp,
@@ -115,7 +113,7 @@ class ViewnNotes extends StatelessWidget {
         ],
       ),
     ),
-          BuySecondRow(compTitle: 'Tags', compSubTitle: '-'),
+          const BuySecondRow(compTitle: 'Tags', compSubTitle: '-'),
 
           Container(
             padding: EdgeInsets.all(20.sp),
@@ -129,7 +127,7 @@ class ViewnNotes extends StatelessWidget {
                         'Created By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -156,7 +154,7 @@ class ViewnNotes extends StatelessWidget {
                         'Modified By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -192,7 +190,7 @@ class ViewnNotes extends StatelessWidget {
                         'Created On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -219,7 +217,7 @@ class ViewnNotes extends StatelessWidget {
                         'Modified On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,

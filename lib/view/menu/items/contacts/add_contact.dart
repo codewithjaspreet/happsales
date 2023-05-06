@@ -1,8 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/utils/popups/custom_dropdown.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
@@ -12,6 +10,8 @@ import 'package:happsales_crm/view/menu/views/menu.dart';
 
 import '../../../../utils/color.dart';
 class AddContact extends StatelessWidget {
+  const AddContact({super.key});
+
 
 
   @override
@@ -38,7 +38,7 @@ class AddContact extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(() => Menu());
+              Get.to(() => const Menu());
             },
             icon: const Icon(
               Icons.menu,
@@ -94,13 +94,13 @@ class AddContact extends StatelessWidget {
                          ),
                          Container(
                            margin: EdgeInsets.only(right: 12.w),
-                           decoration: BoxDecoration(
+                           decoration: const BoxDecoration(
                              color: Color(0xffB4C6D4),
                              shape: BoxShape.circle,
                            ),
                            width: 24.w,
                            height: 24.h,
-                           child: Center(
+                           child: const Center(
                              child:Icon(
                                Icons.cancel_outlined,
                                color: Colors.white,
@@ -120,10 +120,10 @@ class AddContact extends StatelessWidget {
                 onTap: () {
                   showDialogs(context);
                 },
-                child: BusinessCard()),
+                child: const BusinessCard()),
 
             Hdivider(),
-            MyRow()
+            const MyRow()
 
 
           ],
@@ -145,6 +145,8 @@ class AddContact extends StatelessWidget {
 
 
 class MyRow extends StatefulWidget {
+  const MyRow({super.key});
+
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -193,25 +195,25 @@ class _MyRowState extends State<MyRow> {
               child: Column(
                 children: [
                   DropDownInput(hint : 'Title *'),
-                  Input(title: 'First Name*',),
-                  Input(title: 'Last Name',),
-                  Input(title: 'Account name',),
+                  const Input(title: 'First Name*',),
+                  const Input(title: 'Last Name',),
+                  const Input(title: 'Account name',),
                   DropDownInput(hint : 'designation'),
                   DropDownInput(hint : 'Mobile Number'),
-                  Input(title: 'Mobile Number',),
-                  Input(title: 'alternate Mobile Number',),
-                  Input(title: 'Work Phone',),
-                  Input(title: 'residence phone',),
-                  Input(title: 'email address',),
-                  Input(title: 'alternate email address',),
-                  Input(title: 'Address Line',),
-                  Input(title: 'Address Line 2',),
-                  Input(title: 'Address Line 3',),
+                  const Input(title: 'Mobile Number',),
+                  const Input(title: 'alternate Mobile Number',),
+                  const Input(title: 'Work Phone',),
+                  const Input(title: 'residence phone',),
+                  const Input(title: 'email address',),
+                  const Input(title: 'alternate email address',),
+                  const Input(title: 'Address Line',),
+                  const Input(title: 'Address Line 2',),
+                  const Input(title: 'Address Line 3',),
                   DropDownInput(hint: 'city',),
                   DropDownInput(hint:  'state',),
                   DropDownInput(hint: 'country',),
-                  Input(title: 'pincode',),
-                  Input(title: 'GPS Coordinate',),
+                  const Input(title: 'pincode',),
+                  const Input(title: 'GPS Coordinate',),
 
 
 

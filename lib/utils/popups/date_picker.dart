@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class DatePickerFeild extends StatefulWidget {
-  DatePickerFeild({Key? key, required this.labelText}) : super(key: key);
+  const DatePickerFeild({Key? key, required this.labelText}) : super(key: key);
 
   final String labelText;
 
@@ -27,18 +26,18 @@ class _DatePickerFeildState extends State<DatePickerFeild> {
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.sp),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Color(0xffB4C6D4),
               ),
             ),
-            suffixIcon: Icon(Icons.calendar_today), //icon of text field
+            suffixIcon: const Icon(Icons.calendar_today), //icon of text field
             labelText: widget.labelText //label text of field
             ,
-            labelStyle: TextStyle(
+            labelStyle: const TextStyle(
               color: Color(0xff8F9BB3),
             ),
 
-            floatingLabelStyle: TextStyle(
+            floatingLabelStyle: const TextStyle(
               color : Color(0xff00A6D6),
             ),
           ),

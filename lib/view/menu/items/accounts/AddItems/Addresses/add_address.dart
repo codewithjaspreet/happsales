@@ -5,9 +5,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
 
 import '../../../../../../utils/color.dart';
-import '../../../contacts/widgets/HDivider.dart';
 import '../../../contacts/widgets/InputOne.dart';
-import '../BuyingProcess/widgets/buy_sec_row.dart';
 
 class AddAddress extends StatelessWidget {
   const AddAddress({Key? key}) : super(key: key);
@@ -46,14 +44,14 @@ class AddAddress extends StatelessWidget {
 
             Column(
               children: [
-                Input(
+                const Input(
                   title: 'Account Name',
                 ),
-                Input(
+                const Input(
 
                   title: 'Contact Name',
                 ),
-                CustomDropDown(items: [], labelText: 'Address Type',),
+                const CustomDropDown(items: [], labelText: 'Address Type',),
                 Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                   child: TextFormField(
@@ -62,7 +60,7 @@ class AddAddress extends StatelessWidget {
                         onTap: () {
                           // locationController.getCurrentLocation();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.gps_fixed,
                           color: Color(0xff8F9BB3),
                         ),
@@ -70,53 +68,53 @@ class AddAddress extends StatelessWidget {
                       labelText: 'Address Line 1',
                       hintText: 'Address Line 1',
                       hintStyle: TextStyle(
-                          color: Color(0xff8F9BB3),
+                          color: const Color(0xff8F9BB3),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: "roboto_regular"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.sp),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xffB4C6D4),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Input(
+                const Input(
                   title: 'Address Line2',
                 ),
-                Input(
+                const Input(
                   title: 'Address Line3',
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      suffixIcon: Icon(
+                      suffixIcon: const Icon(
                         Icons.search,
                         color: Color(0xff8F9BB3),
                       ),
                       labelText: 'City',
                       hintText: 'City',
                       hintStyle: TextStyle(
-                          color: Color(0xff8F9BB3),
+                          color: const Color(0xff8F9BB3),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: "roboto_regular"),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.sp),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xffB4C6D4),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Input(
+                const Input(
                   title: 'State',
                 ),
-                CustomDropDown(items: [
+                const CustomDropDown(items: [
                   DropdownMenuItem(
                     value: 'Item 1',
                     child: Text('India'),
@@ -138,10 +136,10 @@ class AddAddress extends StatelessWidget {
                     child: Text('UK'),
                   ),
                 ], labelText: 'Country'),
-                Input(
+                const Input(
                   title: 'PinCode',
                 ),
-                Input(
+                const Input(
                   title: 'GPS Coordinates',
                 ),
                 ToggleButtonRow(title: 'Is Active',isAlreadyActive : true,),
@@ -156,25 +154,19 @@ class AddAddress extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    width: 125.w,
+                    height:48.h,
+                    decoration: BoxDecoration(
+                      borderRadius:  BorderRadius.circular(26.sp),
+                      color: const Color(0xff8199AC),
+                    ),
                     child: Center(child: Text(
 
                       "Cancel" , style:   TextStyle(
                         fontSize: 18.sp,
                         color: Colors.white),)),
-                    width: 125.w,
-                    height:48.h,
-                    decoration: BoxDecoration(
-                      borderRadius:  BorderRadius.circular(26.sp),
-                      color: Color(0xff8199AC),
-                    ),
                   ),
                   Container(
-                    child: Center(child: Text(
-
-                      "Save" , style:   TextStyle(
-
-                        fontSize: 18.sp,
-                        color: Colors.white,fontFamily: "roboto_bold"),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -183,6 +175,12 @@ class AddAddress extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       color: AppColors.primaryColor,
                     ),
+                    child: Center(child: Text(
+
+                      "Save" , style:   TextStyle(
+
+                        fontSize: 18.sp,
+                        color: Colors.white,fontFamily: "roboto_bold"),)),
                   )
                 ],
               ),

@@ -1,10 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/utils/popups/custom_dropdown.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/BusinessCard.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
@@ -12,6 +10,8 @@ import 'package:happsales_crm/view/menu/views/menu.dart';
 
 import '../../../../utils/color.dart';
 class AddAccount extends StatelessWidget {
+  const AddAccount({super.key});
+
 
 
   @override
@@ -38,7 +38,7 @@ class AddAccount extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                Get.to(() => Menu());
+                Get.to(() => const Menu());
               },
               icon: const Icon(
                 Icons.menu,
@@ -94,13 +94,13 @@ class AddAccount extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.only(right: 12.w),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color(0xffB4C6D4),
                                 shape: BoxShape.circle,
                               ),
                               width: 24.w,
                               height: 24.h,
-                              child: Center(
+                              child: const Center(
                                 child:Icon(
                                   Icons.cancel_outlined,
                                   color: Colors.white,
@@ -120,10 +120,10 @@ class AddAccount extends StatelessWidget {
                   onTap: () {
                     showDialogs(context);
                   },
-                  child: BusinessCard()),
+                  child: const BusinessCard()),
 
               Hdivider(),
-              MyRow()
+              const MyRow()
 
 
             ],
@@ -137,6 +137,8 @@ class AddAccount extends StatelessWidget {
 
 
 class MyRow extends StatefulWidget {
+  const MyRow({super.key});
+
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -185,13 +187,12 @@ class _MyRowState extends State<MyRow> {
                   _toggleDropdown();
                 },
                 child: Column(
-                  children: [
+                  children: const [
                     CustomDropDown(items: [
 
-                      DropdownMenuItem(child:
+                      DropdownMenuItem(value: "account 1",child:
 
                           Text("Account 1"),
-                          value: "account 1",
 
                       ),
 
@@ -227,16 +228,15 @@ class _MyRowState extends State<MyRow> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(
                     borderRadius:  BorderRadius.circular(26.sp),
-                    color: Color(0xff8199AC),
+                    color: const Color(0xff8199AC),
                   ),
+                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                 ),
                 Container(
-                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                   width: 125.w,
                   height:48.h,
                   decoration: BoxDecoration(
@@ -245,6 +245,7 @@ class _MyRowState extends State<MyRow> {
                     shape: BoxShape.rectangle,
                     color: AppColors.primaryColor,
                   ),
+                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                 )
               ],
             ),

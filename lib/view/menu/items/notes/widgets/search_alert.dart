@@ -1,13 +1,15 @@
 
 import 'package:flutter/material.dart';
 
-import 'AlertBox.dart';
+import 'my_search.dart';
 
-void showDialogs(BuildContext context) {
+
+
+void showSearchAlert(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const MyAlertDialog();
+      return const MySearchAlert();
     },
   );
 }

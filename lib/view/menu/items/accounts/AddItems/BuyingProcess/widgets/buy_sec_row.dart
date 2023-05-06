@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../utils/color.dart';
 class BuySecondRow extends StatelessWidget {
-  BuySecondRow({Key? key, required this.compTitle, required this.compSubTitle}) : super(key: key);
+  const BuySecondRow({Key? key, required this.compTitle, required this.compSubTitle}) : super(key: key);
 
   final String compTitle;
   final String compSubTitle;
@@ -23,7 +23,7 @@ class BuySecondRow extends StatelessWidget {
                   compTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff00A6D6),
+                    color: const Color(0xff00A6D6),
 
 
                     fontSize: 12.sp,

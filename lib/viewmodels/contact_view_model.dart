@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/api_endpoints.dart';
 import '../models/contact.dart';
 import '../models/database.dart';
@@ -22,6 +20,7 @@ class ContactViewModel extends GetxController {
     return false;
   }
 
+  @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
@@ -57,13 +56,13 @@ class ContactViewModel extends GetxController {
       ),
     );
      print(response.data);
-    (response.data as List).forEach((employee) {
+    for (var employee in (response.data as List)) {
       Contact contact = Contact.fromJson(employee);
       contacts.add(contact);
       // Uncomment the following line if DBProvider is properly configured
       DBProvider.db.createEmployee(contact);
 
-    });
+    }
 
     return contacts;
   }

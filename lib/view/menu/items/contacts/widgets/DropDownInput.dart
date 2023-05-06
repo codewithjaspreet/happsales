@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DropDownInput extends StatelessWidget {
 
 
-   DropDownInput({required this.hint});
+   DropDownInput({super.key, required this.hint});
   final String hint;
   final TextEditingController _controller = TextEditingController();
   final List<String>items  = [
@@ -30,7 +30,7 @@ class DropDownInput extends StatelessWidget {
             fontWeight: FontWeight.w400,
             fontFamily: "roboto_regular",
             fontSize: 14.sp,
-            color: Color(0xff8F9BB3),
+            color: const Color(0xff8F9BB3),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),

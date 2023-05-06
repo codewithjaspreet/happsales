@@ -18,7 +18,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
 
 
-        home: email == null ? SplashScreen() : DashBoardPage()); }, designSize: const Size(375, 812), minTextAdapt: true, splitScreenMode: true,));
+        home: email == null ? const SplashScreen() : const DashBoardPage()); }, designSize: const Size(375, 812), minTextAdapt: true, splitScreenMode: true,));
 
 }
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       builder: (context, a) {
 
         // Use GetMaterial App instead of Material App when using GetX
-        return   GetMaterialApp(
+        return   const GetMaterialApp(
           debugShowCheckedModeBanner: false,
           home: SplashScreen(),
         );

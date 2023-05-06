@@ -31,7 +31,7 @@ class SplashController extends GetxController {
     } else {
       // If the user has not seen the onboarding screen, go to the onboarding screen
       await prefs.setBool('seen', true);
-      Get.off(OnBoarding());
+      Get.off(const OnBoarding());
     }
   }
 }
