@@ -40,18 +40,9 @@ class HelperRow extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                width: 30.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primaryColor,width: 1),
-                  // color: Color(0xff171A63),
+              Center(
 
-                ),
-                child: const Center(
-                  child: Icon(Icons.more_vert ,color: AppColors.primaryColor,),
-                ),
+                child: Image.asset('assets/notes/ic_menu.png',scale: 0.7,),
               )
             ],
           ),

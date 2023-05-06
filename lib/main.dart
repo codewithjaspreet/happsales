@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   // runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('email');
   print(email);
