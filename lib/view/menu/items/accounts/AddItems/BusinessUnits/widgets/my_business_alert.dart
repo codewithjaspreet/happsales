@@ -123,13 +123,13 @@ class _NoteItemState extends State<NoteItem> {
   }
 }
 
-Container getNotecheckList() {
+SizedBox getNotecheckList() {
   return SizedBox(
     height: 450.h,
     child: ListView.builder(
       itemCount: 3,
       itemBuilder: (_, int index) {
-        return const NoteItem();
+        return  NoteItem();
       },
     ),
   );

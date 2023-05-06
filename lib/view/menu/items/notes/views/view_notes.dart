@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/notes/views/edit_notes.dart';
 
 import '../../accounts/AddItems/BuyingProcess/widgets/buy_sec_row.dart';
 
@@ -49,15 +52,21 @@ class ViewnNotes extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10.h),
-                  width: 25.w,
-                  height: 25.h,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryColor,
-                    shape: BoxShape.circle,
+                GestureDetector(
+
+                  onTap: () {
+                    Get.to(const EditNotes());
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    width: 25.w,
+                    height: 25.h,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset('assets/contacts/edit.png'),
                   ),
-                  child: Image.asset('assets/contacts/edit.png'),
                 )
               ],
             ),

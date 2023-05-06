@@ -15,6 +15,11 @@ class _TagInputWidgetState extends State<TagInputWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(10.sp),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Color(0xffB4C6D4)),
+      ),
       padding: EdgeInsets.symmetric(horizontal: 16.sp , vertical: 50.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +66,6 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                        fontWeight: FontWeight.bold,
                      ),),
                      SizedBox(width: 5.w,),
-                     Image.asset('assets/accounts/close2.png')
                    ],
                  ),
                ),
@@ -88,8 +92,6 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                        fontSize: 12.sp,
                        fontWeight: FontWeight.bold,
                      ),),
-                     SizedBox(width: 5.w,),
-                     Image.asset('assets/accounts/close2.png')
                    ],
                  ),
                ),
