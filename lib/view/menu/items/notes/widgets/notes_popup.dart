@@ -1,51 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:popover/popover.dart';
 
-class PopoverExample extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Popover Example')),
-        body: const SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Button(),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
-class Button extends StatelessWidget {
-  const Button({Key? key}) : super(key: key);
+
+class NotePopup extends StatelessWidget {
+  const NotePopup({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 80,
-      height: 40,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
-      ),
-      child: GestureDetector(
-        child: const Center(child: Text('Click Me')),
-        onTap: () {
-          showPopover(
-            context: context,
-            bodyBuilder: (context) => const ListItems(),
-            onPop: () => print('Popover was popped!'),
-            direction: PopoverDirection.bottom,
-            width: 200,
-            height: 400,
-            arrowHeight: 15,
-            arrowWidth: 30,
-          );
-        },
-      ),
+    return GestureDetector(
+      child:  Image.asset('assets/notes/ic_menu.png',scale: 0.7,),
+     onTap: () {
+        showPopover(
+          arrowWidth: 10.w,
+          context: context,
+          bodyBuilder: (context) => const ListItems(),
+          onPop: () => print('Popover was popped!'),
+          direction: PopoverDirection.bottom,
+          width: 100.w,
+          height: 100.h,
+        );
+      },
     );
   }
 }
@@ -71,23 +47,54 @@ class ListItems extends StatelessWidget {
                   );
               },
               child: Container(
-                height: 50,
-                color: Colors.amber[100],
-                child: const Center(child: Text('Entry A')),
+                child: Row(
+                  children: [
+                   Image.asset('assets/notes/refresh.png'),
+                  
+                  SizedBox(width: 10.w,),
+                  const Text('Refresh',style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+
+
+                  ),),
+                
+                ],),
+              )
+            ),
+            SizedBox(height: 15.h,),
+             InkWell(
+                child: Row(
+                  children: [
+                   Image.asset('assets/notes/search.png'),
+                                   SizedBox(width: 10.w,),
+
+                  const Text('Search',style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    
+
+                  ),),
+                
+                ],),
               ),
-            ),
-            const Divider(),
-            Container(
-              height: 50,
-              color: Colors.amber[200],
-              child: const Center(child: Text('Entry B')),
-            ),
-            const Divider(),
-            Container(
-              height: 50,
-              color: Colors.amber[300],
-              child: const Center(child: Text('Entry C')),
-            ),
+               SizedBox(height: 15.h,),
+
+                InkWell(
+                child: Row(
+                  children: [
+                   Image.asset('assets/notes/sort.png'),
+                                    SizedBox(width: 10.w,),
+
+                  const Text('Sort',style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    
+
+                  ),),
+                
+                ],),
+              ),
           ],
         ),
     );
