@@ -7,9 +7,13 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/views/tabs/closed/views/closed.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/views/tabs/closed/widgets/popup.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/views/tabs/overdue/views/overdue.dart';
 import 'package:happsales_crm/view/voiceassistant/parent.dart';
 
 import '../../../views/menu.dart';
+import '../../notes/widgets/notes_popup.dart';
 
 class OpportunityListing extends StatelessWidget {
   const OpportunityListing({super.key});
@@ -35,14 +39,14 @@ class OpportunityListing extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50.sp)
                 ),
                 child:  TabBar(
+                  unselectedLabelColor: const Color(0xffB5B6B9),
+              labelColor: const Color(0xff171A63),
                   
                   padding: EdgeInsets.all(2.sp),
                   indicator: BoxDecoration(
                     color: Colors.white,
                     borderRadius:  BorderRadius.circular(25.0)
                   ) ,
-                  labelColor: Colors.white,
-                  unselectedLabelColor:   Colors.grey[200],
 
                   tabs:   [
                     Tab(
@@ -88,20 +92,28 @@ class OpportunityListing extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(width: 10.w,),
+
+
+               OpportunitiesPopup(),
+                
+                // child: Image.asset('assets/notes/more.png',)),
                 ],
               ),
               
-              const Expanded(
+               Expanded(
                   child: TabBarView(
                     children:  [
-                      Center(child: Text("Chats Pages"),),
+                      OverDue(),
                       Center(child: Text("Status Pages"),),
                       Center(child: Text('Calls Page'),),
                       Center(child: Text('Settings Page'),),
-                      Center(child: Text('Settings Page'),)
+                      Closed()
                     ],
                   )
               ),
+
+
               bottomPanel()
             ],
           ),

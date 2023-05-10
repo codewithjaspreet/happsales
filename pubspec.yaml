@@ -107,6 +107,7 @@ flutter:
      - assets/accounts/
      - assets/notes/
      - assets/ami/
+     - assets/opportunity/
      - assets/recommend.png
 
 
