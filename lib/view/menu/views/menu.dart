@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 import '../items/accounts/accounts.dart';
 import '../items/notes/views/notes_listing.dart';
 class Menu extends StatelessWidget {
@@ -56,7 +57,12 @@ class Menu extends StatelessWidget {
               },
             ),
 
-            const _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' ),
+            GestureDetector(
+              
+              onTap: () {
+                Get.to(() => const OpportunityListing());
+              },
+              child: const _buildGridItem(title : 'Opportunities', image: 'assets/opportunities.png' )),
             const _buildGridItem(title : 'Activities', image: 'assets/activities.png' ),
             const _buildGridItem(title : 'Resources', image: 'assets/resources.png' ),
             GestureDetector(
