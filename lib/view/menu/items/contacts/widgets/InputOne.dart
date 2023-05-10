@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,21 +18,21 @@ class Input extends StatelessWidget {
         decoration: InputDecoration(
 
           labelText: title,
-          floatingLabelStyle: TextStyle(
+          floatingLabelStyle: const TextStyle(
             color : Color(0xff00A6D6),
           ),
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             color: Color(0xff8F9BB3),
           ),
           hintText: title,
 
 
-          hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+          hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
           border: OutlineInputBorder(
 
 
             borderRadius: BorderRadius.circular(8.sp),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
 
               color: Color(0xffB4C6D4),
             ),

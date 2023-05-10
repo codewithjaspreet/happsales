@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,14 +17,14 @@ class Input2 extends StatelessWidget {
         decoration: InputDecoration(
          suffixIcon: GestureDetector(
 
-             child: DropDown()
+             child: const DropDown()
 
          ),
           hintText: title,
-          hintStyle: TextStyle(color: Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+          hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.sp),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xffB4C6D4),
             ),
           ),

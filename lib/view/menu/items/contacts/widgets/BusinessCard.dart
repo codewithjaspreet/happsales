@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,14 +22,14 @@ class BusinessCard extends StatelessWidget {
           children: [
 
             Container(
-              child: Center(
-                child : Icon(Icons.add,color: Colors.white,),
-              ),
               width: 22.w,
               height: 22.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primaryColor,
                 shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child : Icon(Icons.add,color: Colors.white,),
               ),
             ),
             Container(child: Image.asset("assets/contacts/add.png"),),

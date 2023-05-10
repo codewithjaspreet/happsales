@@ -1,19 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/models/account_model.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/DropDownInput.dart';
 
 import '../../../../../utils/color.dart';
-import '../../../../../viewmodels/contact_view_model.dart';
-import '../../../../utils/popups/custom_dropdown.dart';
 import '../contacts/widgets/AmiRow.dart';
 import '../contacts/widgets/CustomAppBar.dart';
 import '../contacts/widgets/InputOne.dart';
 
 class EditAccount extends StatelessWidget {
+  const EditAccount({super.key});
+
 
 
   // final int Id;
@@ -30,7 +25,7 @@ class EditAccount extends StatelessWidget {
         child: Column(
           children: [
             AmiHeaderRow(title: 'Edit Accounts',),
-            DetailRow(),
+            const DetailRow(),
           ],
         ),
       ),
@@ -39,6 +34,8 @@ class EditAccount extends StatelessWidget {
 }
 
 class DetailRow extends StatefulWidget {
+  const DetailRow({super.key});
+
 
   // DetailRow({Key? key, required this.contact}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
@@ -106,7 +103,7 @@ class _MyRowState extends State<DetailRow> {
                   SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
 
                          Input(title: 'Account Name'),
                           Input(title: 'Location *'),

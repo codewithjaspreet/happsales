@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../../utils/color.dart';
-import '../views/add_contact.dart';
 
 class HelperRow extends StatelessWidget {
 
-   HelperRow({required this.title , required this.direct});
+   const HelperRow({super.key, required this.title , required this.direct});
   final String title;
   final Widget direct;
   @override
@@ -40,18 +38,9 @@ class HelperRow extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                width: 30.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primaryColor,width: 1),
-                  // color: Color(0xff171A63),
+              Center(
 
-                ),
-                child: const Center(
-                  child: Icon(Icons.more_vert ,color: AppColors.primaryColor,),
-                ),
+                child: Image.asset('assets/notes/ic_menu.png',scale: 0.7,),
               )
             ],
           ),

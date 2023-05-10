@@ -5,7 +5,7 @@ import '../../../../../../utils/color.dart';
 
 class ContactRow extends StatelessWidget {
 
-  const ContactRow({required this.firstName ,required this.lastName , required this.account, });
+  const ContactRow({super.key, required this.firstName ,required this.lastName , required this.account, });
   final String firstName;
   final String lastName;
   final String account;

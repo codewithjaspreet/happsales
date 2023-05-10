@@ -31,14 +31,14 @@ class AddBusiness extends StatelessWidget {
             ),
 
 
-Input(title: 'Account Name',),
+const Input(title: 'Account Name',),
             SizedBox(
               height: 10.h,
             ),
 
-            NewProcessAddFeild(title: 'Business Plan',),
+            const NewProcessAddFeild(title: 'Business Plan',),
 
-            DatePickerFeild(labelText: 'Customer Target Date'),
+            const DatePickerFeild(labelText: 'Customer Target Date'),
 
             ToggleButtonRow(title: 'Is Active',isAlreadyActive  :true),
             Container(
@@ -47,16 +47,15 @@ Input(title: 'Account Name',),
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
                       borderRadius:  BorderRadius.circular(26.sp),
-                      color: Color(0xff8199AC),
+                      color: const Color(0xff8199AC),
                     ),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -65,6 +64,7 @@ Input(title: 'Account Name',),
                       shape: BoxShape.rectangle,
                       color: AppColors.primaryColor,
                     ),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
                   )
                 ],
               ),

@@ -9,6 +9,8 @@ import '../widgets/AddContactDetails.dart';
 import '../widgets/AmiRow.dart';
 import '../widgets/MoreAddDetails.dart';
 class AddContact extends StatelessWidget {
+  const AddContact({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +25,9 @@ class AddContact extends StatelessWidget {
             },
                 child: const BusinessCard()),
             Hdivider(),
-            AddContactDetails(),
+            const AddContactDetails(),
             Hdivider(),
-            MoreAddDetails(),
+            const MoreAddDetails(),
             Hdivider(),
             Container(
               margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 15.h),
@@ -33,18 +35,15 @@ class AddContact extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
                       borderRadius:  BorderRadius.circular(26.sp),
-                      color: Color(0xff8199AC),
+                      color: const Color(0xff8199AC),
                     ),
+                    child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
                   ),
                   Container(
-                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"
-                    ,fontSize: 18.sp
-                    ),)),
                     width: 125.w,
                     height:48.h,
                     decoration: BoxDecoration(
@@ -53,6 +52,9 @@ class AddContact extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       color: AppColors.primaryColor,
                     ),
+                    child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"
+                    ,fontSize: 18.sp
+                    ),)),
                   )
                 ],
               ),

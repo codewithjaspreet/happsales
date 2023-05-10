@@ -5,7 +5,7 @@ import '../../../../../utils/color.dart';
 
 class ToggleButtonRow extends StatefulWidget {
 
-  ToggleButtonRow({
+  ToggleButtonRow({super.key, 
     required this.title,
     required this.isAlreadyActive
 });

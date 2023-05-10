@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 
 import '../../../../../../utils/color.dart';
@@ -37,7 +35,7 @@ class AddressDetailsPage extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.to(EditAddress());
+                        Get.to(const EditAddress());
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 5.w),
@@ -114,36 +112,36 @@ class AddressDetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Permanent Address',
                   style: TextStyle(color: Colors.blue),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                Text('I don\'t know '),
-                Text('Hugh'),
+                const Text('I don\'t know '),
+                const Text('Hugh'),
                 SizedBox(
                   height: 10.h,
                 ),
-                Text('Piccadilly'),
-                Text('London '),
-                Text('United Kingdom'),
-                Text('W1J'),
+                const Text('Piccadilly'),
+                const Text('London '),
+                const Text('United Kingdom'),
+                const Text('W1J'),
                 SizedBox(
                   height: 10.h,
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Text(
+                const Text(
                   'GPS Coordinates',
                   style: TextStyle(color: Colors.blue),
                 ),
                 SizedBox(
                   height: 4.h,
                 ),
-                Text('51.50998, -0.1337'),
+                const Text('51.50998, -0.1337'),
               ],
             ),
           )

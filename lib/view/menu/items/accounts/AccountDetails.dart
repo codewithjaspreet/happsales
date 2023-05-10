@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/Addresses/account_addresses.dart';
@@ -70,7 +68,7 @@ class AcccountDetails extends StatelessWidget {
           height: 216.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -122,7 +120,7 @@ class AcccountDetails extends StatelessWidget {
                       Container(
                         child: Text(
 
-                          title!,
+                          title,
 
                           // name of the user getting accessed
                           style: TextStyle(
@@ -180,7 +178,7 @@ class AcccountDetails extends StatelessWidget {
 
 class AccountDetailRow extends StatefulWidget {
 
-  AccountDetailRow({Key? key, required this.account}) : super(key: key);
+  const AccountDetailRow({Key? key, required this.account}) : super(key: key);
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
   final  Account account;
   @override
@@ -228,18 +226,18 @@ class _MyRowState extends State<AccountDetailRow> {
                         margin: EdgeInsets.only(right: 10.w),
                         child: GestureDetector(
                             onTap: (){
-                              Get.to(() => EditAccount(
+                              Get.to(() => const EditAccount(
                               ));
                             },
                             child: Container(
-                              child: Center(
-                                child: Image.asset("assets/contacts/edit.png"),
-                              ),
                               width: 24.w,
                               height: 24.h,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: AppColors.primaryColor,
+                              ),
+                              child: Center(
+                                child: Image.asset("assets/contacts/edit.png"),
                               ),
                             )),
                       ),
@@ -360,15 +358,15 @@ class _MyRowState extends State<AccountDetailRow> {
 
 
 
-                          SecondTypeDetailing(
+                          const SecondTypeDetailing(
                             title: 'Work Phone',
                             subTitle: "-",
 
-                          ),SecondTypeDetailing(
+                          ),const SecondTypeDetailing(
                             title: 'Website',
                             subTitle: "-",
                             // subTitle: widget.account.website!.toString(),
-                          ),SecondTypeDetailing(
+                          ),const SecondTypeDetailing(
                             title: 'No. Of Employees',
                             subTitle: "-",
                             // subTitle: widget.account.numberOfEmployees!.toString(),
@@ -386,7 +384,7 @@ class _MyRowState extends State<AccountDetailRow> {
                           ),
                           SizedBox(height: 10.h,),
 
-                          AccountDetailItems()
+                          const AccountDetailItems()
 
                         ]
                     ),
@@ -426,7 +424,7 @@ class Detaling extends StatelessWidget {
                     children: [
                       Text(title,
                           style: TextStyle(
-                              color: Color(0xff00A6D6),
+                              color: const Color(0xff00A6D6),
                               fontFamily: "roboto_bold",
                               fontSize: 13.sp)),
                     ],
@@ -468,7 +466,7 @@ class AccountDetailItems extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_1.png', title: 'Activity',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_2.png', title: 'Opportunity',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_3.png', title: 'Notes',),
@@ -481,7 +479,7 @@ class AccountDetailItems extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               AccountIndividualItem(imageUrl: 'assets/accounts/more_4.png', title: 'Contacts',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_5.png', title: 'Opportunities',),
               AccountIndividualItem(imageUrl: 'assets/accounts/more_6.png', title: 'Activities',),
@@ -495,13 +493,13 @@ class AccountDetailItems extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'Notes',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hierarchy',),
+              const AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'Notes',),
+              const AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hierarchy',),
               GestureDetector(
                   onTap: () {
-                    Get.to(() => BuyingProcess());
+                    Get.to(() => const BuyingProcess());
                   },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_9.png', title: 'Buying Process',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_9.png', title: 'Buying Process',)),
             ],
           ),
 
@@ -514,20 +512,20 @@ class AccountDetailItems extends StatelessWidget {
             children: [
               GestureDetector(
                   onTap: () {
-                    Get.to(() => BusinessProcess());
+                    Get.to(() => const BusinessProcess());
                   },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_10.png', title: 'Business Plans',)),
               GestureDetector(
                   onTap: () {
-                    Get.to(() => BusinessUnit());
+                    Get.to(() => const BusinessUnit());
                   },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'Business Unit',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_11.png', title: 'Business Unit',)),
               GestureDetector(
 
                   onTap: (){
-                    Get.to(() => CompetitionProcess());
+                    Get.to(() => const CompetitionProcess());
                   },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_12.png', title: 'Competition Activities',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_12.png', title: 'Competition Activities',)),
             ],
           ),
 
@@ -540,15 +538,15 @@ class AccountDetailItems extends StatelessWidget {
               GestureDetector(
                 onTap: () {
 
-                  Get.to(DocumentPage());
+                  Get.to(const DocumentPage());
     },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',)),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'Forms',),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_13.png', title: 'Documents',)),
+              const AccountIndividualItem(imageUrl: 'assets/accounts/more_14.png', title: 'Forms',),
               GestureDetector(
                   onTap: () {
-                    Get.to(() => MediaPage());
+                    Get.to(() => const MediaPage());
                   },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_15.png', title: 'Media',)),
             ],
           ),
 
@@ -561,15 +559,15 @@ class AccountDetailItems extends StatelessWidget {
               GestureDetector(
                 onTap: () {
 
-                  Get.to(() => ShareAccount());
+                  Get.to(() => const ShareAccount());
     },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',)),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_16.png', title: 'Share Account',)),
               GestureDetector(
                  onTap: () {
-                   Get.to(() => AccountAddress());
+                   Get.to(() => const AccountAddress());
                  },
-                  child: AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',)),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'Chat History',),
+                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',)),
+              const AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'Chat History',),
             ],
           ),
 
@@ -592,7 +590,7 @@ class AccountIndividualItem extends StatelessWidget {
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
-            color: Color(0xffF5F6F9),
+            color: const Color(0xffF5F6F9),
 
             borderRadius: BorderRadius.circular(12.sp),
           ),
@@ -607,7 +605,7 @@ class AccountIndividualItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: Color(0xff00A6D6),
+                    color: const Color(0xff00A6D6),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

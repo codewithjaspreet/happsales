@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'dart:math' as math;
 
 class MyShareAccountAlert extends StatelessWidget {
+  const MyShareAccountAlert({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -34,9 +35,15 @@ class MyShareAccountAlert extends StatelessWidget {
             children: [
 
              Container(
+               width: 337.w,
+                height: 35.h,
+               decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                 color: const Color(0xffF5F6F9)
+               ),
                child: TextField(
                  decoration: InputDecoration(
-                     suffixIcon: Icon(Icons.search , color: Colors.grey,),
+                     suffixIcon: const Icon(Icons.search , color: Colors.grey,),
                      border: OutlineInputBorder(
                        borderSide: BorderSide.none,
                        borderRadius: BorderRadius.circular(8.sp),
@@ -45,17 +52,10 @@ class MyShareAccountAlert extends StatelessWidget {
                      contentPadding: EdgeInsets.symmetric(
                        horizontal: 10.w
                      ),
-                     hintStyle: TextStyle(color: Color(0xff707070)),
+                     hintStyle: const TextStyle(color: Color(0xff707070)),
                      hintText: "Search",
 
-                     fillColor: Color(0xffF5F6F9)),
-               ),
-
-               width: 337.w,
-                height: 35.h,
-               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                 color: Color(0xffF5F6F9)
+                     fillColor: const Color(0xffF5F6F9)),
                ),
              ),
 
@@ -84,7 +84,7 @@ _buildEmployeeListView() {
   }
 
   return  SingleChildScrollView(
-    child: Container(
+    child: SizedBox(
       height: 704.h,
       child: ListView.builder(
 

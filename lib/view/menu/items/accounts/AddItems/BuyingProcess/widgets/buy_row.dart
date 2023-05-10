@@ -1,12 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 
 import '../../../../../../../utils/color.dart';
-import '../views/add_buying.dart';
 
 class BuyRow extends StatelessWidget {
   const BuyRow(
@@ -31,7 +27,7 @@ class BuyRow extends StatelessWidget {
         width: 336.w,
         height: 100.h,
         decoration: BoxDecoration(
-          color: Color(0xffE5F6FF),
+          color: const Color(0xffE5F6FF),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Column(

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../utils/color.dart';
 
@@ -38,7 +37,7 @@ class AccountFourthTypeDetailing extends StatelessWidget {
                     children: [
                       Text(title1,
                           style: TextStyle(
-                              color: Color(0xff00A6D6),
+                              color: const Color(0xff00A6D6),
                               fontFamily: "roboto_bold",
                               fontSize: 13.sp)),
                     ],
@@ -69,7 +68,7 @@ class AccountFourthTypeDetailing extends StatelessWidget {
                       children: [
                         Text(title2,
                             style: TextStyle(
-                                color: Color(0xff00A6D6),
+                                color: const Color(0xff00A6D6),
                                 fontFamily: "roboto_bold",
                                 fontSize: 13.sp)),
                       ],

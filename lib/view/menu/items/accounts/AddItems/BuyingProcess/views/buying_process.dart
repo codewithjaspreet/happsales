@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/add_buying.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AddItems/BuyingProcess/views/buy_detail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import '../../../../../../../utils/color.dart';
-import '../../CompetitionActivities/competition_details.dart';
 import '../widgets/buy_row.dart';
 class BuyingProcess extends StatelessWidget {
   const BuyingProcess({Key? key}) : super(key: key);
@@ -32,7 +29,7 @@ class BuyingProcess extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(AddBuying());
+                      Get.to(const AddBuying());
                     },
                     child: Container(
                       margin:  EdgeInsets.only(left: 16.w),
@@ -83,7 +80,7 @@ class BuyingProcess extends StatelessWidget {
                             fontSize: 14.sp , fontWeight: FontWeight.normal),) ,
 
                         SizedBox(height: 5.h,),
-                        Text("Bangalore",style: TextStyle(color: Color(0xff8F9BB3),
+                        Text("Bangalore",style: TextStyle(color: const Color(0xff8F9BB3),
 
                             fontSize: 14.sp , fontWeight: FontWeight.normal),)
                       ],
@@ -97,7 +94,7 @@ class BuyingProcess extends StatelessWidget {
 
                       padding :  EdgeInsets.all(20.sp),
 
-                      child: BuyRow(title: "HAPPSALES-ACBUY-00000000074" , date: "25 Mar 2023", content : "Navigation", route: BuyDetails(),)),
+                      child: const BuyRow(title: "HAPPSALES-ACBUY-00000000074" , date: "25 Mar 2023", content : "Navigation", route: BuyDetails(),)),
 
                 ],
               )

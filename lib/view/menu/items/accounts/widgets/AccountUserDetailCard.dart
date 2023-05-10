@@ -15,7 +15,7 @@ Column AccountUserDetailCard({String? title , String? designation }) {
         height: 216.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
@@ -67,7 +67,7 @@ Column AccountUserDetailCard({String? title , String? designation }) {
                     Container(
                       child: Text(
 
-                        title!,
+                        title,
 
                         // name of the user getting accessed
                         style: TextStyle(

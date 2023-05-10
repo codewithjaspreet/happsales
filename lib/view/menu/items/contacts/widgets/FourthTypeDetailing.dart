@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../../utils/color.dart';
 
 class FourthTypeDetailing extends StatelessWidget {
 
@@ -48,13 +47,13 @@ class FourthTypeDetailing extends StatelessWidget {
               children: [
                 Text(title1,style: TextStyle(
                   fontSize: 13.sp ,
-                  color: Color(0xff00A6D6),
+                  color: const Color(0xff00A6D6),
                   fontWeight: FontWeight.bold,
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
                 Row(
-                  children: [
+                  children: const [
                     Text("8348234924"),
 
                   ],
@@ -72,13 +71,13 @@ class FourthTypeDetailing extends StatelessWidget {
               children: [
                 Text(title2,style:  TextStyle(
                   fontSize: 13.sp ,
-                  color: Color(0xff00A6D6),
+                  color: const Color(0xff00A6D6),
                   fontWeight: FontWeight.bold,
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
                 Row(
-                  children: [
+                  children: const [
                     Text("8348234924"),
 
                   ],

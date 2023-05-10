@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/models/accounts.dart';
 import 'package:happsales_crm/view/menu/items/accounts/AccountDetails.dart';
 
-import '../../../../../models/contact.dart';
 import '../../../../../utils/color.dart';
 
 
@@ -12,7 +11,7 @@ class AccountMoreDetail extends StatefulWidget {
 
 
   final Account account;
-  const AccountMoreDetail({  required this.account});
+  const AccountMoreDetail({super.key,   required this.account});
 
   @override
   _MyRowState createState() => _MyRowState();
@@ -72,7 +71,7 @@ class _MyRowState extends State<AccountMoreDetail> {
                 SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
 
                         AccountDetailItems()
 

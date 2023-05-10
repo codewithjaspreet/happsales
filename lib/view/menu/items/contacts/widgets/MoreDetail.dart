@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,7 +8,7 @@ class MoreDetail extends StatefulWidget {
 
 
   final Contact contact;
-  const MoreDetail({ required this.contact});
+  const MoreDetail({super.key,  required this.contact});
 
   @override
   _MyRowState createState() => _MyRowState();
@@ -68,7 +67,7 @@ class _MyRowState extends State<MoreDetail> {
                   SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
 
                           DetailItems(),
 
@@ -99,7 +98,7 @@ class DetailItems extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        children: const [
           IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activity',),
           IndividualItem(imageUrl: 'assets/contacts/oppor.png', title: 'Opportunity',),
           IndividualItem(imageUrl: 'assets/contacts/notes.png', title: 'Notes',),
@@ -123,7 +122,7 @@ class IndividualItem extends StatelessWidget {
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
-            color: Color(0xffF5F6F9),
+            color: const Color(0xffF5F6F9),
 
             borderRadius: BorderRadius.circular(12.sp),
           ),
@@ -138,7 +137,7 @@ class IndividualItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontFamily: "roboto_bold",
-                    color: Color(0xff00A6D6),
+                    color: const Color(0xff00A6D6),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -151,6 +150,12 @@ class IndividualItem extends StatelessWidget {
           top: 10.h,
           left: 70.w,
           child: Container(
+            width: 20.w,
+            height: 20.h,
+            decoration: const BoxDecoration(
+              color: Color(0xff00A6D6),
+              shape: BoxShape.circle,
+            ),
             child: Center(
               child: Text(
                 '2',
@@ -161,12 +166,6 @@ class IndividualItem extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            width: 20.w,
-            height: 20.h,
-            decoration: BoxDecoration(
-              color: Color(0xff00A6D6),
-              shape: BoxShape.circle,
             ),
           ),
         ),

@@ -1,23 +1,19 @@
 
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/date_picker.dart';
 import '../../../../../utils/popups/search_filter.dart';
-import 'DropDownInput.dart';
 import 'InputOne.dart';
 import 'ToggleButtonRow.dart';
 import 'add_tag.dart';
-import 'alert.dart';
 
 class MoreAddDetails extends StatefulWidget {
+  const MoreAddDetails({super.key});
+
   @override
   _MyRowState createState() => _MyRowState();
 }
@@ -74,12 +70,12 @@ class _MyRowState extends State<MoreAddDetails> {
               child: Column(
                 children: [
 
-                  Input(title: 'Reporting To',),
-                  Input(title: 'LinkedIn link',),
+                  const Input(title: 'Reporting To',),
+                  const Input(title: 'LinkedIn link',),
 
                   // dob
                   // Input(title: 'last Name',),
-                  DatePickerFeild(labelText: 'Date of Birth',),
+                  const DatePickerFeild(labelText: 'Date of Birth',),
 
 
 
@@ -89,21 +85,19 @@ class _MyRowState extends State<MoreAddDetails> {
                   SearchAndFilter(),
                   // Input(title: 'Contact Alignment',),
 
-                  Input(title: 'Roles & Responsibilities',),
-                  Input(title: 'Past Accounts',),
+                  const Input(title: 'Roles & Responsibilities',),
+                  const Input(title: 'Past Accounts',),
 
 
-                  Input(title: 'Past designation',),
-                  Input(title: 'Reference History',),
-                  Input(title: 'Remarks',),
+                  const Input(title: 'Past designation',),
+                  const Input(title: 'Reference History',),
+                  const Input(title: 'Remarks',),
 
                   ToggleButtonRow(title : "Is Active" ,isAlreadyActive: true,),
                   ToggleButtonRow(title : "Is Primary Contact" ,isAlreadyActive: false,),
 
 
                   Container(
-
-                    child: TagInputWidget(),
 
                     margin: EdgeInsets.only(right: 2.w),
                     height: 190.h,
@@ -112,6 +106,8 @@ class _MyRowState extends State<MoreAddDetails> {
                       borderRadius: BorderRadius.circular(8.sp),
                       border: Border.all(color: Colors.blue.withOpacity(0.5),),
                     ),
+
+                    child: const TagInputWidget(),
                   )
 
 

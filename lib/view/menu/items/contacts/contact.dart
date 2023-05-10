@@ -7,6 +7,8 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 import '../../views/menu.dart';
 class ContactPage extends StatefulWidget {
+  const ContactPage({super.key});
+
   @override
   State<ContactPage> createState() => _ContactPageState();
 }
@@ -40,7 +42,7 @@ class _ContactPageState extends State<ContactPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(() => Menu());
+              Get.to(() => const Menu());
             },
             icon: const Icon(
               Icons.menu,
@@ -55,7 +57,7 @@ class _ContactPageState extends State<ContactPage> {
           ? const CircularProgressIndicator()
           : Column(
             children: [
-              HelperRow(
+              const HelperRow(
                 title: "My Contacts", direct: AddContact(),
               ),
               Image.asset("assets/contacts/contact_banner.png"),
@@ -94,13 +96,13 @@ _buildEmployeeListView() {
               children: [
                 Container(
                   margin: EdgeInsets.only(left : 12.sp),
-                  child: Icon(Icons.add , color: Colors.white,),
                   width: 40.w,
                   height: 40.w,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.purple,
                     shape: BoxShape.circle
                   ),
+                  child: const Icon(Icons.add , color: Colors.white,),
                 ),
 
                 Column(
@@ -111,19 +113,19 @@ _buildEmployeeListView() {
                     Container(
 
                       margin: EdgeInsets.only(left : 16.sp),
-                      child: Text(contactController.contacts[index].contactName,style: TextStyle(
+                      child: Text(contactController.contacts[index].contactName,style: const TextStyle(
                         color: AppColors.primaryColor
                       ),),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 2.sp,),
                       child: Text(contactController.contacts[index].designation,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.primaryColor
                           )),
                     ),Container(
                       margin: EdgeInsets.only(left : 16.sp,top: 4.sp),
                       child: Text(contactController.contacts[index].contactCode.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.primaryColor
                           )),
                     )

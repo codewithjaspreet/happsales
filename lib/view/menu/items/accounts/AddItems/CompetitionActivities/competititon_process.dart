@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import '../../../../../../../utils/color.dart';
 import '../BuyingProcess/widgets/buy_row.dart';
 import 'add_competition.dart';
@@ -33,7 +31,7 @@ class CompetitionProcess extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(AddCompetition());
+                      Get.to(const AddCompetition());
                     },
                     child: Container(
                       margin:  EdgeInsets.only(left: 20.w),
@@ -84,7 +82,7 @@ class CompetitionProcess extends StatelessWidget {
                             fontSize: 14.sp , fontWeight: FontWeight.w400),) ,
 
                         SizedBox(height: 5.h,),
-                        Text("Bangalore",style: TextStyle(color: Color(0xff8F9BB3),
+                        Text("Bangalore",style: TextStyle(color: const Color(0xff8F9BB3),
 
                             fontSize: 14.sp , fontWeight: FontWeight.normal),)
                       ],
@@ -98,7 +96,7 @@ class CompetitionProcess extends StatelessWidget {
 
                       padding :  EdgeInsets.all(20.sp),
 
-                      child: BuyRow(title: "T" , date: "25 Mar 2023", content : "T", route: CompetitionDetails(),)),
+                      child: const BuyRow(title: "T" , date: "25 Mar 2023", content : "T", route: CompetitionDetails(),)),
 
                 ],
               )

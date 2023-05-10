@@ -11,6 +11,8 @@ import '../../views/menu.dart';
 import 'AccountDetails.dart';
 
 class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
+
   @override
   State<AccountPage> createState() => _ContactPageState();
 }
@@ -46,7 +48,7 @@ class _ContactPageState extends State<AccountPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(() => Menu());
+              Get.to(() => const Menu());
             },
             icon: const Icon(
               Icons.menu,
@@ -61,7 +63,7 @@ class _ContactPageState extends State<AccountPage> {
           ? const CircularProgressIndicator()
           : Column(
         children: [
-           HelperRow(
+           const HelperRow(
             title: "My Accounts", direct: AddAccount(),
           ),
           Image.asset("assets/accounts/banner.png"),
@@ -106,17 +108,17 @@ _buildEmployeeListView() {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(AddAccount());
+                      Get.to(const AddAccount());
                     },
                     child: Container(
                       margin: EdgeInsets.only(left : 12.sp),
-                      child: Icon(Icons.add , color: Colors.white,),
                       width: 40.w,
                       height: 40.w,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.purple,
                           shape: BoxShape.circle
                       ),
+                      child: const Icon(Icons.add , color: Colors.white,),
                     ),
                   ),
 
@@ -128,19 +130,19 @@ _buildEmployeeListView() {
                       Container(
 
                         margin: EdgeInsets.only(left : 16.sp),
-                        child: Text(accountViewModel.accounts[index].accountName,style: TextStyle(
+                        child: Text(accountViewModel.accounts[index].accountName,style: const TextStyle(
                             color: AppColors.primaryColor
                         ),),
                       ),Container(
                         margin: EdgeInsets.only(left : 16.sp,top: 2.sp,),
                         child: Text(accountViewModel.accounts[index].accountCode.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.primaryColor
                             )),
                       ),Container(
                         margin: EdgeInsets.only(left : 16.sp,top: 4.sp),
                         child: Text(accountViewModel.accounts[index].appUserID.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppColors.primaryColor
                             )),
                       )

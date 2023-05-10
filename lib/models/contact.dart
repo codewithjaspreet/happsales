@@ -252,14 +252,14 @@ class Contact {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ContactID'] = this.contactID;
-    data['ContactCode'] = this.contactCode;
-    data['Title'] = this.title;
-    data['FirstName'] = this.firstName;
-    data['MiddleName'] = this.middleName;
-    data['LastName'] = this.lastName;
-    data['ContactName'] = this.contactName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ContactID'] = contactID;
+    data['ContactCode'] = contactCode;
+    data['Title'] = title;
+    data['FirstName'] = firstName;
+    data['MiddleName'] = middleName;
+    data['LastName'] = lastName;
+    data['ContactName'] = contactName;
     // data['ContactIdentifier'] = this.contactIdentifier;
     // data['AccountID'] = this.accountID;
     // data['ContactCategoryID'] = this.contactCategoryID;
@@ -310,13 +310,13 @@ class Contact {
     // data['ReferenceIdentifier'] = this.referenceIdentifier;
     // data['IsActive'] = this.isActive;
     // data['Uid'] = this.uid;
-    data['AppUserID'] = this.appUserID;
+    data['AppUserID'] = appUserID;
     // data['AssignedByAppUserID'] = this.assignedByAppUserID;
     // data['AppUserGroupID'] = this.appUserGroupID;
     // data['IsArchived'] = this.isArchived;
     // data['IsDeleted'] = this.isDeleted;
     // data['LeadQualificationID'] = this.leadQualificationID;
-    data['AccountName'] = this.accountName;
+    data['AccountName'] = accountName;
     // data['ContactCategoryName'] = this.contactCategoryName;
     // data['AccountLocation'] = this.accountLocation;
     // data['ReportingContactName'] = this.reportingContactName;

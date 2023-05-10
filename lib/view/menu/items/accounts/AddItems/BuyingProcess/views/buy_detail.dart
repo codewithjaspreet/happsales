@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
-import 'package:happsales_crm/view/menu/items/accounts/AddItems/CompetitionActivities/widgets/competition_row.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 
 import '../widgets/buy_sec_row.dart';
 class BuyDetails extends StatelessWidget {
@@ -30,7 +28,7 @@ class BuyDetails extends StatelessWidget {
                         'Business Process Code',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
 
@@ -54,35 +52,35 @@ class BuyDetails extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10.h),
                   width: 25.w,
                   height: 25.h,
-                  child: Image.asset('assets/contacts/edit.png'),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.primaryColor,
                     shape: BoxShape.circle,
                   ),
+                  child: Image.asset('assets/contacts/edit.png'),
                 )
               ],
             ),
           ),
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Account Name",
             compSubTitle: "account owner to Deepak",
           ),
 
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Buying Process",
             compSubTitle: "Navigation",
           ),
 
 
-          Divider(
+          const Divider(
             color: Color(0xffB4C6D4),
             indent: 20,
             endIndent: 20,
             thickness: 1,
           ),
 
-          BuySecondRow(compTitle: 'Is Active', compSubTitle: 'Yes'),
-          Divider(
+          const BuySecondRow(compTitle: 'Is Active', compSubTitle: 'Yes'),
+          const Divider(
             color: Color(0xffB4C6D4),
               indent: 20,
             endIndent: 20,
@@ -101,7 +99,7 @@ class BuyDetails extends StatelessWidget {
                         'Created By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -128,7 +126,7 @@ class BuyDetails extends StatelessWidget {
                         'Modified By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -164,7 +162,7 @@ class BuyDetails extends StatelessWidget {
                         'Created On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -191,7 +189,7 @@ class BuyDetails extends StatelessWidget {
                         'Modified On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,

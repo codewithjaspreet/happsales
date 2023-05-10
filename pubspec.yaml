@@ -66,6 +66,7 @@ dependencies:
   dropdown_button2:
   connectivity_plus: ^3.0.3
   percent_indicator: ^4.2.3
+  popover: ^0.2.8+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

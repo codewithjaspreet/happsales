@@ -30,7 +30,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Business Process Code',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -53,25 +53,25 @@ class BusinessPlanDetails extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 10.h),
                   width: 25.w,
                   height: 25.h,
-                  child: Image.asset('assets/contacts/edit.png'),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.primaryColor,
                     shape: BoxShape.circle,
                   ),
+                  child: Image.asset('assets/contacts/edit.png'),
                 )
               ],
             ),
           ),
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Account Name",
             compSubTitle: "ABC Logistics",
           ),
 
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Business Plan",
             compSubTitle: "kishore",
           ),
-          BuySecondRow(
+          const BuySecondRow(
             compTitle: "Customer Target Date",
             compSubTitle: "16 Feb 2022",
           ),
@@ -79,7 +79,7 @@ class BusinessPlanDetails extends StatelessWidget {
 
           Hdivider(),
 
-          BuySecondRow(compTitle: 'Is Active', compSubTitle: 'Yes'),
+          const BuySecondRow(compTitle: 'Is Active', compSubTitle: 'Yes'),
           Hdivider(),
 
           Container(
@@ -94,7 +94,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Created By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -121,7 +121,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Modified By',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -156,7 +156,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Created On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,
@@ -183,7 +183,7 @@ class BusinessPlanDetails extends StatelessWidget {
                         'Modified On',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff00A6D6),
+                          color: const Color(0xff00A6D6),
 
 
                           fontSize: 12.sp,

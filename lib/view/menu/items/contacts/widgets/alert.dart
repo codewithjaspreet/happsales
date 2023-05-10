@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'AlertBox.dart';
@@ -8,7 +7,7 @@ void showDialogs(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return MyAlertDialog();
+      return const MyAlertDialog();
     },
   );
 }
