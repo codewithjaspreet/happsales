@@ -14,6 +14,7 @@ import 'package:happsales_crm/view/voiceassistant/parent.dart';
 
 import '../../../views/menu.dart';
 import '../../notes/widgets/notes_popup.dart';
+import '../widgets/menu_popup.dart';
 
 class OpportunityListing extends StatelessWidget {
   const OpportunityListing({super.key});

@@ -9,6 +9,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../../../../utils/color.dart';
 import '../../../../../notes/views/view_notes.dart';
+import '../widgets/popup.dart';
 
 class Closed extends StatelessWidget {
   const Closed({super.key});
@@ -27,23 +28,7 @@ class Closed extends StatelessWidget {
           Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
           Row(
             children: [
-              GestureDetector(
-                onTap: (){
-                  Get.to(AddContact());
-                },
-                child: Container(
-                  margin:  EdgeInsets.only(left: 20.w),
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-
-                  ),
-                  child:  Center(
-                    child: Icon(Icons.filter_alt_outlined ,size:30.sp , color: AppColors.primaryColor,),
-                  ),
-                ),
-              ),
+              ClosedPopUp(),
               GestureDetector(
                 onTap: (){
                   Get.to(AddContact());
@@ -98,7 +83,7 @@ buildOpportunityList() {
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10.w  , vertical: 6.h),
-              height: 120.h,
+              height: 130.h,
               width: 336.w,
               decoration: BoxDecoration(
                 color: Colors.blue.withOpacity(0.123),
@@ -126,8 +111,8 @@ buildOpportunityList() {
                       ),
                       Container(
 
-                        height: 22.h,
-                        width: 99.w,
+                        height: 18.h,
+                        width: 105.w,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.r),
                           color: Colors.white
@@ -136,27 +121,30 @@ buildOpportunityList() {
           
                         margin: EdgeInsets.only(left : 100.sp),
                         child:Center(
-                          child: Text('Lead',
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                fontSize: 14.sp,
-                              )),
+                          child: FittedBox(
+                            child: Text('S5-Won,Delivered',
+                                style: TextStyle(
+                                    color: Colors.pink,
+                                  fontSize: 14.sp,
+                                )),
+                          ),
                         ),
                       ),
                         ],
                       ),
+                      SizedBox(height: 2.h,),
 
 
                       Container(
           
                         margin: EdgeInsets.only(left : 16.sp),
-                        child:Text('19725',
+                        child:Text('Kumar Agency',
                             style: TextStyle(
                                 color: AppColors.primaryColor,
                               fontSize: 14.sp,
                             )),
                       ),
-                      SizedBox(height: 3.h,),
+                      SizedBox(height: 5.h,),
           
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -259,6 +247,24 @@ buildOpportunityList() {
                           ],
                         ),
                       ),
+
+                      SizedBox(height: 12.h,),
+
+                      Container(
+                        margin: EdgeInsets.only(left: 140.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                      
+                            Text('Incoming',style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold
+
+                            ),)
+                          ],
+                        ),
+                      )
           
           
                     ],
