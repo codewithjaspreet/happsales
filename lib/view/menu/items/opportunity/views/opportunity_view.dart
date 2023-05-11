@@ -49,125 +49,7 @@ class OpportunitiesDetails extends StatelessWidget {
         ));
   }
 
-  Column UserDetailCard({String? title , String? designation }) {
-
-
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
-          width: 337.w,
-          height: 216.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xffAA80F9),
-                  Color(0xff6165D7),
-                ],
-              )),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 20.h, left: 20.w),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 63.w,
-                      height: 63.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: Colors.white,
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.only(left: 2.w),
-                        child: Center(
-                          child: Text(
-                            title!.split("")[0][0] + title.split("")[1][0],
-                            // firstName![0]+ lastName![0],
-                            style: TextStyle(
-                                color: AppColors.primaryColor, fontSize: 44.sp),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 20.w),
-                      child: Text(
-                        "Suvarna traders",
-                        style: TextStyle(color: Colors.white, fontSize: 20.sp),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 15.h, left: 25.w),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Text(
-
-                          title,
-
-                          // name of the user getting accessed
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.sp,
-                              fontFamily: "roboto_bold"),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          // "Maintenance Manager",
-                          designation!,
-                          style:
-                          TextStyle(color: Colors.white, fontSize: 15.sp),
-                        ),
-                      ),
-                    ]),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 15.h, left: 25.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text(
-
-                        // phNo! ?? "",
-                        "99999 12345",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontFamily: "roboto_bold"),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        // email!,
-                        "radha.krishna@SuvarnaTraders.com",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontFamily: "roboto_bold"),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  
 }
 
 class AccountDetailRow extends StatefulWidget {
@@ -357,52 +239,248 @@ class _MyRowState extends State<AccountDetailRow> {
                             ),
                           ),
 
-                          SizedBox(height: 5.h,),
+                          SizedBox(height: 15.h,),
 
 
-                          AccountThirdTypeDetailing(
+                          
+                      
+          
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Opportunity Stage',
+                                  style: TextStyle(
+                                    fontFamily: 'roboto_bold',
 
-                            title1: 'Segment',
-                            subTitle1: 'sad'.toString(),
-                            title2: 'Status',
-                            subTitle2: "asds".toString() ,
+          
+                                    fontWeight: FontWeight.normal,
+                                    color: Color(0xff00A6D6),
+          
+          
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  'S5-Won',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+      
+
+                                    color: AppColors.primaryColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 15.w,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Closure Date',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'roboto_bold',
+                                    color: Color(0xff00A6D6),
+          
+          
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+
+                                Text(
+                                  '31 July 2021',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            SizedBox(width: 30.w,),
+
+                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Quater',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'roboto_bold',
+                                   color: Color(0xff00A6D6),
+          
+          
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+
+                                Text(
+                                  'Q3',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+          
+                          ],
+                        ),
+                      ),
+
+Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(20.sp),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Opportunity Detail',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff00A6D6),
+                            fontSize: 13.sp,
                           ),
-                          SizedBox(height: 12.h,),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Container(
 
-                          AccountThirdTypeDetailing(
-
-                            title1: 'Type',
-                            subTitle1: 'sdasd'.toString(),
-                            title2: 'Industry',
-                            subTitle2: 'sdasd'.toString() ,
+                          child: Text(
+                            'sjas',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 14.sp,
+                            ),
                           ),
+                        ),
+                       
+                        Container(
+                         margin: EdgeInsets.only(top: 8.h),
 
-
-
-                          const SecondTypeDetailing(
-                            title: 'Work Phone',
-                            subTitle: "-",
-
-                          ),const SecondTypeDetailing(
-                            title: 'Website',
-                            subTitle: "-",
-                            // subTitle: widget.account.website!.toString(),
-                          ),const SecondTypeDetailing(
-                            title: 'No. Of Employees',
-                            subTitle: "-",
-                            // subTitle: widget.account.numberOfEmployees!.toString(),
-                          ),SecondTypeDetailing(
-                            title: 'Currency',
-                            subTitle: 'sad'.toString(),
+                          child: Text(
+                            'Read More',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff00A6D6),
+                              fontSize: 12.sp,
+                              fontFamily: 'roboto_regular'
+                            ),
                           ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 28.h),
+                          child: Text(
+                                          'Contact Name',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xff00A6D6),
+                        
+                        
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                        ),
+                
+                        Container(
+                          margin: EdgeInsets.only(top: 3.h),
+                          child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                          'Dr.Jahnvi h i',
+                                          style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 10.h),
+                                          child: Icon(Icons.arrow_forward_ios,size: 18.sp,color: AppColors.primaryColor,))
+                                          ],
+                                        ),
+                        ),
+
+                        Container(
+                                margin: EdgeInsets.only(top: 12.h),
+                                width: 170.w,
+                                height:48.h,
+                                decoration: BoxDecoration(
+                                  borderRadius:  BorderRadius.circular(26.sp),
+
+                                  shape: BoxShape.rectangle,
+                                  color: Color(0xff0ff00A6D6),
+                                ),
+                                child: Center(child: Text("Workflow Status" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                              ),
+                      ],
+                    ),
+                  ),
+                  // Image.asset(imgUrl),
+
+                ],
+              ),
+            ),
+           
+          ],
+        )
+      ],
+    ),
 
 
-                          AccountThirdTypeDetailing(
-                            title1: 'Tags',
-                            subTitle1: 'asdsa'.toString(),
-                            title2: 'Category',
-                            subTitle2: 'sad'.toString(),
-                          ),
+
+
+                          // const SecondTypeDetailing(
+                          //   title: 'Work Phone',
+                          //   subTitle: "-",
+
+                          // ),const SecondTypeDetailing(
+                          //   title: 'Website',
+                          //   subTitle: "-",
+                          //   // subTitle: widget.account.website!.toString(),
+                          // ),const SecondTypeDetailing(
+                          //   title: 'No. Of Employees',
+                          //   subTitle: "-",
+                          //   // subTitle: widget.account.numberOfEmployees!.toString(),
+                          // ),SecondTypeDetailing(
+                          //   title: 'Currency',
+                          //   subTitle: 'sad'.toString(),
+                          // ),
+
+
+                          // AccountThirdTypeDetailing(
+                          //   title1: 'Tags',
+                          //   subTitle1: 'asdsa'.toString(),
+                          //   title2: 'Category',
+                          //   subTitle2: 'sad'.toString(),
+                          // ),
                           SizedBox(height: 10.h,),
 
                           const AccountDetailItems()
