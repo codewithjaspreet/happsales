@@ -20,6 +20,7 @@ import '../../accounts/AddItems/CompetitionActivities/competititon_process.dart'
 import '../../accounts/AddItems/Documents/document.dart';
 import '../../accounts/AddItems/ShareAccounts/share_account.dart';
 import '../../accounts/EditAccount.dart';
+import '../../contacts/widgets/ThirdTypeDetailing.dart';
 
 class OpportunitiesDetails extends StatelessWidget {
 
@@ -61,10 +62,17 @@ class AccountDetailRow extends StatefulWidget {
 
 class _MyRowState extends State<AccountDetailRow> {
   bool _isOpen = true;
+  bool seeMore = false;
 
   void _toggleDropdown() {
     setState(() {
       _isOpen = !_isOpen;
+    });
+  }
+
+  void _toggleSeeMore() {
+    setState(() {
+      seeMore = !seeMore;
     });
   }
 
@@ -440,6 +448,105 @@ Column(
                                 ),
                                 child: Center(child: Text("Workflow Status" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                               ),
+
+
+seeMore ? const SizedBox.shrink() :       GestureDetector(
+                              onTap: (){
+                                _toggleSeeMore();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10.h, left: 16.w),
+                                width: 125.w,
+                                height:48.h,
+                                decoration: BoxDecoration(
+                                  borderRadius:  BorderRadius.circular(26.sp),
+
+                                  shape: BoxShape.rectangle,
+                                  color: AppColors.primaryColor,
+                                ),
+                                child: Center(child: Text("See More" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                              ),
+                            ),
+
+                              if(seeMore)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  Container(
+              padding: EdgeInsets.symmetric(horizontal :3.sp,vertical: 15.h),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Lead Source',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff00A6D6),
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Container(
+
+                          child: Text(
+                            'India Mart',
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+
+
+                  // Image.asset(imgUrl),
+
+                ],
+              ),
+
+              
+            ),
+
+                  ThirdTypeDetailing(title1: 'DoB', subTitle1: 'asd'.toString().isEmpty ? "-" : 'asd'.toString(), title2: 'Reminder', subTitle2: 'no'),
+
+                                    SecondTypeDetailing(title: 'Reporting To', subTitle:  'sads'.toString().isEmpty ? "-" : 'asd'.toString(),),
+                                    ThirdTypeDetailing(title1: 'DoB', subTitle1: 'asd'.toString().isEmpty ? "-" : 'asd'.toString(), title2: 'Reminder', subTitle2: 'no'),
+                                    // SecondTypeDetailing(title: 'Contact Alignment', subTitle:'sad'.toString().isEmpty ? "-" : 'sd'.toString(),),
+                                    // SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle:'sd'.toString().isEmpty ? "-" : 'asd'.toString(),),
+                                    // SecondTypeDetailing(title: 'Past Accounts', subTitle: 'as'.toString().isEmpty ? "-" : 'asd'.toString(),),
+                                    // SecondTypeDetailing(title: 'Past Designations', subTitle:'ads'.toString().isEmpty ? "-" :'asd'.toString(),),
+                                    // SecondTypeDetailing(title: 'Reference History', subTitle: 'sd'.toString().isNull ? "-" : 'sd'.toString()),
+                                    // SecondTypeDetailing(title: 'Tags', subTitle: 'sd'.toString().isEmpty ? "-" : 'sd'.toString(),),
+                                    // SecondTypeDetailing(title: 'Remarks', subTitle: 'asd'.toString().isEmpty ? "-" : 'as'.toString(),),
+                                    // SecondTypeDetailing(title: 'Is Primary Contact', subTitle:  'asd'.toString().isEmpty ? "-" : 'asd'.toString(),),
+                                    !seeMore ? const SizedBox.shrink() :       GestureDetector(
+                                      onTap: (){
+                                        _toggleSeeMore();
+                                      },
+                                      child:  Container(
+                                        margin: EdgeInsets.only(top: 10.h, left: 30.w),
+                                        width: 125.w,
+                                        height:48.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:  BorderRadius.circular(26.sp),
+                                
+                                          shape: BoxShape.rectangle,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                        child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                                      ),
+                                    ),
+                                  ],
+                                )
                       ],
                     ),
                   ),
