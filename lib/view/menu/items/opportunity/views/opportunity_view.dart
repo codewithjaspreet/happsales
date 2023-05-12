@@ -21,6 +21,7 @@ import '../../accounts/AddItems/Documents/document.dart';
 import '../../accounts/AddItems/ShareAccounts/share_account.dart';
 import '../../accounts/EditAccount.dart';
 import '../../contacts/widgets/ThirdTypeDetailing.dart';
+import 'opportunity_edit.dart';
 
 class OpportunitiesDetails extends StatelessWidget {
 
@@ -110,7 +111,7 @@ class _MyRowState extends State<AccountDetailRow> {
                         margin: EdgeInsets.only(right: 10.w),
                         child: GestureDetector(
                             onTap: (){
-                              Get.to(() => const EditAccount(
+                              Get.to(() => const OpportunityEdit(
                               ));
                             },
                             child: Container(
@@ -472,63 +473,121 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                  Container(
-              padding: EdgeInsets.symmetric(horizontal :3.sp,vertical: 15.h),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Lead Source',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xff00A6D6),
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Container(
+            OpportunityViewRow(subtite: 'India Mart', title: 'Lead Source',)
+,
 
-                          child: Text(
-                            'India Mart',
-                            style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontSize: 14.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
 
-
-
-
-                  // Image.asset(imgUrl),
-
-                ],
-              ),
-
-              
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 5.w,
+              top: 10.h,
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Is Reccuring Opportunity',style: TextStyle(
+                  fontSize: 13.sp ,
+                  color: const Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text('1'),
+              ],
+            ),
+          ) ),
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 15.w,
+              top: 10.h
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Assigned Date',style:  TextStyle(
+                  fontSize: 13.sp ,
+                  color: const Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text('-'),
+              ],
+            ),
+          ) ),
 
-                  ThirdTypeDetailing(title1: 'DoB', subTitle1: 'asd'.toString().isEmpty ? "-" : 'asd'.toString(), title2: 'Reminder', subTitle2: 'no'),
 
-                                    SecondTypeDetailing(title: 'Reporting To', subTitle:  'sads'.toString().isEmpty ? "-" : 'asd'.toString(),),
-                                    ThirdTypeDetailing(title1: 'DoB', subTitle1: 'asd'.toString().isEmpty ? "-" : 'asd'.toString(), title2: 'Reminder', subTitle2: 'no'),
-                                    // SecondTypeDetailing(title: 'Contact Alignment', subTitle:'sad'.toString().isEmpty ? "-" : 'sd'.toString(),),
-                                    // SecondTypeDetailing(title: 'Roles & Responsibilities', subTitle:'sd'.toString().isEmpty ? "-" : 'asd'.toString(),),
-                                    // SecondTypeDetailing(title: 'Past Accounts', subTitle: 'as'.toString().isEmpty ? "-" : 'asd'.toString(),),
-                                    // SecondTypeDetailing(title: 'Past Designations', subTitle:'ads'.toString().isEmpty ? "-" :'asd'.toString(),),
-                                    // SecondTypeDetailing(title: 'Reference History', subTitle: 'sd'.toString().isNull ? "-" : 'sd'.toString()),
-                                    // SecondTypeDetailing(title: 'Tags', subTitle: 'sd'.toString().isEmpty ? "-" : 'sd'.toString(),),
-                                    // SecondTypeDetailing(title: 'Remarks', subTitle: 'asd'.toString().isEmpty ? "-" : 'as'.toString(),),
-                                    // SecondTypeDetailing(title: 'Is Primary Contact', subTitle:  'asd'.toString().isEmpty ? "-" : 'asd'.toString(),),
-                                    !seeMore ? const SizedBox.shrink() :       GestureDetector(
+        ],
+      ),
+    ),
+Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 5.w,
+              top: 10.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Assigned',style: TextStyle(
+                  fontSize: 13.sp ,
+                  color: const Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text('No'),
+              ],
+            ),
+          ) ),
+          Expanded(child:
+          Container(
+            margin: EdgeInsets.only(
+              left: 15.w,
+              top: 10.h
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Assigned By',style:  TextStyle(
+                  fontSize: 13.sp ,
+                  color: const Color(0xff00A6D6),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "roboto_bold",
+                ),),
+                SizedBox(height: 3.h,),
+                Text('-'),
+              ],
+            ),
+          ) ),
+
+
+        ],
+      ),
+    ),
+
+    
+
+OpportunityViewRow(subtite: '-', title: 'Remarks',),
+OpportunityViewRow(subtite: '-', title: 'Square Feet',),
+
+OpportunityViewRow(subtite: '-', title: 'UserName',)
+
+
+
+                                    ,
+                                      !seeMore ? const SizedBox.shrink() :       GestureDetector(
                                       onTap: (){
                                         _toggleSeeMore();
                                       },
@@ -560,6 +619,11 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
         )
       ],
     ),
+
+
+
+
+    
 
 
 
@@ -680,36 +744,8 @@ class AccountDetailItems extends StatelessWidget {
           ),
 
         ),
-        Container(
-          margin: EdgeInsets.only(top: 20.h),
-          padding: EdgeInsets.symmetric(horizontal: 14.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_4.png', title: 'Contacts',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_5.png', title: 'Opportunities',),
-              AccountIndividualItem(imageUrl: 'assets/accounts/more_6.png', title: 'Activities',),
-            ],
-          ),
-
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 20.h),
-          padding: EdgeInsets.symmetric(horizontal: 14.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const AccountIndividualItem(imageUrl: 'assets/accounts/more_7.png', title: 'Notes',),
-              const AccountIndividualItem(imageUrl: 'assets/accounts/more_8.png', title: 'Organization Hierarchy',),
-              GestureDetector(
-                  onTap: () {
-                    Get.to(() => const BuyingProcess());
-                  },
-                  child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_9.png', title: 'Buying Process',)),
-            ],
-          ),
-
-        ),
+       
+      
         Container(
           margin: EdgeInsets.only(top: 20.h),
           padding: EdgeInsets.symmetric(horizontal: 14.w),
@@ -773,7 +809,6 @@ class AccountDetailItems extends StatelessWidget {
                    Get.to(() => const AccountAddress());
                  },
                   child: const AccountIndividualItem(imageUrl: 'assets/accounts/more_17.png', title: 'Addresses',)),
-              const AccountIndividualItem(imageUrl: 'assets/accounts/more_18.png', title: 'Chat History',),
             ],
           ),
 
@@ -823,5 +858,61 @@ class AccountIndividualItem extends StatelessWidget {
 
       ],
     );
+  }
+}
+
+
+class OpportunityViewRow extends StatelessWidget {
+  const OpportunityViewRow({super.key, required this.title, required this.subtite});
+
+
+  final String title;
+  final String subtite;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+              padding: EdgeInsets.symmetric(horizontal :3.sp,vertical: 15.h),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff00A6D6),
+                            fontSize: 13.sp,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Container(
+
+                          child: Text(
+                            subtite,
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+
+
+                  // Image.asset(imgUrl),
+
+                ],
+              ),
+
+              
+            );
   }
 }
