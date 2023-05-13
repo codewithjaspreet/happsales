@@ -5,36 +5,49 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:happsales_crm/view/menu/items/activities/views/tabs/today/controllers/today_controller.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../../../../utils/color.dart';
 import '../../../widgets/activities_row.dart';
 import '../../activity_view.dart';
 
 class ActivityToday extends StatelessWidget {
-  const ActivityToday({super.key});
+
+  ActivityToday({super.key});
+
+  TodayController todayController = Get.put(TodayController());
+
+
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
 
       body: Column(children: [
+        
        Container(
       padding: EdgeInsets.all(12.sp),
       child: Row(
       
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
+          
           Text('Today Activities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-          Row(
+          Row( 
             children: [
       
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+
+                  todayController.isCalender.value = !todayController.isCalender.value;
+
+                  // Get.to(AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 22.w),
@@ -73,6 +86,8 @@ class ActivityToday extends StatelessWidget {
             ],
           ),
       
+
+      
       
       
         ],
@@ -81,7 +96,21 @@ class ActivityToday extends StatelessWidget {
         ),
       
       
-      Image.asset('assets/activities/banner.png'),
+     Obx(() => todayController.isCalender.value ?  
+     
+     TableCalendar(
+      weekNumbersVisible: false,
+      headerVisible: true ,
+      daysOfWeekVisible: false,
+      calendarFormat: CalendarFormat.month,
+      rowHeight: 32.h,
+  firstDay: DateTime.utc(2010, 10, 16),
+  lastDay: DateTime.utc(2030, 3, 14),
+  focusedDay: DateTime.now(),
+):  Image.asset('assets/activities/banner.png')),
+
+
+      
       Container(
         
         padding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 5.w),
@@ -143,7 +172,5 @@ class ActivityToday extends StatelessWidget {
     );
   }
 }
-
-
 
 

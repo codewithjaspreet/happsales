@@ -50,7 +50,8 @@ dependencies:
   syncfusion_flutter_sliders: ^21.2.4
   google_fonts:
   bubble_tab_indicator: ^0.1.6
-  intl: ^0.17.0
+  intl: ^0.18.0
+  table_calendar: ^3.0.9
   search_choices:
   introduction_screen:
   custom_searchable_dropdown:
@@ -58,7 +59,6 @@ dependencies:
   dropdown_plus: ^0.0.9
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.1.10
-  getwidget: ^3.1.1
   path_provider:
   flutter_chat_bubble: ^2.0.2
   auto_size_text: ^3.0.0
