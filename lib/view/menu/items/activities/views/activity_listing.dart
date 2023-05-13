@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/activities/views/tabs/today/today.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 
 import '../../../../../utils/color.dart';
@@ -95,7 +96,7 @@ class ActivityListing extends StatelessWidget {
                   child: TabBarView(
                     children:  [
                       ActivityOverDue(),
-                      Center(child: Text("Status Pages"),),
+                      ActivityToday(),
                       Center(child: Text('Calls Page'),),
                       Closed()
                     ],
