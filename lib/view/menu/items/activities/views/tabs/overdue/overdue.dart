@@ -95,6 +95,7 @@ class ActivityOverDue extends StatelessWidget {
 buildOpportunityList() {
   return  Expanded(
       child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         // padding: EdgeInsets.all(12.sp),
         itemCount:6,
         itemBuilder: (context, index) {

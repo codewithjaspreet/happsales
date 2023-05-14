@@ -72,188 +72,188 @@ class OverDue extends StatelessWidget {
 }
 
 buildOpportunityList() {
-  return  Expanded(
-      child: ListView.builder(
-        // padding: EdgeInsets.all(12.sp),
-        itemCount:6,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: (){
-              Get.to( OpportunitiesDetails());
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.w  , vertical: 6.h),
-              height: 120.h,
-              width: 336.w,
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.123),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Row(
+  return  ListView.builder(
+    physics: NeverScrollableScrollPhysics(),
+    // padding: EdgeInsets.all(12.sp),
+    itemCount:6,
+    itemBuilder: (context, index) {
+      return GestureDetector(
+        onTap: (){
+          Get.to( OpportunitiesDetails());
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10.w  , vertical: 6.h),
+          height: 120.h,
+          width: 336.w,
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.123),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Row(
+            children: [
+              
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(height: 12.h,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(height: 12.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-          
-                        margin: EdgeInsets.only(left : 16.sp),
-                        child:Text('Citrix Server',
-                            style: TextStyle(
-                                color: AppColors.primaryColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold
-                            )),
-                      ),
                       Container(
-
-                        height: 22.h,
-                        width: 99.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.r),
-                          color: Colors.white
-                        
-                        ),
-          
-                        margin: EdgeInsets.only(left : 100.sp),
-                        child:Center(
-                          child: Text('Lead',
-                              style: TextStyle(
-                                  color: Colors.pink,
-                                fontSize: 14.sp,
-                              )),
-                        ),
-                      ),
-                        ],
-                      ),
-
-
-                      Container(
-          
-                        margin: EdgeInsets.only(left : 16.sp),
-                        child:Text('19725',
-                            style: TextStyle(
-                                color: AppColors.primaryColor,
-                              fontSize: 14.sp,
-                            )),
-                      ),
-                      SizedBox(height: 3.h,),
-          
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 18.w),
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Value',
-                                  style: TextStyle(
-                                    fontFamily: 'roboto_regular',
-
-          
-                                    fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryColor,
-          
-          
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Text(
-                                  '75000',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
       
+                    margin: EdgeInsets.only(left : 16.sp),
+                    child:Text('Citrix Server',
+                        style: TextStyle(
+                            color: AppColors.primaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold
+                        )),
+                  ),
+                  Container(
 
-                                    color: AppColors.primaryColor,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 40.w,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Currency',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: 'roboto_regular',
-                                    color: AppColors.primaryColor,
-          
-          
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-
-                                Text(
-                                  'Indian Rupee',
-                                  style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(width: 20.w,),
-
-                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Closure Date',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: 'roboto_regular',
-                                    color: AppColors.primaryColor,
-          
-          
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-
-                                Text(
-                                  '25 Aug 2021',
-                                  style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-          
-                          ],
-                        ),
-                      ),
-          
-          
+                    height: 22.h,
+                    width: 99.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      color: Colors.white
+                    
+                    ),
+      
+                    margin: EdgeInsets.only(left : 100.sp),
+                    child:Center(
+                      child: Text('Lead',
+                          style: TextStyle(
+                              color: Colors.pink,
+                            fontSize: 14.sp,
+                          )),
+                    ),
+                  ),
                     ],
                   ),
-          
-                 
+
+
+                  Container(
+      
+                    margin: EdgeInsets.only(left : 16.sp),
+                    child:Text('19725',
+                        style: TextStyle(
+                            color: AppColors.primaryColor,
+                          fontSize: 14.sp,
+                        )),
+                  ),
+                  SizedBox(height: 3.h,),
+      
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Value',
+                              style: TextStyle(
+                                fontFamily: 'roboto_regular',
+
+      
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primaryColor,
+      
+      
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Text(
+                              '75000',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+  
+
+                                color: AppColors.primaryColor,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 40.w,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Currency',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'roboto_regular',
+                                color: AppColors.primaryColor,
+      
+      
+                                fontSize: 14.sp,
+                              ),
+                            ),
+
+                            SizedBox(
+                              height: 5.h,
+                            ),
+
+                            Text(
+                              'Indian Rupee',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(width: 20.w,),
+
+                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Closure Date',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'roboto_regular',
+                                color: AppColors.primaryColor,
+      
+      
+                                fontSize: 14.sp,
+                              ),
+                            ),
+
+                            SizedBox(
+                              height: 5.h,
+                            ),
+
+                            Text(
+                              '25 Aug 2021',
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+      
+                      ],
+                    ),
+                  ),
+      
+      
                 ],
               ),
-            ),
-          );
-        },
-      ));
+      
+             
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
