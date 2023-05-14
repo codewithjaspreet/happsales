@@ -38,11 +38,22 @@ class ActivityToday extends StatelessWidget {
         children: [
 
           
-          Text('Today Activities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          Obx(() =>
+          
+           todayController.isCalender.value ?
+
+           Text('Calender' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),):
+
+           Text('Today Activities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          ),
           Row( 
             children: [
       
-              GestureDetector(
+    
+          
+          //  todayController.isCalender.value ?/÷
+          
+            GestureDetector(
                 onTap: (){
 
                   todayController.isCalender.value = !todayController.isCalender.value;
@@ -57,12 +68,13 @@ class ActivityToday extends StatelessWidget {
                     shape: BoxShape.circle,
       
                   ),
-                  child:  Center(
+                  child: Obx(() => todayController.isCalender.value? Container(): Center(
                     child: Image.asset('assets/activities/calender.png'),
-                  ),
+                  ))
                 ),
-              ),
               
+              ),
+
               GestureDetector(
                 onTap: (){
                   Get.to(AddContact());
@@ -110,8 +122,106 @@ class ActivityToday extends StatelessWidget {
 ):  Image.asset('assets/activities/banner.png')),
 
 
+
+     Obx(() =>  todayController.isCalender.value ?  
+     
+     GestureDetector(
+     
+      child: Column(
+        
+        children: [
+        Container(
+          margin: EdgeInsets.only(top: 15.h, left: 10.w, right: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'sd',
+                    style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontFamily: "roboto_medium",
+                        fontSize: 14.sp),
+                  ),
+                ],
+              ),
+              GestureDetector(
+                  child: Image.asset(todayController.isOpen.value
+                      ? "assets/contacts/back.png"
+                      : "assets/contacts/up.png")),
+            ],
+          ),
+        ),
+        if (todayController.isOpen.value)
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+
+                horizontal: 10.w,
+                vertical: 10.h
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+            
+            
+                  Container(
+                      // margin: EdgeInsets.all(30.sp),
+            
+            
+            
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+            
+                      Container(
+                        child: Text('sad',
+                            style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontFamily: "roboto_medium",
+                                fontSize: 14.sp)),
+                      ),
+
+                      SizedBox(width: 10.w,),
+            
+                      Container(
+            
+                        width: 230.w,
+                        height: 55.h,
+            
+                        decoration:BoxDecoration(
+                          color: Colors.blue.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10.sp)
+                        
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(8.sp),
+                          child: Center(child: Text('sad' ,
+                          
+                          style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontFamily: "roboto_medium",
+                                  fontSize: 14.sp)
+                          
+                          ),),
+                        ),
+                      )
+                    ]),
+                  ),
+
+                  Hdivider()
+                 
+                ],
+              ),
+            ),
+          ),
+      ]),
+    )  :  
       
-      Container(
+    Container(
         
         padding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 5.w),
         child: Row(
@@ -158,12 +268,15 @@ class ActivityToday extends StatelessWidget {
           ),
           
         )
-      ]),
+      ]
+      
+      
+      ),
       
       
       
       
-      )     , 
+      ), )
        
       
       
@@ -172,5 +285,4 @@ class ActivityToday extends StatelessWidget {
     );
   }
 }
-
 
