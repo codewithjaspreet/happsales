@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/tabs/completed/completed_controller.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 
 import '../../../../../../../../utils/color.dart';
-import '../../../widgets/activities_row.dart';
-import '../../activity_view.dart';
 
 class ActivityCompleted extends StatelessWidget {
   const ActivityCompleted({super.key});
@@ -35,7 +28,7 @@ class ActivityCompleted extends StatelessWidget {
               
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(const AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 20.w),
@@ -78,7 +71,7 @@ class ActivityCompleted extends StatelessWidget {
 buildOpportunityList() {
   return  Expanded(
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         // padding: EdgeInsets.all(12.sp),
         itemCount:6,
         itemBuilder: (context, index) {
@@ -163,7 +156,7 @@ class ActivityRow extends StatelessWidget {
                                 fontSize: 14.sp)),
                       ),
 
-                      VerticalDivider(
+                      const VerticalDivider(
                         color: Colors.grey,
                         thickness: 1,
                       ),
@@ -194,7 +187,6 @@ class ActivityRow extends StatelessWidget {
                           ),),
                         ),
                         Container(
-                          child: Center(child: Text(status,style: TextStyle(color: Colors.white), )),
                           margin: EdgeInsets.only(left: 5.sp,top: 7.h),
                           width: 190.w,
                           height: 30.h,
@@ -202,6 +194,7 @@ class ActivityRow extends StatelessWidget {
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(4.sp)
                           ),
+                          child: Center(child: Text(status,style: const TextStyle(color: Colors.white), )),
                         )
                         ],)
                       )

@@ -129,7 +129,7 @@ SizedBox getNotecheckList() {
     child: ListView.builder(
       itemCount: 3,
       itemBuilder: (_, int index) {
-        return  NoteItem();
+        return  const NoteItem();
       },
     ),
   );

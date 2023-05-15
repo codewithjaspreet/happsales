@@ -24,6 +24,8 @@ import '../../contacts/widgets/ThirdTypeDetailing.dart';
 import 'opportunity_edit.dart';
 
 class OpportunitiesDetails extends StatelessWidget {
+  const OpportunitiesDetails({super.key});
+
 
 
 
@@ -43,7 +45,7 @@ class OpportunitiesDetails extends StatelessWidget {
             children: [
 
               Hdivider(),
-              AccountDetailRow(),
+              const AccountDetailRow(),
               Hdivider(),
               // AccountMoreDetail(account: account,)
             ],
@@ -55,6 +57,8 @@ class OpportunitiesDetails extends StatelessWidget {
 }
 
 class AccountDetailRow extends StatefulWidget {
+  const AccountDetailRow({super.key});
+
 
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
   @override
@@ -268,7 +272,7 @@ class _MyRowState extends State<AccountDetailRow> {
 
           
                                     fontWeight: FontWeight.normal,
-                                    color: Color(0xff00A6D6),
+                                    color: const Color(0xff00A6D6),
           
           
                                     fontSize: 14.sp,
@@ -298,7 +302,7 @@ class _MyRowState extends State<AccountDetailRow> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontFamily: 'roboto_bold',
-                                    color: Color(0xff00A6D6),
+                                    color: const Color(0xff00A6D6),
           
           
                                     fontSize: 14.sp,
@@ -330,7 +334,7 @@ class _MyRowState extends State<AccountDetailRow> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontFamily: 'roboto_bold',
-                                   color: Color(0xff00A6D6),
+                                   color: const Color(0xff00A6D6),
           
           
                                     fontSize: 14.sp,
@@ -398,7 +402,7 @@ Column(
                             'Read More',
                             style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              color: Color(0xff00A6D6),
+                              color: const Color(0xff00A6D6),
                               fontSize: 12.sp,
                               fontFamily: 'roboto_regular'
                             ),
@@ -445,7 +449,7 @@ Column(
                                   borderRadius:  BorderRadius.circular(26.sp),
 
                                   shape: BoxShape.rectangle,
-                                  color: Color(0xff0ff00A6D6),
+                                  color: const Color(0xff0ff00a6d6),
                                 ),
                                 child: Center(child: Text("Workflow Status" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                               ),
@@ -473,7 +477,7 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-            OpportunityViewRow(subtite: 'India Mart', title: 'Lead Source',)
+            const OpportunityViewRow(subtite: 'India Mart', title: 'Lead Source',)
 ,
 
             Container(
@@ -497,7 +501,7 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
-                Text('1'),
+                const Text('1'),
               ],
             ),
           ) ),
@@ -517,7 +521,7 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
-                Text('-'),
+                const Text('-'),
               ],
             ),
           ) ),
@@ -547,7 +551,7 @@ Container(
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
-                Text('No'),
+                const Text('No'),
               ],
             ),
           ) ),
@@ -567,7 +571,7 @@ Container(
                   fontFamily: "roboto_bold",
                 ),),
                 SizedBox(height: 3.h,),
-                Text('-'),
+                const Text('-'),
               ],
             ),
           ) ),
@@ -579,10 +583,10 @@ Container(
 
     
 
-OpportunityViewRow(subtite: '-', title: 'Remarks',),
-OpportunityViewRow(subtite: '-', title: 'Square Feet',),
+const OpportunityViewRow(subtite: '-', title: 'Remarks',),
+const OpportunityViewRow(subtite: '-', title: 'Square Feet',),
 
-OpportunityViewRow(subtite: '-', title: 'UserName',)
+const OpportunityViewRow(subtite: '-', title: 'UserName',)
 
 
 

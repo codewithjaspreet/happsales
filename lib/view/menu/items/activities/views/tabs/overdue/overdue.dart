@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 
 import '../../../../../../../../utils/color.dart';
 import '../../../widgets/activities_row.dart';
-import '../../activity_view.dart';
 
 class ActivityOverDue extends StatelessWidget {
   const ActivityOverDue({super.key});
@@ -33,7 +26,7 @@ class ActivityOverDue extends StatelessWidget {
       
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(const AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 22.w),
@@ -51,7 +44,7 @@ class ActivityOverDue extends StatelessWidget {
               
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(const AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 20.w),
@@ -98,7 +91,7 @@ buildOpportunityList() {
         // padding: EdgeInsets.all(12.sp),
         itemCount:6,
         itemBuilder: (context, index) {
-          return OpportunityListRow(time: '08:03 AM', detail: 'Meeting[check 31 aug]On 23-Oct-2021 At 4:33 Pm', date:'24 Oct 2021');
+          return const OpportunityListRow(time: '08:03 AM', detail: 'Meeting[check 31 aug]On 23-Oct-2021 At 4:33 Pm', date:'24 Oct 2021');
         },
       ));
 }

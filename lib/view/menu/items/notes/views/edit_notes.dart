@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/notes/widgets/expand_alert.dart';
-import 'package:happsales_crm/view/menu/items/notes/widgets/search_alert.dart';
 import '../../../../../utils/color.dart';
 import '../../contacts/widgets/add_tag.dart';
 class EditNotes extends StatelessWidget {
@@ -58,7 +53,7 @@ class EditNotes extends StatelessWidget {
               },
               child: Image.asset('assets/notes/expand.png')),
             contentPadding: EdgeInsets.all(12.sp),
-            label: Text('Note Content *'),
+            label: const Text('Note Content *'),
             hintText: 'Note Content *',
             hintStyle: TextStyle(
                 color: const Color(0xff8F9BB3),
@@ -68,7 +63,7 @@ class EditNotes extends StatelessWidget {
         ),
           ),
           SizedBox(height: 10.h,),
-          Input(title: 'Note Date ', ),
+          const Input(title: 'Note Date ', ),
           SizedBox(height: 20.h,),
       
           Container(
@@ -82,8 +77,8 @@ class EditNotes extends StatelessWidget {
         GridView.count(
           crossAxisCount: 3,
           shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24, right: 24),
-          children: [
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          children: const [
           
             
             
@@ -91,7 +86,7 @@ class EditNotes extends StatelessWidget {
         ),
       
       
-      TagInputWidget(),
+      const TagInputWidget(),
       Container(
                 margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 45.h),
                 child: Row(

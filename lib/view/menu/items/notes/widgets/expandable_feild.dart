@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../utils/color.dart';
 
 class MyExpandAlert extends StatelessWidget {
   const MyExpandAlert({super.key});
@@ -35,7 +32,7 @@ class MyExpandAlert extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
       ),
       content: Container(
         width: 260.w,

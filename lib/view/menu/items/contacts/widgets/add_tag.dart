@@ -18,7 +18,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
       margin: EdgeInsets.all(10.sp),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Color(0xffB4C6D4)),
+        border: Border.all(color: const Color(0xffB4C6D4)),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.sp , vertical: 50.sp),
       child: Column(

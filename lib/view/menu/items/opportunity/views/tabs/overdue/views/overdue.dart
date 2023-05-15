@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
-import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 
 import '../../../../../../../../utils/color.dart';
-import '../../../../../notes/views/view_notes.dart';
 import '../../../opportunity_view.dart';
 
 class OverDue extends StatelessWidget {
@@ -31,7 +25,7 @@ class OverDue extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(const AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 20.w),
@@ -74,13 +68,13 @@ class OverDue extends StatelessWidget {
 buildOpportunityList() {
   return  Expanded(
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         // padding: EdgeInsets.all(12.sp),
         itemCount:6,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: (){
-              Get.to( OpportunitiesDetails());
+              Get.to( const OpportunitiesDetails());
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10.w  , vertical: 6.h),

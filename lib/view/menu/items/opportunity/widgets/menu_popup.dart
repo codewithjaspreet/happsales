@@ -109,7 +109,7 @@ class ListItems extends StatelessWidget {
                 InkWell(
                 child: Row(
                   children: [
-                    Icon(Icons.mail_outline_rounded),
+                    const Icon(Icons.mail_outline_rounded),
                   //  Image.asset('assets/notes/sort.png'),
                    SizedBox(width: 5.w,),
                    const Text('Share',style: TextStyle(

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../../../utils/color.dart';
-import '../../../../../utils/popups/custom_dropdown.dart';
 import '../../contacts/widgets/InputOne.dart';
 
 class OpportunityEdit extends StatelessWidget {
@@ -58,7 +54,7 @@ class OpportunityEdit extends StatelessWidget {
         ),
           ),
       
-          OpportunityEditDetails(),
+          const OpportunityEditDetails(),
       
       
         ]),
@@ -154,7 +150,7 @@ class _MyRowState extends State<OpportunityEditDetails> {
                
                Container(
                   margin: EdgeInsets.only(left: 18.w , top: 16.h),
-                child: Text('How does the closure property looks like ?'),
+                child: const Text('How does the closure property looks like ?'),
                ),
                SfSlider(
                 inactiveColor: Colors.grey,
@@ -162,7 +158,7 @@ class _MyRowState extends State<OpportunityEditDetails> {
                 thumbIcon: Container(
                   width: 50.w,
                   height: 50.w,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle
                     ,color: Colors.blue
                   ),

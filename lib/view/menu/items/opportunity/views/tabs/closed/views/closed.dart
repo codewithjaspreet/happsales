@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/add_contact.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../../../../utils/color.dart';
 import '../../../../../notes/views/view_notes.dart';
@@ -28,10 +24,10 @@ class Closed extends StatelessWidget {
           Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
           Row(
             children: [
-              ClosedPopUp(),
+              const ClosedPopUp(),
               GestureDetector(
                 onTap: (){
-                  Get.to(AddContact());
+                  Get.to(const AddContact());
                 },
                 child: Container(
                   margin:  EdgeInsets.only(left: 20.w),

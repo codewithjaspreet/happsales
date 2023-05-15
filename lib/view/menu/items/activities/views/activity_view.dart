@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/activity_view_controller.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
-import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../utils/color.dart';
 import '../../opportunity/views/opportunity_view.dart';
@@ -51,12 +48,12 @@ class ActivityDetails extends StatelessWidget {
       
                       GestureDetector(
                           onTap: () {
-                            Get.to(ActivityEdit());
+                            Get.to(const ActivityEdit());
                           },
                           child:Container(
                             width: 22.w,
                             height: 22.h,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
       
                                 color: AppColors.primaryColor,
                                 shape: BoxShape.circle
@@ -107,6 +104,18 @@ class ActivityDetails extends StatelessWidget {
       
                                             Container(
       
+                                              margin: EdgeInsets.only(left: 14.w,top: 10.h),
+      
+                                              width: 100.w,
+                                              height: 100.h,
+                                              decoration: BoxDecoration(
+      
+                                                color: Colors.grey.withOpacity(0.1),
+      
+      
+      
+                                              ),
+      
                                               child: Container(child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
@@ -133,17 +142,6 @@ class ActivityDetails extends StatelessWidget {
                                                 ),
                                               
                                               ],)),
-                                              margin: EdgeInsets.only(left: 14.w,top: 10.h),
-      
-                                              width: 100.w,
-                                              height: 100.h,
-                                              decoration: BoxDecoration(
-      
-                                                color: Colors.grey.withOpacity(0.1),
-      
-      
-      
-                                              ),
                                             )
       
                                         
@@ -166,7 +164,7 @@ class ActivityDetails extends StatelessWidget {
       
       
                                               SizedBox(height: 5.h,),
-                                              Text("ABC Limited",style: TextStyle(color: Color(0xff00A6D6),
+                                              Text("ABC Limited",style: TextStyle(color: const Color(0xff00A6D6),
       
                                               fontSize: 14.sp , fontWeight: FontWeight.bold),),
       
@@ -262,13 +260,14 @@ class ActivityDetails extends StatelessWidget {
                               'Read More',
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                color: Color(0xff00A6D6),
+                                color: const Color(0xff00A6D6),
                                 fontSize: 12.sp,
                                 fontFamily: 'roboto_regular'
                               ),
                             ),
                           ),
-                  
+
+                          SizedBox(height :10.h),                  
       
       activityViewController.seeMore.value ? const SizedBox.shrink() :       GestureDetector(
                                 onTap: (){
@@ -313,14 +312,14 @@ class ActivityDetails extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Is Reccuring Opportunity',style: TextStyle(
+                        Text('Activity Status',style: TextStyle(
                           fontSize: 13.sp ,
                           color: const Color(0xff00A6D6),
                           fontWeight: FontWeight.bold,
                           fontFamily: "roboto_bold",
                         ),),
                         SizedBox(height: 3.h,),
-                        Text('1'),
+                        const Text('Completed'),
                       ],
                     ),
                         ) ),
@@ -333,14 +332,14 @@ class ActivityDetails extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Assigned Date',style:  TextStyle(
+                        Text('Is Approved',style:  TextStyle(
                           fontSize: 13.sp ,
                           color: const Color(0xff00A6D6),
                           fontWeight: FontWeight.bold,
                           fontFamily: "roboto_bold",
                         ),),
                         SizedBox(height: 3.h,),
-                        Text('-'),
+                        const Text('No'),
                       ],
                     ),
                         ) ),
@@ -366,37 +365,18 @@ class ActivityDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Assigned',style: TextStyle(
+                  Text('Contact Name',style: TextStyle(
                     fontSize: 13.sp ,
                     color: const Color(0xff00A6D6),
                     fontWeight: FontWeight.bold,
                     fontFamily: "roboto_bold",
                   ),),
                   SizedBox(height: 3.h,),
-                  Text('No'),
+                  const Text('Mr. Hughie campbell'),
                 ],
               ),
             ) ),
-            Expanded(child:
-            Container(
-              margin: EdgeInsets.only(
-                left: 15.w,
-                top: 10.h
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Assigned By',style:  TextStyle(
-                    fontSize: 13.sp ,
-                    color: const Color(0xff00A6D6),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "roboto_bold",
-                  ),),
-                  SizedBox(height: 3.h,),
-                  Text('-'),
-                ],
-              ),
-            ) ),
+       
       
       
           ],
@@ -405,29 +385,47 @@ class ActivityDetails extends StatelessWidget {
       
           
       
-      OpportunityViewRow(subtite: '-', title: 'Remarks',),
-      OpportunityViewRow(subtite: '-', title: 'Square Feet',),
+      const OpportunityViewRow(subtite: '-', title: 'Opportunity Name',),
+      const OpportunityViewRow(subtite: '-', title: 'Amount Collected',),
       
-      OpportunityViewRow(subtite: '-', title: 'UserName',)
+      const OpportunityViewRow(subtite: '-', title: 'Collection Details',),
+      const OpportunityViewRow(title: 'Travelled', subtite: '-'),
+      const OpportunityViewRow(title: 'Travelled Purpose', subtite: '-'),
+      const OpportunityViewRow(title: 'Currency', subtite: '-'),
+      const OpportunityViewRow(title: 'InvoiceTitle', subtite: '-'),
+      const OpportunityViewRow(title: 'User Name', subtite: '-'),
       
       
       
-                                      ,
+                                      
                                         !activityViewController.seeMore.value ? const SizedBox.shrink() :       GestureDetector(
                                         onTap: (){
                                           activityViewController.seeMore.value = !activityViewController.seeMore.value;
                                         },
-                                        child:  Container(
-                                          margin: EdgeInsets.only(top: 10.h, left: 30.w),
-                                          width: 125.w,
-                                          height:48.h,
-                                          decoration: BoxDecoration(
-                                            borderRadius:  BorderRadius.circular(26.sp),
+                                        child:  Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10.h, left: 10.w),
+                                              width: 150.w,
+                                              height:48.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:  BorderRadius.circular(26.sp),
                                   
-                                            shape: BoxShape.rectangle,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                          child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                                                shape: BoxShape.rectangle,
+                                                color: AppColors.primaryColor,
+                                              ),
+                                              child: Center(child: Text("See Less" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
+                                            ),
+
+                                            Container(
+                                              margin: EdgeInsets.only(top: 5.h)  ,
+                                              child: const Divider(
+                                                color: Colors.grey,
+                                              thickness: 0.8,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -458,7 +456,7 @@ class ActivityDetails extends StatelessWidget {
       
       
                           ],
-                        ):SizedBox.shrink())
+                        ):const SizedBox.shrink())
         ]),
       ),
     );

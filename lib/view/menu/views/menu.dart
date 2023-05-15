@@ -68,7 +68,7 @@ class Menu extends StatelessWidget {
               
                onTap: (){
 
-                Get.to(ActivityListing());
+                Get.to(const ActivityListing());
                },
               child: const _buildGridItem(title : 'Activities', image: 'assets/activities.png' )),
             const _buildGridItem(title : 'Resources', image: 'assets/resources.png' ),

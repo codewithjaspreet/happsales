@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/tabs/completed/completed.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/tabs/today/today.dart';
@@ -8,8 +6,6 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 
 import '../../../../../utils/color.dart';
 import '../../../../voiceassistant/parent.dart';
-import '../../opportunity/views/tabs/closed/views/closed.dart';
-import '../../opportunity/views/tabs/overdue/views/overdue.dart';
 import '../../opportunity/widgets/menu_popup.dart';
 import 'tabs/overdue/overdue.dart';
 
@@ -46,7 +42,7 @@ class ActivityListing extends StatelessWidget {
                     borderRadius:  BorderRadius.circular(25.0)
                   ) ,
 
-                  tabs:   [
+                  tabs:   const [
                     Tab(
 
                       child: FittedBox(child: Text('Overdue',style: TextStyle(
@@ -57,13 +53,13 @@ class ActivityListing extends StatelessWidget {
                     ),
                     Tab(
 
-                      child: FittedBox(child: Text('Today'
+                      child: FittedBox(fit: BoxFit.cover,child: Text('Today'
                       
                       ,style: TextStyle(
                         fontFamily: 'roboto_bold',
                         color: AppColors.primaryColor
                       ),
-                      ),fit: BoxFit.cover,),
+                      ),),
                     ),
                     Tab(
 
@@ -87,7 +83,7 @@ class ActivityListing extends StatelessWidget {
               SizedBox(width: 10.w,),
 
 
-               OpportunitiesPopup(),
+               const OpportunitiesPopup(),
                 
                 // child: Image.asset('assets/notes/more.png',)),
                 ],
@@ -96,10 +92,10 @@ class ActivityListing extends StatelessWidget {
                Expanded(
                   child: TabBarView(
                     children:  [
-                      ActivityOverDue(),
+                      const ActivityOverDue(),
                       ActivityToday(),
-                      Center(child: Text('Calls Page'),),
-                      ActivityCompleted(),
+                      const Center(child: Text('Calls Page'),),
+                      const ActivityCompleted(),
                     ],
                   )
               ),
