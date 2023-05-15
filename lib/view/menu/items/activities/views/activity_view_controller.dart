@@ -6,6 +6,7 @@ class ActivityViewController extends GetxController{
 
    RxBool isOpen = true.obs;
    RxBool seeMore = false.obs;
+   RxBool isAdditional = true.obs;
 
 
   void toggle(){

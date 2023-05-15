@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/activity_view_controller.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 
 import '../../../../../utils/color.dart';
+import '../../contacts/widgets/SecondTypeDetailing.dart';
+import '../../contacts/widgets/ThirdTypeDetailing.dart';
 import '../../opportunity/views/opportunity_view.dart';
 import 'activity_edit.dart';
 
@@ -48,12 +54,12 @@ class ActivityDetails extends StatelessWidget {
       
                       GestureDetector(
                           onTap: () {
-                            Get.to(const ActivityEdit());
+                            Get.to(ActivityEdit());
                           },
                           child:Container(
                             width: 22.w,
                             height: 22.h,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
       
                                 color: AppColors.primaryColor,
                                 shape: BoxShape.circle
@@ -104,18 +110,6 @@ class ActivityDetails extends StatelessWidget {
       
                                             Container(
       
-                                              margin: EdgeInsets.only(left: 14.w,top: 10.h),
-      
-                                              width: 100.w,
-                                              height: 100.h,
-                                              decoration: BoxDecoration(
-      
-                                                color: Colors.grey.withOpacity(0.1),
-      
-      
-      
-                                              ),
-      
                                               child: Container(child: Column(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
@@ -142,6 +136,17 @@ class ActivityDetails extends StatelessWidget {
                                                 ),
                                               
                                               ],)),
+                                              margin: EdgeInsets.only(left: 14.w,top: 10.h),
+      
+                                              width: 100.w,
+                                              height: 100.h,
+                                              decoration: BoxDecoration(
+      
+                                                color: Colors.grey.withOpacity(0.1),
+      
+      
+      
+                                              ),
                                             )
       
                                         
@@ -164,7 +169,7 @@ class ActivityDetails extends StatelessWidget {
       
       
                                               SizedBox(height: 5.h,),
-                                              Text("ABC Limited",style: TextStyle(color: const Color(0xff00A6D6),
+                                              Text("ABC Limited",style: TextStyle(color: Color(0xff00A6D6),
       
                                               fontSize: 14.sp , fontWeight: FontWeight.bold),),
       
@@ -260,7 +265,7 @@ class ActivityDetails extends StatelessWidget {
                               'Read More',
                               style: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                color: const Color(0xff00A6D6),
+                                color: Color(0xff00A6D6),
                                 fontSize: 12.sp,
                                 fontFamily: 'roboto_regular'
                               ),
@@ -319,7 +324,7 @@ class ActivityDetails extends StatelessWidget {
                           fontFamily: "roboto_bold",
                         ),),
                         SizedBox(height: 3.h,),
-                        const Text('Completed'),
+                        Text('Completed'),
                       ],
                     ),
                         ) ),
@@ -339,7 +344,7 @@ class ActivityDetails extends StatelessWidget {
                           fontFamily: "roboto_bold",
                         ),),
                         SizedBox(height: 3.h,),
-                        const Text('No'),
+                        Text('No'),
                       ],
                     ),
                         ) ),
@@ -372,7 +377,7 @@ class ActivityDetails extends StatelessWidget {
                     fontFamily: "roboto_bold",
                   ),),
                   SizedBox(height: 3.h,),
-                  const Text('Mr. Hughie campbell'),
+                  Text('Mr. Hughie campbell'),
                 ],
               ),
             ) ),
@@ -385,17 +390,17 @@ class ActivityDetails extends StatelessWidget {
       
           
       
-      const OpportunityViewRow(subtite: '-', title: 'Opportunity Name',),
-      const OpportunityViewRow(subtite: '-', title: 'Amount Collected',),
-      
-      const OpportunityViewRow(subtite: '-', title: 'Collection Details',),
-      const OpportunityViewRow(title: 'Travelled', subtite: '-'),
-      const OpportunityViewRow(title: 'Travelled Purpose', subtite: '-'),
-      const OpportunityViewRow(title: 'Currency', subtite: '-'),
-      const OpportunityViewRow(title: 'InvoiceTitle', subtite: '-'),
-      const OpportunityViewRow(title: 'User Name', subtite: '-'),
-      
-      
+                  OpportunityViewRow(subtite: '-', title: 'Opportunity Name',),
+                  OpportunityViewRow(subtite: '-', title: 'Amount Collected',),
+                  
+                  OpportunityViewRow(subtite: '-', title: 'Collection Details',),
+                  OpportunityViewRow(title: 'Travelled', subtite: '-'),
+                  OpportunityViewRow(title: 'Travelled Purpose', subtite: '-'),
+                  OpportunityViewRow(title: 'Currency', subtite: '-'),
+                  OpportunityViewRow(title: 'InvoiceTitle', subtite: '-'),
+                  OpportunityViewRow(title: 'User Name', subtite: '-'),
+                  
+                  
       
                                       
                                         !activityViewController.seeMore.value ? const SizedBox.shrink() :       GestureDetector(
@@ -420,7 +425,7 @@ class ActivityDetails extends StatelessWidget {
 
                                             Container(
                                               margin: EdgeInsets.only(top: 5.h)  ,
-                                              child: const Divider(
+                                              child: Divider(
                                                 color: Colors.grey,
                                               thickness: 0.8,
                                               ),
@@ -429,7 +434,9 @@ class ActivityDetails extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
+
+
                         ],
                       ),
                     ),
@@ -456,9 +463,163 @@ class ActivityDetails extends StatelessWidget {
       
       
                           ],
-                        ):const SizedBox.shrink())
+                        ):SizedBox.shrink()),
+
+
+                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      
+                    children: [
+
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+      
+                        child: Text(
+                          'Additional Details',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 14.sp,
+                            fontFamily: "roboto_bold"
+                          ),
+                        ),
+                      ),
+      
+             
+      
+                      Obx(() => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: GestureDetector(
+                            onTap: (){
+                            
+                              activityViewController.isAdditional.value = !activityViewController.isAdditional.value;
+                            },
+                            child:Image.asset(
+                                activityViewController.isAdditional.value ? "assets/contacts/up.png" : "assets/contacts/back.png")
+                                
+                                
+                          ),
+                      ),
+
+
+                      
+
+
+      
+      
+      
+                        ),
+
+
+      
+                       
+                    ],
+                  ),
+
+                      Obx(() =>  
+                      activityViewController.isAdditional.value?
+                      
+                        DetailItems() : SizedBox.shrink(),
+)
+
         ]),
       ),
+    );
+  }
+}
+
+
+class DetailItems extends StatelessWidget {
+  const DetailItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualItem(imageUrl: 'assets/activities/forms.png', title: 'Forms',),
+              IndividualItem(imageUrl: 'assets/activities/product.png', title: 'Products',),
+              IndividualItem(imageUrl: 'assets/activities/photo.png', title: 'Photo',),
+            ],
+          ),
+             Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Team Members',),
+              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Business Unit',),
+              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents',),
+            ],
+          ),
+
+          IndividualItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
+         SizedBox(height: 10.h,),
+          Divider(
+            color: Colors.grey,
+            thickness: 0.8,
+          ),
+
+         Container(
+          margin: EdgeInsets.symmetric(horizontal: 14.w),
+          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
+
+
+
+              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+              SizedBox(height: 12.h,),
+
+              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+
+        ],
+      ),
+
+    );
+
+  }
+}
+class IndividualItem extends StatelessWidget {
+  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+
+  final String imageUrl;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: const Color(0xffF5F6F9),
+
+            borderRadius: BorderRadius.circular(12.sp),
+          ),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(imageUrl),
+                Text(
+
+                  title,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: "roboto_bold",
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+       
+      ],
     );
   }
 }
