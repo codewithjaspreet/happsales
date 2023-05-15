@@ -40,7 +40,7 @@ class HelperRow extends StatelessWidget {
               ),
               Center(
 
-                child: Image.asset('assets/notes/ic_menu.png',scale: 0.7,),
+                child: Image.asset('assets/notes/more.png',scale: 0.7,),
               )
             ],
           ),

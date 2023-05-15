@@ -15,6 +15,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../../../../utils/color.dart';
 import '../../../widgets/activities_row.dart';
 import '../../activity_view.dart';
+import '../../calender/calender_view.dart';
 
 class ActivityToday extends StatelessWidget {
 
@@ -39,14 +40,12 @@ class ActivityToday extends StatelessWidget {
           children: [
       
             
-            Obx(() =>
             
-             todayController.isCalender.value ?
+            
       
-             Text('Calender' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),):
       
              Text('Today Activities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-            ),
+            
             Row( 
               children: [
         
@@ -69,9 +68,14 @@ class ActivityToday extends StatelessWidget {
                       shape: BoxShape.circle,
         
                     ),
-                    child: Obx(() => todayController.isCalender.value? Container(): Center(
-                      child: Image.asset('assets/activities/calender.png'),
-                    ))
+                    child: GestureDetector(
+                      onTap: (){
+                        Get.to(CalenderView());
+                      },
+                      child: Center(
+                        child: Image.asset('assets/activities/calender.png'),
+                      ),
+                    )
                   ),
                 
                 ),
@@ -109,149 +113,13 @@ class ActivityToday extends StatelessWidget {
           ),
         
         
-           Obx(() => todayController.isCalender.value ?  
            
-           TableCalendar(
-        weekNumbersVisible: false,
-        headerVisible: true ,
-        daysOfWeekVisible: false,
-        calendarFormat: CalendarFormat.month,
-        rowHeight: 32.h,
-        firstDay: DateTime.utc(2010, 10, 16),
-        lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
-      ):  Image.asset('assets/activities/banner.png')),
+          Image.asset('assets/activities/banner.png'),
       
       
-      
-           Obx(() =>  todayController.isCalender.value ?  
+       
            
-           GestureDetector(
-           
-        child: SingleChildScrollView(
-          child: Column(
-            
-            children: [
-            Container(
-              height: 45 .h,
-              width: double.infinity,
-               decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1)
-                  ),
-              margin: EdgeInsets.symmetric(vertical: 15.h,horizontal: 4.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '05-May-2021 (6)',
-                        style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontFamily: "roboto_bold",
-                            fontSize: 14.sp),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                      onTap: () {
-                        todayController.isOpen.value =
-                            !todayController.isOpen.value;
-                      },
-                      child: Image.asset(todayController.isOpen.value
-                          ? "assets/contacts/back.png"
-                          : "assets/contacts/up.png")),
-                ],
-              ),
-            ),
-            if (todayController.isOpen.value)
-              ListView.builder(
-                itemCount: 5,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-        
-                itemBuilder: (context, index) => Container(
-                 
-                  padding: EdgeInsets.symmetric(
-              
-                    horizontal: 10.w,
-                    vertical: 10.h
-                  ),
-                  child: Column(
-                    children: [
-                
-                
-                      Container(
-                          // margin: EdgeInsets.all(30.sp),
-                
-                
-                color: Colors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                
-                          Expanded(
-                            child: Container(
-                              child: Text('Meeting[19725] On 05-May-2021 at 10:00 AM',
-                              overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontFamily: "roboto_medium",
-                                      fontSize: 14.sp)),
-                            ),
-                          ),
-              
-                          SizedBox(width: 10.w,),
-
-                          Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 30.w),
-                            child: Text('04:15 AM',
-                                style: TextStyle(
-                                    color: AppColors.primaryColor,
-                                    fontFamily: "roboto_medium",
-                                    fontSize: 12.sp)),
-                          ),
-                          SizedBox(height : 10.h),
-
-                          Container(
-                            child: Container(
-                              height: 30.h,
-                              child: Center(child: Text(
-                                'Meeting',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "roboto_bold",
-                                    fontSize: 12.sp,
-                              ))),
-                              width: 100.w,
-                              decoration: BoxDecoration(
-
-                                color: Colors.blue
-                              ),
-                              
-                            ),
-                          )
-                
-                            ],
-                          )
-                        
-                        ]),
-                      ),
-              
-                     
-                    ],
-                  ),
-                ),
-              ),
-          ]),
-        ),
-          )  :  
+         
         
           Container(
           
@@ -308,7 +176,7 @@ class ActivityToday extends StatelessWidget {
         
         
         
-        ), )
+        ), 
          
         
         

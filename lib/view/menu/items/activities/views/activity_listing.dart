@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/activities/views/tabs/completed/completed.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/tabs/today/today.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 
@@ -98,7 +99,7 @@ class ActivityListing extends StatelessWidget {
                       ActivityOverDue(),
                       ActivityToday(),
                       Center(child: Text('Calls Page'),),
-                      Closed()
+                      ActivityCompleted(),
                     ],
                   )
               ),

@@ -91,7 +91,7 @@ class OpportunityListing extends StatelessWidget {
                     ),
                     
                   ],
-                ),
+              ),
               ),
               SizedBox(width: 10.w,),
 
