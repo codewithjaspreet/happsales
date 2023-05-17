@@ -381,16 +381,36 @@ Row(
                       
                         DetailActivityItems() : SizedBox.shrink(),
 )
-,Container(
-          margin: EdgeInsets.symmetric(horizontal: 14.w),
-          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
+,
 
+ Container(
+            margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 16.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 125.w,
+                  height:48.h,
+                  decoration: BoxDecoration(
+                    borderRadius:  BorderRadius.circular(26.sp),
+                    color: const Color(0xff8199AC),
+                  ),
+                  child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
+                ),
+                Container(
+                  width: 125.w,
+                  height:48.h,
+                  decoration: BoxDecoration(
+                    borderRadius:  BorderRadius.circular(26.sp),
 
-
-              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
-              SizedBox(height: 12.h,),
-
-              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+                    shape: BoxShape.rectangle,
+                    color: AppColors.primaryColor,
+                  ),
+                  child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 18.sp),)),
+                )
+              ],
+            ),
+          )
 
 
         ]),
