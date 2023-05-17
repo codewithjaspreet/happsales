@@ -79,37 +79,16 @@ class ActivityEdit extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 12.sp),
       child: Text('Select Activity Type*' ,style: TextStyle(color: AppColors.primaryColor),)),
 
-      DropDownHelper(
-
-      dropDownListData:  [
-
-
-        {"title": "Meeting", "value": "1"},
-        {"title": "Call", "value": "2"},
-        {"title": "Mail", "value": "3"},
-        {"title": "Trade Show", "value": "4"},
-        {"title": "Demo", "value": "5"},
-        {"title": "Others", "value": "6"},
-        {"title": "Service", "value": "7"},
-        {"title": "Collections", "value": "8"},
-        {"title": "Negotiation", "value": "9"},
-        {"title": "Sample", "value": "10"},
-        {"title": "Tech Support", "value": "11"},
-        {"title": "Replacement", "value": "12"},
-        {"title": "Show Sample", "value": "13"},
+      DropDownHelper(),
 
 
 
 
 
+  // ],
+  // labelText: 'Select Activity Type*',
 
-
-
-
-  ],
-  labelText: 'Select Activity Type*',
-
-      ),
+  //     ),
 
       Container(
 
