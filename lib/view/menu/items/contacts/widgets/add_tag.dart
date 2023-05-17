@@ -15,9 +15,9 @@ class _TagInputWidgetState extends State<TagInputWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10.sp),
+      margin: EdgeInsets.all(14.sp),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(2.r),
         border: Border.all(color: const Color(0xffB4C6D4)),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.sp , vertical: 50.sp),
@@ -53,7 +53,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                  width: 88.w,
                  height: 44.h,
                  decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(12.r),
+                   borderRadius: BorderRadius.circular(8.r),
                    border: Border.all(color: AppColors.primaryColor),
                    color: const Color(0xffE5F6FF),
                  ),

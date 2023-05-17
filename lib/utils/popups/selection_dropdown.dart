@@ -29,41 +29,14 @@ class _DropDownHelperState extends State<DropDownHelper> {
 
   ];
 
-  List images = [
- 
-     {},
-          // {"image" :   "assets/activities/unselectcall.png"},
 
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //                   {"image" :   "assets/activities/unselectmail.png"},
-
-          //     {"image" :   "assets/activities/unselectmail.png"},
-
-          //     {"image" :   "assets/activities/unselectmail.png"},
-
-          //     {"image" :   "assets/activities/unselectmail.png"},
-
-          //     {"image" :   "assets/activities/unselectmail.png"},
-
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //     {"image" :   "assets/activities/unselectmail.png"},
-          //     {"image" :   "assets/activities/unselectmail.png"},
-
-
-     
-  
-  
-  ];
 
   String selectedCourseValue = "";
   @override
   Widget build(BuildContext context) {
     return  Container(
       padding: EdgeInsets.all(12.sp),
-      height: 200.h,
+      height: 100.h,
       child: ListView(
         children: [
          
