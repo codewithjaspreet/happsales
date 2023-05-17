@@ -5,6 +5,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/activity_edit_controller.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
@@ -13,6 +14,10 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/add_tag.dart';
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/custom_dropdown.dart';
 import '../../../../../utils/popups/selection_dropdown.dart';
+import '../../contacts/widgets/MoreDetail.dart';
+import '../../contacts/widgets/ThirdTypeDetailing.dart';
+import '../../opportunity/views/opportunity_view.dart';
+import 'activity_view.dart';
 
 class ActivityEdit extends StatelessWidget {
    ActivityEdit({super.key});
@@ -317,12 +322,77 @@ ActivityInput(title: 'Remarks',isSuffixIcon: false,),
 
 
 
-
-
         ],
       ),
     ),
+Hdivider(),
+SizedBox(height: 30.h,),
+Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
       
+                    children: [
+
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+      
+                        child: Text(
+                          'Additional Details',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 14.sp,
+                            fontFamily: "roboto_bold"
+                          ),
+                        ),
+                      ),
+      
+             
+      
+                      Obx(() => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: GestureDetector(
+                            onTap: (){
+                            
+                              controller.isAdditionalInfoOpen.value = !controller.isAdditionalInfoOpen.value;
+                            },
+                            child:Image.asset(
+                                controller.isAdditionalInfoOpen.value ? "assets/contacts/up.png" : "assets/contacts/back.png")
+                                
+                                
+                          ),
+                      ),
+
+
+                      
+
+
+      
+      
+      
+                        ),
+
+
+      
+                       
+                    ],
+                  ),
+
+      Obx(() =>  
+                      controller.isAdditionalInfoOpen.value?
+                      
+                        DetailActivityItems() : SizedBox.shrink(),
+)
+,Container(
+          margin: EdgeInsets.symmetric(horizontal: 14.w),
+          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
+
+
+
+              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+              SizedBox(height: 12.h,),
+
+              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+
+
         ]),
       ),
 

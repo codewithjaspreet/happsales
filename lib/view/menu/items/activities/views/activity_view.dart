@@ -32,7 +32,7 @@ class ActivityDetails extends StatelessWidget {
       
           
           Container(
-              margin: EdgeInsets.only(top: 15.h, left: 16.w, right: 16.w),
+              margin: EdgeInsets.only(top: 15.h, left: 10.w, right: 10.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -465,7 +465,7 @@ class ActivityDetails extends StatelessWidget {
                           ],
                         ):SizedBox.shrink()),
 
-
+SizedBox(height: 20.h,),
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
       
@@ -518,8 +518,18 @@ class ActivityDetails extends StatelessWidget {
                       Obx(() =>  
                       activityViewController.isAdditional.value?
                       
-                        DetailItems() : SizedBox.shrink(),
+                        DetailActivityItems() : SizedBox.shrink(),
 )
+,Container(
+          margin: EdgeInsets.symmetric(horizontal: 14.w),
+          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
+
+
+
+              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+              SizedBox(height: 12.h,),
+
+              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
 
         ]),
       ),
@@ -528,8 +538,8 @@ class ActivityDetails extends StatelessWidget {
 }
 
 
-class DetailItems extends StatelessWidget {
-  const DetailItems({Key? key}) : super(key: key);
+class DetailActivityItems extends StatelessWidget {
+  const DetailActivityItems({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -563,17 +573,7 @@ class DetailItems extends StatelessWidget {
             thickness: 0.8,
           ),
 
-         Container(
-          margin: EdgeInsets.symmetric(horizontal: 14.w),
-          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
-
-
-
-              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
-              SizedBox(height: 12.h,),
-
-              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
-
+         
         ],
       ),
 
