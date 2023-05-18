@@ -112,6 +112,7 @@ flutter:
      - assets/opportunity/
      - assets/recommend.png
      - assets/activities/
+     - assets/resources/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
