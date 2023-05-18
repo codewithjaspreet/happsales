@@ -6,9 +6,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
+import 'package:happsales_crm/view/menu/items/notes/widgets/notes_popup.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/widgets/menu_popup.dart';
 
 import '../../../../../utils/color.dart';
 import '../../notes/views/view_notes.dart';
+import '../widgets/resource_popup.dart';
 
 class ResourceListing extends StatelessWidget {
   const ResourceListing({super.key});
@@ -37,10 +40,7 @@ class ResourceListing extends StatelessWidget {
             ),),
           ),
           
-          Center(
-
-            child: Image.asset('assets/notes/more.png',scale: 0.7,),
-          )
+          ResourcePopup()
         ],
       ),
     ),
