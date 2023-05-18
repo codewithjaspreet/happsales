@@ -96,7 +96,7 @@ class OpportunityEditDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Contact Details',
+                    'Opportunity Details',
                     style: TextStyle(
                         color: AppColors.primaryColor,
                         fontFamily: "roboto_medium",
@@ -237,9 +237,10 @@ Row(
                         DetailOpportunityItems() : SizedBox.shrink(),
 )
 ,
+Hdivider(),
 
  Container(
-            margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 16.h),
+            margin:   EdgeInsets.symmetric(horizontal : 15.w , vertical: 70.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -294,35 +295,49 @@ class DetailOpportunityItems extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              IndividualItem(imageUrl: 'assets/activities/activity.png', title: 'Forms',),
-              IndividualItem(imageUrl: 'assets/activities/form.png', title: 'Products',),
-              IndividualItem(imageUrl: 'assets/activities/product.png', title: 'Photo',),
+              IndividualItem(imageUrl: 'assets/contacts/activity.png', title: 'Activites',),
+              IndividualItem(imageUrl: 'assets/activities/forms.png', title: 'Form',),
+              IndividualItem(imageUrl: 'assets/activities/product.png', title: 'Products',),
             ],
           ),
              Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Team Members',),
-              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Business Unit',),
-              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents',),
+              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Photos',),
+              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Competitors',),
+              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Notes',),
             ],
           ),
 
              Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Team Members',),
-              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Business Unit',),
-              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents',),
+              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Contact',),
+              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Team Members',),
+              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Business Unit',),
             ],
           ),
 
-          IndividualItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
-         SizedBox(height: 10.h,),
-          Divider(
-            color: Colors.grey,
-            thickness: 0.8,
-          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.h),
+            child: Row(
+              children: [
+                SizedBox(width: 20.w,),
+                IndividualItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
+            Divider(
+              color: Colors.grey,
+              thickness: 0.8,
+            ),
+            SizedBox(width: 20.w,),
+             IndividualItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
+                   SizedBox(height: 10.h,),
+            Divider(
+              color: Colors.grey,
+              thickness: 0.8,
+            ),
+              ],
+            ),
+          )
 
          
         ],

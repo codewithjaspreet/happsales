@@ -73,7 +73,7 @@ class WorkFlowStatus extends StatelessWidget {
                                     indicatorStyle: IndicatorStyle(color: Colors.blue),
 
                    endChild: Container(
-                    margin: EdgeInsets.only(left: 30.w, top: 50.h),
+                    margin: EdgeInsets.only(left: 30.w, top: 30.h),
 
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

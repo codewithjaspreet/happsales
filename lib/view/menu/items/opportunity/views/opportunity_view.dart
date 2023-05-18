@@ -49,7 +49,6 @@ class OpportunitiesDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Hdivider(),
                AccountDetailRow(),
               Hdivider(),
               // AccountMoreDetail(account: account,)
@@ -150,14 +149,7 @@ class _MyRowState extends State<AccountDetailRow> {
             ),
           ),
 
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 28.h),
-            child: Text('HAPPSALES-OPPTY-0000001',
-                style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontFamily: "roboto_normal",
-                    fontSize: 14.sp)),
-          ),
+          
           if (_isOpen)
             SingleChildScrollView(
               child: Column(
@@ -169,6 +161,14 @@ class _MyRowState extends State<AccountDetailRow> {
                         children: [
 
                           // ThirdTypeDetailing(),
+                          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 28.h),
+            child: Text('HAPPSALES-OPPTY-0000001',
+                style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontFamily: "roboto_normal",
+                    fontSize: 14.sp)),
+          ),
                           Padding(
                             padding:  EdgeInsets.only(top: 10.h),
                             child: Container(
@@ -476,7 +476,7 @@ seeMore ? const SizedBox.shrink() :       GestureDetector(
                               },
                               child: Container(
                                 margin: EdgeInsets.only(top: 10.h, left: 16.w),
-                                width: 125.w,
+                                width: 150.w,
                                 height:48.h,
                                 decoration: BoxDecoration(
                                   borderRadius:  BorderRadius.circular(26.sp),
@@ -612,7 +612,7 @@ const OpportunityViewRow(subtite: '-', title: 'UserName',)
                                       },
                                       child:  Container(
                                         margin: EdgeInsets.only(top: 10.h, left: 30.w),
-                                        width: 125.w,
+                                        width: 150.w,
                                         height:48.h,
                                         decoration: BoxDecoration(
                                           borderRadius:  BorderRadius.circular(26.sp),
