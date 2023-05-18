@@ -56,6 +56,7 @@ dependencies:
   introduction_screen:
   custom_searchable_dropdown:
   http:
+  timeline_tile:
   dropdown_plus: ^0.0.9
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.1.10

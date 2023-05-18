@@ -11,6 +11,9 @@ import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountUserDetail
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/controller/opportunity_view_controller.dart';
+import 'package:happsales_crm/view/menu/items/opportunity/widgets/menu_popup.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
@@ -20,7 +23,9 @@ import '../../accounts/AddItems/CompetitionActivities/competititon_process.dart'
 import '../../accounts/AddItems/Documents/document.dart';
 import '../../accounts/AddItems/ShareAccounts/share_account.dart';
 import '../../accounts/EditAccount.dart';
+import '../../activities/views/activity_view.dart';
 import '../../contacts/widgets/ThirdTypeDetailing.dart';
+import '../widgets/workflow_alert.dart';
 import 'opportunity_edit.dart';
 
 class OpportunitiesDetails extends StatelessWidget {
@@ -45,7 +50,7 @@ class OpportunitiesDetails extends StatelessWidget {
             children: [
 
               Hdivider(),
-              const AccountDetailRow(),
+               AccountDetailRow(),
               Hdivider(),
               // AccountMoreDetail(account: account,)
             ],
@@ -57,9 +62,12 @@ class OpportunitiesDetails extends StatelessWidget {
 }
 
 class AccountDetailRow extends StatefulWidget {
-  const AccountDetailRow({super.key});
+   AccountDetailRow({super.key});
 
 
+
+
+  OpportunityViewController opportunityViewController = Get.put(OpportunityViewController());
   // ContactViewModel contactViewModel = Get.put(ContactViewModel());
   @override
   _MyRowState createState() => _MyRowState();
@@ -115,7 +123,7 @@ class _MyRowState extends State<AccountDetailRow> {
                         margin: EdgeInsets.only(right: 10.w),
                         child: GestureDetector(
                             onTap: (){
-                              Get.to(() => const OpportunityEdit(
+                              Get.to(() =>  OpportunityEdit(
                               ));
                             },
                             child: Container(
@@ -441,18 +449,25 @@ Column(
                                         ),
                         ),
 
-                        Container(
-                                margin: EdgeInsets.only(top: 12.h),
-                                width: 170.w,
-                                height:48.h,
-                                decoration: BoxDecoration(
-                                  borderRadius:  BorderRadius.circular(26.sp),
+                        GestureDetector(
+                          onTap: (){
 
-                                  shape: BoxShape.rectangle,
-                                  color: const Color(0xff0ff00a6d6),
+                            WorkFlowAlert(context);
+
+                          },
+                          child: Container(
+                                  margin: EdgeInsets.only(top: 12.h),
+                                  width: 170.w,
+                                  height:48.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius:  BorderRadius.circular(26.sp),
+                        
+                                    shape: BoxShape.rectangle,
+                                    color: const Color(0xff0ff00a6d6),
+                                  ),
+                                  child: Center(child: Text("Workflow Status" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
                                 ),
-                                child: Center(child: Text("Workflow Status" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold",fontSize: 16.sp),)),
-                              ),
+                        ),
 
 
 seeMore ? const SizedBox.shrink() :       GestureDetector(
@@ -658,7 +673,70 @@ const OpportunityViewRow(subtite: '-', title: 'UserName',)
                           // ),
                           SizedBox(height: 10.h,),
 
-                          const AccountDetailItems()
+                           Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      
+                    children: [
+
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+      
+                        child: Text(
+                          'Additional Details',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 14.sp,
+                            fontFamily: "roboto_bold"
+                          ),
+                        ),
+                      ),
+      
+             
+      
+                      Obx(() => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: GestureDetector(
+                            onTap: (){
+                            
+                              widget.opportunityViewController.isAdditionalInfoOpen.value = !widget.opportunityViewController.isAdditionalInfoOpen.value;
+                            },
+                            child:Image.asset(
+                                widget. opportunityViewController.isAdditionalInfoOpen.value ? "assets/accounts/down.png" : "assets/contacts/up.png")
+                                
+                                
+                          ),
+                      ),
+
+
+                      
+
+
+      
+      
+      
+                        ),
+
+
+      
+                       
+                    ],
+                  ),
+
+                      Obx(() =>  
+                      
+                  widget.opportunityViewController.isAdditionalInfoOpen.value?      DetailOpportunityItems() : SizedBox.shrink(),
+)
+,Container(
+          margin: EdgeInsets.symmetric(horizontal: 14.w),
+          child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
+
+
+
+              ThirdTypeDetailing(title1: 'Created By', subTitle1: 'asd'.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+              SizedBox(height: 12.h,),
+
+              ThirdTypeDetailing(title1: 'Created On', subTitle1: 'asd'.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+
 
                         ]
                     ),
@@ -918,5 +996,112 @@ class OpportunityViewRow extends StatelessWidget {
 
               
             );
+  }
+}
+
+
+
+
+class DetailOpportunityItems extends StatelessWidget {
+  const DetailOpportunityItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualOpportunityItem(imageUrl: 'assets/contacts/activity.png', title: 'Activities',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/forms.png', title: 'Forms',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/product.png', title: 'Products',),
+            ],
+          ),
+             Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualOpportunityItem(imageUrl: 'assets/activities/photo.png', title: 'Photos',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/competitors.png', title: 'Competitors',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/notes.png', title: 'Notes',),
+            ],
+          ),
+
+             Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualOpportunityItem(imageUrl: 'assets/activities/accountcontact.png', title: 'Contacts',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/teammember.png', title: 'Team Members',),
+              IndividualOpportunityItem(imageUrl: 'assets/activities/businessunit.png', title: 'Business Unit',),
+            ],
+          ),
+
+          Container(
+            margin: EdgeInsets.only(top: 15.h),
+            child: Row(
+              
+              children: [
+          
+                IndividualOpportunityItem(imageUrl: 'assets/activities/document.png', title: 'Documents',),
+                   
+            SizedBox(width: 22.w,),
+    
+            IndividualOpportunityItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
+            
+              ],
+            ),
+          )
+
+         
+        ],
+      ),
+
+    );
+
+  }
+}
+class IndividualOpportunityItem extends StatelessWidget {
+  const IndividualOpportunityItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+
+  final String imageUrl;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: const Color(0xffF5F6F9),
+
+            borderRadius: BorderRadius.circular(12.sp),
+          ),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(imageUrl),
+                Text(
+
+                  title,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: "roboto_bold",
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+       
+      ],
+    );
   }
 }

@@ -467,3 +467,89 @@ class ActivityInput extends StatelessWidget {
           );
   }
 }
+
+class DetailActivityItems extends StatelessWidget {
+  const DetailActivityItems({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualItem(imageUrl: 'assets/activities/forms.png', title: 'Forms',),
+              IndividualItem(imageUrl: 'assets/activities/product.png', title: 'Products',),
+              IndividualItem(imageUrl: 'assets/activities/photo.png', title: 'Photo',),
+            ],
+          ),
+             Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              IndividualItem(imageUrl: 'assets/activities/teammember.png', title: 'Team Members',),
+              IndividualItem(imageUrl: 'assets/activities/businessunit.png', title: 'Business Unit',),
+              IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents',),
+            ],
+          ),
+
+          IndividualItem(imageUrl: 'assets/activities/chat.png', title: 'Chats',),
+         SizedBox(height: 10.h,),
+          Divider(
+            color: Colors.grey,
+            thickness: 0.8,
+          ),
+
+         
+        ],
+      ),
+
+    );
+
+  }
+}
+class IndividualItem extends StatelessWidget {
+  const IndividualItem({Key? key, required this.imageUrl, required this.title}) : super(key: key);
+
+  final String imageUrl;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: 100.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: const Color(0xffF5F6F9),
+
+            borderRadius: BorderRadius.circular(12.sp),
+          ),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(imageUrl),
+                Text(
+
+                  title,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: "roboto_bold",
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+       
+      ],
+    );
+  }
+}
