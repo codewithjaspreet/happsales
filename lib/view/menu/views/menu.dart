@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/activity_listing.dart';
+import 'package:happsales_crm/view/menu/items/attendance/views/attendance_listing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 import 'package:happsales_crm/view/menu/items/resources/views/resource_listing.dart';
@@ -16,7 +17,7 @@ class Menu extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("HappSales" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+        title: const Text("HappSales" , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontFamily: 'oswald_bold'),),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -83,7 +84,11 @@ class Menu extends StatelessWidget {
                 },
                 child: const _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
             const _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
-            const _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' ),
+            GestureDetector(
+              onTap: () {
+                Get.to(() => const AttendanceListing());
+              },
+              child: const _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' )),
             const _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
             const _buildGridItem(title : 'Settings', image: 'assets/settings.png' ),
             const _buildGridItem(title : 'Manager', image: 'assets/manager.png' ),

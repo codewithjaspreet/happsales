@@ -70,6 +70,7 @@ dependencies:
   flutter_advanced_segment: ^3.0.2
   percent_indicator: ^4.2.3
   popover: ^0.2.8+2
+  flutter_timer_countdown: ^1.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -113,6 +114,7 @@ flutter:
      - assets/recommend.png
      - assets/activities/
      - assets/resources/
+     - assets/resources/punch.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
