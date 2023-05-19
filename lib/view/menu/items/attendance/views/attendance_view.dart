@@ -262,13 +262,13 @@ GestureDetector(
         
               Text('Time Difference' ,style: TextStyle(
                 fontFamily: 'roboto_medium',
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 color: AppColors.primaryColor
               
               ),),
-               Text('Time Difference' ,style: TextStyle(
+               Text('0 Mins' ,style: TextStyle(
                 fontFamily: 'roboto_medium',
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 color: AppColors.primaryColor
               
               ),)
@@ -284,16 +284,16 @@ GestureDetector(
          
             children: [
          
-              Text('Time Difference' ,style: TextStyle(
+              Text('Total Work Time' ,style: TextStyle(
                 fontFamily: 'roboto_medium',
                 fontSize: 16.sp,
-                color: AppColors.primaryColor
+                color: Colors.blue
               
               ),),
-               Text('Time Difference' ,style: TextStyle(
+               Text('0 Mins' ,style: TextStyle(
                 fontFamily: 'roboto_medium',
                 fontSize: 16.sp,
-                color: AppColors.primaryColor
+                color: Colors.blue
               
               ),)
             ],
