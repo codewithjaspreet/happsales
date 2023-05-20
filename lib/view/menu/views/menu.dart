@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/activities/views/activity_listing.dart';
 import 'package:happsales_crm/view/menu/items/attendance/views/attendance_listing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
+import 'package:happsales_crm/view/menu/items/expense/views/expense.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 import 'package:happsales_crm/view/menu/items/resources/views/resource_listing.dart';
 import 'package:happsales_crm/view/menu/items/settings/views/settings.dart';
@@ -91,7 +92,12 @@ class Menu extends StatelessWidget {
                 Get.to(() => const AttendanceListing());
               },
               child: const _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' )),
-            const _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
+            GestureDetector(
+              onTap: (){
+
+                Get.to(ExpenseListing());
+              },
+              child: const _buildGridItem(title : 'Expense', image: 'assets/expense.png' )),
             GestureDetector(
               onTap: () {
                 Get.to(() => const SettingsPage());
