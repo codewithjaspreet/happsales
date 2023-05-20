@@ -6,6 +6,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 
 import '../../../../../../../../utils/color.dart';
+import '../widgets/reset_password_alert.dart';
 
 class MyProfile extends StatelessWidget {
   const MyProfile({super.key});
@@ -79,24 +80,30 @@ class MyProfile extends StatelessWidget {
 
     Input(title: 'Reports To'),
 
-    Container(
-      margin: EdgeInsets.only(top: 25.h),
-      width: 230.w,
-      height: 50.h,
-      child: Container(
-        padding: EdgeInsets.all(10.sp),
-        child: Center(child: Text('Reset Password',style: TextStyle(
-      
-          color: Colors.white,
-          fontFamily: 'roboto_bold',
-          fontSize: 16.sp
-        ),)),
-      ),
-      decoration: BoxDecoration(
+    GestureDetector(
+      onTap: (){
 
-        borderRadius: BorderRadius.circular(40.sp),
-        color: AppColors.primaryColor
-      
+        showPasswordAlert(context);
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 25.h),
+        width: 230.w,
+        height: 50.h,
+        child: Container(
+          padding: EdgeInsets.all(10.sp),
+          child: Center(child: Text('Reset Password',style: TextStyle(
+        
+            color: Colors.white,
+            fontFamily: 'roboto_bold',
+            fontSize: 16.sp
+          ),)),
+        ),
+        decoration: BoxDecoration(
+    
+          borderRadius: BorderRadius.circular(40.sp),
+          color: AppColors.primaryColor
+        
+        ),
       ),
     )
         ],
