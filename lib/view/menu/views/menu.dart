@@ -7,6 +7,8 @@ import 'package:happsales_crm/view/menu/items/attendance/views/attendance_listin
 import 'package:happsales_crm/view/menu/items/contacts/views/contact.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/views/opportunity_listing.dart';
 import 'package:happsales_crm/view/menu/items/resources/views/resource_listing.dart';
+import 'package:happsales_crm/view/menu/items/settings/views/settings.dart';
+import 'package:http/http.dart';
 import '../items/accounts/accounts.dart';
 import '../items/notes/views/notes_listing.dart';
 class Menu extends StatelessWidget {
@@ -90,7 +92,12 @@ class Menu extends StatelessWidget {
               },
               child: const _buildGridItem(title : 'Attendance', image: 'assets/attendance.png' )),
             const _buildGridItem(title : 'Expense', image: 'assets/expense.png' ),
-            const _buildGridItem(title : 'Settings', image: 'assets/settings.png' ),
+            GestureDetector(
+              onTap: () {
+                Get.to(() => const SettingsPage());
+              
+              },
+              child: const _buildGridItem(title : 'Settings', image: 'assets/settings.png' )),
             const _buildGridItem(title : 'Manager', image: 'assets/manager.png' ),
           ],
         ),

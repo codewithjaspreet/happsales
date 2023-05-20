@@ -114,6 +114,7 @@ flutter:
      - assets/recommend.png
      - assets/activities/
      - assets/resources/
+     - assets/settings/
      - assets/resources/punch.png
 
 
