@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/settings/views/items/myprofile/views/profile.dart';
 
 import '../../../../../utils/color.dart';
 import '../../accounts/accounts.dart';
@@ -54,15 +55,20 @@ class SettingsPage extends StatelessWidget {
         
         
             gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 8,
+               crossAxisCount: 2,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 8,
             ),
             children:   <Widget>[
-              const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' ),
+              GestureDetector(
+                onTap: () {
+                  
+                  Get.to(() => const MyProfile());
+                },
+                child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
               GestureDetector(
                   onTap: () {
-                    Get.to(() => const AccountPage());
+                    Get.to(() => const MyProfile());
                   },
                   child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
         
@@ -113,12 +119,12 @@ class _buildGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10.w,right: 10.w , top: 15.h),
-      width: 100.w,
-      height: 80.h,
+      margin: EdgeInsets.only(left: 14.w,right: 14.w , top: 15.h),
+      width: 162.w,
+      height: 111.h,
       decoration: BoxDecoration(
         color: const Color(0xffF0F2FE),
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(8.r),
       ),
       child: Center(
         child: Column(
@@ -135,12 +141,11 @@ class _buildGridItem extends StatelessWidget {
                   ),
                 ),
                 ),
-            SizedBox(height: 3.h,),
+            SizedBox(height: 12.h,),
             Text(title, style: TextStyle(
               color: const Color(0xff171A63),
-              fontFamily: GoogleFonts.roboto().fontFamily,
               fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
+              fontFamily: "roboto_medium"
             ),)
           ],
         ),
