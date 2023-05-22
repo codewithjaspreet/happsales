@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:happsales_crm/view/menu/items/accounts/add_account.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
+import 'package:happsales_crm/view/menu/items/expense/views/view_expense.dart';
 
 import '../../../../../utils/color.dart';
 import '../../notes/views/add_notes.dart';
@@ -86,7 +87,7 @@ class ExpenseRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
             onTap: (){
-              Get.to( const OpportunitiesDetails());
+              Get.to(  ExpenseDetails());
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10.w  , vertical: 13.h),
