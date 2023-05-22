@@ -182,21 +182,7 @@ SizedBox(height: 20.h,),
       
                     children: [
       
-                      GestureDetector(
-                          onTap: () {
-                            Get.to(ActivityEdit());
-                          },
-                          child:Container(
-                            width: 22.w,
-                            height: 22.h,
-                            decoration: BoxDecoration(
-      
-                                color: AppColors.primaryColor,
-                                shape: BoxShape.circle
-                                ),
-                            margin: EdgeInsets.only(right: 20.w),
-                            child: Image.asset("assets/contacts/edit.png"),
-                          )),
+                    
                           
       
                       Obx(() => GestureDetector(
@@ -247,21 +233,7 @@ SizedBox(height: 20.h,),
       
                     children: [
       
-                      GestureDetector(
-                          onTap: () {
-                            Get.to(ActivityEdit());
-                          },
-                          child:Container(
-                            width: 22.w,
-                            height: 22.h,
-                            decoration: BoxDecoration(
-      
-                                color: AppColors.primaryColor,
-                                shape: BoxShape.circle
-                                ),
-                            margin: EdgeInsets.only(right: 20.w),
-                            child: Image.asset("assets/contacts/edit.png"),
-                          )),
+                      
                           
       
                       Obx(() => GestureDetector(
@@ -293,13 +265,91 @@ SizedBox(height: 20.h,),
               children: [
 
                 SubDetailExpense(subTitle1: '-', title1: 'Expense Type',title2: 'Mode of Travel', subTitle2: '-',),
-
+                SubDetailExpense(subTitle1: '0', title1: 'Distance Travelled(Kms)',title2: 'Amount', subTitle2: '0',),
+                SubDetailExpense2(title1: 'Remarks', subTitle1: '-')
               ],
             ):SizedBox.shrink())
 
               ],)
             ):SizedBox.shrink()),
 
+            SizedBox(height: 10.h,),
+            Hdivider(),
+
+            SubDetailExpense2(title1: 'Total Expense', subTitle1: '800'),
+  Hdivider(),
+
+  Container(
+              margin: EdgeInsets.only(top: 15.h, left: 14.w, right: 10.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Additional Section',
+                        style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontFamily: "roboto_medium",
+                            fontSize: 16.sp),
+                      ),
+                    ],
+                  ),
+                  Row(
+      
+                    children: [
+      
+                      
+      
+                      Obx(() => GestureDetector(
+                          onTap: (){
+      
+                            expenseController.additional.value = !expenseController.additional.value;
+                          },
+                          child:Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            child: Image.asset(
+                                expenseController.additional.value ? "assets/contacts/up.png" : "assets/contacts/back.png"),
+                          )
+                              
+                              
+                        ),
+      
+      
+      
+                        ),
+      
+                       
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+
+      Obx(() => expenseController.additional.value ? Container(
+        margin: EdgeInsets.only(top: 20.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents')
+      ,
+                IndividualItem(imageUrl: 'assets/activities/photo.png', title: 'Documents')
+      ,
+           IndividualItem(imageUrl: 'assets/activities/document.png', title: 'Documents')
+      
+            
+          
+      
+      
+      
+      
+      
+          ],
+        ),
+      ) : SizedBox.shrink()),
+         
 Container(
           margin: EdgeInsets.symmetric(horizontal: 14.w),
           child: OpportunityViewRow(title: 'Is Active', subtite: 'Yes')),
