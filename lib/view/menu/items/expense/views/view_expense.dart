@@ -16,6 +16,7 @@ import '../../contacts/widgets/ThirdTypeDetailing.dart';
 import '../../opportunity/views/opportunity_view.dart';
 import '../widgets/subdetails_expense.dart';
 import '../widgets/subdetails_expense2.dart';
+import 'edit_expense.dart';
 
 class ExpenseDetails extends StatelessWidget {
   ExpenseDetails({super.key});
@@ -43,7 +44,7 @@ class ExpenseDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Activity Details',
+                        'Travel Details',
                         style: TextStyle(
                             color: AppColors.primaryColor,
                             fontFamily: "roboto_medium",
@@ -57,7 +58,7 @@ class ExpenseDetails extends StatelessWidget {
       
                       GestureDetector(
                           onTap: () {
-                            Get.to(ActivityEdit());
+                            Get.to(EditExpense());
                           },
                           child:Container(
                             width: 22.w,

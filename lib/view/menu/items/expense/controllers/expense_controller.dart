@@ -6,7 +6,7 @@ class ExpenseController extends GetxController{
 
   RxBool additional = true.obs;
 
-
+RxBool isEditDetailOpen = true.obs;
   RxBool expenseDetails = true.obs;
 
   RxBool expenseEntry = true.obs;
@@ -26,5 +26,13 @@ class ExpenseController extends GetxController{
 
   void toggleExpenseDetails(){
     expenseDetails.value = !expenseDetails.value;
+  }
+
+  void toggleExpenseEntry(){
+    expenseEntry.value = !expenseEntry.value;
+  }
+
+  void toggleEditDetailOpen(){
+    isEditDetailOpen.value = !isEditDetailOpen.value;
   }
 }

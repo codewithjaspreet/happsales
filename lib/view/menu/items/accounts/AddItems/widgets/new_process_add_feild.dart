@@ -20,6 +20,11 @@ class NewProcessAddFeild extends StatelessWidget {
           ),
           contentPadding: EdgeInsets.all(12.sp),
           hintText: title,
+          label: Text(title),
+          labelStyle: TextStyle(
+              color: const Color(0xff8F9BB3),
+              fontWeight: FontWeight.normal,
+              fontSize: 15.sp) ,
           hintStyle: TextStyle(
               color: const Color(0xff8F9BB3),
               fontWeight: FontWeight.normal,

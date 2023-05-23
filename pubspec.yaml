@@ -115,6 +115,7 @@ flutter:
      - assets/activities/
      - assets/resources/
      - assets/expenses/
+     - assets/expenses/location.png
      - assets/settings/
      - assets/resources/punch.png
 
