@@ -121,7 +121,7 @@ class _MyRowState extends State<AccountDetailRow> {
 
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 10.w),
+                        margin: EdgeInsets.only(right: 30.w),
                         child: GestureDetector(
                             onTap: (){
                               Get.to(() =>  OpportunityEdit(
@@ -681,7 +681,7 @@ const OpportunityViewRow(subtite: '-', title: 'UserName',)
                     children: [
 
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        margin: EdgeInsets.symmetric(horizontal: 12.w),
       
                         child: Text(
                           'Additional Details',
@@ -696,7 +696,7 @@ const OpportunityViewRow(subtite: '-', title: 'UserName',)
              
       
                       Obx(() => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        margin: EdgeInsets.symmetric(horizontal: 12.w),
                         child: GestureDetector(
                             onTap: (){
                             

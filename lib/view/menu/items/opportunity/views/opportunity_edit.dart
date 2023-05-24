@@ -188,7 +188,7 @@ Row(
                     children: [
 
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        margin: EdgeInsets.symmetric(horizontal: 16.w),
       
                         child: Text(
                           'Additional Details',
@@ -203,7 +203,7 @@ Row(
              
       
                       Obx(() => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.w),
+                        margin: EdgeInsets.symmetric(horizontal: 14.w),
                         child: GestureDetector(
                             onTap: (){
                             

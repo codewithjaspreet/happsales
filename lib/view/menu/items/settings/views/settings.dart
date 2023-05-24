@@ -25,83 +25,124 @@ class SettingsPage extends StatelessWidget {
     return  Scaffold(
 
       appBar: CustomAppBar(context),
-      body: Column(
-        children: [
-          Container(
-      padding: EdgeInsets.all(12.sp),
-      child: Row(
-
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 5.w),
-            child: Text('Settings' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
-     
-        ],
-      ),
-      
-
-    ),
-
-
-    Container(
-      margin: EdgeInsets.only(top: 14.h,right: 12.w),
-      child: Image.asset('assets/settings/header.png'))
-    
-        ,
-        Container(
-          height: 400.h,
-          child: GridView(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+          padding: EdgeInsets.all(12.sp),
+          child: Row(
         
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                child: Text('Settings' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
+             
+            ],
+          ),
+          
         
-            gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-               crossAxisCount: 2,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 8,
             ),
-            children:   <Widget>[
-              GestureDetector(
-                onTap: () {
-                  
-                  Get.to(() => const MyProfile());
-                },
-                child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
-              GestureDetector(
-                  onTap: () {
-                    Get.to(() => const MyProfile());
-                  },
-                  child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
         
-              GestureDetector(
         
-                child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
-                onTap: () {
-                  Get.to(const ContactPage());
-                },
+            Container(
+          margin: EdgeInsets.only(top: 14.h,right: 12.w),
+          child: Image.asset('assets/settings/header.png'))
+            
+            ,
+        
+            Container(
+              margin: EdgeInsets.all(5.sp),
+              child: 
+              Column(
+                children: [
+        
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+          GestureDetector(
+                    onTap: () {
+                      
+                      Get.to(() => const MyProfile());
+                    },
+                    child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
+                  GestureDetector(
+                      onTap: () {
+                        Get.to(() => const MyProfile());
+                      },
+                      child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
+            
+                    ],
+                  ),
+        
+                  Row(
+                    children: [
+                             
+        
+        
+                  GestureDetector(
+            
+                    child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
+                    onTap: () {
+                      Get.to(const ContactPage());
+                    },
+                  ),
+            
+                  GestureDetector(
+                    
+                    onTap: () {
+                      Get.to(() => const OpportunityListing());
+                    },
+                    child: const _buildGridItem(title : 'Backup Data', image: 'assets/settings/back.png' )),
+            
+                    ],
+                  ),
+        
+                  Row(
+                    children: [
+        
+                                 GestureDetector(
+                    
+                     onTap: (){
+            
+                      Get.to(const ActivityListing());
+                     },
+                    child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const ResourceListing());
+                    },
+                    child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
+            
+            
+                    ],
+                  )
+                ],
               ),
-        
-              GestureDetector(
-                
-                onTap: () {
-                  Get.to(() => const OpportunityListing());
-                },
-                child: const _buildGridItem(title : 'Backup Data', image: 'assets/settings/back.png' )),
-              GestureDetector(
-                
-                 onTap: (){
-        
-                  Get.to(const ActivityListing());
-                 },
-                child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => const ResourceListing());
-                },
-                child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
-                   ],
+            ),
+            // Container(
+            //   height: 400.h,
+            //   child: GridView(
+            
+            
+            //     gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+            //        crossAxisCount: 2,
+            //     mainAxisSpacing: 4.0,
+            //     crossAxisSpacing: 8,
+            //     ),
+            //     children:   <Widget>[
+          
+            
+           
+            //         
+            //
+            //   ],
+            //   ),
+            // ),
+            ],
           ),
         ),
-        ],
       ),
 
       
@@ -119,12 +160,12 @@ class _buildGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 14.w,right: 14.w , top: 15.h),
-      width: 162.w,
-      height: 111.h,
+      margin: EdgeInsets.symmetric(horizontal: 5.w,vertical: 10.h),
+      width: 170.w,
+      height: 150.h,
       decoration: BoxDecoration(
         color: const Color(0xffF0F2FE),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       child: Center(
         child: Column(
