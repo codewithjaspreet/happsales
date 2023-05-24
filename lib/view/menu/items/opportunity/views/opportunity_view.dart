@@ -14,6 +14,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetaili
 import 'package:happsales_crm/view/menu/items/contacts/widgets/alert.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/controller/opportunity_view_controller.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/widgets/menu_popup.dart';
+import 'package:happsales_crm/view/voiceassistant/parent.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
@@ -801,9 +802,10 @@ class Detaling extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
+
           ],
-        )
+        ),
       ],
     );
   }
@@ -1055,7 +1057,8 @@ class DetailOpportunityItems extends StatelessWidget {
             
               ],
             ),
-          )
+          ),
+
 
          
         ],

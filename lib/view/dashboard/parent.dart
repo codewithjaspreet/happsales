@@ -146,7 +146,8 @@ class DashBoardPage extends StatelessWidget {
                   ),
               ),
 
-              bottomPanel(),
+              // bottomPanel(),
+              
 
             ],
           ),

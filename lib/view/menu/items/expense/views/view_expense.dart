@@ -195,7 +195,7 @@ class ExpenseDetails extends StatelessWidget {
                             child:Container(
                               margin: EdgeInsets.only(right: 3.w),
                               child: Image.asset(
-                                  expenseController.expenseDetails.value ? "assets/contacts/up.png" : "assets/contacts/back.png"),
+                                expenseController.expenseDetails.value ? "assets/contacts/up.png" : "assets/contacts/back.png"),
                             )
                                 
                                 

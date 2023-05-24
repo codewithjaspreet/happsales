@@ -5,6 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/notes/views/view_notes.dart';
 import '../../../../../utils/color.dart';
+import '../../../../voiceassistant/sheet.dart';
 import '../widgets/notes_popup.dart';
 import 'add_notes.dart';
 class NotesListing extends StatelessWidget {
@@ -15,43 +16,48 @@ class NotesListing extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: CustomAppBar(context),
-      body: Column(
-        children: [
-Container(
-      padding: EdgeInsets.all(12.sp),
-      child: Row(
-
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Notes' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-                  Get.to(const AddNotes());
-                },
-                child: Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff171A63),
-
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.add ,color: Colors.white,),
+      body: Stack(
+        children:[ Column(
+          children: [
+      Container(
+        padding: EdgeInsets.all(12.sp),
+        child: Row(
+      
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Notes' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    Get.to(const AddNotes());
+                  },
+                  child: Container(
+                    margin:  EdgeInsets.only(right: 16.w),
+                    width: 30.w,
+                    height: 30.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xff171A63),
+      
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add ,color: Colors.white,),
+                    ),
                   ),
                 ),
-              ),
-              const NotePopup(),
-            ],
-          ),
-        ],
-      ),
-    ),          Image.asset("assets/notes/notes_banner.png"),
-          buildNotesList(),
-        ],
+                const NotePopup(),
+              ],
+            ),
+          ],
+        ),
+          ),          Image.asset("assets/notes/notes_banner.png"),
+            buildNotesList(),
+      
+          ],
+        ),
+        bottomDetailsSheet()
+        ]
       ),
     );
   }

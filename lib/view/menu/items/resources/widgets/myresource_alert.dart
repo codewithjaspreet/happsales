@@ -30,9 +30,9 @@ class MyResourceSearchAlert extends StatelessWidget {
                   Get.back();
                 },
                 child: Image.asset('assets/opportunity/close.png')))),
-          SizedBox(width: 30.w,),
-          Text("Search Resource",style: TextStyle(color: AppColors.primaryColor , fontSize: 20.sp , fontWeight: FontWeight.bold),),
-                    SizedBox(width: 70.w,),
+          Container(
+            margin: EdgeInsets.only(left: 50.w),
+            child: Text("Search Resource",style: TextStyle(color: AppColors.primaryColor , fontSize: 20.sp , fontWeight: FontWeight.bold),)),
 
           
         
@@ -62,10 +62,13 @@ class MyResourceSearchAlert extends StatelessWidget {
                ),
                child: TextField(
                  decoration: InputDecoration(
-                     suffixIcon: const Icon(Icons.search , color: Colors.grey,),
+                  
+                     suffixIcon: const Icon(Icons.search , color: AppColors.primaryColor,),
                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.r),
                        borderSide: BorderSide.none,
-                       borderRadius: BorderRadius.circular(8.sp),
+                       
+                       
                      ),
                      filled: true,
                      contentPadding: EdgeInsets.symmetric(

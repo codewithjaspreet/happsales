@@ -24,54 +24,56 @@ class ExpenseListing extends StatelessWidget {
 
       appBar: CustomAppBar(context),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-
-      
-         Container(
-      padding: EdgeInsets.all(12.sp),
-      child: Row(
-
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Expense' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-          Row(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              GestureDetector(
-                onTap: (){
-                  Get.to(const AddNotes());
-                },
-                child: Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 30.w,
-                  height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff171A63),
-
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.add ,color: Colors.white,),
+      
+        
+           Container(
+        padding: EdgeInsets.all(12.sp),
+        child: Row(
+      
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Expense' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    Get.to(const AddNotes());
+                  },
+                  child: Container(
+                    margin:  EdgeInsets.only(right: 16.w),
+                    width: 30.w,
+                    height: 30.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xff171A63),
+      
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add ,color: Colors.white,),
+                    ),
                   ),
                 ),
-              ),
-              const NotePopup(),
+                const NotePopup(),
+              ],
+            ),
+          ],
+        ),
+          ),  
+              Image.asset('assets/expenses/header.png'),
+        
+        
+                   ExpenseRow(),
+                                  ExpenseRow(),
+                                   ExpenseRow(),
+                                    ExpenseRow(),
+        
+        
             ],
           ),
-        ],
-      ),
-    ),  
-            Image.asset('assets/expenses/header.png'),
-      
-      
-                 ExpenseRow(),
-                                ExpenseRow(),
-                                 ExpenseRow(),
-                                  ExpenseRow(),
-      
-      
-          ],
         ),
       ),
     );
