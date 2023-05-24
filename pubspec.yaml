@@ -71,6 +71,8 @@ dependencies:
   percent_indicator: ^4.2.3
   popover: ^0.2.8+2
   flutter_timer_countdown: ^1.0.5
+  permission_handler: 
+  contacts_service: 
 dev_dependencies:
   flutter_test:
     sdk: flutter

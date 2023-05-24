@@ -6,7 +6,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/settings/views/items/calendersync/views/calender_sync.dart';
+import 'package:happsales_crm/view/menu/items/settings/views/items/importcontacts/views/import_contact.dart';
 import 'package:happsales_crm/view/menu/items/settings/views/items/myprofile/views/profile.dart';
+import 'package:happsales_crm/view/menu/items/settings/views/items/syncstatus/views/sync_status.dart';
 
 import '../../../../../utils/color.dart';
 import '../../accounts/accounts.dart';
@@ -69,7 +72,7 @@ class SettingsPage extends StatelessWidget {
                     child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
                   GestureDetector(
                       onTap: () {
-                        Get.to(() => const MyProfile());
+                        Get.to(() => const ImportContact());
                       },
                       child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
             
@@ -85,7 +88,7 @@ class SettingsPage extends StatelessWidget {
             
                     child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
                     onTap: () {
-                      Get.to(const ContactPage());
+                      Get.to(const CalenderSync());
                     },
                   ),
             
@@ -106,12 +109,12 @@ class SettingsPage extends StatelessWidget {
                     
                      onTap: (){
             
-                      Get.to(const ActivityListing());
+                      Get.to(const SyncStatus());
                      },
                     child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => const ResourceListing());
+                      Get.to(() => const SyncStatus());
                     },
                     child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
             
