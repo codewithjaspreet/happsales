@@ -26,7 +26,7 @@ class OpportunityListing extends StatelessWidget {
                 children: [
                   Container(
                 height: 50.h,
-                width: 312.w,
+                width:320.w,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(50.sp)
@@ -35,51 +35,62 @@ class OpportunityListing extends StatelessWidget {
                   unselectedLabelColor: const Color(0xffB5B6B9),
               labelColor: const Color(0xff171A63),
                   
-                  padding: EdgeInsets.all(2.sp),
+                  // padding: EdgeInsets.all(2.sp),
                   indicator: BoxDecoration(
                     color: Colors.white,
-                    borderRadius:  BorderRadius.circular(25.0)
+                    borderRadius:  BorderRadius.circular(16.0)
                   ) ,
 
-                  tabs:   const [
+                  tabs:    [
                     Tab(
 
-                      child: FittedBox(child: Text('Overdue',style: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontFamily: 'roboto_bold'
-                        
-                      ),)),
+                      child: Container(
+                        child: Text('Overdue',style: TextStyle(
+                          fontSize: 9.sp,
+                          color: AppColors.primaryColor,
+                          fontFamily: 'roboto_bold'
+                          
+                        ),),
+                      ),
                     ),
                     Tab(
 
-                      child: FittedBox(fit: BoxFit.cover,child: Text('Today'
+                      child: Text('Today'
                       
                       ,style: TextStyle(
+                                                  fontSize: 9.sp,
+
                         fontFamily: 'roboto_bold',
                         color: AppColors.primaryColor
                       ),
+                      ),
+                    ),
+                    Tab(
+
+                      child: Text('Week',style: TextStyle(
+                        fontFamily: 'roboto_bold',
+                                                  fontSize: 9.sp,
+
+                        color: AppColors.primaryColor
                       ),),
                     ),
                     Tab(
 
-                      child: FittedBox(child: Text('Week',style: TextStyle(
+                      child: Text('Ongoing',style: TextStyle(
                         fontFamily: 'roboto_bold',
+                                                  fontSize: 9.sp,
+
                         color: AppColors.primaryColor
-                      ),)),
+                      ),),
                     ),
                     Tab(
 
-                      child: FittedBox(fit: BoxFit.contain, child: Text('Ongoing',style: TextStyle(
-                        fontFamily: 'roboto_bold',
-                        color: AppColors.primaryColor
-                      ),)),
-                    ),
-                    Tab(
+                      child: Text('Closed',style: TextStyle(
+                                                  fontSize: 9.sp,
 
-                      child: FittedBox(child: Text('Closed',style: TextStyle(
                         fontFamily: 'roboto_bold',
                         color: AppColors.primaryColor
-                      ),)),
+                      ),),
                     ),
                     
                   ],

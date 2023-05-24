@@ -15,12 +15,15 @@ class OverDue extends StatelessWidget {
 
       body: Column(children: [
        Container(
-      padding: EdgeInsets.all(12.sp),
+      // padding: EdgeInsets.all(12.sp),
+      margin: EdgeInsets.only(top: 20.h),
       child: Row(
 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          Container(
+            margin: EdgeInsets.only(left: 4.w),
+            child: Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
           Row(
             children: [
               GestureDetector(
@@ -28,7 +31,7 @@ class OverDue extends StatelessWidget {
                   Get.to(const AddContact());
                 },
                 child: Container(
-                  margin:  EdgeInsets.only(left: 20.w),
+                  margin:  EdgeInsets.only(right: 2.w),
                   width: 25.w,
                   height: 25.h,
                   decoration: const BoxDecoration(

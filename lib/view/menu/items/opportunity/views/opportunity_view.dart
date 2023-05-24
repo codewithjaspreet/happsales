@@ -44,15 +44,17 @@ class OpportunitiesDetails extends StatelessWidget {
     // print(account!.accountName);
     return Scaffold(
         appBar: CustomAppBar(context),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-               AccountDetailRow(),
-              Hdivider(),
-              // AccountMoreDetail(account: account,)
-            ],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+        
+                 AccountDetailRow(),
+                Hdivider(),
+                // AccountMoreDetail(account: account,)
+              ],
+            ),
           ),
         ));
   }

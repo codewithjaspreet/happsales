@@ -21,7 +21,10 @@ class WorkFlowStatus extends StatelessWidget {
             onTap: () {
               Get.back();
             },
-            child: Image.asset('assets/opportunity/close.png')),
+            child: Container(
+              width: 25.w,
+              height: 25.h,
+              child: Image.asset('assets/opportunity/close.png'))),
           SizedBox(width: 40.w,),
           Text("Workflow Status",style: TextStyle(color: AppColors.primaryColor , fontSize: 20.sp , fontWeight: FontWeight.bold),),
 
@@ -45,23 +48,44 @@ class WorkFlowStatus extends StatelessWidget {
 
               Container(
                 child: TimelineTile(
-                  indicatorStyle: IndicatorStyle(color: Colors.blue),
+
+                  
+                  beforeLineStyle: LineStyle(
+                    
+                    color: AppColors.themeColor,
+                    thickness: 1.2,
+                   
+                  ),
+
+                
+                
+                  indicatorStyle: IndicatorStyle(color: AppColors.themeColor),
 
                   endChild: Container(
                     margin: EdgeInsets.only(left: 30.w,top: 20.h),
-                    child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Container(
 
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-
-                      Text('21 Dec 202101:09 PM'),
-                      SizedBox(height: 10.h,),
-                      Text('Recieve Order Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
-                                            SizedBox(height: 10.h,),
-
-                      Text('Recieve Order - Planned'),
-                    ]),
+                      margin: EdgeInsets.only(bottom: 20.h),
+                      child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                    
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                    
+                       Container(
+                            margin: EdgeInsets.only(bottom: 5.h),
+                            child: Text('21 Dec 202101:09 PM')),
+                          Text('Recieve Order Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
+                      
+                          Container(
+                            margin: EdgeInsets.only(top: 5.h),
+                            child: Text('Recieve Order - Planned',style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12.sp,
+                            ),)),
+                      ]),
+                    ),
                   ),
                 
                 isFirst: true,
@@ -70,22 +94,38 @@ class WorkFlowStatus extends StatelessWidget {
                Container(
 
                 child: TimelineTile(
-                                    indicatorStyle: IndicatorStyle(color: Colors.blue),
+
+                   beforeLineStyle: LineStyle(
+                    color: AppColors.themeColor,
+                    thickness: 1.2,
+                   
+                  
+                  ),
+                                    indicatorStyle: IndicatorStyle(color: AppColors.themeColor),
 
                    endChild: Container(
                     margin: EdgeInsets.only(left: 30.w, top: 30.h),
 
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                      Text('21 Dec 202101:09 PM'),
-                      SizedBox(height: 10.h,),
-                      Text('Recieve Order Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
-                                            SizedBox(height: 10.h,),
-
-                      Text('Recieve Order - Planned'),
-                    ]),
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 25.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                    
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5.h),
+                          child: Text('21 Dec 202101:09 PM')),
+                        Text('Recieve Order Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
+                    
+                        Container(
+                          margin: EdgeInsets.only(top: 5.h),
+                          child: Text('Recieve Order Completed',style: TextStyle(
+                              fontSize: 12.w,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.normal,
+                            ))),
+                      ]),
+                    ),
                   ),
                   
                 
@@ -93,23 +133,37 @@ class WorkFlowStatus extends StatelessWidget {
               ),
                Container(
                 child: TimelineTile(
-                  indicatorStyle: IndicatorStyle(color: Colors.blue),
+                  indicatorStyle: IndicatorStyle(color: AppColors.themeColor),
 
+                  beforeLineStyle: LineStyle(
+                    color: AppColors.themeColor,
+                    thickness: 1.2,
+                   
+                  
+                  ),
                    endChild: Container(
-                    margin: EdgeInsets.only(left: 30.w,top: 30.h),
+                    margin: EdgeInsets.only(left: 30.w,top: 10.h),
 
-                    child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-
-                      Text('21 Dec 202101:09 PM'),
-                      SizedBox(height: 10.h,),
-                      Text('Recieve Order Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
-                                            SizedBox(height: 10.h,),
-
-                      Text('Recieve Order - Planned'),
-                    ]),
+                    child: Container(
+                      child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                    
+                        children: [
+                    
+                      Container(
+                            margin: EdgeInsets.only(bottom: 5.h),
+                            child: Text('21 Dec 202101:09 PM')),
+                          Text('Recieve Order And Uploadto Tally Completed',style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.bold,fontSize: 16.sp),),
+                      
+                          Container(
+                            margin: EdgeInsets.only(top: 5.h),
+                            child: Text('Review Order And Upload to Tally - Planned',style: TextStyle(
+                              fontSize: 12.w,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.normal,
+                            ),)),
+                      ]),
+                    ),
                   ),
                   
                 isLast: true,

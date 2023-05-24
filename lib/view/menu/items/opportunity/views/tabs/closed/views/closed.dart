@@ -16,12 +16,15 @@ class Closed extends StatelessWidget {
 
       body: Column(children: [
        Container(
-      padding: EdgeInsets.all(12.sp),
+        margin: EdgeInsets.only(top: 20.h),
+      // padding: EdgeInsets.all(12.sp),
       child: Row(
 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          Container(
+            margin: EdgeInsets.only(left: 5.w),
+            child: Text('Opportunities' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
           Row(
             children: [
               const ClosedPopUp(),

@@ -11,7 +11,10 @@ class ClosedPopUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Icon(Icons.filter_alt_outlined,size: 30.sp,),
+      child:Container(
+        width: 22.w,
+        height: 22.h,
+        child: Image.asset('assets/opportunity/filter.png')),
       // child:  Image.asset('assets/notes/more.png',),
      onTap: () {
         showPopover(
