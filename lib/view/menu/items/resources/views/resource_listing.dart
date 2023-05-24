@@ -113,7 +113,7 @@ buildNotesList() {
                             style: TextStyle(
                                 color: AppColors.primaryColor,
                               fontSize: 14.sp,
-                              fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.normal
                             )),
                       
                       ),
@@ -152,7 +152,7 @@ buildNotesList() {
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 20.w,),
+                              SizedBox(width: 70.w,),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

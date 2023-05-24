@@ -160,7 +160,7 @@ class _buildGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5.w,vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 5.w,vertical: 5.h),
       width: 170.w,
       height: 150.h,
       decoration: BoxDecoration(

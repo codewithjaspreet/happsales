@@ -21,7 +21,15 @@ class MyResourceSearchAlert extends StatelessWidget {
             onTap: (){
               Get.back();
             },
-            child: Image.asset('assets/opportunity/close.png')),
+            child: Container(
+              width: 25.w,
+              height: 25.h,
+              child: GestureDetector(
+              onTap: () {
+                  
+                  Get.back();
+                },
+                child: Image.asset('assets/opportunity/close.png')))),
           SizedBox(width: 30.w,),
           Text("Search Resource",style: TextStyle(color: AppColors.primaryColor , fontSize: 20.sp , fontWeight: FontWeight.bold),),
                     SizedBox(width: 70.w,),
