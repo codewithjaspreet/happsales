@@ -146,8 +146,11 @@ class OpportunityEditDetails extends StatelessWidget {
                
                Container(
                   margin: EdgeInsets.only(left: 18.w , top: 16.h),
-                child: const Text('How does the closure property looks like ?'),
+                child: const Text('How does the closure property looks like ?',style: TextStyle(
+                  color: AppColors.primaryColor
+                ),),
                ),
+
                SfSliderTheme(
                 data: SfSliderThemeData(
                   thumbRadius: 18.sp,
@@ -159,17 +162,19 @@ class OpportunityEditDetails extends StatelessWidget {
                   inactiveColor: Colors.grey.withOpacity(0.6),
                   activeColor: Colors.grey.withOpacity(0.6),
                   thumbIcon: Container(
-                    child: Container(
-                      child: Center(
-                        child: Text('${controller.sliderValue.value.toInt()}%',style: TextStyle(color: Colors.white,fontFamily: 'roboto_bold',fontSize: 13.sp),),),
-                    ),
+                    
                     width: 50.w,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       
                       color: AppColors.themeColor,
                     ),
                     height: 50.h,
+
+                      child: Center(
+                        child: Text('${controller.sliderValue.value.toInt()}%',style: 
+                        TextStyle(color: Colors.white,fontFamily: 'roboto_bold',fontSize: 13.sp),),),
+                    
                   ),
                   min: 0,
                   max: 100,
@@ -180,8 +185,87 @@ class OpportunityEditDetails extends StatelessWidget {
                 ),
               ),
 
-             ToggleButtonRow(title: 'Is This a reoccuring opportunity', isAlreadyActive: false)
-,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    
+                    width: 340.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+
+                      borderRadius: BorderRadius.only(
+
+                        topLeft: Radius.circular(5.sp),
+                        bottomLeft: Radius.circular(5.sp),
+                      ),
+                      color: Color.fromARGB(255, 31, 51, 56)
+                    ),
+                    child: Text('Lead'),
+                  ),
+                ],
+              ),
+
+
+
+              Container(
+      padding: EdgeInsets.symmetric(horizontal: 18.sp,  vertical: 10.sp),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Is this a reurring opportunity?' ,style: TextStyle(
+              color: Colors.black,fontWeight: FontWeight.w400 ,fontSize: 14.sp
+          ),),
+          Switch(
+            // thumb color (round icon)
+            activeColor: AppColors.primaryColor,
+            activeTrackColor: Colors.blue,
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey,
+            // boolean variable value
+            value: controller.isAlreadyActive.value,
+
+            onChanged: (value) {
+              
+              controller.isAlreadyActive.value = value;
+            
+            },
+            // changes the state of the switch
+          ),
+
+
+        ],
+      ),
+    ),
+
+    Container(
+      padding: EdgeInsets.symmetric(horizontal: 18.sp,  vertical: 10.sp),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+           Container(
+              margin: EdgeInsets.only(bottom: 10.h),
+             child: Text('Opportunity Stage' ,style: TextStyle(
+                color: AppColors.themeColor,fontWeight: FontWeight.bold ,fontSize: 14.sp
+                     ),),
+           ),
+
+          Container(
+            width: 337.w,
+            height: 40.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: Colors.grey.withOpacity(0.5))
+            
+            ),
+          )
+
+        ],
+      ),
+    ),
+
+
 Input(title: 'Lead Source'),
 
 

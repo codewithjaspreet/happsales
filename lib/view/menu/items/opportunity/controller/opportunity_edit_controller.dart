@@ -5,7 +5,8 @@ class OpportunityEditController extends GetxController{
 
   RxBool isAdditionalInfoOpen = false.obs;
     RxBool isOpen = true.obs;
-  RxDouble sliderValue = 0.0.obs;
+  RxDouble sliderValue = 55.0.obs;
+  RxBool isAlreadyActive= false.obs;
 
 
   void toggleAdditionalInfo(){
@@ -18,5 +19,9 @@ class OpportunityEditController extends GetxController{
 
   void toggleOpen(){
     isOpen.value = !isOpen.value;
+  }
+
+  void toggleActive(){
+    isAlreadyActive.value = !isAlreadyActive.value;
   }
 } 

@@ -46,7 +46,7 @@ dependencies:
   geocoding:
   shared_preferences: ^2.0.17
   dio:
-  syncfusion_flutter_core: ^21.2.6
+  syncfusion_flutter_core: ^21.2.6 
   google_fonts:
   syncfusion_flutter_sliders: ^21.2.6
   bubble_tab_indicator: ^0.1.6
