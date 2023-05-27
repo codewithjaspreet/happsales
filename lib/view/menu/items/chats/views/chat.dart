@@ -7,9 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
+import 'package:http/http.dart';
 
 import '../widgets/chat_list.dart';
 import '../widgets/chat_search_alert.dart';
+import 'new_group_chat.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -47,16 +49,25 @@ class ChatPage extends StatelessWidget {
                           color: AppColors.primaryColor,
                         ),
                       ),
-                      Container(
-                        child: Center(
-                          child: Icon(Icons.group_add_rounded  , color: Colors.white,size: 14.sp,),
-                        ),
-                        margin: EdgeInsets.only(left: 18.w),
-                        width: 22.w,
-                        height: 22.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => GroupChat()),
+                          );
+                        },
+                        child: Container(
+                          child: Center(
+                            child: Icon(Icons.group_add_rounded  , color: Colors.white,size: 14.sp,),
+                          ),
+                          margin: EdgeInsets.only(left: 18.w),
+                          width: 22.w,
+                          height: 22.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ),
                       GestureDetector(
