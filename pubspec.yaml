@@ -46,6 +46,7 @@ dependencies:
   geocoding:
   shared_preferences: ^2.0.17
   dio:
+  flutter_chat_ui:
   syncfusion_flutter_core: ^21.2.6 
   google_fonts:
   syncfusion_flutter_sliders: ^21.2.6

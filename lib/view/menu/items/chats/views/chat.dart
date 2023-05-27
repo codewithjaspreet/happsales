@@ -11,6 +11,7 @@ import 'package:http/http.dart';
 
 import '../widgets/chat_list.dart';
 import '../widgets/chat_search_alert.dart';
+import '../widgets/single_user_alert.dart';
 import 'new_group_chat.dart';
 
 class ChatPage extends StatelessWidget {
@@ -38,15 +39,20 @@ class ChatPage extends StatelessWidget {
           
                   Row(
                     children: [
-                      Container(
-                        child: Center(
-                          child: Icon(Icons.people  , color: Colors.white,size: 14.sp,),
-                        ),
-                        width: 22.w,
-                        height: 22.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          showSingleUser(context);
+                        },
+                        child: Container(
+                          child: Center(
+                            child: Icon(Icons.people  , color: Colors.white,size: 14.sp,),
+                          ),
+                          width: 22.w,
+                          height: 22.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ),
                       GestureDetector(

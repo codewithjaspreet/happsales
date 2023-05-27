@@ -83,6 +83,8 @@ chatList() {
                                 color: AppColors.primaryColor
                             )),
                       ),
+
+                      
                     ],
                   )
                 ],
