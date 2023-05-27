@@ -5,8 +5,8 @@ class OpportunityEditController extends GetxController{
 
   RxBool isAdditionalInfoOpen = false.obs;
     RxBool isOpen = true.obs;
+  RxDouble sliderValue = 0.0.obs;
 
-  RxDouble sliderValue = 40.0.obs;
 
   void toggleAdditionalInfo(){
     isAdditionalInfoOpen.value = !isAdditionalInfoOpen.value;

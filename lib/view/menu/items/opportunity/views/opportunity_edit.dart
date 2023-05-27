@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/controller/opportunity_edit_controller.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../../../utils/color.dart';
@@ -147,29 +148,37 @@ class OpportunityEditDetails extends StatelessWidget {
                   margin: EdgeInsets.only(left: 18.w , top: 16.h),
                 child: const Text('How does the closure property looks like ?'),
                ),
-               SfSlider(
-                inactiveColor: Colors.grey,
-                activeColor: Colors.grey,
-                thumbIcon: Container(
-                  width: 50.w,
-                  height: 50.w,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle
-                    ,color: Colors.blue
-                  ),
+               SfSliderTheme(
+                data: SfSliderThemeData(
+                  thumbRadius: 18.sp,
+                  activeTrackHeight:  6.sp,
+                  inactiveTrackHeight: 6.sp
                 ),
-                min: 0.0,
-                max: 100.0,
-                value: controller.sliderValue.value,
-                interval: 20,
-                minorTicksPerInterval: 1,
-                onChanged: (value) {
-                  controller.sliderValue.value = value;
+                child: SfSlider(
                 
-                },
-
-                
-     ),
+                  inactiveColor: Colors.grey.withOpacity(0.6),
+                  activeColor: Colors.grey.withOpacity(0.6),
+                  thumbIcon: Container(
+                    child: Container(
+                      child: Center(
+                        child: Text('${controller.sliderValue.value.toInt()}%',style: TextStyle(color: Colors.white,fontFamily: 'roboto_bold',fontSize: 13.sp),),),
+                    ),
+                    width: 50.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      
+                      color: AppColors.themeColor,
+                    ),
+                    height: 50.h,
+                  ),
+                  min: 0,
+                  max: 100,
+                  value: controller.sliderValue.value,
+                  onChanged: (dynamic newValue){
+                    controller.sliderValue.value = newValue;
+                  },
+                ),
+              ),
 
              ToggleButtonRow(title: 'Is This a reoccuring opportunity', isAlreadyActive: false)
 ,

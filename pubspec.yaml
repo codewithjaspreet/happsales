@@ -37,7 +37,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.6.1
-  get: ^4.6.5
   sliding_up_panel: ^2.0.0+1
   get_storage: ^2.0.3
   flutter_advanced_switch: ^3.0.1
@@ -47,8 +46,9 @@ dependencies:
   geocoding:
   shared_preferences: ^2.0.17
   dio:
-  syncfusion_flutter_sliders: ^21.2.4
+  syncfusion_flutter_core: ^21.2.6
   google_fonts:
+  syncfusion_flutter_sliders: ^21.2.6
   bubble_tab_indicator: ^0.1.6
   intl: ^0.18.0
   table_calendar: ^3.0.9
