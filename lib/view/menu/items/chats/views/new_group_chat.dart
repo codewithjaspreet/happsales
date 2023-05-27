@@ -87,8 +87,8 @@ class GroupChat extends StatelessWidget {
               
               children: [
           
-              Input(title: 'Group Name'),
-              Input(title: 'Group Description'),
+              Input(title: 'Group Name*'),
+              Input(title: 'Description*'),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 18.w,vertical: 14.h),
