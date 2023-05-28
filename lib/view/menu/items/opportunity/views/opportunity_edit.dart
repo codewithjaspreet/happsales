@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/controller/opportunity_edit_controller.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -24,52 +25,56 @@ class OpportunityEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-
+      
       appBar: CustomAppBar(context),
 
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-      
-           Container(
-        padding: EdgeInsets.all(6.sp),
-        child: Row(
-      
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 8.w),
-              child: Text('Edit Opportunity' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: (){
-                  },
-                  child: Container(
-                    width: 30.w,
-                    height: 30.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xff171A63),
-      
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.add ,color: Colors.white,),
+      body: Stack(
+        children:[ SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+             Container(
+          padding: EdgeInsets.all(6.sp),
+          child: Row(
+              
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 8.w),
+                child: Text('Edit Opportunity' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                    },
+                    child: Container(
+                      width: 30.w,
+                      height: 30.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xff171A63),
+              
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.add ,color: Colors.white,),
+                      ),
                     ),
                   ),
-                ),
-              
-              ],
-            ),
-          ],
-        ),
+                
+                ],
+              ),
+            ],
           ),
-      
-           OpportunityEditDetails(),
-      
-      
-        ]),
+            ),
+              
+             OpportunityEditDetails(),
+              
+              
+          ]),
+        ),
+        bottomDetailsSheet()
+        ]
       ),
     );
   }
@@ -352,7 +357,8 @@ Hdivider(),
      
               ],
             ),
-          ):Container())
+          ):Container()),
+
           
       ]),
     );
