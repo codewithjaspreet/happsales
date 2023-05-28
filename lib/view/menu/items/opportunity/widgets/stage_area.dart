@@ -40,7 +40,7 @@ class StageWidget extends StatelessWidget {
       child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    StageItem(stageWidth: 360,stageName: "LEAD",),
+                    StageItem(stageWidth: 358,stageName: "LEAD",),
                     StageItem(stageWidth: 340,stageName: "DEMO",),
                     StageItem(stageWidth: 320,stageName: "EVALUATION",),
                     StageItem(stageWidth: 300,stageName: "QUALIFIED",),
