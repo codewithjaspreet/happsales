@@ -15,6 +15,7 @@ import '../../contacts/widgets/HDivider.dart';
 import '../../contacts/widgets/InputOne.dart';
 import '../../contacts/widgets/ToggleButtonRow.dart';
 import '../../contacts/widgets/add_tag.dart';
+import '../widgets/stage_area.dart';
 
 class OpportunityEdit extends StatelessWidget {
    const OpportunityEdit({super.key});
@@ -184,27 +185,15 @@ class OpportunityEditDetails extends StatelessWidget {
                   },
                 ),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    
-                    width: 340.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-
-                      borderRadius: BorderRadius.only(
-
-                        topLeft: Radius.circular(5.sp),
-                        bottomLeft: Radius.circular(5.sp),
-                      ),
-                      color: Color.fromARGB(255, 31, 51, 56)
-                    ),
-                    child: Text('Lead'),
-                  ),
-                ],
-              ),
+              SizedBox(height: 10.h,),
+Container(
+              margin: EdgeInsets.only(bottom: 10.h,left: 12.sp),
+             child: Text('Opportunity Stage' ,style: TextStyle(
+                color: AppColors.themeColor,fontWeight: FontWeight.bold ,fontSize: 14.sp
+                     ),),
+           ),
+          
+    StageWidget(),
 
 
 
@@ -244,12 +233,7 @@ class OpportunityEditDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-           Container(
-              margin: EdgeInsets.only(bottom: 10.h),
-             child: Text('Opportunity Stage' ,style: TextStyle(
-                color: AppColors.themeColor,fontWeight: FontWeight.bold ,fontSize: 14.sp
-                     ),),
-           ),
+           
 
           Container(
             width: 337.w,
