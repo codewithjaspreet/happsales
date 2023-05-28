@@ -11,6 +11,7 @@ import 'package:happsales_crm/view/menu/items/accounts/widgets/AccountUserDetail
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
@@ -40,18 +41,22 @@ class AcccountDetails extends StatelessWidget {
     // print(account!.accountName);
     return Scaffold(
         appBar: CustomAppBar(context),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AccountUserDetailCard( title : contactViewModel.contacts[0].contactName , designation: contactViewModel.contacts[1].designation ),
-
-              Hdivider(),
-              AccountDetailRow(account:account!,),
-              Hdivider(),
-              // AccountMoreDetail(account: account,)
-            ],
+        body: Stack(
+          children:[ SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AccountUserDetailCard( title : contactViewModel.contacts[0].contactName , designation: contactViewModel.contacts[1].designation ),
+        
+                Hdivider(),
+                AccountDetailRow(account:account!,),
+                Hdivider(),
+                // AccountMoreDetail(account: account,)
+              ],
+            ),
           ),
+          bottomDetailsSheet()
+          ]
         ));
   }
 

@@ -8,6 +8,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/MoreDetail.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/SecondTypeDetailing.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ThirdTypeDetailing.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../../../../../models/contact.dart';
 import '../../../../../viewmodels/contact_view_model.dart';
@@ -27,28 +28,32 @@ class ContactDetails extends StatelessWidget {
     print(contact!.firstName);
     return Scaffold(
         appBar: CustomAppBar(context),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              UserDetailCard( title : contact.firstName , designation: contact.designation ),
-              Hdivider(),
-              DetailRow(contact : contact),
-              Hdivider(),
-              MoreDetail(contact : contact),
-              SizedBox(height: 12.h,),
-              Hdivider(),
-
-            SecondTypeDetailing(title: 'Is Active', subTitle: contact.isPrimaryContact.toString(),),
-
-
-              ThirdTypeDetailing(title1: 'Created By', subTitle1: contact.createdBy.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
-              SizedBox(height: 12.h,),
-
-              ThirdTypeDetailing(title1: 'Created On', subTitle1: contact.createdOn.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
-
-            ],
+        body: Stack(
+          children:[ SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UserDetailCard( title : contact.firstName , designation: contact.designation ),
+                Hdivider(),
+                DetailRow(contact : contact),
+                Hdivider(),
+                MoreDetail(contact : contact),
+                SizedBox(height: 12.h,),
+                Hdivider(),
+        
+              SecondTypeDetailing(title: 'Is Active', subTitle: contact.isPrimaryContact.toString(),),
+        
+        
+                ThirdTypeDetailing(title1: 'Created By', subTitle1: contact.createdBy.toString(), title2: 'Modified By', subTitle2: 'Suvarna Traders'),
+                SizedBox(height: 12.h,),
+        
+                ThirdTypeDetailing(title1: 'Created On', subTitle1: contact.createdOn.toString(), title2: 'Modified On', subTitle2: '29 Dec 2021'),
+        
+              ],
+            ),
           ),
+          bottomDetailsSheet()
+          ]
         ));
   }
 

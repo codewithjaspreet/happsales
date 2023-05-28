@@ -8,6 +8,7 @@ import 'package:happsales_crm/view/menu/items/accounts/add_account.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/expense/views/view_expense.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../../../../../utils/color.dart';
 import '../../notes/views/add_notes.dart';
@@ -24,58 +25,64 @@ class ExpenseListing extends StatelessWidget {
 
       appBar: CustomAppBar(context),
 
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-      
-        
-           Container(
-        padding: EdgeInsets.all(12.sp),
-        child: Row(
-      
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Expense' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
-            Row(
+      body: Stack(
+        children: [ SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                GestureDetector(
-                  onTap: (){
-                    Get.to(const AddNotes());
-                  },
-                  child: Container(
-                    margin:  EdgeInsets.only(right: 16.w),
-                    width: 30.w,
-                    height: 30.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xff171A63),
-      
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.add ,color: Colors.white,),
+        
+          
+             Container(
+          padding: EdgeInsets.all(12.sp),
+          child: Row(
+        
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Expense' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(const AddNotes());
+                    },
+                    child: Container(
+                      margin:  EdgeInsets.only(right: 16.w),
+                      width: 30.w,
+                      height: 30.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xff171A63),
+        
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.add ,color: Colors.white,),
+                      ),
                     ),
                   ),
-                ),
-                const NotePopup(),
-              ],
-            ),
-          ],
-        ),
-          ),  
-              Image.asset('assets/expenses/header.png'),
-        
-        
-                   ExpenseRow(),
-                                  ExpenseRow(),
-                                   ExpenseRow(),
-                                    ExpenseRow(),
-        
-        
+                  const NotePopup(),
+                ],
+              ),
             ],
           ),
+            ),  
+                Image.asset('assets/expenses/header.png'),
+          
+          
+                     ExpenseRow(),
+                                    ExpenseRow(),
+                                     ExpenseRow(),
+                                      ExpenseRow(),
+          
+          
+              ],
+            ),
+          ),
         ),
+
+        bottomDetailsSheet()
+        ]
       ),
+      
     );
   }
 }

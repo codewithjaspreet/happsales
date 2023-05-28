@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/pages/dashboard.dart';
 import 'package:happsales_crm/view/dashboard/pages/opportunities.dart';
 import 'package:happsales_crm/view/dashboard/pages/recommendations.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../menu/views/menu.dart';
 import '../voiceassistant/parent.dart';
@@ -131,25 +132,29 @@ class DashBoardPage extends StatelessWidget {
               ],
             ),
           ),
-          body:   Column(
-            children: [
-              const Expanded(
-                child: TabBarView(
-                children:  [
-                  DashBoardItem(),
-                  Opportunities(),
-                  Recommendations(),
-
-                ],
-
-
-                  ),
-              ),
-
-              // bottomPanel(),
-              
-
-            ],
+          body:   Stack(
+            children: [ Column(
+              children: [
+                const Expanded(
+                  child: TabBarView(
+                  children:  [
+                    DashBoardItem(),
+                    Opportunities(),
+                    Recommendations(),
+          
+                  ],
+          
+          
+                    ),
+                ),
+          
+                // bottomPanel(),
+                
+          
+              ],
+            ),
+            bottomDetailsSheet()
+            ]
           ),
         ),
       ),

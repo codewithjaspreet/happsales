@@ -10,6 +10,7 @@ import 'package:happsales_crm/view/menu/items/settings/views/items/calendersync/
 import 'package:happsales_crm/view/menu/items/settings/views/items/importcontacts/views/import_contact.dart';
 import 'package:happsales_crm/view/menu/items/settings/views/items/myprofile/views/profile.dart';
 import 'package:happsales_crm/view/menu/items/settings/views/items/syncstatus/views/sync_status.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../../../../../utils/color.dart';
 import '../../accounts/accounts.dart';
@@ -28,124 +29,128 @@ class SettingsPage extends StatelessWidget {
     return  Scaffold(
 
       appBar: CustomAppBar(context),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-          padding: EdgeInsets.all(12.sp),
-          child: Row(
-        
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Text('Settings' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
-             
-            ],
-          ),
+      body: Stack(
+        children:[ SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+            padding: EdgeInsets.all(12.sp),
+            child: Row(
           
-        
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Text('Settings' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
+               
+              ],
             ),
-        
-        
-            Container(
-          margin: EdgeInsets.only(top: 14.h,right: 12.w),
-          child: Image.asset('assets/settings/header.png'))
             
-            ,
-        
-            Container(
-              margin: EdgeInsets.all(5.sp),
-              child: 
-              Column(
-                children: [
-        
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-          GestureDetector(
-                    onTap: () {
-                      
-                      Get.to(() => const MyProfile());
-                    },
-                    child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
-                  GestureDetector(
-                      onTap: () {
-                        Get.to(() => const ImportContact());
-                      },
-                      child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
-            
-                    ],
-                  ),
-        
-                  Row(
-                    children: [
-                             
-        
-        
-                  GestureDetector(
-            
-                    child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
-                    onTap: () {
-                      Get.to(const CalenderSync());
-                    },
-                  ),
-            
-                  GestureDetector(
-                    
-                    onTap: () {
-                      Get.to(() => const OpportunityListing());
-                    },
-                    child: const _buildGridItem(title : 'Backup Data', image: 'assets/settings/back.png' )),
-            
-                    ],
-                  ),
-        
-                  Row(
-                    children: [
-        
-                                 GestureDetector(
-                    
-                     onTap: (){
-            
-                      Get.to(const SyncStatus());
-                     },
-                    child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => const SyncStatus());
-                    },
-                    child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
-            
-            
-                    ],
-                  )
-                ],
+          
               ),
-            ),
-            // Container(
-            //   height: 400.h,
-            //   child: GridView(
-            
-            
-            //     gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-            //        crossAxisCount: 2,
-            //     mainAxisSpacing: 4.0,
-            //     crossAxisSpacing: 8,
-            //     ),
-            //     children:   <Widget>[
           
+          
+              Container(
+            margin: EdgeInsets.only(top: 14.h,right: 12.w),
+            child: Image.asset('assets/settings/header.png'))
+              
+              ,
+          
+              Container(
+                margin: EdgeInsets.all(5.sp),
+                child: 
+                Column(
+                  children: [
+          
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+            GestureDetector(
+                      onTap: () {
+                        
+                        Get.to(() => const MyProfile());
+                      },
+                      child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
+                    GestureDetector(
+                        onTap: () {
+                          Get.to(() => const ImportContact());
+                        },
+                        child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
+              
+                      ],
+                    ),
+          
+                    Row(
+                      children: [
+                               
+          
+          
+                    GestureDetector(
+              
+                      child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
+                      onTap: () {
+                        Get.to(const CalenderSync());
+                      },
+                    ),
+              
+                    GestureDetector(
+                      
+                      onTap: () {
+                        Get.to(() => const OpportunityListing());
+                      },
+                      child: const _buildGridItem(title : 'Backup Data', image: 'assets/settings/back.png' )),
+              
+                      ],
+                    ),
+          
+                    Row(
+                      children: [
+          
+                                   GestureDetector(
+                      
+                       onTap: (){
+              
+                        Get.to(const SyncStatus());
+                       },
+                      child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => const SyncStatus());
+                      },
+                      child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
+              
+              
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              // Container(
+              //   height: 400.h,
+              //   child: GridView(
+              
+              
+              //     gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+              //        crossAxisCount: 2,
+              //     mainAxisSpacing: 4.0,
+              //     crossAxisSpacing: 8,
+              //     ),
+              //     children:   <Widget>[
             
-           
-            //         
-            //
-            //   ],
-            //   ),
-            // ),
-            ],
+              
+             
+              //         
+              //
+              //   ],
+              //   ),
+              // ),
+              ],
+            ),
           ),
         ),
+        bottomDetailsSheet()
+        ]
       ),
 
       

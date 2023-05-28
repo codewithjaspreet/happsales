@@ -8,6 +8,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/notes/widgets/notes_popup.dart';
 import 'package:happsales_crm/view/menu/items/opportunity/widgets/menu_popup.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../../../../../utils/color.dart';
 import '../../notes/views/view_notes.dart';
@@ -21,35 +22,41 @@ class ResourceListing extends StatelessWidget {
     return  Scaffold(
       appBar: CustomAppBar(context),
 
-      body: Column(children: [
-
-       
-       Container(
-      padding: EdgeInsets.all(12.sp),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-
-          Container(
-            margin: EdgeInsets.only(left: 5.w),
-            child: Text('Resources',style: TextStyle(
-              fontFamily: 'roboto_bold',
-              fontSize: 20.sp,
-              color: AppColors.primaryColor
+      body: Stack(
+        children: [ Column(children: [
+      
+         
+         Container(
+        padding: EdgeInsets.all(12.sp),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+      
+            Container(
+              margin: EdgeInsets.only(left: 5.w),
+              child: Text('Resources',style: TextStyle(
+                fontFamily: 'roboto_bold',
+                fontSize: 20.sp,
+                color: AppColors.primaryColor
+              
+              ),),
+            ),
             
-            ),),
+            ResourcePopup()
+          ],
+        ),
           ),
-          
-          ResourcePopup()
-        ],
-      ),
-    ),
+      
+          Container(
+        child: Image.asset('assets/resources/resourceheader.png'),
+          ),
+          buildNotesList(),
+        ]),
 
-    Container(
-      child: Image.asset('assets/resources/resourceheader.png'),
-    ),
-    buildNotesList(),
-      ]),
+
+bottomDetailsSheet()
+        ]
+      ),
     );
   }
 }

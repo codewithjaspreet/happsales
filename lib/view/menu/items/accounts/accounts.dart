@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/accounts/add_account.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:happsales_crm/viewmodels/account_view_model.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 
@@ -60,8 +61,17 @@ class _ContactPageState extends State<AccountPage> {
 
 
       body: isLoading
-          ? const CircularProgressIndicator()
-          : Column(
+          ? Stack(
+            children: [
+              const CircularProgressIndicator(),
+              bottomDetailsSheet(),
+            ],
+          )
+          : 
+          
+          Stack(
+            children: [
+               Column(
         children: [
            const HelperRow(
             title: "My Accounts", direct: AddAccount(),
@@ -72,6 +82,10 @@ class _ContactPageState extends State<AccountPage> {
           ,
         ],
       ),
+              bottomDetailsSheet(),
+            ],
+          )
+         
     );
   }
 }

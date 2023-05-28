@@ -76,7 +76,7 @@ class ImportContact extends StatelessWidget {
 
         ],),
 
-        // bottomDetailsSheet()
+        bottomDetailsSheet()
       ]),
     );
   }

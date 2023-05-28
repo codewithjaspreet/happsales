@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/custom_dropdown.dart';
@@ -25,13 +26,17 @@ class EditContact extends StatelessWidget {
     return Scaffold(
 
       appBar: CustomAppBar(context, ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            AmiHeaderRow(title: 'Edit Contact',),
-            const DetailRow(),
-          ],
+      body: Stack(
+        children:[ SingleChildScrollView(
+          child: Column(
+            children: [
+              AmiHeaderRow(title: 'Edit Contact',),
+              const DetailRow(),
+            ],
+          ),
         ),
+        bottomDetailsSheet()
+        ]
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
+import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
 import '../../../views/menu.dart';
 import 'Details.dart';
@@ -59,8 +60,15 @@ class _ContactPageState extends State<ContactPage> {
 
 
       body: isLoading
-          ? const CircularProgressIndicator()
-          : Column(
+          ? Stack(
+            children: [
+              const CircularProgressIndicator(),
+              bottomDetailsSheet()
+            ],
+          )
+          : Stack(
+            children: [
+              Column(
             children: [
                const HelperRow(
                 direct: AddContact(),
@@ -72,6 +80,9 @@ class _ContactPageState extends State<ContactPage> {
 
             ],
           ),
+          bottomDetailsSheet()
+            ],
+          )
     );
   }
 }
