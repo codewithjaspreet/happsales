@@ -27,7 +27,7 @@ class OpportunityEdit extends StatelessWidget {
     return  Scaffold(
       
       appBar: CustomAppBar(context),
-
+    
       body: Stack(
         children:[ SingleChildScrollView(
           child: Column(

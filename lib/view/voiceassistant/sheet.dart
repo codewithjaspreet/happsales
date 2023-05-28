@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/voiceassistant/voice.dart';
+
+import 'ami_row.dart';
 
 Widget bottomDetailsSheet() {
 
@@ -10,8 +13,8 @@ List<String> animalWeight = ['2700-6000', '90-310', '47-66'];
 int selectedTile = 0;
 
 return DraggableScrollableSheet(
-  initialChildSize: .1,
-  minChildSize: .1,
+  initialChildSize: 0.15,
+  minChildSize: 0.15,
   maxChildSize: .6,
   builder: (BuildContext context, ScrollController scrollController) {
   return Stack(
@@ -39,40 +42,60 @@ Container(
     child: ListView(
     controller: scrollController,
     children: [
+    
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(top: 52.h),
+              child:    Column(
+                children: [
+                  Container(
+                    child: Text("Hi I'm Ami, how can I help you?",style: TextStyle(
+                        fontFamily: 'roboto_bold',
+                        fontSize: 18.sp
+                        ,
+                        fontWeight: FontWeight.w500
 
+                    ),),
+                  ),
+
+
+                  Container(
+                    margin: EdgeInsets.only(top: 22.h),
+
+                    child:Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        AmiRow("assets/ami/building.png" , "I want to know about my company")
+                        ,AmiRow("assets/ami/people.png" , "Want to create a contact?")
+                        ,AmiRow("assets/ami/money.png" , "Want to create an opportunity?")
+                        ,AmiRow("assets/ami/calender.png" , "Want to create an activity?")
+
+                      ],
+                    ),
+
+                  ),
+
+                  Container(
+
+                      margin: EdgeInsets.only(top: 20.h),
+
+                      child: AmiVoice()),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 8.h),
+                    child: Text("Powered by HappSales",style: TextStyle(
+                        fontFamily: "roboto_regular",
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color:const Color(0xffB4C6D4)
+                    ),),
+                  )
+                ],
+              )
+          ),
+        ),
       
-      ListTile(
-      title: Text(
-        "NAME",
-      ),
-      subtitle: Text(
-        animalNames[selectedTile],
-      ),
-      ),
-      ListTile(
-      title: Text(
-        "FAMILY",
-      ),
-      subtitle: Text(
-        animalFamily[selectedTile],
-      ),
-      ),
-      ListTile(
-      title: Text(
-        "LIFESPAN",
-      ),
-      subtitle: Text(
-        animalLifeSpan[selectedTile],
-      ),
-      ),
-      ListTile(
-      title: Text(
-        "WEIGHT",
-      ),
-      subtitle: Text(
-        animalWeight[selectedTile],
-      ),
-      ),
+      
     ],
     ),
   ),
