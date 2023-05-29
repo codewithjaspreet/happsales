@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
 
-import '../../../menu.dart';
+import '../../../views/menu.dart';
 class GroupChat extends StatelessWidget {
   const GroupChat({super.key});
 

@@ -126,25 +126,7 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              // Container(
-              //   height: 400.h,
-              //   child: GridView(
               
-              
-              //     gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-              //        crossAxisCount: 2,
-              //     mainAxisSpacing: 4.0,
-              //     crossAxisSpacing: 8,
-              //     ),
-              //     children:   <Widget>[
-            
-              
-             
-              //         
-              //
-              //   ],
-              //   ),
-              // ),
               ],
             ),
           ),

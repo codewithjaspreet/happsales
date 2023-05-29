@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
 
-import '../../../menu.dart';
+import '../../../views/menu.dart';
 import '../widgets/chat_model.dart';
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});

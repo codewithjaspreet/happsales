@@ -15,7 +15,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(14.sp),
+      margin: EdgeInsets.all(10.sp),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(2.r),
         border: Border.all(color: const Color(0xffB4C6D4)),
@@ -27,7 +27,11 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
        Row(
 
-            children: const [
+            children:  [
+           Text('Tags',style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16.sp
+          ),),
 
             ],
 
@@ -54,7 +58,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                  height: 44.h,
                  decoration: BoxDecoration(
                    borderRadius: BorderRadius.circular(8.r),
-                   border: Border.all(color: AppColors.primaryColor),
+                   border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
                    color: const Color(0xffE5F6FF),
                  ),
                  child: Row(
@@ -63,7 +67,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                      Text('contact2' , style: TextStyle(
                        color: AppColors.primaryColor,
                        fontSize: 12.sp,
-                       fontWeight: FontWeight.bold,
+                       fontWeight: FontWeight.normal,
                      ),),
                      SizedBox(width: 5.w,),
                    ],
@@ -81,7 +85,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                  height: 44.h,
                  decoration: BoxDecoration(
                    borderRadius: BorderRadius.circular(12.r),
-                   border: Border.all(color: AppColors.primaryColor),
+                   border: Border.all(color: AppColors.primaryColor.withOpacity(0.4)),
                    color: const Color(0xffE5F6FF),
                  ),
                  child: Row(
@@ -90,7 +94,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                      Text('contact2' , style: TextStyle(
                        color: AppColors.primaryColor,
                        fontSize: 12.sp,
-                       fontWeight: FontWeight.bold,
+                       fontWeight: FontWeight.normal,
                      ),),
                    ],
                  ),

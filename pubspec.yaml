@@ -121,6 +121,7 @@ flutter:
      - assets/expenses/location.png
      - assets/settings/
      - assets/resources/punch.png
+     - assets/reports/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

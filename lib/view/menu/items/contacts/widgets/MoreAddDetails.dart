@@ -98,17 +98,9 @@ class _MyRowState extends State<MoreAddDetails> {
 
 
                   Container(
-
-                    margin: EdgeInsets.only(right: 2.w),
-                    height: 190.h,
-                    width: 340.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.sp),
-                      border: Border.all(color: Colors.blue.withOpacity(0.5),),
-                    ),
-
-                    child: const TagInputWidget(),
-                  )
+                    
+                    margin: EdgeInsets.only(top: 5.h  , left: 10.w , right: 10.w), 
+                    child: const TagInputWidget())
 
 
 

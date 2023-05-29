@@ -13,6 +13,7 @@ import 'package:http/http.dart';
 import '../items/accounts/accounts.dart';
 import '../items/chats/views/chat.dart';
 import '../items/notes/views/notes_listing.dart';
+import '../items/reports/views/report_page.dart';
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);
 
@@ -87,7 +88,12 @@ class Menu extends StatelessWidget {
                   Get.to(() => const NotesListing());
                 },
                 child: const _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
-            const _buildGridItem(title : 'Reports', image: 'assets/reports.png' ),
+            GestureDetector(
+              onTap: () {
+                
+                Get.to(ReportPage());
+              },
+              child: const _buildGridItem(title : 'Reports', image: 'assets/reports.png' )),
             GestureDetector(
               onTap: () {
                 Get.to(() => const AttendanceListing());
