@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
+import 'package:happsales_crm/view/menu/items/manager/widgets/team_search_alert.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'dart:math' as math;
 import '../../../../../utils/color.dart';
@@ -25,23 +26,30 @@ class MyTeam extends StatelessWidget {
 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Import Contacts' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),),
+          Container(
+            margin: EdgeInsets.only(left : 5.sp),
+            child: Text('My Team' , style: TextStyle(fontFamily: 'roboto_bold' , fontSize: 20.sp,color: AppColors.primaryColor),)),
           Row(
             children: [
              
-              Center(
-
-                child:  Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 25.w,
-                  height: 25.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff171A63),
-
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.search ,color: Colors.white,),
+              GestureDetector(
+                onTap: () {
+                  showTeamAlert(context);
+                },
+                child: Center(
+              
+                  child:  Container(
+                    margin:  EdgeInsets.only(right: 3.w),
+                    width: 25.w,
+                    height: 25.h,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xff171A63),
+              
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.search ,color: Colors.white,),
+                    ),
                   ),
                 ),
               )
@@ -66,7 +74,7 @@ teamList() {
  
   return Expanded(
       child:  ListView.builder(
-        padding: EdgeInsets.all(12.sp),
+        padding: EdgeInsets.symmetric(horizontal : 14.sp),
         itemCount: 10,
         // itemCount: contactController.contacts.length,
         itemBuilder: (context, index) {
@@ -78,7 +86,7 @@ teamList() {
             child: Container(
               margin: EdgeInsets.only(top : 12.sp),
               height: 90.h,
-                width: 337.w,
+                width: 300.w,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.withOpacity(0.4)),
 
