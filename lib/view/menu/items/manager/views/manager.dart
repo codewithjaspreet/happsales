@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/manager/views/my_team.dart';
+import 'package:happsales_crm/view/menu/items/reports/views/report_page.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:get/get.dart';
 class Managerpage extends StatelessWidget {
@@ -51,7 +52,11 @@ class Managerpage extends StatelessWidget {
                 },
                 child: _buildGridItem(title: 'My Team', image: 'assets/contacts.png')),
             
-          _buildGridItem(title: 'Reports', image: 'assets/reports.png'),
+          GestureDetector(
+            onTap: () {
+              Get.to(ReportPage());
+            },
+            child: _buildGridItem(title: 'Reports', image: 'assets/reports.png')),
             
             ],
             ),

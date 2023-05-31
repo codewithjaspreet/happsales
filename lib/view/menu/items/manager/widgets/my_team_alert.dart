@@ -7,6 +7,8 @@ import 'package:happsales_crm/utils/color.dart';
 import '../../notes/views/view_notes.dart';
 import 'dart:math' as math;
 
+import '../views/team_selection.dart';
+
 class MyTeamSearch extends StatelessWidget {
   const MyTeamSearch({super.key});
 
@@ -98,7 +100,8 @@ teamList() {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: (){
-  
+
+            Get.to(TeamSelection());
             
            },
           child: Container(
