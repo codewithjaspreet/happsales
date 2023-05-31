@@ -10,8 +10,6 @@ class TagInputWidget extends StatefulWidget {
 }
 
 class _TagInputWidgetState extends State<TagInputWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +40,10 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
           )
 
-          ,const Text('contact'),
+          , Text('contact',style: TextStyle(
+            
+            fontSize: 14.sp
+          ),),
           SizedBox(height: 10.h,),
 
 
@@ -101,7 +102,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                ),
              ),
            ],
-         )
+         ),
 
 
 
