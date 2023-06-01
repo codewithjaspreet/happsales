@@ -3,25 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/dashboard/pages/dashboard.dart';
+import 'package:happsales_crm/view/dashboard/pages/notifications.dart';
 import 'package:happsales_crm/view/dashboard/pages/opportunities.dart';
 import 'package:happsales_crm/view/dashboard/pages/recommendations.dart';
+import 'package:happsales_crm/view/dashboard/pages/workflow.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 
+import '../../utils/color.dart';
 import '../menu/views/menu.dart';
 import '../voiceassistant/parent.dart';
 
 
 
 class DashBoardPage extends StatelessWidget {
-  const DashBoardPage({Key? key}) : super(key: key);
+    DashBoardPage({Key? key}) : super(key: key);
 
+  List list = [
+    'assets/dashboard/activity.png',
+    'assets/dashboard/oppor.png',
+    'assets/dashboard/performance.png',
+    'assets/dashboard/workflow.png',
+    'assets/dashboard/notification.png',
+
+  ];
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => true,
       child: DefaultTabController(
         initialIndex: 1,
-        length: 3,
+        length: 5,
         child: Scaffold(
           backgroundColor: const Color(0xffF3F4F8),
           appBar: AppBar(
@@ -42,91 +53,94 @@ class DashBoardPage extends StatelessWidget {
             title: const Text('HappSales' ,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
             centerTitle: true,
             bottom: TabBar(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              unselectedLabelColor: const Color(0xffB5B6B9),
-              labelColor: const Color(0xff171A63),
-
-
-
-
-              indicator:  BubbleTabIndicator(
-                indicatorHeight: 46.h,
-
-                indicatorColor: const Color(0xffFFFFFF),
-
-                tabBarIndicatorSize: TabBarIndicatorSize.tab,
-              ),
-
-
+            indicatorColor: Colors.black,
+              padding: EdgeInsets.symmetric(horizontal:12.w),
+              unselectedLabelColor: Colors.grey,
+              labelColor:  AppColors.primaryColor,
               tabs: [
-                Tab(
-                  child: Container(
-                    width: 86.w,
-                    height: 46.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.sp),
-                    ),
-                    child: const Center(
-                      child: FittedBox(
-                        child: Text(
-                          'Dashboard',
-                            style : TextStyle(
-                                fontFamily: 'roboto_bold'
-                            )
 
-                        ),
-                      ),
-                    ),
-                  ),
+                
+                Tab(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 22.w,
+                        height: 22.h,
+                        child: Image.asset(list[0], )),
+                      SizedBox(height: 3.h,),
+                      FittedBox(child: 
+                       
+                    
+                      Text('Activities',style: TextStyle(
+                          fontSize: 7.sp
+                        
+                        ),),
+                      )
+                    ],
+                  )
 
                 ),
 
 
-                Tab(
-                  child: Container(
-                    width: 86.w,
-                    height: 46.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.sp),
-                    ),
-                    child: const Center(
-                      child: FittedBox(
-                        child: Text(
-                          'Opportunities',
-                            style : TextStyle(
-                                fontFamily: 'roboto_bold'
-                            )
-
-                        ),
-                      ),
-                    ),
-                  ),
+                  Tab(
+                  child: Column(
+                    children: [
+                       Container(
+                        width: 22.w,
+                        height: 22.h,
+                        child: Image.asset(list[1])),
+                      SizedBox(height: 3.h,),
+                       FittedBox(child:  Text('Opportunities',style: TextStyle(
+                        fontSize: 7.sp
+                       ),))
+                    ],
+                  )
 
                 ),
                 Tab(
-                  child: Container(
-                    width: 86.w,
-                    height: 46.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.sp),
-                    ),
-                    child: const Center(
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
-                          'Recommendations',
-                          style : TextStyle(
-                            fontFamily: 'roboto_bold'
-                          )
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 22.w,
+                        height: 22.h,
+                        child: Image.asset(list[2])),
+                      SizedBox(height: 3.h,),
+                      FittedBox(child: Text('Performance',style: TextStyle(
+                        fontSize: 7.sp
+                      ),))
+                    ],
+                  )
 
-                          // style: GoogleFonts.poppins(
-                          //   fontSize: 16.sp,
-                          //   fontWeight: FontWeight.bold,
-                          // ),
-                        ),
-                      ),
-                    ),
-                  ),
+                ),
+                Tab(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 22.w,
+                        height: 22.h,
+                        child: Image.asset(list[3])),
+                      SizedBox(height: 3.h,),
+                       FittedBox(child: Text('Workflow',style: TextStyle(
+                        fontSize: 7.sp
+                      
+                      ),))
+                    ],
+                  )
+
+                ),
+                  Tab(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 22.w,
+                        height: 22.h,
+                        child: Image.asset(list[4])),
+                      SizedBox(height: 3.h,),
+                      FittedBox(child: Text('Notifications',style: TextStyle(
+                        fontSize: 7.sp
+                      ),))
+                    ],
+                  )
 
                 ),
               ],
@@ -141,6 +155,9 @@ class DashBoardPage extends StatelessWidget {
                     DashBoardItem(),
                     Opportunities(),
                     Recommendations(),
+                    WorkFlowPage(),
+                    NotificationPage(),
+                    
           
                   ],
           

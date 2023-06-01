@@ -44,7 +44,7 @@ class ReportPage extends StatelessWidget {
             ),
 
             Container(
-              child: Image.asset('assets/opportunity/banner.png'),
+              child: Image.asset('assets/reports/header.png'),
             ),
             Row(
             

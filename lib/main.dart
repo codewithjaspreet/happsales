@@ -18,7 +18,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
 
 
-        home: email == null ?  SplashScreen() : const DashBoardPage()); }, designSize: const Size(375, 812), minTextAdapt: true, splitScreenMode: true,));
+        home: email == null ?  SplashScreen() :  DashBoardPage()); }, designSize: const Size(375, 812), minTextAdapt: true, splitScreenMode: true,));
 
 }
 

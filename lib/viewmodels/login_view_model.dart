@@ -87,7 +87,7 @@ class LoginController extends GetxController {
         // Navigate to the home screen or other relevant screen
 
 
-        Get.off(const DashBoardPage());
+        Get.off( DashBoardPage());
 
         _handleLocationPermission();
 

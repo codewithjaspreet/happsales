@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
 
         SnackBar snackBar = const SnackBar(content: Text("Login Successful"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Get.offAll(() => const DashBoardPage());
+        Get.offAll(() =>  DashBoardPage());
       }
 
     }
