@@ -120,7 +120,7 @@ Container(
           offset: Offset(0.5, 10), // changes position of shadow
         ),],
           color: Colors.white,
-          shape: BoxShape.circle,
+          shape: BoxShape.circle, 
         
         ),
             
