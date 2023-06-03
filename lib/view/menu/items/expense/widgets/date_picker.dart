@@ -1,38 +1,35 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/expense/controllers/expense_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
-class DatePickerFeild extends StatefulWidget {
-  const DatePickerFeild({Key? key, required this.labelText}) : super(key: key);
+class ExpenseDatePicker extends StatelessWidget {
+   ExpenseDatePicker({Key? key, required this.labelText}) : super(key: key);
 
+   ExpenseController expenseController = Get.put(ExpenseController());
   final String labelText;
 
   @override
-  State<DatePickerFeild> createState() => _DatePickerFeildState();
-}
-
-class _DatePickerFeildState extends State<DatePickerFeild> {
-  TextEditingController dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16.sp),
-        margin: EdgeInsets.only(top: 10.h),
-        height: 90.h,
+      padding: EdgeInsets.symmetric(horizontal : 18.sp),
+        width: 190.h,
         child: TextFormField(
 
-          controller: dateController, //editing controller of this TextField
+          controller: expenseController.dateController, //editing controller of this TextField
           decoration: InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.sp),
               borderSide: const BorderSide(
                 color: Color(0xffB4C6D4),
               ),
             ),
-            suffixIcon: const Icon(Icons.calendar_today), //icon of text field
-            labelText: widget.labelText //label text of field
-            ,
+            labelText:  labelText,
+            //label text of field
             labelStyle: const TextStyle(
               color: Color(0xff8F9BB3),
             ),
@@ -59,11 +56,9 @@ class _DatePickerFeildState extends State<DatePickerFeild> {
               print(
                   formattedDate); //formatted date output using intl package =>  2022-07-04
               //You can format date as per your need
-
-              setState(() {
-                dateController.text =
-                    formattedDate; //set foratted date to TextField value.
-              });
+    expenseController.dateController.text  = DateFormat('d MMMM').format(DateTime.parse(pickedDate.toString()));
+ //set foratted date to TextField value.
+              
             } else {
               print("Date is not selected");
             }

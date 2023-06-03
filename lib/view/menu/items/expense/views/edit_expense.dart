@@ -11,11 +11,13 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
 import 'package:happsales_crm/view/menu/items/expense/controllers/expense_controller.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
+import 'package:intl/intl.dart';
 import '../../../../../utils/color.dart';
 import '../../../../../utils/popups/selection_dropdown.dart';
 import '../../activities/views/activity_edit.dart';
 import '../../contacts/widgets/HDivider.dart';
 import '../../contacts/widgets/InputOne.dart';
+import '../widgets/date_picker.dart';
 import '../widgets/subdetails_expense.dart';
 import '../widgets/subdetails_expense2.dart';
 
@@ -102,40 +104,49 @@ class EditExpense extends StatelessWidget {
             SizedBox(height: 15.h,),
                 Row(
                   children: [
-                    Container(
-                      width:180.w,
-              
-                    padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 2.h),
-                    child: TextFormField(
-              
-              
-                      decoration: InputDecoration(
-              
-                    labelText: 'Start Date*',
-                    floatingLabelStyle: const TextStyle(
-                      color : Color(0xff00A6D6),
-                    ),
-                    labelStyle: const TextStyle(
-                      color: Color(0xff8F9BB3),
-                    ),
-                    hintText: 'End Date*',
-              
-              
-                    hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
-                    border: OutlineInputBorder(
-              
-              
-                      borderRadius: BorderRadius.circular(2.sp),
-                      borderSide: const BorderSide(
-              
-                        color: Color(0xffB4C6D4),
-                      ),
-              
-                    ),
-              
-                      ),
-                    ),
-                  ),
+                    ExpenseDatePicker(labelText: 'Start Date*' ,),
+                  // Container(
+                  //   width:180.w,
+                              
+                  // padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 2.h),
+                  // child: GestureDetector(
+                  //   onTap: (){
+                  //     controller.pickDate(context);
+                    
+                  //   },
+                  //   child: TextFormField(
+                  //     // initialValue: DateTime.now().toString(),
+                  //     controller: controller.dateController,
+                                
+                                
+                  //     decoration: InputDecoration(
+                                
+                  //   labelText: 'Start Date*',
+                  //   floatingLabelStyle: const TextStyle(
+                  //     color : Color(0xff00A6D6),
+                  //   ),
+                  //   labelStyle: const TextStyle(
+                  //     color: Color(0xff8F9BB3),
+                  //   ),
+                  //   hintText: 'End Date*',
+                                
+                                
+                  //   hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+                  //   border: OutlineInputBorder(
+                                
+                                
+                  //     borderRadius: BorderRadius.circular(2.sp),
+                  //     borderSide: const BorderSide(
+                                
+                  //       color: Color(0xffB4C6D4),
+                  //     ),
+                                
+                  //   ),
+                                
+                  //     ),
+                  //   ),
+                  // ),
+                  //                 ),
               
                 Container(
                   width:180.w,

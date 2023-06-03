@@ -69,12 +69,12 @@ class TeamSelection extends StatelessWidget {
                         
                         Get.to(() => const MyProfile());
                       },
-                      child: const _buildGridItem(title : 'My Profile', image: 'assets/settings/profile.png' )),
+                      child: const _buildGridItem(title : 'Accounts', image: 'assets/accounts.png' )),
                     GestureDetector(
                         onTap: () {
                           Get.to(() => const ImportContact());
                         },
-                        child: const _buildGridItem(title : 'Import Contacts', image: 'assets/settings/important.png' )),
+                        child: const _buildGridItem(title : 'Contacts', image: 'assets/contacts.png' )),
               
                       ],
                     ),
@@ -86,7 +86,7 @@ class TeamSelection extends StatelessWidget {
           
                     GestureDetector(
               
-                      child:             const _buildGridItem(title : 'Calender Sync', image: 'assets/settings/calender_sync.png' ),
+                      child:             const _buildGridItem(title : 'Opportunities', image: 'assets/settings/calender_sync.png' ),
                       onTap: () {
                         Get.to(const CalenderSync());
                       },
@@ -97,7 +97,7 @@ class TeamSelection extends StatelessWidget {
                       onTap: () {
                         Get.to(() => const OpportunityListing());
                       },
-                      child: const _buildGridItem(title : 'Backup Data', image: 'assets/settings/back.png' )),
+                      child: const _buildGridItem(title : 'Activities', image: 'assets/dashboard/activity.png' )),
               
                       ],
                     ),
@@ -111,12 +111,12 @@ class TeamSelection extends StatelessWidget {
               
                         Get.to(const SyncStatus());
                        },
-                      child: const _buildGridItem(title : 'Sync Status', image: 'assets/settings/sync.png' )),
+                      child: const _buildGridItem(title : 'Notes', image: 'assets/notes.png' )),
                     GestureDetector(
                       onTap: () {
                         Get.to(() => const SyncStatus());
                       },
-                      child: const _buildGridItem(title : 'logout', image: 'assets/settings/logout.png' )),
+                      child: const _buildGridItem(title : 'Reports', image: 'assets/reports.png' )),
               
               
                       ],
