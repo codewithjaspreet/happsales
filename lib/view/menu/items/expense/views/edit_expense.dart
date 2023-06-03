@@ -151,9 +151,7 @@ class EditExpense extends StatelessWidget {
                   
                   ],
                 ),
-                SizedBox(height: 10.h,),
-              
-                SizedBox(height: 10.h,),
+              SizedBox(height: 5.h,),
                 Container(
             
               padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 10.h),
@@ -225,10 +223,11 @@ class EditExpense extends StatelessWidget {
                 ),
               ),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(height: 3.h,),
                 Input(title: 'Travel Purpose*'),
                 ToggleButtonRow(title: 'Submit for Approval', isAlreadyActive: false),
-                NewProcessAddFeild(title: 'Remarks')
+                NewProcessAddFeild(title: 'Remarks'),
+                  Hdivider()
                     ],
                    ):SizedBox.shrink()),
              Container(
@@ -347,10 +346,84 @@ class EditExpense extends StatelessWidget {
             
                     Obx(() => controller.expenseEntry.value? Column(
                       children: [
-             DropDownHelper(),
-              DropDownHelper(),
-              Input(title: 'Distance Travelled'),
-              Input(title: 'Remarks'),
+                         
+                         
+               Container(
+
+      padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 10.h),
+      child: TextFormField(
+
+
+        decoration: InputDecoration(
+
+          labelText: 'Expense Type',
+          floatingLabelStyle: const TextStyle(
+            color : Color(0xff00A6D6),
+          ),
+          labelStyle: const TextStyle(
+            color: Color(0xff8F9BB3),
+          ),
+          hintText: 'Expense Type',
+
+
+          hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+          border: OutlineInputBorder(
+
+
+            borderRadius: BorderRadius.circular(8.sp),
+            borderSide: const BorderSide(
+
+              color: Color(0xffB4C6D4),
+            ),
+
+          ),
+
+        ),
+      ),
+    ),
+            Container(
+
+      padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 18.h),
+      child: TextFormField(
+
+
+        decoration: InputDecoration(
+
+          labelText: 'Mode of Travel',
+          floatingLabelStyle: const TextStyle(
+            color : Color(0xff00A6D6),
+          ),
+          labelStyle: const TextStyle(
+            color: Color(0xff8F9BB3),
+          ),
+          hintText: 'Mode Of Travel',
+
+
+          hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+          border: OutlineInputBorder(
+
+
+            borderRadius: BorderRadius.circular(8.sp),
+            borderSide: const BorderSide(
+
+              color: Color(0xffB4C6D4),
+            ),
+
+          ),
+
+        ),
+      ),
+    ),
+              Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: Input(title: 'Distance Travelled')),
+              Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: Input(title: 'Amount')),
+
+                Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: Input(title: 'Remarks')),
                         
                       ],
                     ):SizedBox.shrink()

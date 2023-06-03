@@ -13,8 +13,8 @@ List<String> animalWeight = ['2700-6000', '90-310', '47-66'];
 int selectedTile = 0;
 
 return DraggableScrollableSheet(
-  initialChildSize: 0.15,
-  minChildSize: 0.15,
+  initialChildSize: 0.18,
+  minChildSize: 0.18,
   maxChildSize: .6,
   builder: (BuildContext context, ScrollController scrollController) {
   return Stack(
@@ -45,7 +45,7 @@ Container(
     
       Expanded(
           child: Container(
-              margin: EdgeInsets.only(top: 52.h),
+              margin: EdgeInsets.only(top: 55.h),
               child:    Column(
                 children: [
                   Container(
@@ -57,7 +57,18 @@ Container(
 
                     ),),
                   ),
+ Container(
+                margin: EdgeInsets.only(top: 8.h),
 
+                    child: Text("Powered by HappSales",style: TextStyle(
+                        fontFamily: 'roboto_regular',
+                        color: Colors.grey,
+                        fontSize: 10.sp
+                        ,
+                        fontWeight: FontWeight.w500
+
+                    ),),
+                  ),
 
                   Container(
                     margin: EdgeInsets.only(top: 22.h),
@@ -101,23 +112,23 @@ Container(
   ),
 
   Positioned(
-        top: -30,
-        left: 145.w,
+        top: -50,
+        left: 140.w,
         child: Container(
 
           child: Center(
             child: Image.asset('assets/ami/ami_logo.png'),
           ),
         
-        width: 80.w,
-        height: 80.h,
+        width: 100.w,
+        height: 100.h,
         decoration: BoxDecoration(
           boxShadow:  [
         BoxShadow(
           color: Colors.black.withOpacity(0.0),
-          spreadRadius: 8,
+          spreadRadius: 12,
           blurRadius: 2,
-          offset: Offset(0.5, 10), // changes position of shadow
+          offset: Offset(0.9, 10), // changes position of shadow
         ),],
           color: Colors.white,
           shape: BoxShape.circle, 
