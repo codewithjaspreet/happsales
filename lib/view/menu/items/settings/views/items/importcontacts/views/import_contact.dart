@@ -38,23 +38,38 @@ class ImportContact extends StatelessWidget {
                   // Get.to(direct);
                 },
                 child: Container(
-                  margin:  EdgeInsets.only(right: 16.w),
-                  width: 30.w,
+                  margin:  EdgeInsets.only(right: 10.w),
+                  width: 120.w,
                   height: 30.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
+                  decoration:  BoxDecoration(
                     color: Color(0xff171A63),
+                    borderRadius: BorderRadius.all(Radius.circular(30.sp))
 
                   ),
-                  child: const Center(
-                    child: Icon(Icons.add ,color: Colors.white,),
+                  child:  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+
+                        Icon(Icons.map_outlined ,color: Colors.white,),
+                        Container(
+
+                          margin: EdgeInsets.only(left: 4.w),
+                          child: Text('Map To Account',style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp
+                          ),),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
               Center(
 
                 child:  Container(
-                  margin:  EdgeInsets.only(right: 16.w),
+                  margin:  EdgeInsets.only(right: 5.w),
                   width: 25.w,
                   height: 25.h,
                   decoration: const BoxDecoration(
