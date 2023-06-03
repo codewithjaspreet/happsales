@@ -42,26 +42,7 @@ chatList() {
 
               child: Row(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left : 12.sp),
-                    width: 40.w,
-                    height: 40.w,
-                    decoration: const BoxDecoration(
-                      color: Colors.purple,
-                      shape: BoxShape.circle
-                    ),
-                    child: GestureDetector(
-                      onTap: (){
-                        // Get.to(const AddContact());
-                      },
-                      child: Center(
-                        child: Text('A'.toString(),style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp
-                        ),),
-                      ),
-                    ),
-                  ),
+                  Image.asset('assets/chats/chat_individual.png'),
 
                   Column(
 

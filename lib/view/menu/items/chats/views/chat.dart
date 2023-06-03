@@ -45,7 +45,7 @@ class ChatPage extends StatelessWidget {
                         },
                         child: Container(
                           child: Center(
-                            child: Icon(Icons.people  , color: Colors.white,size: 14.sp,),
+                            child: Image.asset('assets/chats/add_user.png')
                           ),
                           width: 22.w,
                           height: 22.h,
@@ -65,7 +65,9 @@ class ChatPage extends StatelessWidget {
                         },
                         child: Container(
                           child: Center(
-                            child: Icon(Icons.group_add_rounded  , color: Colors.white,size: 14.sp,),
+                            child:Image.asset('assets/group.png'),
+                            
+                          
                           ),
                           margin: EdgeInsets.only(left: 18.w),
                           width: 22.w,
@@ -101,7 +103,7 @@ class ChatPage extends StatelessWidget {
           
               Container(
                 margin: EdgeInsets.only(top: 12.h),
-                child: Image.asset('assets/opportunity/banner.png'))
+                child: Image.asset('assets/chats/chat_header.png'))
             ,
           
           

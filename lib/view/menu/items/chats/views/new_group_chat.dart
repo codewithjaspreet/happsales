@@ -55,16 +55,17 @@ class GroupChat extends StatelessWidget {
             children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundColor: Colors.blue.withOpacity(0.9),
-                  child: Icon(Icons.people , color: AppColors.primaryColor,size: 28.sp,),
+                Container(
+                  width: 50.w,
+                  height: 50.h,
+                  child: Image.asset('assets/chats/chat_dark_group.png'),
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: 20.h,left: 10.w),
                   child: Text('New Group',style: TextStyle(
                     color: Colors.white,
-                    fontFamily: 'roboto_bold'
+                    fontFamily: 'roboto_bold',
+                    fontSize: 18.sp
                   ),),
                 )
                 

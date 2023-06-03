@@ -56,11 +56,10 @@ class ChatScreen extends StatelessWidget {
             children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundColor: Colors.blue.withOpacity(0.9),
-                  child: Icon(Icons.people , color: AppColors.primaryColor,size: 28.sp,),
-                ),
+               Container(
+                width: 50.w,
+                height: 50.h,
+                child: Image.asset('assets/chats/chat_individual.png')),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
