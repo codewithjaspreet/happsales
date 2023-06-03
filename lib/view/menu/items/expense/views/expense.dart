@@ -124,7 +124,7 @@ class ExpenseRow extends StatelessWidget {
                  fontSize: 14.sp,
                  fontWeight: FontWeight.bold
                
-               ),),
+              ),),
              ),
            ),
           

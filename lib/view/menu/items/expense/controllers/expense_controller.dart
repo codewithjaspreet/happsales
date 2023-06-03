@@ -11,8 +11,9 @@ class ExpenseController extends GetxController{
   RxBool expenseDetails = true.obs;
   RxBool expenseEntry = true.obs;
   DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
   TextEditingController dateController = TextEditingController();
-  
+  TextEditingController timeController = TextEditingController();
    
 
   @override
@@ -20,7 +21,7 @@ class ExpenseController extends GetxController{
     // TODO: implement onInit
     super.onInit();
     dateController.text  = DateFormat('d MMMM').format(DateTime.parse(selectedDate.toString()));
-
+    timeController.text = TimeOfDay.now().toString();
   }
   
   
@@ -47,10 +48,21 @@ class ExpenseController extends GetxController{
             } else {
               print("Date is not selected");
             }
+
+
   }
-  
+          Future<void> pickTime(BuildContext context) async {
+          final TimeOfDay? picked_s = await showTimePicker(
+              context: context,
+              initialTime: selectedTime, 
+                
+                );
 
+          if (picked_s != null && picked_s != selectedTime )
+              selectedTime = picked_s;
 
+            
+          }
 
   void toggleOpen(){
     isOpen.value = !isOpen.value;

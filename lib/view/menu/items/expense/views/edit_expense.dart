@@ -105,80 +105,44 @@ class EditExpense extends StatelessWidget {
                 Row(
                   children: [
                     ExpenseDatePicker(labelText: 'Start Date*' ,),
-                  // Container(
-                  //   width:180.w,
-                              
-                  // padding: EdgeInsets.only(left: 16.w , right: 16.w, top: 2.h),
-                  // child: GestureDetector(
-                  //   onTap: (){
-                  //     controller.pickDate(context);
-                    
-                  //   },
-                  //   child: TextFormField(
-                  //     // initialValue: DateTime.now().toString(),
-                  //     controller: controller.dateController,
-                                
-                                
-                  //     decoration: InputDecoration(
-                                
-                  //   labelText: 'Start Date*',
-                  //   floatingLabelStyle: const TextStyle(
-                  //     color : Color(0xff00A6D6),
-                  //   ),
-                  //   labelStyle: const TextStyle(
-                  //     color: Color(0xff8F9BB3),
-                  //   ),
-                  //   hintText: 'End Date*',
-                                
-                                
-                  //   hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
-                  //   border: OutlineInputBorder(
-                                
-                                
-                  //     borderRadius: BorderRadius.circular(2.sp),
-                  //     borderSide: const BorderSide(
-                                
-                  //       color: Color(0xffB4C6D4),
-                  //     ),
-                                
-                  //   ),
-                                
-                  //     ),
-                  //   ),
-                  // ),
-                  //                 ),
-              
+                 
                 Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   width:180.w,
               
-                padding: EdgeInsets.only( right: 16.w, top: 2.h),
-                child: TextFormField(
-              
-              
-                  decoration: InputDecoration(
-              
-                labelText: 'Activity Time*',
-                floatingLabelStyle: const TextStyle(
-                  color : Color(0xff00A6D6),
-                ),
-                labelStyle: const TextStyle(
-                  color: Color(0xff8F9BB3),
-                ),
-                hintText: 'Activity Time*',
-              
-              
-                hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
-                border: OutlineInputBorder(
-              
-              
-                  borderRadius: BorderRadius.circular(2.sp),
-                  borderSide: const BorderSide(
-              
-                    color: Color(0xffB4C6D4),
+                child: GestureDetector(
+                  onTap: () {
+                    controller.pickTime(context);
+                  },
+                  child: TextFormField(
+                    
+                    controller: controller.timeController,
+                              
+                    decoration: InputDecoration(
+                              
+                  labelText: 'Activity Time*',
+                  floatingLabelStyle: const TextStyle(
+                    color : Color(0xff00A6D6),
                   ),
-              
-                ),
-              
+                  labelStyle: const TextStyle(
+                    color: Color(0xff8F9BB3),
+                  ),
+                  hintText: 'Activity Time*',
+                              
+                              
+                  hintStyle: TextStyle(color: const Color(0xff8F9BB3),fontSize: 14.sp,fontWeight: FontWeight.w400,fontFamily: "roboto_regular"),
+                  border: OutlineInputBorder(
+                              
+                              
+                    borderRadius: BorderRadius.circular(2.sp),
+                    borderSide: const BorderSide(
+                              
+                      color: Color(0xffB4C6D4),
+                    ),
+                              
+                  ),
+                              
+                    ),
                   ),
                 ),
                   ),
