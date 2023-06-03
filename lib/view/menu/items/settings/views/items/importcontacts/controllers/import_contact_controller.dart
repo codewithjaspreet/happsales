@@ -18,6 +18,7 @@ class ImportContactController extends GetxController{
   List<Contact> contactList = [];
   List<Contact> selectedContactList = [];
   RxBool isLoading= true.obs;
+  
   RxBool isCheckboxSelected = false.obs;
 
   void permissionCheck() async {
