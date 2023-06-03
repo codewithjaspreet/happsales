@@ -31,11 +31,14 @@ class ChatPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Chat' ,style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.sp
-                  ),),
+                  Container(
+                  margin: EdgeInsets.only(left: 8.w),
+                    child: Text('Chat' ,style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp
+                    ),),
+                  ),
           
                   Row(
                     children: [
