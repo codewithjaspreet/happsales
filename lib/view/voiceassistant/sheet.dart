@@ -113,31 +113,57 @@ Container(
 
   Positioned(
         top: -50,
-        left: 140.w,
+        left: 150.w,
+        
         child: Container(
-
+        
           child: Center(
             child: Image.asset('assets/ami/ami_logo.png'),
           ),
         
-        width: 100.w,
-        height: 100.h,
+        width: 80.w,
+        height: 80.h,
         decoration: BoxDecoration(
-          boxShadow:  [
+        boxShadow:  [
         BoxShadow(
-          color: Colors.black.withOpacity(0.0),
-          spreadRadius: 12,
-          blurRadius: 2,
-          offset: Offset(0.9, 10), // changes position of shadow
+          color: Colors.black.withOpacity(0.2),
+          spreadRadius: 2,
+          blurRadius: 7,
+          offset: Offset(-0, -2), // changes position of shadow
         ),],
           color: Colors.white,
           shape: BoxShape.circle, 
         
         ),
             
-      )),
+            )),
     ],
   );
   },
 );
 }
+ class CustomClip extends CustomClipper<Path> {
+      @override
+      Path getClip(Size size) {
+        double radius = 100;
+    
+        Path path = Path();
+        path
+          ..moveTo(size.width / 2, 0)
+          ..arcToPoint(Offset(size.width, size.height),
+              radius: Radius.circular(radius))
+          ..lineTo(0, size.height)
+          ..arcToPoint(
+            Offset(size.width / 2, 0),
+            radius: Radius.circular(radius),
+          )
+          ..close();
+    
+        return path;
+      }
+    
+      @override
+      bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+        return true;
+      }
+    }
