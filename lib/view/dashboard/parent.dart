@@ -100,7 +100,7 @@ class DashBoardPage extends StatelessWidget {
                 Tab(
                   child: Column(
                     children: [
-                      Container(
+                       Container(
                         width: 22.w,
                         height: 22.h,
                         child: Image.asset(list[2])),
@@ -129,17 +129,47 @@ class DashBoardPage extends StatelessWidget {
 
                 ),
                   Tab(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 22.w,
-                        height: 22.h,
-                        child: Image.asset(list[4])),
-                      SizedBox(height: 3.h,),
-                      FittedBox(child: Text('Notifications',style: TextStyle(
-                        fontSize: 7.sp
-                      ),))
-                    ],
+                  child: Container(
+                    width: 80.w,
+                    height: 40.h,
+                    child: Column(
+                      children: [
+                       Stack(
+                        clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                          width: 60.w,
+                          height: 20.h,
+                          child: Image.asset(list[4])),
+                  
+                          Positioned(
+                            left: 20.w,
+                            top: -10,
+                            child:Container(
+                              margin: EdgeInsets.only(left: 10.w,bottom: 4.h),
+                              child: Center(
+                                child: Text('2',style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'roboto_bold',
+                                  fontSize: 7.sp
+                                ),),
+                              
+                              ),
+                            height: 16.h,
+                            width: 16.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.w),
+                              color : AppColors.themeColor
+                            ),
+                          ))
+                          ],
+                        ),
+                        SizedBox(height: 3.h,),
+                        FittedBox(child: Text('Notifications',style: TextStyle(
+                          fontSize: 7.sp
+                        ),))
+                      ],
+                    ),
                   )
 
                 ),

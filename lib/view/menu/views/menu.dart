@@ -123,7 +123,7 @@ class Menu extends StatelessWidget {
                 Get.to(() => const ChatPage());
               
               },
-              child: const _buildGridItem(title : 'Chat', image: 'assets/settings.png' )),
+              child: const _buildGridItem(title : 'Chat', image: 'assets/ic_chat@2x.png' )),
           
           
           ],
