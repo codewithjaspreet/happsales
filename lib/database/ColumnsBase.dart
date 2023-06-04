@@ -1,29 +1,3 @@
-/*************************************************************************
- *
- * HAPPSALES CONFIDENTIAL
- * ____________________________________
- *
- *  [2019-23] HappSales Private Limited
- *  www.happsales.com
- *  All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains the property of HappSales Private Limited.
- * The intellectual and technical concepts contained herein are proprietary to HappSales Private Limited
- * and  are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material is strictly forbidden unless prior
- * written permission is obtained from HappSales Private Limited.
- */
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// Class Name    : ColumnsBase
-// Created By    : Vijay Kumar Vettath
-// Created Date  : Nov-2019
-// Purpose       : Class for defining the database table columns
-// Details       : This class defined all columns in the app database
-// Change History:- 
-// Date:      
-// Author:
-// Change: 
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
