@@ -2,12 +2,12 @@
  class TablesBase {
 
     //Tables
-     static  final String TABLE_CONFIGURATION = "AmiConfiguration";
+     static final String TABLE_CONFIGURATION = "AmiConfiguration";
      static final String TABLE_APPSYNC = "AppSync";
      static final String TABLE_DESIGNATION_BC = "Designationbc";
 
      static final String TABLE_ACCOUNT = "Account";
-     static final String TABLE_ACCOUNTADDRESS = "AccountAddress";
+     static const String TABLE_ACCOUNTADDRESS = "AccountAddress";
      static final String TABLE_ACCOUNTBUSINESSPLAN = "AccountBusinessPlan";
      static final String TABLE_ACCOUNTBUSINESSUNIT = "AccountBusinessUnit";
      static final String TABLE_ACCOUNTBUYINGPROCESS = "AccountBuyingProcess";
