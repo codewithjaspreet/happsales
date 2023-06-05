@@ -22,7 +22,7 @@ Widget AmiRow(String imageUrl , String title ){
             children: [
               Image.asset(imageUrl),
               Container(
-                margin: EdgeInsets.only(left: 8.w),
+                margin: EdgeInsets.only(left: 10.w),
                 child: Text(title,style: TextStyle(
                     fontFamily: 'roboto_medium',
                     fontSize: 14.sp

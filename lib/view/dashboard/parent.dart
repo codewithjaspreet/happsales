@@ -177,6 +177,7 @@ class DashBoardPage extends StatelessWidget {
             ),
           ),
           body:   Stack(
+            clipBehavior: Clip.none,
             children: [ Column(
               children: [
                 const Expanded(

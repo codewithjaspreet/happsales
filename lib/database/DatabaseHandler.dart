@@ -6,8 +6,6 @@ import 'package:path/path.dart';
 
 import 'Columns.dart';
 import 'ColumnsBase.dart';
-import 'ColumnsBase.dart';
-import 'TablesBase.dart';
 import 'TablesBase.dart';
 
 class DatabaseHandler {

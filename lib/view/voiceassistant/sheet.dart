@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/voiceassistant/voice.dart';
-
+import 'package:get/get.dart';
 import 'ami_row.dart';
 
-Widget bottomDetailsSheet() {
+class bottomDetailsSheet extends StatelessWidget {
 
-List<String> animalNames = ['Elephant', 'Tiger', 'Kangaroo'];
-List<String> animalFamily = ['Elephantidae', 'Panthera', 'Macropodidae'];
-List<String> animalLifeSpan = ['60-70', '8-10', '15-20'];
-List<String> animalWeight = ['2700-6000', '90-310', '47-66'];
-int selectedTile = 0;
-
-return DraggableScrollableSheet(
+  PageController pageController = PageController(initialPage: 0);
+  @override
+  Widget build(BuildContext context) {
+   return DraggableScrollableSheet(
+  expand: true,
   initialChildSize: 0.18,
   minChildSize: 0.18,
-  maxChildSize: .6,
+  maxChildSize: 1,
+  // maxChildSize: 1.0,
   builder: (BuildContext context, ScrollController scrollController) {
   return Stack(
           clipBehavior: Clip.none,
-
+    
     children: [
-
+    
+    
       
-Container(
+    Container(
     decoration: BoxDecoration(
       boxShadow:  [
         BoxShadow(
@@ -39,8 +40,14 @@ Container(
         topRight: Radius.circular(15.r),
       ),
     ),
-    child: ListView(
-    controller: scrollController,
+    child: PageView(
+      controller: pageController,
+      children: [
+
+
+        // page 0
+      ListView(
+     controller: scrollController,
     children: [
     
       Expanded(
@@ -49,49 +56,96 @@ Container(
               child:    Column(
                 children: [
                   Container(
-                    child: Text("Hi I'm Ami, how can I help you?",style: TextStyle(
+                    child: Text("PAGE - 0",style: TextStyle(
                         fontFamily: 'roboto_bold',
                         fontSize: 18.sp
                         ,
                         fontWeight: FontWeight.w500
-
+    
                     ),),
                   ),
- Container(
+     Container(
                 margin: EdgeInsets.only(top: 8.h),
-
+    
                     child: Text("Powered by HappSales",style: TextStyle(
                         fontFamily: 'roboto_regular',
                         color: Colors.grey,
                         fontSize: 10.sp
                         ,
                         fontWeight: FontWeight.w500
-
+    
                     ),),
                   ),
-
+    
                   Container(
                     margin: EdgeInsets.only(top: 22.h),
-
+    
                     child:Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        AmiRow("assets/ami/building.png" , "I want to know about my company")
-                        ,AmiRow("assets/ami/people.png" , "Want to create a contact?")
+                        GestureDetector(
+                          onTap: () {
+                            // Get.to(AccountAmi)
+                          },
+                          child: GestureDetector(
+                            
+                            
+                            onTap: (){
+
+                              pageController.jumpToPage(1);
+                            },
+                            child: AmiRow("assets/ami/building.png" , "Want to setup an Account? ")))
+                        ,GestureDetector(
+                          onTap: () {
+                            pageController.jumpToPage(2);
+                          },
+                          child: AmiRow("assets/ami/people.png" , "Want to create a contact?"))
                         ,AmiRow("assets/ami/money.png" , "Want to create an opportunity?")
                         ,AmiRow("assets/ami/calender.png" , "Want to create an activity?")
+                       , Container(
 
+                        
+                        child: Column(
+                          
+                          children: [
+                            Container(
+                              
+                              child: Text('Command Examples',style: TextStyle(
+                                color: AppColors.primaryColor
+                              ),),
+                            ),
+    
+                           
+                          ],
+                        ),
+                        margin: EdgeInsets.only(top: 20.h),
+                          width: 300.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 3,
+                                blurRadius: 2,
+                                offset: Offset(0, 4), // changes position of shadow
+                              ),
+                            
+                            ],
+                            border: Border.all(color:  Colors.grey.withOpacity(0.2)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        )
                       ],
                     ),
-
+    
                   ),
-
+    
                   Container(
-
+    
                       margin: EdgeInsets.only(top: 20.h),
-
+    
                       child: AmiVoice()),
-
+    
                   Container(
                     margin: EdgeInsets.only(top: 8.h),
                     child: Text("Powered by HappSales",style: TextStyle(
@@ -109,8 +163,77 @@ Container(
       
     ],
     ),
-  ),
 
+
+
+// page 1
+ ListView(
+     controller: scrollController,
+    children: [
+    
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(top: 55.h),
+              child:    Column(
+                children: [
+                  Container(
+                    child: Text("PAGE - 1",style: TextStyle(
+                        fontFamily: 'roboto_bold',
+                        fontSize: 18.sp
+                        ,
+                        fontWeight: FontWeight.w500
+    
+                    ),),
+                  ),
+    
+                  
+                ],
+              )
+          ),
+        ),
+      
+      
+    ],
+    ),
+
+
+
+
+    // page 2
+
+
+
+     ListView(
+     controller: scrollController,
+    children: [
+    
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(top: 55.h),
+              child:    Column(
+                children: [
+                  Container(
+                    child: Text("Page - 2",style: TextStyle(
+                        fontFamily: 'roboto_bold',
+                        fontSize: 18.sp
+                        ,
+                        fontWeight: FontWeight.w500
+    
+                    ),),
+                  ),
+     
+                ],
+              )
+          ),
+        ),
+      
+      
+    ],
+    ),
+   
+    ],)
+  ),
+    
   Positioned(
         top: -50,
         left: 150.w,
@@ -126,10 +249,10 @@ Container(
         decoration: BoxDecoration(
         boxShadow:  [
         BoxShadow(
-          color: Colors.black.withOpacity(0.2),
-          spreadRadius: 2,
-          blurRadius: 7,
-          offset: Offset(-0, -2), // changes position of shadow
+          color: Colors.black12 .withOpacity(0.1),
+          spreadRadius: 1,
+          blurRadius: 6,
+          offset: Offset(-0, -14), // changes position of shadow
         ),],
           color: Colors.white,
           shape: BoxShape.circle, 
@@ -137,11 +260,16 @@ Container(
         ),
             
             )),
+           
+
     ],
-  );
+    
+    );
   },
 );
+  }
 }
+
  class CustomClip extends CustomClipper<Path> {
       @override
       Path getClip(Size size) {

@@ -61,6 +61,7 @@ class _ContactPageState extends State<ContactPage> {
 
       body: isLoading
           ? Stack(
+            clipBehavior: Clip.none,
             children: [
               const CircularProgressIndicator(),
               bottomDetailsSheet()
