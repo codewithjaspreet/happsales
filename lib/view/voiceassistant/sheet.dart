@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
 import 'package:happsales_crm/view/voiceassistant/voice.dart';
@@ -18,12 +19,11 @@ class bottomDetailsSheet extends StatelessWidget {
   // maxChildSize: 1.0,
   builder: (BuildContext context, ScrollController scrollController) {
   return Stack(
-          clipBehavior: Clip.none,
+
+    clipBehavior: Clip.none,
     
     children: [
-    
-    
-      
+
     Container(
     decoration: BoxDecoration(
       boxShadow:  [
@@ -48,7 +48,7 @@ class bottomDetailsSheet extends StatelessWidget {
         // page 0
       ListView(
      controller: scrollController,
-    children: [
+     children: [
     
       Expanded(
           child: Container(
@@ -171,26 +171,151 @@ class bottomDetailsSheet extends StatelessWidget {
      controller: scrollController,
     children: [
     
-      Expanded(
-          child: Container(
-              margin: EdgeInsets.only(top: 55.h),
-              child:    Column(
-                children: [
-                  Container(
-                    child: Text("PAGE - 1",style: TextStyle(
-                        fontFamily: 'roboto_bold',
-                        fontSize: 18.sp
-                        ,
-                        fontWeight: FontWeight.w500
-    
-                    ),),
-                  ),
-    
-                  
-                ],
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+
+          Container(
+          margin: EdgeInsets.only(top: 55.h,right: 20.w),
+          child:    Column(
+            children: [
+
+              Container(
+                decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.r),
+                topRight: Radius.circular(15.r),
+                bottomLeft: Radius.circular(15.r),
+                
+              
               )
-          ),
-        ),
+              ),
+                     width: 130.w,
+                     height: 80.h,
+                    
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Text(
+                          'You',
+                          style: TextStyle(
+                            color: AppColors.themeColor
+                            , fontFamily: 'roboto_bold'
+                          ),
+                           
+                        ),
+                        Text(
+                          'Create Account',
+                          style: TextStyle(
+                             
+                          ),
+                           
+                        ),
+
+                        Container(
+                          margin: EdgeInsets.only(top: 23.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                        
+                              Text('25 May-2023 04:19',style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10.sp
+                              ),)
+                            
+                            ],
+                          ),
+                        )
+                    ],),
+                  )
+                    ),
+
+           
+            ],
+          )
+      ),
+      
+        ],
+      ),
+
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+
+          Container(
+          margin: EdgeInsets.only(top: 30.h,left: 10.w),
+          child:    Column(
+            children: [
+
+              Container(
+                decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.r),
+                topRight: Radius.circular(15.r),
+                bottomLeft: Radius.circular(15.r),
+                
+              
+              )
+              ),
+                     width: 210.w,
+                     height: 80.h,
+                    
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      Text(
+                          'You',
+                          style: TextStyle(
+                            color: AppColors.themeColor
+                            , fontFamily: 'roboto_bold'
+                          ),
+                           
+                        ),
+                        Text(
+                          'Please fill the form given below',
+                          style: TextStyle(
+                             
+                          ),
+                           
+                        ),
+
+                        Container(
+                          margin: EdgeInsets.only(top: 23.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                        
+                              Text('25 May-2023 04:19',style: TextStyle(
+                                fontSize: 10.sp,
+                                color: Colors.grey,
+
+                              ),)
+                            
+                            ],
+                          ),
+                        ),
+
+                        
+
+
+                    ],),
+                  )
+                    ),
+
+           
+            ],
+          )
+      ),
+      
+        ],
+      )
       
       
     ],
