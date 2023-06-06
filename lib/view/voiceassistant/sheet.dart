@@ -430,7 +430,7 @@ class bottomDetailsSheet extends StatelessWidget {
                                                           'roboto_bold'),
                                                 ),
                                                 Text(
-                                                  'Create Account',
+                                                  'Create Contact',
                                                   style: TextStyle(),
                                                 ),
                                                 Container(
