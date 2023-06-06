@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/HDivider.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet_controller.dart';
 import 'package:happsales_crm/view/voiceassistant/voice.dart';
 import 'package:get/get.dart';
@@ -156,7 +157,7 @@ class bottomDetailsSheet extends StatelessWidget {
                       ],
                     ),
 
-// page 1
+// page 1 - account creation
                     ListView(
                       controller: scrollController,
                       children: [
@@ -387,30 +388,442 @@ class bottomDetailsSheet extends StatelessWidget {
                       ],
                     ),
 
-                    // page 2
 
-                    ListView(
+
+
+                    // page 2
+ ListView(
                       controller: scrollController,
                       children: [
-                        Expanded(
-                          child: Container(
-                              margin: EdgeInsets.only(top: 55.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 55.h, right: 20.w),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15.r),
+                                                topRight: Radius.circular(15.r),
+                                                bottomLeft:
+                                                    Radius.circular(15.r),
+                                              )),
+                                          width: 130.w,
+                                          height: 80.h,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'You',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.themeColor,
+                                                      fontFamily:
+                                                          'roboto_bold'),
+                                                ),
+                                                Text(
+                                                  'Create Account',
+                                                  style: TextStyle(),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 23.h),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        '25 May-2023 04:19',
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 10.sp),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 10.h, left: 10.w),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15.r),
+                                              topRight: Radius.circular(15.r),
+                                              bottomRight: Radius.circular(15.r),
+                                            )),
+                                        width: 140.w,
+                                        height: 80.h,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Ami',
+                                                style: TextStyle(
+                                                    color: AppColors.themeColor,
+                                                    fontFamily: 'roboto_bold'),
+                                              ),
+                                              Text(
+                                                'Cancelled',
+                                                style: TextStyle(),
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 23.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      '25 May-2023 04:19',
+                                                      style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ],
+                        ),
+
+                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 10.h, right: 20.w),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15.r),
+                                                topRight: Radius.circular(15.r),
+                                                bottomLeft:
+                                                    Radius.circular(15.r),
+                                              )),
+                                          width: 130.w,
+                                          height: 80.h,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'You',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.themeColor,
+                                                      fontFamily:
+                                                          'roboto_bold'),
+                                                ),
+                                                Text(
+                                                  'Create Contact',
+                                                  style: TextStyle(),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 23.h),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        '25 May-2023 04:19',
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 10.sp),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 30.h, left: 10.w),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15.r),
+                                              topRight: Radius.circular(15.r),
+                                              bottomRight: Radius.circular(15.r),
+                                            )),
+                                        width: 280.w,
+                                        height: 95.h,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Ami',
+                                                style: TextStyle(
+                                                    color: AppColors.themeColor,
+                                                    fontFamily: 'roboto_bold'),
+                                              ),
+                                              Text(
+                                                'Do you have the business card of the contact',
+                                                style: TextStyle(),
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 23.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      '25 May-2023 04:19',
+                                                      style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ],
+                        ),
+                        Container(
+                            child: SingleChildScrollView(
                               child: Column(
                                 children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            top: 10.h, left: 10.w),
+                                        child: Text(
+                                          'Ami',
+                                          style: TextStyle(
+                                              color: AppColors.themeColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   Container(
-                                    child: Text(
-                                      "Page - 2",
-                                      style: TextStyle(
-                                          fontFamily: 'roboto_bold',
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500),
+                                    padding: EdgeInsets.all(12.sp),
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.sp),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Account Details',
+                                            style: TextStyle(
+                                                fontFamily: 'roboto_bold',
+                                                fontSize: 16.sp,
+                                                color: AppColors.primaryColor),
+                                          ),
+                                          Obx(() => GestureDetector(
+                                                onTap: () {
+                                                  sheetController
+                                                          .isAccountFormOpen
+                                                          .value =
+                                                      !sheetController
+                                                          .isAccountFormOpen
+                                                          .value;
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          sheetController
+                                                                  .isAccountFormOpen
+                                                                  .value =
+                                                              !sheetController
+                                                                  .isAccountFormOpen
+                                                                  .value;
+                                                        },
+                                                        child: Image.asset(sheetController
+                                                                .isAccountFormOpen
+                                                                .value
+                                                            ? "assets/contacts/up.png"
+                                                            : "assets/contacts/back.png")),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                  Obx(() =>
+                                      sheetController.isAccountFormOpen.value
+                                          ? Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 3.h,
+                                                  left: 10.w,
+                                                  right: 10.w),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Input(title: 'Account Name*'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Location*'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Segment'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Status'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Type'),
+                                                ],
+                                              ),
+                                            )
+                                          : SizedBox.shrink()),
+                              Hdivider(),
+                                           Container(
+                                    padding: EdgeInsets.all(12.sp),
+                                    child: Container(
+                                      padding: EdgeInsets.all(12.sp),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Account Details',
+                                            style: TextStyle(
+                                                fontFamily: 'roboto_bold',
+                                                fontSize: 16.sp,
+                                                color: AppColors.primaryColor),
+                                          ),
+                                          Obx(() => GestureDetector(
+                                                onTap: () {
+                                                  sheetController
+                                                          .isAccountFormOpen
+                                                          .value =
+                                                      !sheetController
+                                                          .isAccountFormOpen
+                                                          .value;
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          sheetController
+                                                                  .isAccountFormOpen
+                                                                  .value =
+                                                              !sheetController
+                                                                  .isAccountFormOpen
+                                                                  .value;
+                                                        },
+                                                        child: Image.asset(sheetController
+                                                                .isAccountFormOpen
+                                                                .value
+                                                            ? "assets/contacts/up.png"
+                                                            : "assets/contacts/back.png")),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Obx(() =>
+                                      sheetController.isAccountFormOpen.value
+                                          ? Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 3.h,
+                                                  left: 10.w,
+                                                  right: 10.w),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Input(title: 'Account Name*'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Location*'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Segment'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Status'),
+                                                  SizedBox(
+                                                    height: 5.h,
+                                                  ),
+                                                  Input(title: 'Type'),
+                                                ],
+                                              ),
+                                            )
+                                          : SizedBox.shrink()),
                                 ],
-                              )),
-                        ),
+                              ),
+                            ),
+                            margin: EdgeInsets.only(
+                                top: 20.h, left: 10.w, right: 10.w),
+                            height: 600.h,
+                            width: 340.w,
+                            decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10.r)))
                       ],
                     ),
+                   
                   ],
                 )),
             Positioned(
