@@ -282,7 +282,7 @@ class Conversations extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Ami',
+                                                'Renuka',
                                                 style: TextStyle(
                                                     color: AppColors.themeColor,
                                                     fontFamily: 'roboto_bold'),
