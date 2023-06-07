@@ -54,7 +54,7 @@ class bottomDetailsSheet extends StatelessWidget {
                                 children: [
                                   Container(
                                     child: Text(
-                                      "PAGE - 0",
+                                      "Hi I'm Ami, how can I help you? ",
                                       style: TextStyle(
                                           fontFamily: 'roboto_bold',
                                           fontSize: 18.sp,
@@ -661,7 +661,7 @@ class bottomDetailsSheet extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Account Details',
+                                            'Contact Details',
                                             style: TextStyle(
                                                 fontFamily: 'roboto_bold',
                                                 fontSize: 16.sp,
@@ -741,7 +741,7 @@ class bottomDetailsSheet extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'Account Details',
+                                            'More Details',
                                             style: TextStyle(
                                                 fontFamily: 'roboto_bold',
                                                 fontSize: 16.sp,
@@ -811,6 +811,38 @@ class bottomDetailsSheet extends StatelessWidget {
                                               ),
                                             )
                                           : SizedBox.shrink()),
+
+                                           Container(
+                margin:   EdgeInsets.all(30.sp),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 100.w,
+                      height:35.h,
+                      decoration: BoxDecoration(
+                        borderRadius:  BorderRadius.circular(26.sp),
+                        color: const Color(0xff8199AC),
+                      ),
+                      child: Center(child: Text("Cancel" , style:   TextStyle(color: Colors.white,fontSize: 18.sp),)),
+                    ),
+                    Container(
+                      width: 100.w,
+                      height:35.h,
+                      decoration: BoxDecoration(
+                        borderRadius:  BorderRadius.circular(26.sp),
+      
+                        shape: BoxShape.rectangle,
+                        color: AppColors.primaryColor,
+                      ),
+                      child: Center(child: Text("Save" , style:   TextStyle(color: Colors.white,fontFamily: "roboto_bold"
+                      ,fontSize: 18.sp
+                      ),)),
+                    )
+                  ],
+                ),
+              )
+      
                                 ],
                               ),
                             ),

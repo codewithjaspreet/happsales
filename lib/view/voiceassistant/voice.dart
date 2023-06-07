@@ -3,35 +3,39 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget AmiVoice(){
 
-  return Container(
 
-    width: 323.w,
-    height: 50.h,
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: const Color(0xffB4C6D4),
-        width: 1,
+return Container(
+
+  decoration: BoxDecoration(
+  ),
+      padding: EdgeInsets.only(left: 28.w , right: 28.w, top: 10.h),
+      child: TextFormField(
+
+        decoration: InputDecoration(
+          
+
+          
+          hintText:'Chat or give a voice command to Ami!' ,
+
+
+          hintStyle: TextStyle(
+                color: Color(0xffB4C6D4),
+                fontSize: 13.sp
+            ),
+          border: OutlineInputBorder(
+
+
+            borderRadius: BorderRadius.circular(20.sp),
+            borderSide: const BorderSide(
+
+              color: Color(0xffB4C6D4),
+            ),
+
+          ),
+
+        ),
       ),
-      color:  Colors.white,
-      borderRadius: BorderRadius.circular(24.sp),
-    ),
-
-    child: Container(
-      margin : EdgeInsets.symmetric(horizontal: 12.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("Chat or give a voice command to Ami!",style: TextStyle(
-              color: Color(0xffB4C6D4)
-          ),),
-
-          SizedBox(
-              width: 22.h,
-              height: 22.h,
-              child: Image.asset("assets/ami/voice.png"))
-        ],
-      ),
-    ),
-  );
+    );
+ 
 
 }
