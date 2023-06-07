@@ -7,6 +7,7 @@ import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/ToggleButtonRow.dart';
+import 'package:happsales_crm/view/voiceassistant/voice.dart';
 
 import '../../../views/menu.dart';
 import '../widgets/chat_model.dart';
@@ -49,11 +50,14 @@ class ChatScreen extends StatelessWidget {
       backgroundColor: AppColors.primaryColor,
 
       body: Stack(
-        children:[ Container(
+        children:[ 
+          
+          Container(
           padding: EdgeInsets.all(12.sp),
           child: Column(
             
             children: [
+
             Row(
               children: [
                Container(
@@ -83,39 +87,100 @@ class ChatScreen extends StatelessWidget {
               ],
             ),
 
-           
 
-
-            
-           
 
           ],),
         ),
 
-        Container(
-          child: Container(
-            child: SingleChildScrollView(
+        Stack(
+          children:[ 
+            Container(
+             child: SingleChildScrollView(
               child: Column(
-                
                 children: [
-                      
+                  
+                  // CHAT SECTION
 
-            ConversationList(),
-           SendingTile()
+                  ListView.builder(itemBuilder: (context,index){
 
-              ]
+
+                    return Column(
+                      children: [
+
+                        Text('assa'),
+                      ],
+                    );
+                  }, itemCount: 10, shrinkWrap: true,),
               
+                 
+                 
+                  
+                ],
               ),
+             ),
+            margin: EdgeInsets.only(top: 85.h),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r),topRight: Radius.circular(20.r)),
             ),
-          ),
-          margin: EdgeInsets.only(top: 85.h),
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.r),topRight: Radius.circular(20.r)),
-          ),
+              
+              
+                ),
+
+       
+                  Container(
+                    
+                    margin: EdgeInsets.only(top: 620.h,left: 20.w,right: 20.w),
+                    child: Column(
+                      children: [
+                      Container(
+              
+                        width: 330.w,
+                        height: 40.h,
+              
+              decoration: BoxDecoration(
+              ),
+                  child: TextFormField(
+              
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.send , color: AppColors.primaryColor,),
+              
+                      
+                      hintText:'Chat with Renuka!' ,
+              
+              
+                      hintStyle: TextStyle(
+                color: Color(0xffB4C6D4),
+                fontSize: 13.sp
+                
+                        ),
+                      border: OutlineInputBorder(
+              
+              
+                        borderRadius: BorderRadius.circular(20.sp),
+                        borderSide: const BorderSide(
+              
+              color: Color(0xffB4C6D4),
+                        ),
+              
+                      ),
+              
+                    ),
+                  ),
+                ),
+                  
+                                Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: Text('Powered By HappSales' , style: TextStyle(color: Colors.grey),))
+                      ],
+                    ),
+                  )
+          ]
         ),
+
+        
 
         ]
       ),
@@ -123,158 +188,17 @@ class ChatScreen extends StatelessWidget {
   }
 }
 
-class ConversationList extends StatelessWidget {
-   ConversationList({super.key});
-   
-List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-      ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "receiver"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "sender"),
-    ChatMessage(messageContent: "Hey Kriss, I am doing fine dude. wbu?", messageType: "sender"),
-
-    ChatMessage(messageContent: "Is there any thing wrong?", messageType: "receiver"),
-
-  
-  ];
- 
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-  itemCount: 5,
-  shrinkWrap: true,
-  padding: EdgeInsets.only(top: 10.sp,bottom: 10.sp),
-  physics: NeverScrollableScrollPhysics(),
-  itemBuilder: (context, index){
-    return Container(
-      padding: EdgeInsets.only(left: 14,right: 14,top: 10,bottom: 10),
-      child: Align(
-        alignment: (messages[index].messageType == "receiver"?Alignment.topRight:Alignment.topLeft),
-        child: Container(
-          
-          height: 100.h,
-          width: double.infinity,
-
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.sp),
-            color: (messages[index].messageType  == "receiver"?Colors.grey.shade200:Colors.blue[200]),
-          ),
-          padding: EdgeInsets.all(16.sp),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Text(messages[index].messageType == 'receiver' ? "You" : 'Renuka', style: TextStyle(fontSize: 15.sp),),
-              SizedBox(height: 6.sp,),
-
-              Text(messages[index].messageContent, style: TextStyle(fontSize: 15.sp),),
-                           SizedBox(height:10.sp,),
-
-              Container(
-                child: 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('23-Dec-2021 11:01',style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12.sp
-                    ),),
-                    SizedBox(width: 10.w,),
-                    Icon(Icons.done_all,size: 15.sp,color: Colors.grey,)
-                  ],
-                ),
-              )
-            ],
-          )),
-        ),
-      
-    );
-  },
-);
-  }
-}
-
-
-class SendingTile extends StatelessWidget {
-  const SendingTile({super.key});
+class Conversations extends StatelessWidget {
+  const Conversations({super.key});
 
   @override
   Widget build(BuildContext context) {
     return  Container(
-              margin: EdgeInsets.only(top: 200.h,left: 10.w,right: 10.w),
-              child: Stack(
-                    children: <Widget>[
-                      Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.sp),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.sp),
-                  border: Border.all(color: Colors.black.withOpacity(0.5))
-                ),
-                height: 40.h,
-                
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: <Widget>[
-                            
-                          Expanded(
-                            child: TextField(
-                              
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.send,color: AppColors.primaryColor,),
-                                hintText: "Chat with Renuka...",
-                                hintStyle: TextStyle(color: Colors.grey.shade400),
-                                border: InputBorder.none
-                              ),
-                            ),
-                          ),
-                          
-                        ],
-                        
-                      ),
-                     
-                    ],
-                  ),
-                ),
-              ),
-                      ),
-                    ],
-                  ),
-            );
+width: 40.w,
+height: 40.h,
+      color: Colors.red,
+      decoration: BoxDecoration(),
+
+    );
   }
 }
-

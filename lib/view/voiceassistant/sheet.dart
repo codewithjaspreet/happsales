@@ -871,8 +871,8 @@ class bottomDetailsSheet extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 6,
+                        spreadRadius: 0.12,
+                        blurRadius: 14,
                         offset: Offset(-0, -14), // changes position of shadow
                       ),
                     ],
