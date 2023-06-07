@@ -101,16 +101,14 @@ class ChatScreen extends StatelessWidget {
                   
                   // CHAT SECTION
 
-                  ListView.builder(itemBuilder: (context,index){
-
-
-                    return Column(
-                      children: [
-
-                        Text('assa'),
-                      ],
-                    );
-                  }, itemCount: 10, shrinkWrap: true,),
+                  Container(
+                    height: 530.h,
+                    child: ListView.builder(itemBuilder: (context,index){
+                    
+                    
+                      return Conversations();
+                    }, itemCount: 10, shrinkWrap: true,),
+                  ),
               
                  
                  
@@ -193,12 +191,133 @@ class Conversations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-width: 40.w,
-height: 40.h,
-      color: Colors.red,
-      decoration: BoxDecoration(),
+    return Container(
+      child: Column(
 
+        children: [
+
+           Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 55.h, right: 20.w),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.grey.withOpacity(0.1),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15.r),
+                                                topRight: Radius.circular(15.r),
+                                                bottomLeft:
+                                                    Radius.circular(15.r),
+                                              )),
+                                          width: 130.w,
+                                          height: 80.h,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'You',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.themeColor,
+                                                      fontFamily:
+                                                          'roboto_bold'),
+                                                ),
+                                                Text(
+                                                  'Create Contact',
+                                                  style: TextStyle(),
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 23.h),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        '25 May-2023 04:19',
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 10.sp),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(top: 10.h, left: 10.w),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15.r),
+                                              topRight: Radius.circular(15.r),
+                                              bottomRight: Radius.circular(15.r),
+                                            )),
+                                        width: 140.w,
+                                        height: 80.h,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Ami',
+                                                style: TextStyle(
+                                                    color: AppColors.themeColor,
+                                                    fontFamily: 'roboto_bold'),
+                                              ),
+                                              Text(
+                                                'Cancelled',
+                                                style: TextStyle(),
+                                              ),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 23.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      '25 May-2023 04:19',
+                                                      style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ],
+                        ),
+        ],
+      ),
     );
+
   }
 }
