@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import 'Columns.dart';
 import 'ColumnsBase.dart';
 import 'Globals.dart';
+import 'Tables.dart';
 import 'TablesBase.dart';
 
 class DatabaseHandler {
@@ -3283,29 +3284,6 @@ class DatabaseHandler {
     }
   }
 
-  static Future<bool> ColumnExists(
-      Database db, String tableName, String columnName) async {
-    bool isExists = false;
-
-    // Query the table's schema to get the column information
-    try {
-      List<Map<String, dynamic>> columns =
-          await db.rawQuery("PRAGMA table_info('$tableName')");
-
-      // Iterate over the columns to check if the specified column exists
-      for (var column in columns) {
-        String name = column['name'];
-        if (name == columnName) {
-          isExists = true; // Column found
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return isExists; // Column not found
-  }
-
   void Upgrade_Tables_V2(Database db) async {
     //Adding BusinessUnit features for Account, Activity and Opportunity
     try {
@@ -3426,4 +3404,387 @@ class DatabaseHandler {
       // Utility.showToast(context,ex.toString());
     }
   }
+
+
+  //  -----Common Functions------
+
+  static Future<bool> ColumnExists(
+      Database db, String tableName, String columnName) async {
+    bool isExists = false;
+
+    // Query the table's schema to get the column information
+    try {
+      List<Map<String, dynamic>> columns =
+          await db.rawQuery("PRAGMA table_info('$tableName')");
+
+      // Iterate over the columns to check if the specified column exists
+      for (var column in columns) {
+        String name = column['name'];
+        if (name == columnName) {
+          isExists = true; // Column found
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return isExists; // Column not found
+  }
+
+  bool valueExists(String tableName, String columnName, String value) {
+    try {
+      String sql =
+          "SELECT COUNT(*) FROM $tableName WHERE $columnName = '${value.replaceAll("'", "''")}' AND AppUserGroupID = ${Globals.AppUserGroupID} AND AppUserID = ${Globals.AppUserID}";
+      if (executeScalar(sql) == 0) {
+        return false;
+      }
+    } catch (Exception) {
+      // Handle the exception, if required
+    }
+    return true;
+  }
+
+
+
+  Future<int> executeScalar(String sql) async {
+    int itemCount = 0;
+    try {
+      final db = await database;
+      List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+      if (result.isNotEmpty) {
+        itemCount = result.first.values.first as int;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return itemCount;
+  }
+
+
+  void updateAppSyncSequentialOrder_V3() async {
+  try {
+    int sequentialOrder = 0;
+    final db = await database;
+    String sql = "SELECT A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+    sql += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+    sql += " ORDER BY CAST(A.${ColumnsBase.KEY_ID} AS INTEGER)";
+    print('SQL: $sql');
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    for (Map<String, dynamic> row in result) {
+      sequentialOrder += 20;
+      String id = row[ColumnsBase.KEY_ID].toString();
+      await db.rawUpdate(
+          "UPDATE ${TablesBase.TABLE_APPSYNC} SET ${Columns.KEY_APPSYNC_SEQUENTIALORDER} = $sequentialOrder WHERE ${ColumnsBase.KEY_ID} = $id");
+    }
+  } catch (e) {
+    print(e.toString());
+  }
+}
+
+Future<int> getSyncRecordCount(String appUserId, String appUserGroupId) async {
+  int itemCount = 0;
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT COUNT(*) FROM ${TablesBase.TABLE_APPSYNC} WHERE ${ColumnsBase.KEY_APPSYNC_APPUSERID} = $appUserId AND ${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = $appUserGroupId",
+        null);
+    if (result.isNotEmpty) {
+      itemCount = result.first.values.first as int;
+    }
+  } catch (Exception) {
+    rethrow;
+  }
+  return itemCount;
+}
+
+Future<int> getRecordCount(String tableName) async {
+  int itemCount = 0;
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT COUNT(*) FROM $tableName", null);
+    if (result.isNotEmpty) {
+      itemCount = result.first.values.first as int;
+    }
+  } catch (e) {
+    
+  }
+  return itemCount;
+
+}
+
+// List<KeyValuePair> getValueTitlePairs(String tableName, String displayColumn, String valueColumn) {
+//   List<KeyValuePair> dataList = [];
+//   try {
+//     String selectQuery = "SELECT $displayColumn, $valueColumn FROM $tableName";
+//     final db = await database;
+//     List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+//     for (Map<String, dynamic> row in result) {
+//       KeyValuePair dataItem = KeyValuePair(
+//         int.parse(row[displayColumn].toString()),
+//         row[valueColumn].toString(),
+//       );
+//       dataList.add(dataItem);
+//     }
+//   } catch (Exception) {
+//     rethrow;
+//   }
+//   return dataList;
+// }
+
+Future<List<String>> getTitles(String tableName, String displayColumn) async{
+  List<String> dataList = [];
+  try {
+    String selectQuery = "SELECT $displayColumn FROM $tableName";
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+    for (Map<String, dynamic> row in result) {
+      dataList.add(row[displayColumn].toString());
+    }
+  } catch (Exception) {
+    rethrow;
+  }
+  return dataList;
+}
+
+Future<String> executeStringValue(String sql) async {
+  String itemString = "";
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    if (result.isNotEmpty) {
+      itemString = result.first.values.first.toString();
+    }
+  } catch (Exception) {
+    rethrow;
+  }
+  return itemString;
+}
+
+Future<List<String>> getTableColumnRows(String sql, String columnName) async {
+  List<String> data = [];
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    for (Map<String, dynamic> row in result) {
+      data.add(row[columnName].toString());
+    }
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+  }
+  return data;
+}
+
+Future<String> getTableColumnValue(String sql, String columnName) async {
+  String data = "";
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    if (result.isNotEmpty) {
+      data = result.first[columnName].toString();
+    }
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+  }
+  return data;
+}
+
+Future<List<String>> getDesignationsForBusinessCardScan() async {
+  List<String> data = [];
+  try {
+    final db = await database;
+    String sql = "SELECT ${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME} FROM ${TablesBase.TABLE_DESIGNATION_BC}";
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    for (Map<String, dynamic> row in result) {
+      data.add(row[ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME].toString());
+    }
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+  }
+  return data;
+}
+Future<List<Map<String, dynamic>>> getTableData(String sql) async {
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    return result;
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+    return [];
+  }
+}
+
+Future<String> getTableColumnData(String sql) async {
+  String data = "";
+  try {
+    final db = await database;
+    List<Map<String, dynamic>> result = await db.rawQuery(sql, null);
+    if (result.isNotEmpty) {
+      data = result.first.values.first.toString();
+    }
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+  }
+  return data;
+}
+
+void activateDeactivateRecords(String tableName, String ids1) async {
+  try {
+    String ids = Globals.getStringValue(ids1);
+    if (ids.isEmpty) return;
+
+    final db = await database;
+    if (tableName == "Account") {
+      db.execute("UPDATE ${TablesBase.TABLE_ACCOUNT} SET ${ColumnsBase.KEY_ISDELETED} = 'true' WHERE CAST(COALESCE(${ColumnsBase.KEY_ACCOUNT_ACCOUNTID}, -1) AS INTEGER) NOT IN ($ids) AND COALESCE(${ColumnsBase.KEY_ACCOUNT_ACCOUNTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+      db.execute("UPDATE ${TablesBase.TABLE_ACCOUNT} SET ${ColumnsBase.KEY_ISDELETED} = 'false' WHERE CAST(COALESCE(${ColumnsBase.KEY_ACCOUNT_ACCOUNTID}, -1) AS INTEGER) IN ($ids) AND COALESCE(${ColumnsBase.KEY_ACCOUNT_ACCOUNTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+    } else if (tableName == "Contact") {
+      db.execute("UPDATE ${TablesBase.TABLE_CONTACT} SET ${ColumnsBase.KEY_ISDELETED} = 'true' WHERE CAST(COALESCE(${ColumnsBase.KEY_CONTACT_CONTACTID}, -1) AS INTEGER) NOT IN ($ids) AND COALESCE(${ColumnsBase.KEY_CONTACT_CONTACTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+      db.execute("UPDATE ${TablesBase.TABLE_CONTACT} SET ${ColumnsBase.KEY_ISDELETED} = 'false' WHERE CAST(COALESCE(${ColumnsBase.KEY_CONTACT_CONTACTID}, -1) AS INTEGER) IN ($ids) AND COALESCE(${ColumnsBase.KEY_CONTACT_CONTACTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+    } else if (tableName == "Activity") {
+      db.execute("UPDATE ${TablesBase.TABLE_ACTIVITY} SET ${ColumnsBase.KEY_ISDELETED} = 'true' WHERE CAST(COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYID}, -1) AS INTEGER) NOT IN ($ids) AND COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID} AND COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYASSIGNMENTID}, '') <> ''");
+      db.execute("UPDATE ${TablesBase.TABLE_ACTIVITY} SET ${ColumnsBase.KEY_ISDELETED} = 'false' WHERE CAST(COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYID}, -1) AS INTEGER) IN ($ids) AND COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID} AND COALESCE(${ColumnsBase.KEY_ACTIVITY_ACTIVITYASSIGNMENTID}, '') <> ''");
+    } else if (tableName == "Opportunity") {
+      db.execute("UPDATE ${TablesBase.TABLE_OPPORTUNITY} SET ${ColumnsBase.KEY_ISDELETED} = 'true' WHERE CAST(COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID}, -1) AS INTEGER) NOT IN ($ids) AND COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID} AND COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYASSIGNMENTID}, '') <> ''");
+      db.execute("UPDATE ${TablesBase.TABLE_OPPORTUNITY} SET ${ColumnsBase.KEY_ISDELETED} = 'false' WHERE CAST(COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID}, -1) AS INTEGER) IN ($ids) AND COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID} AND COALESCE(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYASSIGNMENTID}, '') <> ''");
+    } else if (tableName == "Product") {
+      // db.execute("UPDATE ${TablesBase.TABLE_PRODUCT} SET ${ColumnsBase.KEY_ISDELETED} = 'false' WHERE ${ColumnsBase.KEY_PRODUCT_PRODUCTID} NOT IN ($ids) AND COALESCE(${ColumnsBase.KEY_PRODUCT_PRODUCTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+      // db.execute("UPDATE ${TablesBase.TABLE_PRODUCT} SET ${ColumnsBase.KEY_ISDELETED} = 'true' WHERE ${ColumnsBase.KEY_PRODUCT_PRODUCTID} IN ($ids) AND COALESCE(${ColumnsBase.KEY_PRODUCT_PRODUCTID}, '') <> '' AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}");
+    }
+  } catch (Exception) {
+    // Handle exceptions as per your requirements
+  }
+}
+
+
+  void RemoveUserData(String appUserId, String appUserGroupId) async {
+        try {
+
+            print("WOR" +  "REMOVING USER DATA");
+
+            final db = await database;
+
+            db.execute("DELETE FROM AppSync WHERE AppUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AmiConfiguration WHERE AppUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Designationbc WHERE AppUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Account WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountAddress WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountBusinessPlan WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountBuyingProcess WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountCategory WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountCategoryMapping WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountCompetitionActivity WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountForm WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountFormValue WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountPhone WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountSegment WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountStatus WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountTerritory WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AccountType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Activity WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityMeasure WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityPermission WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityPriority WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityProduct WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityProductDetail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityStatus WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityTeam WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityTravel WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityTravelMapping WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityTravelMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ActivityType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AddressType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppFeature WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppFeatureField WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppFeatureGroup WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppLog WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppReport WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUsage WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUser WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserLocation WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserMessage WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserProduct WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserRemark WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserRole WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserTeam WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserTeamMember WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserTerritory WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AppUserType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Attribute WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM AttributeValue WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM BusinessEmail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM BusinessFeature WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ChatMessage WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ChatUserAndGroup WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ChatUserGroupMember WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Contact WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ContactAlignment WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ContactMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ContactTitle WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ContentType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Country WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM CreditRating WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Currency WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM CustomerMeeting WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Department WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Designation WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM EmailManualTemplate WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM FieldAttendance WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM FinancialYear WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Form WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM FormCell WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM FormCellElement WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM FormSection WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Industry WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM LeadSource WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ModeOfTravel WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Note WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM NoteMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM NotePermission WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Notification WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM NotificationAssignment WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Opportunity WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityContact WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityMeasure WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityFulfillmentStatus WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityName WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityPermission WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityPriority WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityProduct WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityProductDetail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityStage WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityStageType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityStatus WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityTeam WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM OpportunityType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM PhoneType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Product WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ProductAuxiliary WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ProductCategory WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ProductInstallation WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ProductInstallationDetail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ProductMedia WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Reimbursement WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ReimbursementDetail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ReimbursementType WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Reminder WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Resource WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ServiceInvoice WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM ServiceInvoiceDetail WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Tag WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM TagGroup WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM Territory WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM TimeZone WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM TravelPurpose WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+            db.execute("DELETE FROM UserRole WHERE OwnerUserID = $appUserId AND AppUserGroupID = $appUserGroupId");
+
+            // Log.d("WOR", "REMOVED USER DATA");
+
+        } catch ( e) {
+            // Globals.HandleException(context, "DatabaseHandler:RemoveUserData()", ex);
+        }
+    }
+
 }
