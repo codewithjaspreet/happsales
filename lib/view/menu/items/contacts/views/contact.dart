@@ -28,36 +28,6 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      //   title: Text(
-      //     "HappSales",
-      //     style: TextStyle(
-      //         color: Colors.black, fontSize: 16.sp, fontFamily: 'roboto_bold'),
-      //   ),
-      //   centerTitle: true,
-      //   leading: IconButton(
-      //     icon: const Icon(
-      //       Icons.arrow_back_ios,
-      //       color: Colors.black,
-      //     ),
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {
-      //         Get.to(() => const Menu());
-      //       },
-      //       icon: const Icon(
-      //         Icons.menu,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //   ],
-      // ),
     
     
       body: isLoading

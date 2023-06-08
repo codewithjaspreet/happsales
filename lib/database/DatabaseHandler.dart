@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 
 import 'Columns.dart';
 import 'ColumnsBase.dart';
@@ -4318,4 +4319,25 @@ class DatabaseHandler {
     db.query("DROP TABLE IF EXISTS UserRole");
     db.query("DROP TABLE IF EXISTS Unit");
   }
+
+  void AddConfigurationData(Database db){
+
+    var uuid = const Uuid();
+    try {
+            String sql = "INSERT INTO " + TablesBase.TABLE_CONFIGURATION + "(" + ColumnsBase.KEY_CONFIGURATION_ID + "," + ColumnsBase.KEY_CONFIGURATION_APPID + "," + ColumnsBase.KEY_CONFIGURATION_APP_VERSION;
+            sql = sql + "," + ColumnsBase.KEY_CONFIGURATION_OS_VERSION + "," + ColumnsBase.KEY_CONFIGURATION_EULA + "," + ColumnsBase.KEY_CONFIGURATION_BASE_URL + "," + ColumnsBase.KEY_CONFIGURATION_DEPLOYEDTIME + ")";
+           
+           
+           // global file needed
+
+           // sql = sql + " VALUES(1,'" + uuid.v4() + "','1.0','0','','','" + Globals.GetDateTimeNowDBFormat() + "')";
+            db.execute(sql);
+
+        } catch (e) {
+            
+            print(e);
+            // Globals.HandleException(context, "DatabaseHandler:AddConfigurationData()", ex);
+        }
+  }
 }
+

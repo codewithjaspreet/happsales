@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:happsales_crm/view/menu/items/chats/views/new_group_chat.dart';
 
 import '../../../../../utils/color.dart';
-
+import 'package:get/get.dart';
 chatList() {
 
   int generateRandomColorInt() {
@@ -42,7 +43,12 @@ chatList() {
 
               child: Row(
                 children: [
-                  Image.asset('assets/chats/chat_individual.png'),
+                  GestureDetector(
+                    onTap: () {
+                      
+                      Get.to(GroupChat());
+                    },
+                    child: Image.asset('assets/chats/chat_individual.png')),
 
                   Column(
 

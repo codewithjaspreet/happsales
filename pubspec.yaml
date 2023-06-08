@@ -63,6 +63,7 @@ dependencies:
   url_launcher: ^6.1.10
   path_provider:
   flutter_chat_bubble: ^2.0.2
+  uuid:
   auto_size_text: ^3.0.0
   buttons_tabbar:
   awesome_dialog: ^3.0.2
