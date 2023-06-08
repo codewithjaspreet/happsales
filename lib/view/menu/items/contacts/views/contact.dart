@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/HelperRow.dart';
 import 'package:happsales_crm/view/voiceassistant/sheet.dart';
 import 'package:happsales_crm/viewmodels/contact_view_model.dart';
@@ -27,38 +28,38 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "HappSales",
-          style: TextStyle(
-              color: Colors.black, fontSize: 16.sp, fontFamily: 'roboto_bold'),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Get.to(() => const Menu());
-            },
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-
-
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      //   title: Text(
+      //     "HappSales",
+      //     style: TextStyle(
+      //         color: Colors.black, fontSize: 16.sp, fontFamily: 'roboto_bold'),
+      //   ),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: const Icon(
+      //       Icons.arrow_back_ios,
+      //       color: Colors.black,
+      //     ),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {
+      //         Get.to(() => const Menu());
+      //       },
+      //       icon: const Icon(
+      //         Icons.menu,
+      //         color: Colors.black,
+      //       ),
+      //     ),
+      //   ],
+      // ),
+    
+    
       body: isLoading
           ? Stack(
             clipBehavior: Clip.none,
@@ -71,14 +72,15 @@ class _ContactPageState extends State<ContactPage> {
             children: [
               Column(
             children: [
+              CustomAppBar(context),
                const HelperRow(
                 direct: AddContact(),
                 title: "My Contacts",
               ),
               Image.asset("assets/contacts/contact_banner.png"),
-
+    
               _buildEmployeeListView()
-
+    
             ],
           ),
           bottomDetailsSheet()
