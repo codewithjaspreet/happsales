@@ -4320,24 +4320,96 @@ class DatabaseHandler {
     db.query("DROP TABLE IF EXISTS Unit");
   }
 
-  void AddConfigurationData(Database db){
-
+  void AddConfigurationData(Database db) {
     var uuid = const Uuid();
     try {
-            String sql = "INSERT INTO " + TablesBase.TABLE_CONFIGURATION + "(" + ColumnsBase.KEY_CONFIGURATION_ID + "," + ColumnsBase.KEY_CONFIGURATION_APPID + "," + ColumnsBase.KEY_CONFIGURATION_APP_VERSION;
-            sql = sql + "," + ColumnsBase.KEY_CONFIGURATION_OS_VERSION + "," + ColumnsBase.KEY_CONFIGURATION_EULA + "," + ColumnsBase.KEY_CONFIGURATION_BASE_URL + "," + ColumnsBase.KEY_CONFIGURATION_DEPLOYEDTIME + ")";
-           
-           
-           // global file needed
+      String sql = "INSERT INTO " +
+          TablesBase.TABLE_CONFIGURATION +
+          "(" +
+          ColumnsBase.KEY_CONFIGURATION_ID +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_APPID +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_APP_VERSION;
+      sql = sql +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_OS_VERSION +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_EULA +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_BASE_URL +
+          "," +
+          ColumnsBase.KEY_CONFIGURATION_DEPLOYEDTIME +
+          ")";
 
-           // sql = sql + " VALUES(1,'" + uuid.v4() + "','1.0','0','','','" + Globals.GetDateTimeNowDBFormat() + "')";
-            db.execute(sql);
+      // global file needed
 
-        } catch (e) {
-            
-            print(e);
-            // Globals.HandleException(context, "DatabaseHandler:AddConfigurationData()", ex);
-        }
+      // sql = sql + " VALUES(1,'" + uuid.v4() + "','1.0','0','','','" + Globals.GetDateTimeNowDBFormat() + "')";
+      db.execute(sql);
+    } catch (e) {
+      print(e);
+      // Globals.HandleException(context, "DatabaseHandler:AddConfigurationData()", ex);
+    }
   }
-}
 
+  void addDefaultDesignations(Database db) async {
+    try {
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('manager');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('consultant');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('director');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('architect');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('officer');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('homeopath');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('president');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('executive');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('incharge');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('business development');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('inside sales');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('engineer');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('registrar');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('ea to coo');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('trainee');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('global head');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('specialist');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('proprietor');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('leader');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('advisor');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('merchandiser');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('vice president');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('vp');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('secretary');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('dr.');");
+      await db.execute(
+          "INSERT INTO ${TablesBase.TABLE_DESIGNATION_BC} (${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME}) VALUES ('adv.');");
+    } catch (e) {
+      // Globals.HandleException(context, "DatabaseHandler:AddDefaultDesignations()", ex);
+    }
+  }
+
+  
+}
