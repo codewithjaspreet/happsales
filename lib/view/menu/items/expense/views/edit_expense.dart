@@ -571,6 +571,8 @@ class EditExpense extends StatelessWidget {
           ),
         ),
 
+
+
         bottomDetailsSheet()
         ]
       ),

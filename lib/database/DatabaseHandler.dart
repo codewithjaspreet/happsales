@@ -4188,7 +4188,6 @@ class DatabaseHandler {
   }
 
   void removeTables() async {
-    
     final db = await database;
 
     db.query("DROP TABLE IF EXISTS AmiConfiguration");

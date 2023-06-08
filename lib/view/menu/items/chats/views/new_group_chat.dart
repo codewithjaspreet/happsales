@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:happsales_crm/utils/color.dart';
+import 'package:happsales_crm/view/menu/items/chats/widgets/select_chat_alert.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/CustomAppBar.dart';
 import 'package:get/get.dart';
 import 'package:happsales_crm/view/menu/items/contacts/widgets/InputOne.dart';
@@ -104,17 +105,23 @@ class GroupChat extends StatelessWidget {
                       fontSize: 16.sp
                     
                     ),),
-                    Container(
-                          child: Center(
-                            child: Icon(Icons.people  , color: Colors.white,size: 14.sp,),
+                    GestureDetector(
+                      onTap: () {
+                        
+                        showSelectChatAlert(context);
+                      },
+                      child: Container(
+                            child: Center(
+                              child: Icon(Icons.people  , color: Colors.white,size: 14.sp,),
+                            ),
+                            width: 30.w,
+                            height: 30.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primaryColor,
+                            ),
                           ),
-                          width: 30.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
+                    ),
                   ],
                 ),
               ),
