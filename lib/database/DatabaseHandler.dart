@@ -33,7 +33,7 @@ class DatabaseHandler {
     try {
       return await openDatabase(path, version: 1, onOpen: (db) {},
           onCreate: (Database db, int version) async {
-        final String CREATE_TABLE_CONFIGURATION =
+        final String createTableConfiguration =
             "CREATE TABLE ${TablesBase.TABLE_CONFIGURATION} ("
             "${ColumnsBase.KEY_CONFIGURATION_ID} INTEGER PRIMARY KEY,"
             "${ColumnsBase.KEY_CONFIGURATION_APPID} TEXT,"
@@ -43,8 +43,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_CONFIGURATION_BASE_URL} TEXT,"
             "${ColumnsBase.KEY_CONFIGURATION_DEPLOYEDTIME} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CONFIGURATION);
-        String CREATE_TABLE_SYNC = "CREATE TABLE ${TablesBase.TABLE_APPSYNC} ("
+        await db.execute(createTableConfiguration);
+        String createTableSync = "CREATE TABLE ${TablesBase.TABLE_APPSYNC} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_APPSYNC_TABLENAME} TEXT,"
             "${ColumnsBase.KEY_APPSYNC_LOCALMAXDATE} TEXT,"
@@ -56,15 +56,15 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_APPSYNC_APPUSERID} TEXT,"
             "${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_SYNC);
+        await db.execute(createTableSync);
 
-        String CREATE_TABLE_DESIGNATION_BC =
+        String createTableDesignationBc =
             "CREATE TABLE ${TablesBase.TABLE_DESIGNATION_BC} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_DESIGNATION_DESIGNATIONNAME} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_DESIGNATION_BC);
-        String CREATE_TABLE_ACCOUNT =
+        await db.execute(createTableDesignationBc);
+        String createTableAccount =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNT_ACCOUNTID} TEXT,"
@@ -130,8 +130,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
 
-        await db.execute(CREATE_TABLE_ACCOUNT);
-        String CREATE_TABLE_ACCOUNTADDRESS =
+        await db.execute(createTableAccount);
+        String createTableAccountaddress =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTADDRESS} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTADDRESS_ACCOUNTADDRESSID} TEXT,"
@@ -172,9 +172,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTADDRESS);
+        await db.execute(createTableAccountaddress);
 
-        String CREATE_TABLE_ACCOUNTBUSINESSPLAN =
+        String createTableAccountbusinessplan =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTBUSINESSPLAN} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTBUSINESSPLAN_ACCOUNTBUSINESSPLANID} TEXT,"
@@ -205,9 +205,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTBUSINESSPLAN);
+        await db.execute(createTableAccountbusinessplan);
 
-        String CREATE_TABLE_ACCOUNTBUYINGPROCESS =
+        String createTableAccountbuyingprocess =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTBUYINGPROCESS} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTBUYINGPROCESS_ACCOUNTBUYINGPROCESSID} TEXT,"
@@ -238,9 +238,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTBUYINGPROCESS);
+        await db.execute(createTableAccountbuyingprocess);
 
-        String CREATE_TABLE_ACCOUNTCATEGORY =
+        String createTableAccountcategory =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTCATEGORY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTCATEGORY_ACCOUNTCATEGORYID} TEXT,"
@@ -268,9 +268,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTCATEGORY);
+        await db.execute(createTableAccountcategory);
 
-        String CREATE_TABLE_ACCOUNTCATEGORYMAPPING =
+        String createTableAccountcategorymapping =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTCATEGORYMAPPING} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTCATEGORYMAPPING_ACCOUNTCATEGORYMAPPINGID} TEXT,"
@@ -299,9 +299,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTCATEGORYMAPPING);
+        await db.execute(createTableAccountcategorymapping);
 
-        String CREATE_TABLE_ACCOUNTCOMPETITIONACTIVITY =
+        String createTableAccountcompetitionactivity =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTCOMPETITIONACTIVITY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTCOMPETITIONACTIVITYID} TEXT,"
@@ -334,9 +334,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTCOMPETITIONACTIVITY);
+        await db.execute(createTableAccountcompetitionactivity);
 
-        String CREATE_TABLE_ACCOUNTFORM =
+        String createTableAccountform =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTFORM} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTFORM_ACCOUNTFORMID} TEXT,"
@@ -371,9 +371,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTFORM);
+        await db.execute(createTableAccountform);
 
-        String CREATE_TABLE_ACCOUNTFORMVALUE =
+        String createTableAccountformvalue =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTFORMVALUE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTFORMVALUE_ACCOUNTFORMVALUEID} TEXT,"
@@ -405,9 +405,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTFORMVALUE);
+        await db.execute(createTableAccountformvalue);
 
-        String CREATE_TABLE_ACCOUNTMEDIA =
+        String createTableAccountmedia =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTMEDIA_ACCOUNTMEDIAID} TEXT,"
@@ -445,9 +445,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTMEDIA);
+        await db.execute(createTableAccountmedia);
 
-        String CREATE_TABLE_ACCOUNTPHONE =
+        String createTableAccountphone =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTPHONE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTPHONE_ACCOUNTPHONEID} TEXT,"
@@ -481,9 +481,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTPHONE);
+        await db.execute(createTableAccountphone);
 
-        String CREATE_TABLE_ACCOUNTSEGMENT =
+        String createTableAccountsegment =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTSEGMENT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTID} TEXT,"
@@ -513,9 +513,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTSEGMENT);
+        await db.execute(createTableAccountsegment);
 
-        String CREATE_TABLE_ACCOUNTSTATUS =
+        String createTableAccountstatus =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTSTATUS} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSID} TEXT,"
@@ -543,9 +543,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTSTATUS);
+        await db.execute(createTableAccountstatus);
 
-        String CREATE_TABLE_ACCOUNTTERRITORY =
+        String createTableAccountterritory =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTTERRITORY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTTERRITORY_ACCOUNTTERRITORYID} TEXT,"
@@ -574,8 +574,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTTERRITORY);
-        String CREATE_TABLE_ACCOUNTTYPE =
+        await db.execute(createTableAccountterritory);
+        String createTableAccounttype =
             "CREATE TABLE ${TablesBase.TABLE_ACCOUNTTYPE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPEID} TEXT,"
@@ -603,8 +603,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACCOUNTTYPE);
-        String CREATE_TABLE_ACTIVITY =
+        await db.execute(createTableAccounttype);
+        String createTableActivity =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITY_ACTIVITYID} TEXT,"
@@ -671,9 +671,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITY);
+        await db.execute(createTableActivity);
 
-        String CREATE_TABLE_ACTIVITYMEASURE =
+        String createTableActivitymeasure =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYMEASURE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYMEASURE_ACTIVITYMEASUREID} TEXT,"
@@ -704,9 +704,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYMEASURE);
+        await db.execute(createTableActivitymeasure);
 
-        String CREATE_TABLE_ACTIVITYMEDIA =
+        String createTableActivitymedia =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYMEDIA_ACTIVITYMEDIAID} TEXT,"
@@ -745,9 +745,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYMEDIA);
+        await db.execute(createTableActivitymedia);
 
-        String CREATE_TABLE_ACTIVITYPERMISSION =
+        String createTableActivitypermission =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYPERMISSION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYPERMISSION_ACTIVITYPERMISSIONID} TEXT,"
@@ -776,9 +776,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYPERMISSION);
+        await db.execute(createTableActivitypermission);
 
-        String CREATE_TABLE_ACTIVITYPRIORITY =
+        String createTableActivitypriority =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYPRIORITY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYPRIORITY_ACTIVITYPRIORITYID} TEXT,"
@@ -808,9 +808,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYPRIORITY);
+        await db.execute(createTableActivitypriority);
 
-        String CREATE_TABLE_ACTIVITYPRODUCT =
+        String createTableActivityproduct =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYPRODUCT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYPRODUCT_ACTIVITYPRODUCTID} TEXT,"
@@ -841,9 +841,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYPRODUCT);
+        await db.execute(createTableActivityproduct);
 
-        String CREATE_TABLE_ACTIVITYPRODUCTDETAIL =
+        String createTableActivityproductdetail =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYPRODUCTDETAIL} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYPRODUCTDETAIL_ACTIVITYPRODUCTDETAILID} TEXT,"
@@ -876,9 +876,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYPRODUCTDETAIL);
+        await db.execute(createTableActivityproductdetail);
 
-        String CREATE_TABLE_ACTIVITYSTATUS =
+        String createTableActivitystatus =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYSTATUS} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSID} TEXT,"
@@ -908,9 +908,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYSTATUS);
+        await db.execute(createTableActivitystatus);
 
-        String CREATE_TABLE_ACTIVITYTEAM =
+        String createTableActivityteam =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYTEAM} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYTEAM_ACTIVITYTEAMID} TEXT,"
@@ -942,9 +942,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYTEAM);
+        await db.execute(createTableActivityteam);
 
-        String CREATE_TABLE_ACTIVITYTRAVEL =
+        String createTableActivitytravel =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID} TEXT,"
@@ -990,9 +990,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYTRAVEL);
+        await db.execute(createTableActivitytravel);
 
-        String CREATE_TABLE_ACTIVITYTRAVELMAPPING =
+        String createTableActivitytravelmapping =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYTRAVELMAPPING} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_ACTIVITYTRAVELMAPPINGID} TEXT,"
@@ -1021,9 +1021,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYTRAVELMAPPING);
+        await db.execute(createTableActivitytravelmapping);
 
-        String CREATE_TABLE_ACTIVITYTRAVELMEDIA =
+        String createTableActivitytravelmedia =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYTRAVELMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYTRAVELMEDIA_ACTIVITYTRAVELMEDIAID} TEXT,"
@@ -1061,9 +1061,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYTRAVELMEDIA);
+        await db.execute(createTableActivitytravelmedia);
 
-        String CREATE_TABLE_ACTIVITYTYPE =
+        String createTableActivitytype =
             "CREATE TABLE ${TablesBase.TABLE_ACTIVITYTYPE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ACTIVITYTYPE_ACTIVITYTYPEID} TEXT,"
@@ -1094,9 +1094,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ACTIVITYTYPE);
+        await db.execute(createTableActivitytype);
 
-        String CREATE_TABLE_ADDRESSTYPE =
+        String createTableAddresstype =
             "CREATE TABLE ${TablesBase.TABLE_ADDRESSTYPE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_ADDRESSTYPE_ADDRESSTYPEID} TEXT,"
@@ -1124,9 +1124,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_ADDRESSTYPE);
+        await db.execute(createTableAddresstype);
 
-        String CREATE_TABLE_APPFEATURE =
+        String createTableAppfeature =
             "CREATE TABLE ${TablesBase.TABLE_APPFEATURE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_APPFEATURE_APPFEATUREID} TEXT,"
@@ -1166,14 +1166,14 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_APPFEATURE);
+        await db.execute(createTableAppfeature);
 
 // Add more tables here if needed
 
 // Sample usage:
 // await db.execute(CREATE_TABLE_ANOTHER_TABLE);
 
-        String CREATE_TABLE_APPFEATUREGROUP =
+        String createTableAppfeaturegroup =
             "CREATE TABLE ${TablesBase.TABLE_APPFEATUREGROUP} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_APPFEATUREGROUP_APPFEATUREGROUPID} TEXT,"
@@ -1208,90 +1208,90 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_APPFEATUREGROUP);
+        await db.execute(createTableAppfeaturegroup);
 
-        String CREATE_TABLE_APPLOG =
+        String createTableApplog =
             "CREATE TABLE ${TablesBase.TABLE_APPLOG} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPLOG_APPLOGID} TEXT,${ColumnsBase.KEY_APPLOG_APPLOGCODE} TEXT,${ColumnsBase.KEY_APPLOG_APPLOGDETAIL} TEXT,${ColumnsBase.KEY_APPLOG_OPERATINGSYSTEM} TEXT,${ColumnsBase.KEY_APPLOG_OPERATINGSYSTEMVERSION} TEXT,${ColumnsBase.KEY_APPLOG_CREATEDBY} TEXT,${ColumnsBase.KEY_APPLOG_CREATEDON} TEXT,${ColumnsBase.KEY_APPLOG_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPLOG_UID} TEXT,${ColumnsBase.KEY_APPLOG_APPUSERID} TEXT,${ColumnsBase.KEY_APPLOG_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPLOG_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPLOG_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPLOG);
+        await db.execute(createTableApplog);
 
-        String CREATE_TABLE_APPREPORT =
+        String createTableAppreport =
             "CREATE TABLE ${TablesBase.TABLE_APPREPORT} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPREPORT_APPREPORTID} TEXT,${ColumnsBase.KEY_APPREPORT_APPREPORTCODE} TEXT,${ColumnsBase.KEY_APPREPORT_APPREPORTNAME} TEXT,${ColumnsBase.KEY_APPREPORT_APPREPORTPATH} TEXT,${ColumnsBase.KEY_APPREPORT_APPREPORTTYPE} TEXT,${ColumnsBase.KEY_APPREPORT_SEQUENTIALORDER} TEXT,${ColumnsBase.KEY_APPREPORT_CREATEDON} TEXT,${ColumnsBase.KEY_APPREPORT_CREATEDBY} TEXT,${ColumnsBase.KEY_APPREPORT_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPREPORT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPREPORT_ISACTIVE} TEXT,${ColumnsBase.KEY_APPREPORT_UID} TEXT,${ColumnsBase.KEY_APPREPORT_APPUSERID} TEXT,${ColumnsBase.KEY_APPREPORT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPREPORT_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPREPORT_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPREPORT);
+        await db.execute(createTableAppreport);
 
-        String CREATE_TABLE_APPUSAGE =
+        String createTableAppusage =
             "CREATE TABLE ${TablesBase.TABLE_APPUSAGE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSAGE_APPUSAGEID} TEXT,${ColumnsBase.KEY_APPUSAGE_APPUSAGECODE} TEXT,${ColumnsBase.KEY_APPUSAGE_APPUSAGENAME} TEXT,${ColumnsBase.KEY_APPUSAGE_USAGECOUNT} TEXT,${ColumnsBase.KEY_APPUSAGE_OPERATINGSYSTEM} TEXT,${ColumnsBase.KEY_APPUSAGE_OPERATINGSYSTEMVERSION} TEXT,${ColumnsBase.KEY_APPUSAGE_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSAGE_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSAGE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSAGE_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSAGE_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSAGE_UID} TEXT,${ColumnsBase.KEY_APPUSAGE_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSAGE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSAGE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSAGE);
+        await db.execute(createTableAppusage);
 
-        String CREATE_TABLE_APPUSER =
+        String createTableAppuser =
             "CREATE TABLE ${TablesBase.TABLE_APPUSER} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSER_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSER_APPUSERCODE} TEXT,${ColumnsBase.KEY_APPUSER_APPUSERNAME} TEXT,${ColumnsBase.KEY_APPUSER_APPUSERTYPEID} TEXT,${ColumnsBase.KEY_APPUSER_DESIGNATION} TEXT,${ColumnsBase.KEY_APPUSER_MOBILENUMBER} TEXT,${ColumnsBase.KEY_APPUSER_EMAIL} TEXT,${ColumnsBase.KEY_APPUSER_OFFICIALADDRESS} TEXT,${ColumnsBase.KEY_APPUSER_EMPLOYEEID} TEXT,${ColumnsBase.KEY_APPUSER_LOGINNAME} TEXT,${ColumnsBase.KEY_APPUSER_PASSCODE} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERID1} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSEREMAIL1} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERPHONE1} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERDESIGNATION1} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERID2} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSEREMAIL2} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERPHONE2} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERDESIGNATION2} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERID3} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSEREMAIL3} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERPHONE3} TEXT,${ColumnsBase.KEY_APPUSER_REPORTINGTOAPPUSERDESIGNATION3} TEXT,${ColumnsBase.KEY_APPUSER_PROFILEPICTURE} TEXT,${ColumnsBase.KEY_APPUSER_PROFILECAPTION} TEXT,${ColumnsBase.KEY_APPUSER_PROFILELOCATION} TEXT,${ColumnsBase.KEY_APPUSER_COMPANYLOGO} TEXT,${ColumnsBase.KEY_APPUSER_COMPANYCAPTION} TEXT,${ColumnsBase.KEY_APPUSER_USECOMPANYLOGO} TEXT,${ColumnsBase.KEY_APPUSER_TIMEZONECODE} TEXT,${ColumnsBase.KEY_APPUSER_CURRECYCODE} TEXT,${ColumnsBase.KEY_APPUSER_CURRENTLOGINON} TEXT,${ColumnsBase.KEY_APPUSER_LASTLOGINON} TEXT,${ColumnsBase.KEY_APPUSER_APPLASTLOGINON} TEXT,${ColumnsBase.KEY_APPUSER_PASSCODELASTCHANGEDON} TEXT,${ColumnsBase.KEY_APPUSER_ISMAILSENT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTSORT} TEXT,${ColumnsBase.KEY_APPUSER_CONTACTSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACTIVITYPLANNEDSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACTIVITYINPROCESSSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACTIVITYCOMPLETEDSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACTIVITYOTHERSSORT} TEXT,${ColumnsBase.KEY_APPUSER_OPPORTUNITYONGOINGSORT} TEXT,${ColumnsBase.KEY_APPUSER_OPPORTUNITYWONSORT} TEXT,${ColumnsBase.KEY_APPUSER_OPPORTUNITYCLOSEDSORT} TEXT,${ColumnsBase.KEY_APPUSER_OPPORTUNITYDELIVEREDSORT} TEXT,${ColumnsBase.KEY_APPUSER_NOTESORT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTADDRESSSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTBUYINGPROCESSSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTBUSINESSPLANSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTCOMPETITIONACTIVITYSORT} TEXT,${ColumnsBase.KEY_APPUSER_ACCOUNTMEDIASORT} TEXT,${ColumnsBase.KEY_APPUSER_USERTOKEN} TEXT,${ColumnsBase.KEY_APPUSER_ISSYSTEMDEFINED} TEXT,${Columns.KEY_APPUSER_CONFIGURATION} TEXT,${Columns.KEY_APPUSER_MUTECHAT} TEXT,${ColumnsBase.KEY_APPUSER_ISWOR} TEXT,${ColumnsBase.KEY_APPUSER_ISAPPALLOWED} TEXT,${ColumnsBase.KEY_APPUSER_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSER_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSER_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSER_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSER_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSER_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSER_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSER_UID} TEXT,${ColumnsBase.KEY_APPUSER_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSER_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSER_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSER);
+        await db.execute(createTableAppuser);
 
-        String CREATE_TABLE_APPUSERLOCATION =
+        String createTableAppuserlocation =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERLOCATION} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONID} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONCODE} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONTITLE} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONDATE} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONCOORDINATES} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERLOCATIONADDRESS} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_CHECKSUM} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_LASTLOCATIONCOORDINATES} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_LASTLOCATIONADDRESS} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_LASTLOCATIONTIME} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_LOCATION} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_UID} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERLOCATION_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERLOCATION);
+        await db.execute(createTableAppuserlocation);
 
-        String CREATE_TABLE_APPUSERMESSAGE =
+        String createTableAppusermessage =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERMESSAGE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERMESSAGEID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERMESSAGECODE} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERMESSAGETEXT} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_OBJECTTYPE} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_OBJECTID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_ISATTACHMENT} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_PARENTAPPUSERMESSAGEID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERMESSAGETO} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERMESSAGEREADBY} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_UID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_ISDELETED} TEXT,${ColumnsBase.KEY_APPUSERMESSAGE_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERMESSAGE);
+        await db.execute(createTableAppusermessage);
 
-        String CREATE_TABLE_APPUSERPRODUCT =
+        String createTableAppuserproduct =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERPRODUCT} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERPRODUCT_APPUSERPRODUCTID} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_APPUSERPRODUCTCODE} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_PRODUCTID} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_UID} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERPRODUCT_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERPRODUCT);
+        await db.execute(createTableAppuserproduct);
 
-        String CREATE_TABLE_APPUSERREMARK =
+        String createTableAppuserremark =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERREMARK} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERREMARKID} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERREMARKCODE} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERREMARKDETAILS} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERREMARKOBJECT} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERREMARKOBJECTID} TEXT,${ColumnsBase.KEY_APPUSERREMARK_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERREMARK_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERREMARK_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERREMARK_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERREMARK_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSERREMARK_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_APPUSERREMARK_LOCATION} TEXT,${ColumnsBase.KEY_APPUSERREMARK_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERREMARK_UID} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERREMARK_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERREMARK_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERREMARK_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERREMARK);
+        await db.execute(createTableAppuserremark);
 
-        String CREATE_TABLE_APPUSERROLE =
+        String createTableAppuserrole =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERROLE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERROLE_APPUSERROLEID} TEXT,${ColumnsBase.KEY_APPUSERROLE_APPUSERROLECODE} TEXT,${ColumnsBase.KEY_APPUSERROLE_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERROLE_USERROLEID} TEXT,${ColumnsBase.KEY_APPUSERROLE_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERROLE_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERROLE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERROLE_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERROLE_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERROLE_UID} TEXT,${ColumnsBase.KEY_APPUSERROLE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERROLE_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERROLE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERROLE);
+        await db.execute(createTableAppuserrole);
 
-        String CREATE_TABLE_APPUSERTEAM =
+        String createTableAppuserteam =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERTEAM} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERTEAMID} TEXT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERTEAMCODE} TEXT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERTEAMNAME} TEXT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERTEAMDESCRIPTION} TEXT,${ColumnsBase.KEY_APPUSERTEAM_TEAMLEADAPPUSERID} TEXT,${ColumnsBase.KEY_APPUSERTEAM_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERTEAM_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERTEAM_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERTEAM_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERTEAM_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERTEAM_UID} TEXT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERTEAM_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERTEAM_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERTEAM_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERTEAM);
+        await db.execute(createTableAppuserteam);
 
-        String CREATE_TABLE_APPUSERTEAMMEMBER =
+        String createTableAppuserteammember =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERTEAMMEMBER} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_APPUSERTEAMMEMBERID} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_APPUSERTEAMMEMBERCODE} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_APPUSERTEAMID} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_UID} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERTEAMMEMBER_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERTEAMMEMBER);
-        String CREATE_TABLE_APPUSERTERRITORY =
+        await db.execute(createTableAppuserteammember);
+        String createTableAppuserterritory =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERTERRITORY} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERTERRITORY_APPUSERTERRITORYID} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_APPUSERTERRITORYCODE} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_TERRITORYID} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_UID} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_ISARCHIVED} TEXT,${ColumnsBase.KEY_APPUSERTERRITORY_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERTERRITORY);
-        String CREATE_TABLE_APPUSERTYPE =
+        await db.execute(createTableAppuserterritory);
+        String createTableAppusertype =
             "CREATE TABLE ${TablesBase.TABLE_APPUSERTYPE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_APPUSERTYPE_APPUSERTYPEID} TEXT,${ColumnsBase.KEY_APPUSERTYPE_APPUSERTYPECODE} TEXT,${ColumnsBase.KEY_APPUSERTYPE_APPUSERTYPENAME} TEXT,${ColumnsBase.KEY_APPUSERTYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_APPUSERTYPE_CREATEDON} TEXT,${ColumnsBase.KEY_APPUSERTYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_APPUSERTYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_APPUSERTYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_APPUSERTYPE_UID} TEXT,${ColumnsBase.KEY_APPUSERTYPE_APPUSERID} TEXT,${ColumnsBase.KEY_APPUSERTYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_APPUSERTYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_APPUSERTYPE);
+        await db.execute(createTableAppusertype);
 
-        String CREATE_TABLE_ATTRIBUTE =
+        String createTableAttribute =
             "CREATE TABLE ${TablesBase.TABLE_ATTRIBUTE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_ATTRIBUTE_ATTRIBUTEID} TEXT,${ColumnsBase.KEY_ATTRIBUTE_ATTRIBUTECODE} TEXT,${ColumnsBase.KEY_ATTRIBUTE_ATTRIBUTENAME} TEXT,${ColumnsBase.KEY_ATTRIBUTE_DESCRIPTION} TEXT,${ColumnsBase.KEY_ATTRIBUTE_CREATEDON} TEXT,${ColumnsBase.KEY_ATTRIBUTE_CREATEDBY} TEXT,${ColumnsBase.KEY_ATTRIBUTE_MODIFIEDON} TEXT,${ColumnsBase.KEY_ATTRIBUTE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_ATTRIBUTE_ISACTIVE} TEXT,${ColumnsBase.KEY_ATTRIBUTE_UID} TEXT,${ColumnsBase.KEY_ATTRIBUTE_APPUSERID} TEXT,${ColumnsBase.KEY_ATTRIBUTE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_ATTRIBUTE_ISARCHIVED} TEXT,${ColumnsBase.KEY_ATTRIBUTE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_ATTRIBUTE);
+        await db.execute(createTableAttribute);
 
-        String CREATE_TABLE_ATTRIBUTEVALUE =
+        String createTableAttributevalue =
             "CREATE TABLE ${TablesBase.TABLE_ATTRIBUTEVALUE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ATTRIBUTEVALUEID} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ATTRIBUTEVALUECODE} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ATTRIBUTEVALUENAME} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ATTRIBUTEID} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_DESCRIPTION} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_MULTIPLIER} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_CREATEDON} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_CREATEDBY} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_MODIFIEDON} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ISACTIVE} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_UID} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_APPUSERID} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ISARCHIVED} TEXT,${ColumnsBase.KEY_ATTRIBUTEVALUE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_ATTRIBUTEVALUE);
+        await db.execute(createTableAttributevalue);
 
-        String CREATE_TABLE_BUSINESSEMAIL =
+        String createTableBusinessemail =
             "CREATE TABLE ${TablesBase.TABLE_BUSINESSEMAIL} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_BUSINESSEMAIL_BUSINESSEMAILID} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_BUSINESSEMAILCODE} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_BUSINESSEMAILADDRESS} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_PURPOSE} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_REMARKS} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_ISAPPROVED} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_HSREMARKS} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_CREATEDON} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_CREATEDBY} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_MODIFIEDON} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_MODIFIEDBY} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_ISACTIVE} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_UID} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_APPUSERID} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_ISARCHIVED} TEXT,${ColumnsBase.KEY_BUSINESSEMAIL_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_BUSINESSEMAIL);
+        await db.execute(createTableBusinessemail);
 
-        String CREATE_TABLE_BUSINESSFEATURE =
+        String createTableBusinessfeature =
             "CREATE TABLE ${TablesBase.TABLE_BUSINESSFEATURE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_BUSINESSFEATURE_BUSINESSFEATUREID} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_BUSINESSFEATURECODE} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_BUSINESSFEATURENAME} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_APPICON} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_CONSOLEICON} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_DESCRIPTIONTEXT} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_DESCRIPTIONHTML} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_INTERNALCODE} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_CREATEDON} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_CREATEDBY} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_MODIFIEDON} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_ISACTIVE} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_UID} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_APPUSERID} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_ISARCHIVED} TEXT,${ColumnsBase.KEY_BUSINESSFEATURE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_BUSINESSFEATURE);
+        await db.execute(createTableBusinessfeature);
 
-        String CREATE_TABLE_CHATMESSAGE =
+        String createTableChatmessage =
             "CREATE TABLE ${TablesBase.TABLE_CHATMESSAGE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH} TEXT,${ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED} TEXT,${ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH} TEXT,${ColumnsBase.KEY_CHATMESSAGE_ISREAD} TEXT,${ColumnsBase.KEY_CHATMESSAGE_READSTATUS} TEXT,${ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME} TEXT,${ColumnsBase.KEY_CHATMESSAGE_OBJECTID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE} TEXT,${ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CREATEDON} TEXT,${ColumnsBase.KEY_CHATMESSAGE_CREATEDBY} TEXT,${ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON} TEXT,${ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_CHATMESSAGE_ISACTIVE} TEXT,${ColumnsBase.KEY_CHATMESSAGE_UID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_APPUSERID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED} TEXT,${ColumnsBase.KEY_CHATMESSAGE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_CHATMESSAGE);
-        String CREATE_TABLE_CHATUSERANDGROUP =
+        await db.execute(createTableChatmessage);
+        String createTableChatuserandgroup =
             "CREATE TABLE ${TablesBase.TABLE_CHATUSERANDGROUP} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPID} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPCODE} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPLOGO} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPDESCRIPTION} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_PHONENUMBER} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_EMAIL} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_TARGETAPPUSERID} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_ISGROUP} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CREATEDBY} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_CREATEDON} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_MODIFIEDBY} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_MODIFIEDON} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_ISACTIVE} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_UID} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_APPUSERID} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_ISDELETED} TEXT,${ColumnsBase.KEY_CHATUSERANDGROUP_ISARCHIVED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_CHATUSERANDGROUP);
+        await db.execute(createTableChatuserandgroup);
 
-        String CREATE_TABLE_CHATUSERGROUPMEMBER =
+        String createTableChatusergroupmember =
             "CREATE TABLE ${TablesBase.TABLE_CHATUSERGROUPMEMBER} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_CHATUSERGROUPMEMBERID} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_CHATUSERGROUPMEMBERCODE} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_CHATUSERANDGROUPID} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_TARGETAPPUSERID} TEXT,${Columns.KEY_CHATUSERGROUPMEMBER_MEMBERNAME} TEXT,${Columns.KEY_CHATUSERGROUPMEMBER_MEMBERDESCRIPTION} TEXT,${Columns.KEY_CHATUSERGROUPMEMBER_PHONENUMBER} TEXT,${Columns.KEY_CHATUSERGROUPMEMBER_EMAIL} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_CREATEDBY} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_CREATEDON} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_MODIFIEDBY} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_MODIFIEDON} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_UID} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_APPUSERID} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_ISARCHIVED} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_ISACTIVE} TEXT,${ColumnsBase.KEY_CHATUSERGROUPMEMBER_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_CHATUSERGROUPMEMBER);
+        await db.execute(createTableChatusergroupmember);
 
-        String CREATE_TABLE_CONTACT =
+        String createTableContact =
             "CREATE TABLE ${TablesBase.TABLE_CONTACT} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_CONTACT_CONTACTID} TEXT,${ColumnsBase.KEY_CONTACT_CONTACTCODE} TEXT,${ColumnsBase.KEY_CONTACT_TITLE} TEXT,${ColumnsBase.KEY_CONTACT_FIRSTNAME} TEXT,${ColumnsBase.KEY_CONTACT_MIDDLENAME} TEXT,${ColumnsBase.KEY_CONTACT_LASTNAME} TEXT,${ColumnsBase.KEY_CONTACT_CONTACTNAME} TEXT,${ColumnsBase.KEY_CONTACT_CONTACTIDENTIFIER} TEXT,${ColumnsBase.KEY_CONTACT_ACCOUNTID} TEXT,${ColumnsBase.KEY_CONTACT_DEPARTMENTNAME} TEXT,${ColumnsBase.KEY_CONTACT_DESIGNATION} TEXT,${ColumnsBase.KEY_CONTACT_ROLESANDRESPONSIBILITIES} TEXT,${ColumnsBase.KEY_CONTACT_REPORTINGMANAGER} TEXT,${ColumnsBase.KEY_CONTACT_REPORTINGCONTACTID} TEXT,${ColumnsBase.KEY_CONTACT_MOBILENUMBER} TEXT,${ColumnsBase.KEY_CONTACT_ALTERNATEMOBILENUMBER} TEXT,${ColumnsBase.KEY_CONTACT_WORKPHONE} TEXT,${ColumnsBase.KEY_CONTACT_RESIDENCEPHONE} TEXT,${ColumnsBase.KEY_CONTACT_EMAIL} TEXT,${ColumnsBase.KEY_CONTACT_ALTERNATEEMAIL} TEXT,${ColumnsBase.KEY_CONTACT_ADDRESSLINE1} TEXT,${ColumnsBase.KEY_CONTACT_ADDRESSLINE2} TEXT,${ColumnsBase.KEY_CONTACT_ADDRESSLINE3} TEXT,${ColumnsBase.KEY_CONTACT_CITY} TEXT,${ColumnsBase.KEY_CONTACT_STATE} TEXT,${ColumnsBase.KEY_CONTACT_COUNTRY} TEXT,${ColumnsBase.KEY_CONTACT_PIN} TEXT,${ColumnsBase.KEY_CONTACT_GPSCOORDINATES} TEXT,${ColumnsBase.KEY_CONTACT_LINKEDIN} TEXT,${ColumnsBase.KEY_CONTACT_PASTACCOUNTS} TEXT,${ColumnsBase.KEY_CONTACT_PASTDESIGNATIONS} TEXT,${ColumnsBase.KEY_CONTACT_DATEOFBIRTH} TEXT,${ColumnsBase.KEY_CONTACT_REMINDBIRTHDAY} TEXT,${ColumnsBase.KEY_CONTACT_CONTACTALIGNMENTID} TEXT,${ColumnsBase.KEY_CONTACT_REMARKS} TEXT,${ColumnsBase.KEY_CONTACT_REFERENCEHISTORY} TEXT,${ColumnsBase.KEY_CONTACT_ISPRIMARYCONTACT} TEXT,${ColumnsBase.KEY_CONTACT_TAGS} TEXT,${ColumnsBase.KEY_CONTACT_FREETEXTFIELD1} TEXT,${ColumnsBase.KEY_CONTACT_FREETEXTFIELD2} TEXT,${ColumnsBase.KEY_CONTACT_FREETEXTFIELD3} TEXT,${ColumnsBase.KEY_CONTACT_COMPANYNAME} TEXT,${ColumnsBase.KEY_CONTACT_TAXPAYERIDENTIFICATIONNUMBER} TEXT,${ColumnsBase.KEY_CONTACT_SOCIALSECURITYNUMBER} TEXT,${ColumnsBase.KEY_CONTACT_PASSPORTNUMBER} TEXT,${ColumnsBase.KEY_CONTACT_DRIVINGLICENSENUMBER} TEXT,${ColumnsBase.KEY_CONTACT_VOTERIDCARDNUMBER} TEXT,${ColumnsBase.KEY_CONTACT_MARKETINGCONTACTID} TEXT,${ColumnsBase.KEY_CONTACT_CREATEDBY} TEXT,${ColumnsBase.KEY_CONTACT_CREATEDON} TEXT,${ColumnsBase.KEY_CONTACT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_CONTACT_MODIFIEDON} TEXT,${ColumnsBase.KEY_CONTACT_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_CONTACT_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_CONTACT_ISACTIVE} TEXT,${ColumnsBase.KEY_CONTACT_UID} TEXT,${ColumnsBase.KEY_CONTACT_APPUSERID} TEXT,${ColumnsBase.KEY_CONTACT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_CONTACT_ISARCHIVED} TEXT,${ColumnsBase.KEY_CONTACT_ISDELETED} TEXT,${ColumnsBase.KEY_CONTACT_LEADQUALIFICATIONID} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_CONTACT);
+        await db.execute(createTableContact);
 
-        String CREATE_TABLE_CONTACTALIGNMENT =
+        String createTableContactalignment =
             "CREATE TABLE ${TablesBase.TABLE_CONTACTALIGNMENT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CONTACTALIGNMENT_CONTACTALIGNMENTID} TEXT,"
@@ -1320,9 +1320,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CONTACTALIGNMENT);
+        await db.execute(createTableContactalignment);
 
-        String CREATE_TABLE_CONTACTMEDIA =
+        String createTableContactmedia =
             "CREATE TABLE ${TablesBase.TABLE_CONTACTMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CONTACTMEDIA_CONTACTMEDIAID} TEXT,"
@@ -1360,9 +1360,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CONTACTMEDIA);
+        await db.execute(createTableContactmedia);
 
-        String CREATE_TABLE_CONTACTTITLE =
+        String createTableContacttitle =
             "CREATE TABLE ${TablesBase.TABLE_CONTACTTITLE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CONTACTTITLE_CONTACTTITLEID} TEXT,"
@@ -1390,9 +1390,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CONTACTTITLE);
+        await db.execute(createTableContacttitle);
 
-        String CREATE_TABLE_CONTENTTYPE =
+        String createTableContenttype =
             "CREATE TABLE ${TablesBase.TABLE_CONTENTTYPE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CONTENTTYPE_CONTENTTYPEID} TEXT,"
@@ -1420,9 +1420,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CONTENTTYPE);
+        await db.execute(createTableContenttype);
 
-        String CREATE_TABLE_COUNTRY =
+        String createTableCountry =
             "CREATE TABLE ${TablesBase.TABLE_COUNTRY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_COUNTRY_COUNTRYID} TEXT,"
@@ -1450,9 +1450,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_COUNTRY);
+        await db.execute(createTableCountry);
 
-        String CREATE_TABLE_CREDITRATING =
+        String createTableCreditrating =
             "CREATE TABLE ${TablesBase.TABLE_CREDITRATING} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CREDITRATING_CREDITRATINGID} TEXT,"
@@ -1481,8 +1481,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CREDITRATING);
-        String CREATE_TABLE_CURRENCY =
+        await db.execute(createTableCreditrating);
+        String createTableCurrency =
             "CREATE TABLE ${TablesBase.TABLE_CURRENCY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CURRENCY_CURRENCYID} TEXT,"
@@ -1515,9 +1515,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CURRENCY);
+        await db.execute(createTableCurrency);
 
-        String CREATE_TABLE_CUSTOMERMEETING =
+        String createTableCustomermeeting =
             "CREATE TABLE ${TablesBase.TABLE_CUSTOMERMEETING} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID} TEXT,"
@@ -1556,13 +1556,13 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_CUSTOMERMEETING);
+        await db.execute(createTableCustomermeeting);
 
-        String CREATE_TABLE_DEPARTMENT =
+        String createTableDepartment =
             "CREATE TABLE ${TablesBase.TABLE_DEPARTMENT}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_DEPARTMENT_DEPARTMENTID} TEXT,${ColumnsBase.KEY_DEPARTMENT_DEPARTMENTCODE} TEXT,${ColumnsBase.KEY_DEPARTMENT_DEPARTMENTNAME} TEXT,${ColumnsBase.KEY_DEPARTMENT_CREATEDON} TEXT,${ColumnsBase.KEY_DEPARTMENT_CREATEDBY} TEXT,${ColumnsBase.KEY_DEPARTMENT_MODIFIEDON} TEXT,${ColumnsBase.KEY_DEPARTMENT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_DEPARTMENT_ISACTIVE} TEXT,${ColumnsBase.KEY_DEPARTMENT_UID} TEXT,${ColumnsBase.KEY_DEPARTMENT_APPUSERID} TEXT,${ColumnsBase.KEY_DEPARTMENT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_DEPARTMENT_ISARCHIVED} TEXT,${ColumnsBase.KEY_DEPARTMENT_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_DEPARTMENT);
+        await db.execute(createTableDepartment);
 
-        String CREATE_TABLE_DESIGNATION =
+        String createTableDesignation =
             "CREATE TABLE ${TablesBase.TABLE_DESIGNATION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_DESIGNATION_DESIGNATIONID} TEXT,"
@@ -1590,9 +1590,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_DESIGNATION);
+        await db.execute(createTableDesignation);
 
-        String CREATE_TABLE_EMAILMANUALTEMPLATE =
+        String createTableEmailmanualtemplate =
             "CREATE TABLE ${TablesBase.TABLE_EMAILMANUALTEMPLATE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_EMAILMANUALTEMPLATE_EMAILMANUALTEMPLATEID} TEXT,"
@@ -1627,9 +1627,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_EMAILMANUALTEMPLATE);
+        await db.execute(createTableEmailmanualtemplate);
 
-        String CREATE_TABLE_FIELDATTENDANCE =
+        String createTableFieldattendance =
             "CREATE TABLE ${TablesBase.TABLE_FIELDATTENDANCE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FIELDATTENDANCE_FIELDATTENDANCEID} TEXT,"
@@ -1665,9 +1665,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FIELDATTENDANCE);
+        await db.execute(createTableFieldattendance);
 
-        String CREATE_TABLE_FINANCIALYEAR =
+        String createTableFinancialyear =
             "CREATE TABLE ${TablesBase.TABLE_FINANCIALYEAR} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FINANCIALYEAR_FINANCIALYEARID} TEXT,"
@@ -1698,9 +1698,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FINANCIALYEAR);
+        await db.execute(createTableFinancialyear);
 
-        String CREATE_TABLE_FORM = "CREATE TABLE ${TablesBase.TABLE_FORM} ("
+        String createTableForm = "CREATE TABLE ${TablesBase.TABLE_FORM} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FORM_FORMID} TEXT,"
             "${ColumnsBase.KEY_FORM_FORMCODE} TEXT,"
@@ -1740,9 +1740,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FORM);
+        await db.execute(createTableForm);
 
-        String CREATE_TABLE_FORMCELL =
+        String createTableFormcell =
             "CREATE TABLE ${TablesBase.TABLE_FORMCELL} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FORMCELL_FORMCELLID} TEXT,"
@@ -1778,9 +1778,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FORMCELL);
+        await db.execute(createTableFormcell);
 
-        String CREATE_TABLE_FORMCELLELEMENT =
+        String createTableFormcellelement =
             "CREATE TABLE ${TablesBase.TABLE_FORMCELLELEMENT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FORMCELLELEMENT_FORMCELLELEMENTID} TEXT,"
@@ -1847,9 +1847,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FORMCELLELEMENT);
+        await db.execute(createTableFormcellelement);
 
-        String CREATE_TABLE_FORMSECTION =
+        String createTableFormsection =
             "CREATE TABLE ${TablesBase.TABLE_FORMSECTION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_FORMSECTION_FORMSECTIONID} TEXT,"
@@ -1889,9 +1889,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_FORMSECTION);
+        await db.execute(createTableFormsection);
 
-        String CREATE_TABLE_INDUSTRY =
+        String createTableIndustry =
             "CREATE TABLE ${TablesBase.TABLE_INDUSTRY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_INDUSTRY_INDUSTRYID} TEXT,"
@@ -1919,9 +1919,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_INDUSTRY);
+        await db.execute(createTableIndustry);
 
-        String CREATE_TABLE_LEADSOURCE =
+        String createTableLeadsource =
             "CREATE TABLE ${TablesBase.TABLE_LEADSOURCE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_LEADSOURCE_LEADSOURCEID} TEXT,"
@@ -1949,9 +1949,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_LEADSOURCE);
+        await db.execute(createTableLeadsource);
 
-        String CREATE_TABLE_MODEOFTRAVEL =
+        String createTableModeoftravel =
             "CREATE TABLE ${TablesBase.TABLE_MODEOFTRAVEL} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELID} TEXT,"
@@ -1980,8 +1980,8 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_MODEOFTRAVEL);
-        String CREATE_TABLE_NOTE = "CREATE TABLE ${TablesBase.TABLE_NOTE} ("
+        await db.execute(createTableModeoftravel);
+        String createTableNote = "CREATE TABLE ${TablesBase.TABLE_NOTE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_NOTE_NOTEID} TEXT,"
             "${ColumnsBase.KEY_NOTE_NOTECODE} TEXT,"
@@ -2020,9 +2020,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_NOTE);
+        await db.execute(createTableNote);
 
-        String CREATE_TABLE_NOTEMEDIA =
+        String createTableNotemedia =
             "CREATE TABLE ${TablesBase.TABLE_NOTEMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_NOTEMEDIA_NOTEMEDIAID} TEXT,"
@@ -2060,9 +2060,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_NOTEMEDIA);
+        await db.execute(createTableNotemedia);
 
-        String CREATE_TABLE_NOTEPERMISSION =
+        String createTableNotepermission =
             "CREATE TABLE ${TablesBase.TABLE_NOTEPERMISSION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_NOTEPERMISSION_NOTEPERMISSIONID} TEXT,"
@@ -2091,9 +2091,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_NOTEPERMISSION);
+        await db.execute(createTableNotepermission);
 
-        String CREATE_TABLE_NOTIFICATION =
+        String createTableNotification =
             "CREATE TABLE ${TablesBase.TABLE_NOTIFICATION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_NOTIFICATION_NOTIFICATIONID} TEXT,"
@@ -2124,9 +2124,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_NOTIFICATION);
+        await db.execute(createTableNotification);
 
-        String CREATE_TABLE_NOTIFICATIONASSIGNMENT =
+        String createTableNotificationassignment =
             "CREATE TABLE ${TablesBase.TABLE_NOTIFICATIONASSIGNMENT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_NOTIFICATIONASSIGNMENT_NOTIFICATIONASSIGNMENTID} TEXT,"
@@ -2158,9 +2158,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_NOTIFICATIONASSIGNMENT);
+        await db.execute(createTableNotificationassignment);
 
-        String CREATE_TABLE_OPPORTUNITY =
+        String createTableOpportunity =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID} TEXT,"
@@ -2226,9 +2226,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITY);
+        await db.execute(createTableOpportunity);
 
-        String CREATE_TABLE_OPPORTUNITYCONTACT =
+        String createTableOpportunitycontact =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYCONTACT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYCONTACT_OPPORTUNITYCONTACTID} TEXT,"
@@ -2260,9 +2260,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYCONTACT);
+        await db.execute(createTableOpportunitycontact);
 
-        String CREATE_TABLE_OPPORTUNITYMEASURE =
+        String createTableOpportunitymeasure =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYMEASURE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYMEASURE_OPPORTUNITYMEASUREID} TEXT,"
@@ -2293,9 +2293,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYMEASURE);
+        await db.execute(createTableOpportunitymeasure);
 
-        String CREATE_TABLE_OPPORTUNITYFULFILLMENTSTATUS =
+        String createTableOpportunityfulfillmentstatus =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYFULFILLMENTSTATUS} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYFULFILLMENTSTATUS_OPPORTUNITYFULFILLMENTSTATUSID} TEXT,"
@@ -2326,9 +2326,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYFULFILLMENTSTATUS);
+        await db.execute(createTableOpportunityfulfillmentstatus);
 
-        String CREATE_TABLE_OPPORTUNITYMEDIA =
+        String createTableOpportunitymedia =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYMEDIA} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYMEDIA_OPPORTUNITYMEDIAID} TEXT,"
@@ -2364,9 +2364,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYMEDIA);
+        await db.execute(createTableOpportunitymedia);
 
-        String CREATE_TABLE_OPPORTUNITYNAME =
+        String createTableOpportunityname =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYNAME} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYNAME_OPPORTUNITYNAMEID} TEXT,"
@@ -2394,9 +2394,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYNAME);
+        await db.execute(createTableOpportunityname);
 
-        String CREATE_TABLE_OPPORTUNITYPERMISSION =
+        String createTableOpportunitypermission =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYPERMISSION} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYPERMISSION_OPPORTUNITYPERMISSIONID} TEXT,"
@@ -2425,9 +2425,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYPERMISSION);
+        await db.execute(createTableOpportunitypermission);
 
-        String CREATE_TABLE_OPPORTUNITYPRIORITY =
+        String createTableOpportunitypriority =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYPRIORITY} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYPRIORITY_OPPORTUNITYPRIORITYID} TEXT,"
@@ -2457,9 +2457,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYPRIORITY);
+        await db.execute(createTableOpportunitypriority);
 
-        String CREATE_TABLE_OPPORTUNITYPRODUCT =
+        String createTableOpportunityproduct =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYPRODUCT} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_OPPORTUNITYPRODUCT_OPPORTUNITYPRODUCTID} TEXT,"
@@ -2490,105 +2490,105 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_OPPORTUNITYPRODUCT);
+        await db.execute(createTableOpportunityproduct);
 
-        String CREATE_TABLE_OPPORTUNITYPRODUCTDETAIL =
+        String createTableOpportunityproductdetail =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYPRODUCTDETAIL} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_OPPORTUNITYPRODUCTDETAILID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_OPPORTUNITYPRODUCTDETAILCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_OPPORTUNITYPRODUCTID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_ATTRIBUTE} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_QUANTITY} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_AMOUNT} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_SUPPLIERACCOUNTID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_ISDELETED} TEXT,${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYPRODUCTDETAIL);
+        await db.execute(createTableOpportunityproductdetail);
 
-        String CREATE_TABLE_OPPORTUNITYSTAGE =
+        String createTableOpportunitystage =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYSTAGE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_OPPORTUNITYSTAGEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_OPPORTUNITYSTAGECODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_OPPORTUNITYSTAGENAME} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_DESCRIPTION} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_SEQUENTIALORDER} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_ISPIPELINE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_PROBABILITY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_INDICATOR} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_STAGNANTALERTDAYS} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGE_UID} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYSTAGE);
+        await db.execute(createTableOpportunitystage);
 
-        String CREATE_TABLE_OPPORTUNITYSTAGETYPE =
+        String createTableOpportunitystagetype =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYSTAGETYPE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_OPPORTUNITYSTAGETYPEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_OPPORTUNITYSTAGETYPECODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_OPPORTUNITYSTAGEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_OPPORTUNITYTYPEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTAGETYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYSTAGETYPE);
+        await db.execute(createTableOpportunitystagetype);
 
-        String CREATE_TABLE_OPPORTUNITYSTATUS =
+        String createTableOpportunitystatus =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYSTATUS} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_OPPORTUNITYSTATUSID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_OPPORTUNITYSTATUSCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_OPPORTUNITYSTATUSNAME} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_SEQUENTIALORDER} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_PROBABILITY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_INDICATOR} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_INTERNALCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_WORKFLOWSTAGEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_ALERTMESSAGE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYSTATUS_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYSTATUS);
+        await db.execute(createTableOpportunitystatus);
 
-        String CREATE_TABLE_OPPORTUNITYTEAM =
+        String createTableOpportunityteam =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYTEAM} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYTEAM);
+        await db.execute(createTableOpportunityteam);
 
-        String CREATE_TABLE_OPPORTUNITYTYPE =
+        String createTableOpportunitytype =
             "CREATE TABLE ${TablesBase.TABLE_OPPORTUNITYTYPE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_OPPORTUNITYTYPE);
+        await db.execute(createTableOpportunitytype);
 
-        String CREATE_TABLE_PHONETYPE =
+        String createTablePhonetype =
             "CREATE TABLE ${TablesBase.TABLE_PHONETYPE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PHONETYPE_PHONETYPEID} TEXT,${ColumnsBase.KEY_PHONETYPE_PHONETYPECODE} TEXT,${ColumnsBase.KEY_PHONETYPE_PHONETYPENAME} TEXT,${ColumnsBase.KEY_PHONETYPE_CREATEDON} TEXT,${ColumnsBase.KEY_PHONETYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_PHONETYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_PHONETYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PHONETYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_PHONETYPE_UID} TEXT,${ColumnsBase.KEY_PHONETYPE_APPUSERID} TEXT,${ColumnsBase.KEY_PHONETYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PHONETYPE_ISARCHIVED} TEXT,${ColumnsBase.KEY_PHONETYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PHONETYPE);
+        await db.execute(createTablePhonetype);
 
-        String CREATE_TABLE_PRODUCT =
+        String createTableProduct =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCT} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCT_PRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTCODE} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTNAME} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTDESCRIPTION} TEXT,${ColumnsBase.KEY_PRODUCT_MANUFACTURER} TEXT,${ColumnsBase.KEY_PRODUCT_HSNCODE} TEXT,${ColumnsBase.KEY_PRODUCT_MRP} TEXT,${ColumnsBase.KEY_PRODUCT_PRICE} TEXT,${ColumnsBase.KEY_PRODUCT_PRICEFORSALES} TEXT,${ColumnsBase.KEY_PRODUCT_ISATTRIBUTEBASED} TEXT,${ColumnsBase.KEY_PRODUCT_CGSTPERCENTAGE} TEXT,${ColumnsBase.KEY_PRODUCT_SGSTPERCENTAGE} TEXT,${ColumnsBase.KEY_PRODUCT_GSTPERCENTAGE} TEXT,${ColumnsBase.KEY_PRODUCT_ISPRICEINCLUDESTAX} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTCATEGORYID} TEXT,${ColumnsBase.KEY_PRODUCT_LIFETIMEINHOURS} TEXT,${ColumnsBase.KEY_PRODUCT_PARENTPRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTTHUMBNAILIMAGEPATH} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTIMAGEPATH} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTBROCHUREPATH} TEXT,${ColumnsBase.KEY_PRODUCT_PRODUCTATTRIBUTES} TEXT,${ColumnsBase.KEY_PRODUCT_ISSALEABLE} TEXT,${ColumnsBase.KEY_PRODUCT_TAGS} TEXT,${ColumnsBase.KEY_PRODUCT_REMARKS} TEXT,${ColumnsBase.KEY_PRODUCT_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCT_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCT_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCT_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCT_UID} TEXT,${ColumnsBase.KEY_PRODUCT_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCT_ISARCHIVED} TEXT,${ColumnsBase.KEY_PRODUCT_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCT);
+        await db.execute(createTableProduct);
 
-        String CREATE_TABLE_PRODUCTAUXILIARY =
+        String createTableProductauxiliary =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCTAUXILIARY} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCTAUXILIARY_PRODUCTAUXILIARYID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_PRODUCTAUXILIARYCODE} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_PRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_AUXILIARYPRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_QUANTITY} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_PRICE} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_ISPRICEINCLUDESTAX} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_UID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_SEQUENTIALORDER} TEXT,${ColumnsBase.KEY_PRODUCTAUXILIARY_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCTAUXILIARY);
+        await db.execute(createTableProductauxiliary);
 
-        String CREATE_TABLE_PRODUCTCATEGORY =
+        String createTableProductcategory =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCTCATEGORY} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCTCATEGORY_PRODUCTCATEGORYID} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_PRODUCTCATEGORYCODE} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_PRODUCTCATEGORYNAME} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_DESCRIPTION} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_PARENTPRODUCTCATEGORYID} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_UID} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_ISARCHIVED} TEXT,${ColumnsBase.KEY_PRODUCTCATEGORY_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCTCATEGORY);
+        await db.execute(createTableProductcategory);
 
-        String CREATE_TABLE_PRODUCTINSTALLATION =
+        String createTableProductinstallation =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCTINSTALLATION} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCTINSTALLATION_PRODUCTINSTALLATIONID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_PRODUCTINSTALLATIONCODE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_INSTALLATIONIDENTIFIER} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_ACCOUNTID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_CONTACTID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_PRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_SERIALNUMBER} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_PARTNUMBER} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_MODEL} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_DATEOFMANUFACTURE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_LOCATIONUNIT} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_LOCATIONADDRESS} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_DATEOFCOMMISSIONING} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_APPLICATIONOFPRODUCT} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_WARRANTYENDDATE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_USAGEHOURSPERWEEK} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_UID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_ISARCHIVED} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_ISDELETED} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATION_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCTINSTALLATION);
+        await db.execute(createTableProductinstallation);
 
-        String CREATE_TABLE_PRODUCTINSTALLATIONDETAIL =
+        String createTableProductinstallationdetail =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PRODUCTINSTALLATIONDETAILID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PRODUCTINSTALLATIONDETAILCODE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PRODUCTINSTALLATIONID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_SERIALNUMBER} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PARTNUMBER} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_MODEL} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_DATEOFMANUFACTURE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_APPLICATIONOFPRODUCT} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_DATEOFCOMMISSIONING} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_LIFETIMEINHOURS} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_USAGEHOURSPERWEEK} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_UID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_ISARCHIVED} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_ISDELETED} TEXT,${ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCTINSTALLATIONDETAIL);
+        await db.execute(createTableProductinstallationdetail);
 
-        String CREATE_TABLE_PRODUCTMEDIA =
+        String createTableProductmedia =
             "CREATE TABLE ${TablesBase.TABLE_PRODUCTMEDIA} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_PRODUCTMEDIA_PRODUCTMEDIAID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_PRODUCTMEDIACODE} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_PRODUCTMEDIANAME} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_PRODUCTID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_CONTENTTYPEID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_MEDIAPATH} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_MEDIACONTENT} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_DESCRIPTION} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_TAGS} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_LOCALMEDIAPATH} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_ISUPLOADED} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_CREATEDBY} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_CREATEDON} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_MODIFIEDBY} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_MODIFIEDON} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_ISACTIVE} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_UID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_APPUSERID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_ISARCHIVED} TEXT,${ColumnsBase.KEY_PRODUCTMEDIA_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_PRODUCTMEDIA);
+        await db.execute(createTableProductmedia);
 
-        String CREATE_TABLE_REIMBURSEMENT =
+        String createTableReimbursement =
             "CREATE TABLE ${TablesBase.TABLE_REIMBURSEMENT} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_REIMBURSEMENT_REIMBURSEMENTID} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_REIMBURSEMENTCODE} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_REIMBURSEMENTTITLE} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_REIMBURSEMENTDATE} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_VOUCHERNUMBER} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_DESCRIPTION} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_AMOUNT} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_ISPAID} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_CREATEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_CREATEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_MODIFIEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_ISACTIVE} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_UID} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_APPUSERID} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_ISARCHIVED} TEXT,${ColumnsBase.KEY_REIMBURSEMENT_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_REIMBURSEMENT);
+        await db.execute(createTableReimbursement);
 
-        String CREATE_TABLE_REIMBURSEMENTDETAIL =
+        String createTableReimbursementdetail =
             "CREATE TABLE ${TablesBase.TABLE_REIMBURSEMENTDETAIL} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_REIMBURSEMENTDETAILID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_REIMBURSEMENTDETAILCODE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_REIMBURSEMENTDETAILTITLE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_BILLNUMBER} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_BILLDATE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_AMOUNT} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_REIMBURSEMENTID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_REIMBURSEMENTTYPEID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_ACTIVITYID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_ACTIVITYTRAVELID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_DESCRIPTION} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_DOCUMENTPATH} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_DOCUMENTCONTENT} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_CREATEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_CREATEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_MODIFIEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_MODIFIEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_ISACTIVE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_UID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_APPUSERID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_ISARCHIVED} TEXT,${ColumnsBase.KEY_REIMBURSEMENTDETAIL_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_REIMBURSEMENTDETAIL);
+        await db.execute(createTableReimbursementdetail);
 
-        String CREATE_TABLE_REIMBURSEMENTTYPE =
+        String createTableReimbursementtype =
             "CREATE TABLE ${TablesBase.TABLE_REIMBURSEMENTTYPE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_REIMBURSEMENTTYPEID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_REIMBURSEMENTTYPECODE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_REIMBURSEMENTTYPENAME} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_CREATEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_UID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_APPUSERID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_ISARCHIVED} TEXT,${ColumnsBase.KEY_REIMBURSEMENTTYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_REIMBURSEMENTTYPE);
+        await db.execute(createTableReimbursementtype);
 
-        String CREATE_TABLE_REMINDER =
+        String createTableReminder =
             "CREATE TABLE ${TablesBase.TABLE_REMINDER} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_REMINDER_REMINDERID} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERCODE} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERTITLE} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERDESCRIPTION} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERDATE} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERTIME} TEXT,${ColumnsBase.KEY_REMINDER_REMINDERREPEAT} TEXT,${ColumnsBase.KEY_REMINDER_REPEATNUMBER} TEXT,${ColumnsBase.KEY_REMINDER_REPEATTYPE} TEXT,${ColumnsBase.KEY_REMINDER_ACTIVE} TEXT,${ColumnsBase.KEY_REMINDER_ACTIVITYID} TEXT,${ColumnsBase.KEY_REMINDER_OPPORTUNITYID} TEXT,${ColumnsBase.KEY_REMINDER_ACCOUNTID} TEXT,${ColumnsBase.KEY_REMINDER_ISSETBYSYSTEM} TEXT,${ColumnsBase.KEY_REMINDER_CREATEDBY} TEXT,${ColumnsBase.KEY_REMINDER_CREATEDON} TEXT,${ColumnsBase.KEY_REMINDER_MODIFIEDBY} TEXT,${ColumnsBase.KEY_REMINDER_MODIFIEDON} TEXT,${ColumnsBase.KEY_REMINDER_ISACTIVE} TEXT,${ColumnsBase.KEY_REMINDER_UID} TEXT,${ColumnsBase.KEY_REMINDER_APPUSERID} TEXT,${ColumnsBase.KEY_REMINDER_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_REMINDER_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_REMINDER);
+        await db.execute(createTableReminder);
 
-        String CREATE_TABLE_RESOURCE =
+        String createTableResource =
             "CREATE TABLE ${TablesBase.TABLE_RESOURCE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_RESOURCE_RESOURCEID} TEXT,${ColumnsBase.KEY_RESOURCE_RESOURCECODE} TEXT,${ColumnsBase.KEY_RESOURCE_RESOURCENAME} TEXT,${ColumnsBase.KEY_RESOURCE_PRODUCTID} TEXT,${ColumnsBase.KEY_RESOURCE_CONTENTTYPEID} TEXT,${ColumnsBase.KEY_RESOURCE_RESOURCEPATH} TEXT,${ColumnsBase.KEY_RESOURCE_RESOURCECONTENT} TEXT,${ColumnsBase.KEY_RESOURCE_DESCRIPTION} TEXT,${Columns.KEY_RESOURCE_RESOURCECATEGORYNAME} TEXT,${ColumnsBase.KEY_RESOURCE_ISSHARABLE} TEXT,${ColumnsBase.KEY_RESOURCE_VALIDUPTO} TEXT,${ColumnsBase.KEY_RESOURCE_CREATEDBY} TEXT,${ColumnsBase.KEY_RESOURCE_CREATEDON} TEXT,${ColumnsBase.KEY_RESOURCE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_RESOURCE_MODIFIEDON} TEXT,${ColumnsBase.KEY_RESOURCE_ISACTIVE} TEXT,${ColumnsBase.KEY_RESOURCE_UID} TEXT,${ColumnsBase.KEY_RESOURCE_APPUSERID} TEXT,${ColumnsBase.KEY_RESOURCE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_RESOURCE_ISARCHIVED} TEXT,${ColumnsBase.KEY_RESOURCE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_RESOURCE);
+        await db.execute(createTableResource);
 
-        String CREATE_TABLE_SERVICEINVOICE =
+        String createTableServiceinvoice =
             "CREATE TABLE ${TablesBase.TABLE_SERVICEINVOICE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_SERVICEINVOICE_SERVICEINVOICEID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_SERVICEINVOICECODE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_SERVICEINVOICETITLE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_SERVICEINVOICEDATE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ACCOUNTID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ACTIVITYID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_PRODUCTID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_BARCODE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ISINWARRANTY} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_PRODUCTPARTSPRICE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_SERVICECHARGE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_TAX} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_TOTALAMOUNT} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_AMOUNTPAID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_CURRENCYID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_PAYMENTDATE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_CREATEDBY} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_CREATEDON} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_MODIFIEDON} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ISACTIVE} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_UID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_APPUSERID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ISARCHIVED} TEXT,${ColumnsBase.KEY_SERVICEINVOICE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_SERVICEINVOICE);
+        await db.execute(createTableServiceinvoice);
 
-        String CREATE_TABLE_SERVICEINVOICEDETAIL =
+        String createTableServiceinvoicedetail =
             "CREATE TABLE ${TablesBase.TABLE_SERVICEINVOICEDETAIL} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_SERVICEINVOICEDETAILID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_SERVICEINVOICEDETAILCODE} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_PRODUCTPARTBARCODE} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_SERVICEINVOICEID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_PRODUCTID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_QUANTITY} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_RATE} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_PRICE} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_CREATEDON} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_CREATEDBY} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_MODIFIEDON} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_MODIFIEDBY} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_ISACTIVE} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_UID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_APPUSERID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_ISARCHIVED} TEXT,${ColumnsBase.KEY_SERVICEINVOICEDETAIL_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_SERVICEINVOICEDETAIL);
+        await db.execute(createTableServiceinvoicedetail);
 
-        String CREATE_TABLE_TAG =
+        String createTableTag =
             "CREATE TABLE ${TablesBase.TABLE_TAG} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_TAG_TAGID} TEXT,${ColumnsBase.KEY_TAG_TAGCODE} TEXT,${ColumnsBase.KEY_TAG_TAGNAME} TEXT,${ColumnsBase.KEY_TAG_DESCRIPTION} TEXT,${ColumnsBase.KEY_TAG_PARENTTAGID} TEXT,${ColumnsBase.KEY_TAG_TAGGROUPID} TEXT,${ColumnsBase.KEY_TAG_SORTORDER} TEXT,${ColumnsBase.KEY_TAG_CREATEDBY} TEXT,${ColumnsBase.KEY_TAG_CREATEDON} TEXT,${ColumnsBase.KEY_TAG_MODIFIEDBY} TEXT,${ColumnsBase.KEY_TAG_MODIFIEDON} TEXT,${ColumnsBase.KEY_TAG_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_TAG_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_TAG_ISACTIVE} TEXT,${ColumnsBase.KEY_TAG_UID} TEXT,${ColumnsBase.KEY_TAG_APPUSERID} TEXT,${ColumnsBase.KEY_TAG_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_TAG_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_TAG);
+        await db.execute(createTableTag);
 
-        String CREATE_TABLE_TAGGROUP =
+        String createTableTaggroup =
             "CREATE TABLE ${TablesBase.TABLE_TAGGROUP} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_TAGGROUP_TAGGROUPID} TEXT,${ColumnsBase.KEY_TAGGROUP_TAGGROUPCODE} TEXT,${ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME} TEXT,${ColumnsBase.KEY_TAGGROUP_BUSINESSFEATUREID} TEXT,${ColumnsBase.KEY_TAGGROUP_LINKTO} TEXT,${ColumnsBase.KEY_TAGGROUP_SORTORDER} TEXT,${ColumnsBase.KEY_TAGGROUP_DISPLAYINAPP} TEXT,${ColumnsBase.KEY_TAGGROUP_POSITIONINDEX} TEXT,${ColumnsBase.KEY_TAGGROUP_ALLOWNEWVALUES} TEXT,${ColumnsBase.KEY_TAGGROUP_USEINBUSINESSTARGET} TEXT,${ColumnsBase.KEY_TAGGROUP_CREATEDON} TEXT,${ColumnsBase.KEY_TAGGROUP_CREATEDBY} TEXT,${ColumnsBase.KEY_TAGGROUP_MODIFIEDON} TEXT,${ColumnsBase.KEY_TAGGROUP_MODIFIEDBY} TEXT,${ColumnsBase.KEY_TAGGROUP_ISACTIVE} TEXT,${ColumnsBase.KEY_TAGGROUP_UID} TEXT,${ColumnsBase.KEY_TAGGROUP_APPUSERID} TEXT,${ColumnsBase.KEY_TAGGROUP_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_TAGGROUP_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_TAGGROUP);
+        await db.execute(createTableTaggroup);
 
-        String CREATE_TABLE_TERRITORY =
+        String createTableTerritory =
             "CREATE TABLE ${TablesBase.TABLE_TERRITORY} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_TERRITORY_TERRITORYID} TEXT,${ColumnsBase.KEY_TERRITORY_TERRITORYCODE} TEXT,${ColumnsBase.KEY_TERRITORY_TERRITORYNAME} TEXT,${ColumnsBase.KEY_TERRITORY_DESCRIPTION} TEXT,${ColumnsBase.KEY_TERRITORY_PARENTTERRITORYID} TEXT,${ColumnsBase.KEY_TERRITORY_CREATEDON} TEXT,${ColumnsBase.KEY_TERRITORY_CREATEDBY} TEXT,${ColumnsBase.KEY_TERRITORY_MODIFIEDON} TEXT,${ColumnsBase.KEY_TERRITORY_MODIFIEDBY} TEXT,${ColumnsBase.KEY_TERRITORY_ISACTIVE} TEXT,${ColumnsBase.KEY_TERRITORY_UID} TEXT,${ColumnsBase.KEY_TERRITORY_APPUSERID} TEXT,${ColumnsBase.KEY_TERRITORY_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_TERRITORY_ISARCHIVED} TEXT,${ColumnsBase.KEY_TERRITORY_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_TERRITORY);
+        await db.execute(createTableTerritory);
 
-        String CREATE_TABLE_TIMEZONE =
+        String createTableTimezone =
             "CREATE TABLE ${TablesBase.TABLE_TIMEZONE} (${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_TIMEZONE_TIMEZONEID} TEXT,${ColumnsBase.KEY_TIMEZONE_TIMEZONECODE} TEXT,${ColumnsBase.KEY_TIMEZONE_TIMEZONENAME} TEXT,${ColumnsBase.KEY_TIMEZONE_GMTOFFSET} TEXT,${ColumnsBase.KEY_TIMEZONE_GMTOFFSETINMINUTES} TEXT,${ColumnsBase.KEY_TIMEZONE_SERVERRELATIVEOFFSET} TEXT,${ColumnsBase.KEY_TIMEZONE_DSTCORRECTION} TEXT,${ColumnsBase.KEY_TIMEZONE_CREATEDON} TEXT,${ColumnsBase.KEY_TIMEZONE_CREATEDBY} TEXT,${ColumnsBase.KEY_TIMEZONE_MODIFIEDON} TEXT,${ColumnsBase.KEY_TIMEZONE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_TIMEZONE_ISACTIVE} TEXT,${ColumnsBase.KEY_TIMEZONE_UID} TEXT,${ColumnsBase.KEY_TIMEZONE_APPUSERID} TEXT,${ColumnsBase.KEY_TIMEZONE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_TIMEZONE_ISARCHIVED} TEXT,${ColumnsBase.KEY_TIMEZONE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-        await db.execute(CREATE_TABLE_TIMEZONE);
+        await db.execute(createTableTimezone);
 
-        String CREATE_TABLE_TRAVELPURPOSE =
+        String createTableTravelpurpose =
             "CREATE TABLE ${TablesBase.TABLE_TRAVELPURPOSE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_TRAVELPURPOSE_TRAVELPURPOSEID} TEXT,"
@@ -2617,9 +2617,9 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_TRAVELPURPOSE);
+        await db.execute(createTableTravelpurpose);
 
-        String CREATE_TABLE_USERROLE =
+        String createTableUserrole =
             "CREATE TABLE ${TablesBase.TABLE_USERROLE} ("
             "${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${ColumnsBase.KEY_USERROLE_USERROLEID} TEXT,"
@@ -2648,7 +2648,7 @@ class DatabaseHandler {
             "${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,"
             "${ColumnsBase.KEY_OWNERUSERID} TEXT"
             ")";
-        await db.execute(CREATE_TABLE_USERROLE);
+        await db.execute(createTableUserrole);
 
 // table initialisation done
       });
@@ -3287,125 +3287,204 @@ class DatabaseHandler {
   void Upgrade_Tables_V2(Database db) async {
     //Adding BusinessUnit features for Account, Activity and Opportunity
     try {
-      String CREATE_TABLE_BUSINESSUNIT =
+      String createTableBusinessunit =
           "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_BUSINESSUNIT}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_BUSINESSUNIT_BUSINESSUNITID} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_BUSINESSUNITCODE} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_BUSINESSUNITNAME} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_DESCRIPTION} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_HEADOFBUSINESSUNITAPPUSERID} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_CREATEDON} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_CREATEDBY} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_MODIFIEDON} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_ISACTIVE} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_ISDELETED} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_UID} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_APPUSERID} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_BUSINESSUNIT_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-      db.execute(CREATE_TABLE_BUSINESSUNIT);
+      db.execute(createTableBusinessunit);
 
-      String CREATE_TABLE_ACCOUNTBUSINESSUNIT =
+      String createTableAccountbusinessunit =
           "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_ACCOUNTBUSINESSUNIT}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ACCOUNTBUSINESSUNITID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ACCOUNTBUSINESSUNITCODE} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ACCOUNTID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_BUSINESSUNITID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_CREATEDBY} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_CREATEDON} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_MODIFIEDON} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ISACTIVE} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_UID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_APPUSERID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ISDELETED} TEXT,${ColumnsBase.KEY_ACCOUNTBUSINESSUNIT_ISARCHIVED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-      db.execute(CREATE_TABLE_ACCOUNTBUSINESSUNIT);
+      db.execute(createTableAccountbusinessunit);
 
-      String CREATE_TABLE_ACTIVITYBUSINESSUNIT =
+      String createTableActivitybusinessunit =
           "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_ACTIVITYBUSINESSUNIT}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ACTIVITYBUSINESSUNITID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ACTIVITYBUSINESSUNITCODE} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ACTIVITYID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_BUSINESSUNITID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_CREATEDBY} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_CREATEDON} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_MODIFIEDON} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ISACTIVE} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_UID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_APPUSERID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ISDELETED} TEXT,${ColumnsBase.KEY_ACTIVITYBUSINESSUNIT_ISARCHIVED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-      db.execute(CREATE_TABLE_ACTIVITYBUSINESSUNIT);
+      db.execute(createTableActivitybusinessunit);
 
-      String CREATE_TABLE_OPPORTUNITYBUSINESSUNIT =
+      String createTableOpportunitybusinessunit =
           "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_OPPORTUNITYBUSINESSUNIT}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_OPPORTUNITYBUSINESSUNITID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_OPPORTUNITYBUSINESSUNITCODE} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_OPPORTUNITYID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_BUSINESSUNITID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_CREATEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_CREATEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_MODIFIEDBY} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_MODIFIEDON} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_ISACTIVE} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_UID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_APPUSERID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_ISDELETED} TEXT,${ColumnsBase.KEY_OPPORTUNITYBUSINESSUNIT_ISARCHIVED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
-      db.execute(CREATE_TABLE_OPPORTUNITYBUSINESSUNIT);
+      db.execute(createTableOpportunitybusinessunit);
 
       //Add New ColumnsBase
       if (!await ColumnExists(db, TablesBase.TABLE_ACCOUNT,
           ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME)) {
-        String ALTER_TABLE_ACCOUNT_ADD_PRIMARYCONTACTNAME =
+        String alterTableAccountAddPrimarycontactname =
             "ALTER TABLE ${TablesBase.TABLE_ACCOUNT} ADD ${ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME} TEXT";
-        db.execute(ALTER_TABLE_ACCOUNT_ADD_PRIMARYCONTACTNAME);
+        db.execute(alterTableAccountAddPrimarycontactname);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_OPPORTUNITYPRODUCTDETAIL,
           ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_PRICE)) {
-        String ALTER_TABLE_OPPORTUNITYPRODUCTDETAIL_ADD_PRICE =
+        String alterTableOpportunityproductdetailAddPrice =
             "ALTER TABLE ${TablesBase.TABLE_OPPORTUNITYPRODUCTDETAIL} ADD ${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_PRICE} TEXT";
-        db.execute(ALTER_TABLE_OPPORTUNITYPRODUCTDETAIL_ADD_PRICE);
+        db.execute(alterTableOpportunityproductdetailAddPrice);
       }
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYPRODUCTDETAIL,
           ColumnsBase.KEY_ACTIVITYPRODUCTDETAIL_PRICE)) {
-        String ALTER_TABLE_ACTIVITYPRODUCTDETAIL_ADD_PRICE =
+        String alterTableActivityproductdetailAddPrice =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYPRODUCTDETAIL} ADD ${ColumnsBase.KEY_ACTIVITYPRODUCTDETAIL_PRICE} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYPRODUCTDETAIL_ADD_PRICE);
+        db.execute(alterTableActivityproductdetailAddPrice);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITY,
           ColumnsBase.KEY_ACTIVITY_ASSIGNMENTDETAILS)) {
-        String ALTER_TABLE_ACTIVITY_ADD_ASSIGNMENTDETAILS =
+        String alterTableActivityAddAssignmentdetails =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITY} ADD ${ColumnsBase.KEY_ACTIVITY_ASSIGNMENTDETAILS} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITY_ADD_ASSIGNMENTDETAILS);
+        db.execute(alterTableActivityAddAssignmentdetails);
       }
 
       if (!await ColumnExists(
           db, TablesBase.TABLE_ACTIVITY, ColumnsBase.KEY_ACTIVITY_REMARKS)) {
-        String ALTER_TABLE_ACTIVITY_ADD_REMARKS =
+        String alterTableActivityAddRemarks =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITY} ADD ${ColumnsBase.KEY_ACTIVITY_REMARKS} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITY_ADD_REMARKS);
+        db.execute(alterTableActivityAddRemarks);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_OPPORTUNITY,
           ColumnsBase.KEY_OPPORTUNITY_ASSIGNMENTDETAILS)) {
-        String ALTER_TABLE_OPPORTUNITY_ADD_ASSIGNMENTDETAILS =
+        String alterTableOpportunityAddAssignmentdetails =
             "ALTER TABLE ${TablesBase.TABLE_OPPORTUNITY} ADD ${ColumnsBase.KEY_OPPORTUNITY_ASSIGNMENTDETAILS} TEXT";
-        db.execute(ALTER_TABLE_OPPORTUNITY_ADD_ASSIGNMENTDETAILS);
+        db.execute(alterTableOpportunityAddAssignmentdetails);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_OPPORTUNITY,
           ColumnsBase.KEY_OPPORTUNITY_WORKFLOWDETAILS)) {
-        String ALTER_TABLE_OPPORTUNITY_ADD_WORKFLOWDETAILS =
+        String alterTableOpportunityAddWorkflowdetails =
             "ALTER TABLE ${TablesBase.TABLE_OPPORTUNITY} ADD ${ColumnsBase.KEY_OPPORTUNITY_WORKFLOWDETAILS} TEXT";
-        db.execute(ALTER_TABLE_OPPORTUNITY_ADD_WORKFLOWDETAILS);
+        db.execute(alterTableOpportunityAddWorkflowdetails);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_OPPORTUNITY,
           ColumnsBase.KEY_OPPORTUNITY_REMARKS)) {
-        String ALTER_TABLE_OPPORTUNITY_ADD_REMARKS =
+        String alterTableOpportunityAddRemarks =
             "ALTER TABLE ${TablesBase.TABLE_OPPORTUNITY} ADD ${ColumnsBase.KEY_OPPORTUNITY_REMARKS} TEXT";
-        db.execute(ALTER_TABLE_OPPORTUNITY_ADD_REMARKS);
+        db.execute(alterTableOpportunityAddRemarks);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_TRAVELPURPOSENAME =
+        String alterTableActivitytravelAddTravelpurposename =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_TRAVELPURPOSENAME);
+        db.execute(alterTableActivitytravelAddTravelpurposename);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_TOTALEXPENSE =
+        String alterTableActivitytravelAddTotalexpense =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_TOTALEXPENSE);
+        db.execute(alterTableActivitytravelAddTotalexpense);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVALSTATUS =
+        String alterTableActivitytravelAddApprovalstatus =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVALSTATUS);
+        db.execute(alterTableActivitytravelAddApprovalstatus);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVEDBYAPPUSERNAME =
+        String alterTableActivitytravelAddApprovedbyappusername =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVEDBYAPPUSERNAME);
+        db.execute(alterTableActivitytravelAddApprovedbyappusername);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVEDTIME =
+        String alterTableActivitytravelAddApprovedtime =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVEDTIME);
+        db.execute(alterTableActivitytravelAddApprovedtime);
       }
 
       if (!await ColumnExists(db, TablesBase.TABLE_ACTIVITYTRAVEL,
           ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS)) {
-        String ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVERREMARKS =
+        String alterTableActivitytravelAddApproverremarks =
             "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS} TEXT";
-        db.execute(ALTER_TABLE_ACTIVITYTRAVEL_ADD_APPROVERREMARKS);
+        db.execute(alterTableActivitytravelAddApproverremarks);
       }
     } catch (e) {
       // Utility.showToast(context,ex.toString());
     }
   }
+ void Upgrade_DownSyncTables_V2(Database db, String appUserId, String appUserGroupId) {
+        try {
+            if (! valueExists(TablesBase.TABLE_APPSYNC, ColumnsBase.KEY_APPSYNC_TABLENAME, "BusinessUnit")) {
+                db.execute("INSERT INTO ${TablesBase.TABLE_APPSYNC}(${ColumnsBase.KEY_APPSYNC_TABLENAME},${ColumnsBase.KEY_APPSYNC_LOCALMAXDATE},${ColumnsBase.KEY_APPSYNC_SERVERMAXDATE},${ColumnsBase.KEY_APPSYNC_PAGESIZE},${ColumnsBase.KEY_APPSYNC_RECORDS},${ColumnsBase.KEY_APPSYNC_PAGE},${ColumnsBase.KEY_APPSYNC_APPUSERID},${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID}) VALUES ('BusinessUnit','2000-01-01T00:00:00','2000-01-01T00:00:00','10','0','0',$appUserId,$appUserGroupId)");
+            }
+            if (!valueExists(TablesBase.TABLE_APPSYNC, ColumnsBase.KEY_APPSYNC_TABLENAME, "AccountBusinessUnit")) {
+                db.execute("INSERT INTO ${TablesBase.TABLE_APPSYNC}(${ColumnsBase.KEY_APPSYNC_TABLENAME},${ColumnsBase.KEY_APPSYNC_LOCALMAXDATE},${ColumnsBase.KEY_APPSYNC_SERVERMAXDATE},${ColumnsBase.KEY_APPSYNC_PAGESIZE},${ColumnsBase.KEY_APPSYNC_RECORDS},${ColumnsBase.KEY_APPSYNC_PAGE},${ColumnsBase.KEY_APPSYNC_APPUSERID},${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID}) VALUES ('AccountBusinessUnit','2000-01-01T00:00:00','2000-01-01T00:00:00','10','0','0',$appUserId,$appUserGroupId)");
+            }
+            if (!valueExists(TablesBase.TABLE_APPSYNC, ColumnsBase.KEY_APPSYNC_TABLENAME, "ActivityBusinessUnit")) {
+                db.execute("INSERT INTO ${TablesBase.TABLE_APPSYNC}(${ColumnsBase.KEY_APPSYNC_TABLENAME},${ColumnsBase.KEY_APPSYNC_LOCALMAXDATE},${ColumnsBase.KEY_APPSYNC_SERVERMAXDATE},${ColumnsBase.KEY_APPSYNC_PAGESIZE},${ColumnsBase.KEY_APPSYNC_RECORDS},${ColumnsBase.KEY_APPSYNC_PAGE},${ColumnsBase.KEY_APPSYNC_APPUSERID},${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID}) VALUES ('ActivityBusinessUnit','2000-01-01T00:00:00','2000-01-01T00:00:00','10','0','0',$appUserId,$appUserGroupId)");
+            }
+            if (!valueExists(TablesBase.TABLE_APPSYNC, ColumnsBase.KEY_APPSYNC_TABLENAME, "OpportunityBusinessUnit")) {
+                db.execute("INSERT INTO ${TablesBase.TABLE_APPSYNC}(${ColumnsBase.KEY_APPSYNC_TABLENAME},${ColumnsBase.KEY_APPSYNC_LOCALMAXDATE},${ColumnsBase.KEY_APPSYNC_SERVERMAXDATE},${ColumnsBase.KEY_APPSYNC_PAGESIZE},${ColumnsBase.KEY_APPSYNC_RECORDS},${ColumnsBase.KEY_APPSYNC_PAGE},${ColumnsBase.KEY_APPSYNC_APPUSERID},${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID}) VALUES ('OpportunityBusinessUnit','2000-01-01T00:00:00','2000-01-01T00:00:00','10','0','0',$appUserId,$appUserGroupId)");
+            }
+        } catch ( e) {
+        }
+    }
 
 
+ void Upgrade_Tables_V3(Database db) async { //
+        try {
+
+            String createTableActivitytravelexpense = "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_ACTIVITYTRAVELEXPENSE}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ACTIVITYTRAVELEXPENSEID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ACTIVITYTRAVELEXPENSECODE} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ACTIVITYTRAVELEXPENSETITLE} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ACTIVITYTRAVELID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_EXPENSETYPEID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_DISTANCETRAVELLED} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_MODEOFTRAVELID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_AMOUNT} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_REMARKS} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_CREATEDBY} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_CREATEDON} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_MODIFIEDON} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_LOCATION} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ISACTIVE} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_UID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_APPUSERID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ISARCHIVED} TEXT,${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
+            db.execute(createTableActivitytravelexpense);
+
+            String createTableContactcategory = "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_CONTACTCATEGORY}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_CONTACTCATEGORY_CONTACTCATEGORYID} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_CONTACTCATEGORYCODE} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_CONTACTCATEGORYNAME} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_CREATEDON} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_CREATEDBY} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_MODIFIEDON} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_MODIFIEDBY} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_ISACTIVE} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_UID} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_APPUSERID} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_ISARCHIVED} TEXT,${ColumnsBase.KEY_CONTACTCATEGORY_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
+            db.execute(createTableContactcategory);
+
+            String createTableExpensetype = "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_EXPENSETYPE}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_EXPENSETYPE_EXPENSETYPEID} TEXT,${ColumnsBase.KEY_EXPENSETYPE_EXPENSETYPECODE} TEXT,${ColumnsBase.KEY_EXPENSETYPE_EXPENSETYPENAME} TEXT,${ColumnsBase.KEY_EXPENSETYPE_CREATEDON} TEXT,${ColumnsBase.KEY_EXPENSETYPE_CREATEDBY} TEXT,${ColumnsBase.KEY_EXPENSETYPE_MODIFIEDON} TEXT,${ColumnsBase.KEY_EXPENSETYPE_MODIFIEDBY} TEXT,${ColumnsBase.KEY_EXPENSETYPE_ISACTIVE} TEXT,${ColumnsBase.KEY_EXPENSETYPE_UID} TEXT,${ColumnsBase.KEY_EXPENSETYPE_APPUSERID} TEXT,${ColumnsBase.KEY_EXPENSETYPE_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_EXPENSETYPE_ISARCHIVED} TEXT,${ColumnsBase.KEY_EXPENSETYPE_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
+            db.execute(createTableExpensetype);
+
+            String createTableHssupportticket = "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_HSSUPPORTTICKET}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_HSSUPPORTTICKET_HSSUPPORTTICKETID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_HSSUPPORTTICKETCODE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_HSSUPPORTTICKETTITLE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_HSSUPPORTTICKETTYPE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_HSSUPPORTTICKETDETAIL} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_CREATEDBY} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_CREATEDON} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_MODIFIEDBY} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_MODIFIEDON} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_PARENTHSSUPPORTTICKETID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_ASSIGNEDTOHSUSERID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_TICKETSTATUS} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_RESOLUTION} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_RESOLUTIONTIME} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_ISACTIVE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_UID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_APPUSERID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKET_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
+            db.execute(createTableHssupportticket);
+
+            String createTableHssupportticketmedia = "CREATE TABLE IF NOT EXISTS ${TablesBase.TABLE_HSSUPPORTTICKETMEDIA}(${ColumnsBase.KEY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_HSSUPPORTTICKETMEDIAID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_HSSUPPORTTICKETMEDIACODE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_HSSUPPORTTICKETMEDIANAME} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_HSSUPPORTTICKETID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_CONTENTTYPEID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_MEDIAPATH} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_MEDIACONTENT} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_DESCRIPTION} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_TAGS} TEXT,${Columns.KEY_HSSUPPORTTICKETMEDIA_LOCALMEDIAPATH} TEXT,${Columns.KEY_HSSUPPORTTICKETMEDIA_ISUPLOADED} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_CREATEDBY} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_CREATEDON} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_MODIFIEDBY} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_MODIFIEDON} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_DEVICEIDENTIFIER} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_REFERENCEIDENTIFIER} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_ISACTIVE} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_UID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_APPUSERID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_APPUSERGROUPID} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_ISARCHIVED} TEXT,${ColumnsBase.KEY_HSSUPPORTTICKETMEDIA_ISDELETED} TEXT,${ColumnsBase.KEY_ISDIRTY} TEXT,${ColumnsBase.KEY_ISACTIVE} TEXT,${ColumnsBase.KEY_ISDELETED} TEXT,${ColumnsBase.KEY_UPSYNCMESSAGE} TEXT,${ColumnsBase.KEY_DOWNSYNCMESSAGE} TEXT,${ColumnsBase.KEY_SCREATEDON} TEXT,${ColumnsBase.KEY_SMODIFIEDON} TEXT,${ColumnsBase.KEY_CREATEDBYUSER} TEXT,${ColumnsBase.KEY_MODIFIEDBYUSER} TEXT,${ColumnsBase.KEY_UPSYNCINDEX} INTEGER,${ColumnsBase.KEY_OWNERUSERID} TEXT)";
+            db.execute(createTableHssupportticketmedia);
+
+            //Add New ColumnsBase
+            if (! await ColumnExists(db,TablesBase.TABLE_CONTACT, ColumnsBase.KEY_CONTACT_CONTACTCATEGORYID)) {
+                String alterTableContactAddContactcategoryid = "ALTER TABLE ${TablesBase.TABLE_CONTACT} ADD ${ColumnsBase.KEY_CONTACT_CONTACTCATEGORYID} TEXT";
+                db.execute(alterTableContactAddContactcategoryid);
+            }
+
+            if (! await ColumnExists(db,TablesBase.TABLE_ACTIVITYTRAVEL, ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE)) {
+                String alterTableActivitytravelAddActivitytravelenddate = "ALTER TABLE ${TablesBase.TABLE_ACTIVITYTRAVEL} ADD ${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE} TEXT";
+                db.execute(alterTableActivitytravelAddActivitytravelenddate);
+            }
+
+            if (! await ColumnExists(db,TablesBase.TABLE_APPSYNC, Columns.KEY_APPSYNC_SEQUENTIALORDER)) {
+                String alterTableTableAppsyncAddSequentialorder = "ALTER TABLE ${TablesBase.TABLE_APPSYNC} ADD ${Columns.KEY_APPSYNC_SEQUENTIALORDER} TEXT";
+                db.execute(alterTableTableAppsyncAddSequentialorder);
+            }
+
+        } catch ( e) {
+        }
+    }
+  
+  
+    void Upgrade_Tables_V6(Database db) async { //
+        try {
+
+            //Add New ColumnsBase
+            if (! await ColumnExists(db,TablesBase.TABLE_OPPORTUNITYPRODUCTDETAIL, ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_REMARKS)) {
+                String alterTableOpportunityproductdetailAddRemarks = "ALTER TABLE ${TablesBase.TABLE_OPPORTUNITYPRODUCTDETAIL} ADD ${ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAIL_REMARKS} TEXT";
+                db.execute(alterTableOpportunityproductdetailAddRemarks);
+            }
+
+            if (! await ColumnExists(db,TablesBase.TABLE_PRODUCT, ColumnsBase.KEY_PRODUCT_FEATUREOPTIONS)) {
+                String alterTableProductAddFeatureoptions = "ALTER TABLE ${TablesBase.TABLE_PRODUCT} ADD ${ColumnsBase.KEY_PRODUCT_FEATUREOPTIONS} TEXT";
+                db.execute(alterTableProductAddFeatureoptions);
+            }
+
+
+
+        } catch ( e) {
+        }
+    }
+  
+  
+  
+  
   //  -----Common Functions------
 
   static Future<bool> ColumnExists(
@@ -3786,5 +3865,7 @@ void activateDeactivateRecords(String tableName, String ids1) async {
             // Globals.HandleException(context, "DatabaseHandler:RemoveUserData()", ex);
         }
     }
+
+
 
 }
