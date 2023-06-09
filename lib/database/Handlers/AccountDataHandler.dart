@@ -6,46 +6,8 @@ import '../Globals.dart';
 import '../TablesBase.dart';
 import '../models/Account.dart';
 
-class AccountDataHandlerBase {
-  Future<int> deleteAccountRecord(Database databaseHandler, String id1) async {
-    final db = await databaseHandler.database;
-
-    // Remove the account from the database by id.
-    int id = await db.delete(
-      TablesBase.TABLE_ACCOUNT,
-
-      // Use a `where` clause to delete a specific account by id.
-      where: "${ColumnsBase.KEY_ID} = $id1",
-
-      whereArgs: [null],
-    );
-
-    return id;
-  }
-
-// getting  account server id from local id
-
-  Future<String> getServerId(Database databaseHandler, String id) async {
-    String serverId = "-1";
-    try {
-      id = Globals.tryParseLongForDBId(id);
-
-      String selectQuery = "SELECT A.${ColumnsBase.KEY_ACCOUNT_ACCOUNTID}";
-      selectQuery += " FROM ${TablesBase.TABLE_ACCOUNT} A";
-      selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
-
-      Database db = await databaseHandler.database;
-      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
-      if (result.isNotEmpty) {
-        serverId = result.first[ColumnsBase.KEY_ACCOUNT_ACCOUNTID].toString();
-      }
-      //db.close();
-    } catch (ex) {
-      // Globals.handleException(context, "AccountDataHandlerBase:GetServerId()", ex);
-      throw ex;
-    }
-    return serverId;
-  }
+class AccountDataHandler {
+ 
 
   // static int GetAccountProfileCompleteness(Database databaseHandler, String accountId)
   //   {
@@ -240,123 +202,6 @@ class AccountDataHandlerBase {
     return dataList;
   }
 
-  static Future<Account> GetAccountRecordByAccountName(
-      DatabaseHandler databaseHandler, String accountName) async {
-    Account dataItem = Account();
-
-    try {
-      String selectQuery =
-          "SELECT * FROM ${TablesBase.TABLE_ACCOUNT} WHERE ${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME} = '${accountName.replaceAll("'", "''")}'";
-
-      final db = await databaseHandler.database;
-
-      final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
-
-      result.forEach((element) {
-        Account dataItem = Account();
-
-        // Update property assignments using dot notation
-        dataItem.accountID = element[ColumnsBase.KEY_ID];
-        dataItem.accountCode = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTCODE];
-        dataItem.accountName = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME];
-        dataItem.accountLocation =
-            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION];
-        dataItem.accountIdentifier =
-            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTIDENTIFIER];
-        dataItem.accountSegmentID =
-            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSEGMENTID];
-        dataItem.accountStatusID =
-            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSTATUSID];
-        dataItem.accountTypeID = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTTYPEID];
-        dataItem.parentAccountID =
-            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID];
-        dataItem.parentAccountName =
-            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
-        dataItem.industryName = element[ColumnsBase.KEY_ACCOUNT_INDUSTRYNAME];
-        dataItem.website = element[ColumnsBase.KEY_ACCOUNT_WEBSITE];
-        dataItem.turnover = element[ColumnsBase.KEY_ACCOUNT_TURNOVER];
-        dataItem.numberOfEmployees =
-            element[ColumnsBase.KEY_ACCOUNT_NUMBEROFEMPLOYEES];
-        dataItem.creditRatingID =
-            element[ColumnsBase.KEY_ACCOUNT_CREDITRATINGID];
-        dataItem.currencyID = element[ColumnsBase.KEY_ACCOUNT_CURRENCYID];
-        dataItem.primaryContactName =
-            element[ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME];
-        dataItem.phone = element[ColumnsBase.KEY_ACCOUNT_PHONE];
-        dataItem.email = element[ColumnsBase.KEY_ACCOUNT_EMAIL];
-        dataItem.fax = element[ColumnsBase.KEY_ACCOUNT_FAX];
-        dataItem.addressLine1 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE1];
-        dataItem.addressLine2 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE2];
-        dataItem.addressLine3 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE3];
-        dataItem.city = element[ColumnsBase.KEY_ACCOUNT_CITY];
-        dataItem.state = element[ColumnsBase.KEY_ACCOUNT_STATE];
-        dataItem.country = element[ColumnsBase.KEY_ACCOUNT_COUNTRY];
-        dataItem.pin = element[ColumnsBase.KEY_ACCOUNT_PIN];
-        dataItem.territoryName = element[ColumnsBase.KEY_ACCOUNT_TERRITORYNAME];
-        dataItem.gpsCoordinates =
-            element[ColumnsBase.KEY_ACCOUNT_GPSCOORDINATES];
-        dataItem.logoImagePath = element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGEPATH];
-        dataItem.logoImageContent =
-            element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGECONTENT];
-        dataItem.taxPayerIdentificationNumber =
-            element[ColumnsBase.KEY_ACCOUNT_TAXPAYERIDENTIFICATIONNUMBER];
-        dataItem.freeTextField1 =
-            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD1];
-        dataItem.freeTextField2 =
-            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD2];
-        dataItem.freeTextField3 =
-            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD3];
-        dataItem.tags = element[ColumnsBase.KEY_ACCOUNT_TAGS];
-        dataItem.marketingContactID =
-            element[ColumnsBase.KEY_ACCOUNT_MARKETINGCONTACTID];
-        dataItem.createdBy = element[ColumnsBase.KEY_ACCOUNT_CREATEDBY];
-        dataItem.createdOn = element[ColumnsBase.KEY_ACCOUNT_CREATEDON];
-        dataItem.modifiedBy = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDBY];
-        dataItem.modifiedOn = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDON];
-        dataItem.deviceIdentifier =
-            element[ColumnsBase.KEY_ACCOUNT_DEVICEIDENTIFIER];
-        dataItem.referenceIdentifier =
-            element[ColumnsBase.KEY_ACCOUNT_REFERENCEIDENTIFIER];
-        dataItem.isActive = element[ColumnsBase.KEY_ACCOUNT_ISACTIVE];
-        dataItem.uid = element[ColumnsBase.KEY_ACCOUNT_UID];
-        dataItem.appUserID = element[ColumnsBase.KEY_ACCOUNT_APPUSERID];
-        dataItem.assignedByAppUserID =
-            element[ColumnsBase.KEY_ACCOUNT_ASSIGNEDBYAPPUSERID];
-        dataItem.appUserGroupID =
-            element[ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID];
-        dataItem.isArchived = element[ColumnsBase.KEY_ACCOUNT_ISARCHIVED];
-        dataItem.isDeleted = element[ColumnsBase.KEY_ACCOUNT_ISDELETED];
-        dataItem.leadQualificationID =
-            element[ColumnsBase.KEY_ACCOUNT_LEADQUALIFICATIONID];
-
-        dataItem.localMediaPath =
-            element[Columns.KEY_ACCOUNT_LOGO_LOCALMEDIAPATH];
-        dataItem.isUploaded = element[Columns.KEY_ACCOUNT_LOGO_ISUPLOADED];
-
-        dataItem.accountSegmentName =
-            element[ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTNAME];
-        dataItem.accountStatusName =
-            element[ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSNAME];
-        dataItem.accountTypeName =
-            element[ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPENAME];
-        dataItem.parentAccountName =
-            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
-        dataItem.creditRatingName =
-            element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
-        dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
-
-                /// some setters left - sir will give another class for this
-
-
-        // Add any other property assignments here
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return dataItem;
-  }
-
   static Future<List<Account>> GetSupplierAccountRecords(
       DatabaseHandler databaseHandler, String searchString) async {
     List<Account> dataList = [];
@@ -378,8 +223,7 @@ class AccountDataHandlerBase {
           " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} J ON A.${ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID} = J.${ColumnsBase.KEY_ID}";
       selectQuery +=
           " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
-      selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID} = " +
-          Globals.AppUserGroupID.toString();
+      selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
       selectQuery +=
           " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNT_ISDELETED},'false')) = 'false' ";
       selectQuery +=
@@ -503,7 +347,6 @@ class AccountDataHandlerBase {
             element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
         dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
 
-
         /// some setters left - sir will give another class for this
 
         // Add any other property assignments here
@@ -516,5 +359,475 @@ class AccountDataHandlerBase {
     return dataList;
   }
 
+  static Future<Account> GetAccountRecordByAccountName(
+      DatabaseHandler databaseHandler, String accountName) async {
+    Account dataItem = Account();
+
+    try {
+      String selectQuery =
+          "SELECT * FROM ${TablesBase.TABLE_ACCOUNT} WHERE ${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME} = '${accountName.replaceAll("'", "''")}'";
+
+      final db = await databaseHandler.database;
+
+      final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
+
+      result.forEach((element) {
+        Account dataItem = Account();
+
+        // Update property assignments using dot notation
+        dataItem.accountID = element[ColumnsBase.KEY_ID];
+        dataItem.accountCode = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTCODE];
+        dataItem.accountName = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME];
+        dataItem.accountLocation =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION];
+        dataItem.accountIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTIDENTIFIER];
+        dataItem.accountSegmentID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSEGMENTID];
+        dataItem.accountStatusID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSTATUSID];
+        dataItem.accountTypeID = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTTYPEID];
+        dataItem.parentAccountID =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.industryName = element[ColumnsBase.KEY_ACCOUNT_INDUSTRYNAME];
+        dataItem.website = element[ColumnsBase.KEY_ACCOUNT_WEBSITE];
+        dataItem.turnover = element[ColumnsBase.KEY_ACCOUNT_TURNOVER];
+        dataItem.numberOfEmployees =
+            element[ColumnsBase.KEY_ACCOUNT_NUMBEROFEMPLOYEES];
+        dataItem.creditRatingID =
+            element[ColumnsBase.KEY_ACCOUNT_CREDITRATINGID];
+        dataItem.currencyID = element[ColumnsBase.KEY_ACCOUNT_CURRENCYID];
+        dataItem.primaryContactName =
+            element[ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME];
+        dataItem.phone = element[ColumnsBase.KEY_ACCOUNT_PHONE];
+        dataItem.email = element[ColumnsBase.KEY_ACCOUNT_EMAIL];
+        dataItem.fax = element[ColumnsBase.KEY_ACCOUNT_FAX];
+        dataItem.addressLine1 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE1];
+        dataItem.addressLine2 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE2];
+        dataItem.addressLine3 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE3];
+        dataItem.city = element[ColumnsBase.KEY_ACCOUNT_CITY];
+        dataItem.state = element[ColumnsBase.KEY_ACCOUNT_STATE];
+        dataItem.country = element[ColumnsBase.KEY_ACCOUNT_COUNTRY];
+        dataItem.pin = element[ColumnsBase.KEY_ACCOUNT_PIN];
+        dataItem.territoryName = element[ColumnsBase.KEY_ACCOUNT_TERRITORYNAME];
+        dataItem.gpsCoordinates =
+            element[ColumnsBase.KEY_ACCOUNT_GPSCOORDINATES];
+        dataItem.logoImagePath = element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGEPATH];
+        dataItem.logoImageContent =
+            element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGECONTENT];
+        dataItem.taxPayerIdentificationNumber =
+            element[ColumnsBase.KEY_ACCOUNT_TAXPAYERIDENTIFICATIONNUMBER];
+        dataItem.freeTextField1 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD1];
+        dataItem.freeTextField2 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD2];
+        dataItem.freeTextField3 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD3];
+        dataItem.tags = element[ColumnsBase.KEY_ACCOUNT_TAGS];
+        dataItem.marketingContactID =
+            element[ColumnsBase.KEY_ACCOUNT_MARKETINGCONTACTID];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACCOUNT_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACCOUNT_CREATEDON];
+        dataItem.modifiedBy = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDBY];
+        dataItem.modifiedOn = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_REFERENCEIDENTIFIER];
+        dataItem.isActive = element[ColumnsBase.KEY_ACCOUNT_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACCOUNT_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACCOUNT_APPUSERID];
+        dataItem.assignedByAppUserID =
+            element[ColumnsBase.KEY_ACCOUNT_ASSIGNEDBYAPPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID];
+        dataItem.isArchived = element[ColumnsBase.KEY_ACCOUNT_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACCOUNT_ISDELETED];
+        dataItem.leadQualificationID =
+            element[ColumnsBase.KEY_ACCOUNT_LEADQUALIFICATIONID];
+
+        dataItem.localMediaPath =
+            element[Columns.KEY_ACCOUNT_LOGO_LOCALMEDIAPATH];
+        dataItem.isUploaded = element[Columns.KEY_ACCOUNT_LOGO_ISUPLOADED];
+
+        dataItem.accountSegmentName =
+            element[ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTNAME];
+        dataItem.accountStatusName =
+            element[ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSNAME];
+        dataItem.accountTypeName =
+            element[ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPENAME];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.creditRatingName =
+            element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
+        dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
+
+        /// some setters left - sir will give another class for this
+
+        // Add any other property assignments here
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return dataItem;
+  }
+
+  static Future<Account?> GetAccountRecordContainsAccountNameAndLocation(
+      DatabaseHandler databaseHandler,
+      String accountName,
+      String location) async {
+    Account? dataItem;
+    try {
+      String selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACCOUNT}";
+      selectQuery += " WHERE ${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME} = '${accountName.replaceAll("'", "''")}' COLLATE NOCASE ";
+      selectQuery += " AND ${ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION} = '${location.replaceAll("'", "''")}' COLLATE NOCASE";
+
+      final db = await databaseHandler.database;
+
+      final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
+
+      result.forEach((element) {
+        Account dataItem = Account();
+
+        // Update property assignments using dot notation
+        dataItem.accountID = element[ColumnsBase.KEY_ID];
+        dataItem.accountCode = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTCODE];
+        dataItem.accountName = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME];
+        dataItem.accountLocation =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION];
+        dataItem.accountIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTIDENTIFIER];
+        dataItem.accountSegmentID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSEGMENTID];
+        dataItem.accountStatusID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSTATUSID];
+        dataItem.accountTypeID = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTTYPEID];
+        dataItem.parentAccountID =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.industryName = element[ColumnsBase.KEY_ACCOUNT_INDUSTRYNAME];
+        dataItem.website = element[ColumnsBase.KEY_ACCOUNT_WEBSITE];
+        dataItem.turnover = element[ColumnsBase.KEY_ACCOUNT_TURNOVER];
+        dataItem.numberOfEmployees =
+            element[ColumnsBase.KEY_ACCOUNT_NUMBEROFEMPLOYEES];
+        dataItem.creditRatingID =
+            element[ColumnsBase.KEY_ACCOUNT_CREDITRATINGID];
+        dataItem.currencyID = element[ColumnsBase.KEY_ACCOUNT_CURRENCYID];
+        dataItem.primaryContactName =
+            element[ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME];
+        dataItem.phone = element[ColumnsBase.KEY_ACCOUNT_PHONE];
+        dataItem.email = element[ColumnsBase.KEY_ACCOUNT_EMAIL];
+        dataItem.fax = element[ColumnsBase.KEY_ACCOUNT_FAX];
+        dataItem.addressLine1 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE1];
+        dataItem.addressLine2 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE2];
+        dataItem.addressLine3 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE3];
+        dataItem.city = element[ColumnsBase.KEY_ACCOUNT_CITY];
+        dataItem.state = element[ColumnsBase.KEY_ACCOUNT_STATE];
+        dataItem.country = element[ColumnsBase.KEY_ACCOUNT_COUNTRY];
+        dataItem.pin = element[ColumnsBase.KEY_ACCOUNT_PIN];
+        dataItem.territoryName = element[ColumnsBase.KEY_ACCOUNT_TERRITORYNAME];
+        dataItem.gpsCoordinates =
+            element[ColumnsBase.KEY_ACCOUNT_GPSCOORDINATES];
+        dataItem.logoImagePath = element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGEPATH];
+        dataItem.logoImageContent =
+            element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGECONTENT];
+        dataItem.taxPayerIdentificationNumber =
+            element[ColumnsBase.KEY_ACCOUNT_TAXPAYERIDENTIFICATIONNUMBER];
+        dataItem.freeTextField1 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD1];
+        dataItem.freeTextField2 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD2];
+        dataItem.freeTextField3 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD3];
+        dataItem.tags = element[ColumnsBase.KEY_ACCOUNT_TAGS];
+        dataItem.marketingContactID =
+            element[ColumnsBase.KEY_ACCOUNT_MARKETINGCONTACTID];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACCOUNT_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACCOUNT_CREATEDON];
+        dataItem.modifiedBy = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDBY];
+        dataItem.modifiedOn = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_REFERENCEIDENTIFIER];
+        dataItem.isActive = element[ColumnsBase.KEY_ACCOUNT_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACCOUNT_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACCOUNT_APPUSERID];
+        dataItem.assignedByAppUserID =
+            element[ColumnsBase.KEY_ACCOUNT_ASSIGNEDBYAPPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID];
+        dataItem.isArchived = element[ColumnsBase.KEY_ACCOUNT_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACCOUNT_ISDELETED];
+        dataItem.leadQualificationID =
+            element[ColumnsBase.KEY_ACCOUNT_LEADQUALIFICATIONID];
+
+        dataItem.localMediaPath =
+            element[Columns.KEY_ACCOUNT_LOGO_LOCALMEDIAPATH];
+        dataItem.isUploaded = element[Columns.KEY_ACCOUNT_LOGO_ISUPLOADED];
+
+        dataItem.accountSegmentName =
+            element[ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTNAME];
+        dataItem.accountStatusName =
+            element[ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSNAME];
+        dataItem.accountTypeName =
+            element[ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPENAME];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.creditRatingName =
+            element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
+        dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
+
+        /// some setters left - sir will give another class for this
+
+        // Add any other property assignments here
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return dataItem;
+  }
+
+  static Future<List<Account>> GetAccountRecordContainsAccountName(DatabaseHandler databaseHandler , String accountName) async{
+        
+        
+        List<Account> dataList =  [];
+
+        try{
+
+           String selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACCOUNT} WHERE ${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME} LIKE '%${accountName.replaceAll("'","''")}%' COLLATE NOCASE";
+           final db = await databaseHandler.database;
+
+              final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
+
+      result.forEach((element) {
+        Account dataItem = Account();
+
+        // Update property assignments using dot notation
+        dataItem.accountID = element[ColumnsBase.KEY_ID];
+        dataItem.accountCode = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTCODE];
+        dataItem.accountName = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME];
+        dataItem.accountLocation =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION];
+        dataItem.accountIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTIDENTIFIER];
+        dataItem.accountSegmentID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSEGMENTID];
+        dataItem.accountStatusID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSTATUSID];
+        dataItem.accountTypeID = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTTYPEID];
+        dataItem.parentAccountID =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.industryName = element[ColumnsBase.KEY_ACCOUNT_INDUSTRYNAME];
+        dataItem.website = element[ColumnsBase.KEY_ACCOUNT_WEBSITE];
+        dataItem.turnover = element[ColumnsBase.KEY_ACCOUNT_TURNOVER];
+        dataItem.numberOfEmployees =
+            element[ColumnsBase.KEY_ACCOUNT_NUMBEROFEMPLOYEES];
+        dataItem.creditRatingID =
+            element[ColumnsBase.KEY_ACCOUNT_CREDITRATINGID];
+        dataItem.currencyID = element[ColumnsBase.KEY_ACCOUNT_CURRENCYID];
+        dataItem.primaryContactName =
+            element[ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME];
+        dataItem.phone = element[ColumnsBase.KEY_ACCOUNT_PHONE];
+        dataItem.email = element[ColumnsBase.KEY_ACCOUNT_EMAIL];
+        dataItem.fax = element[ColumnsBase.KEY_ACCOUNT_FAX];
+        dataItem.addressLine1 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE1];
+        dataItem.addressLine2 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE2];
+        dataItem.addressLine3 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE3];
+        dataItem.city = element[ColumnsBase.KEY_ACCOUNT_CITY];
+        dataItem.state = element[ColumnsBase.KEY_ACCOUNT_STATE];
+        dataItem.country = element[ColumnsBase.KEY_ACCOUNT_COUNTRY];
+        dataItem.pin = element[ColumnsBase.KEY_ACCOUNT_PIN];
+        dataItem.territoryName = element[ColumnsBase.KEY_ACCOUNT_TERRITORYNAME];
+        dataItem.gpsCoordinates =
+            element[ColumnsBase.KEY_ACCOUNT_GPSCOORDINATES];
+        dataItem.logoImagePath = element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGEPATH];
+        dataItem.logoImageContent =
+            element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGECONTENT];
+        dataItem.taxPayerIdentificationNumber =
+            element[ColumnsBase.KEY_ACCOUNT_TAXPAYERIDENTIFICATIONNUMBER];
+        dataItem.freeTextField1 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD1];
+        dataItem.freeTextField2 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD2];
+        dataItem.freeTextField3 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD3];
+        dataItem.tags = element[ColumnsBase.KEY_ACCOUNT_TAGS];
+        dataItem.marketingContactID =
+            element[ColumnsBase.KEY_ACCOUNT_MARKETINGCONTACTID];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACCOUNT_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACCOUNT_CREATEDON];
+        dataItem.modifiedBy = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDBY];
+        dataItem.modifiedOn = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_REFERENCEIDENTIFIER];
+        dataItem.isActive = element[ColumnsBase.KEY_ACCOUNT_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACCOUNT_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACCOUNT_APPUSERID];
+        dataItem.assignedByAppUserID =
+            element[ColumnsBase.KEY_ACCOUNT_ASSIGNEDBYAPPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID];
+        dataItem.isArchived = element[ColumnsBase.KEY_ACCOUNT_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACCOUNT_ISDELETED];
+        dataItem.leadQualificationID =
+            element[ColumnsBase.KEY_ACCOUNT_LEADQUALIFICATIONID];
+
+        dataItem.localMediaPath =
+            element[Columns.KEY_ACCOUNT_LOGO_LOCALMEDIAPATH];
+        dataItem.isUploaded = element[Columns.KEY_ACCOUNT_LOGO_ISUPLOADED];
+
+        dataItem.accountSegmentName =
+            element[ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTNAME];
+        dataItem.accountStatusName =
+            element[ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSNAME];
+        dataItem.accountTypeName =
+            element[ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPENAME];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.creditRatingName =
+            element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
+        dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
+
+        /// some setters left - sir will give another class for this
+
+        // Add any other property assignments here
+      });
+        }
+        catch(e){
+          print(e.toString());
+        }
+
+        return dataList;
+
+
+
+  }
+
+   static Future<Account> GetAccountRecordByAccountNameAndAccountLocation(
+      DatabaseHandler databaseHandler, String accountName,String accountLocation) async {
+    Account dataItem = Account();
+
+    try {
+      String selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACCOUNT} WHERE ${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME} = '${accountName.replaceAll("'","''")}'";
+            selectQuery += "${" AND ${ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION} = '${accountLocation.replaceAll("'","''")}"}'";
+
+      final db = await databaseHandler.database;
+
+      final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
+
+      result.forEach((element) {
+         dataItem =  Account();
+
+        // Update property assignments using dot notation
+        dataItem.accountID = element[ColumnsBase.KEY_ID];
+        dataItem.accountCode = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTCODE];
+        dataItem.accountName = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME];
+        dataItem.accountLocation =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTLOCATION];
+        dataItem.accountIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTIDENTIFIER];
+        dataItem.accountSegmentID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSEGMENTID];
+        dataItem.accountStatusID =
+            element[ColumnsBase.KEY_ACCOUNT_ACCOUNTSTATUSID];
+        dataItem.accountTypeID = element[ColumnsBase.KEY_ACCOUNT_ACCOUNTTYPEID];
+        dataItem.parentAccountID =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTID];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.industryName = element[ColumnsBase.KEY_ACCOUNT_INDUSTRYNAME];
+        dataItem.website = element[ColumnsBase.KEY_ACCOUNT_WEBSITE];
+        dataItem.turnover = element[ColumnsBase.KEY_ACCOUNT_TURNOVER];
+        dataItem.numberOfEmployees =
+            element[ColumnsBase.KEY_ACCOUNT_NUMBEROFEMPLOYEES];
+        dataItem.creditRatingID =
+            element[ColumnsBase.KEY_ACCOUNT_CREDITRATINGID];
+        dataItem.currencyID = element[ColumnsBase.KEY_ACCOUNT_CURRENCYID];
+        dataItem.primaryContactName =
+            element[ColumnsBase.KEY_ACCOUNT_PRIMARYCONTACTNAME];
+        dataItem.phone = element[ColumnsBase.KEY_ACCOUNT_PHONE];
+        dataItem.email = element[ColumnsBase.KEY_ACCOUNT_EMAIL];
+        dataItem.fax = element[ColumnsBase.KEY_ACCOUNT_FAX];
+        dataItem.addressLine1 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE1];
+        dataItem.addressLine2 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE2];
+        dataItem.addressLine3 = element[ColumnsBase.KEY_ACCOUNT_ADDRESSLINE3];
+        dataItem.city = element[ColumnsBase.KEY_ACCOUNT_CITY];
+        dataItem.state = element[ColumnsBase.KEY_ACCOUNT_STATE];
+        dataItem.country = element[ColumnsBase.KEY_ACCOUNT_COUNTRY];
+        dataItem.pin = element[ColumnsBase.KEY_ACCOUNT_PIN];
+        dataItem.territoryName = element[ColumnsBase.KEY_ACCOUNT_TERRITORYNAME];
+        dataItem.gpsCoordinates =
+            element[ColumnsBase.KEY_ACCOUNT_GPSCOORDINATES];
+        dataItem.logoImagePath = element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGEPATH];
+        dataItem.logoImageContent =
+            element[ColumnsBase.KEY_ACCOUNT_LOGOIMAGECONTENT];
+        dataItem.taxPayerIdentificationNumber =
+            element[ColumnsBase.KEY_ACCOUNT_TAXPAYERIDENTIFICATIONNUMBER];
+        dataItem.freeTextField1 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD1];
+        dataItem.freeTextField2 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD2];
+        dataItem.freeTextField3 =
+            element[ColumnsBase.KEY_ACCOUNT_FREETEXTFIELD3];
+        dataItem.tags = element[ColumnsBase.KEY_ACCOUNT_TAGS];
+        dataItem.marketingContactID =
+            element[ColumnsBase.KEY_ACCOUNT_MARKETINGCONTACTID];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACCOUNT_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACCOUNT_CREATEDON];
+        dataItem.modifiedBy = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDBY];
+        dataItem.modifiedOn = element[ColumnsBase.KEY_ACCOUNT_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACCOUNT_REFERENCEIDENTIFIER];
+        dataItem.isActive = element[ColumnsBase.KEY_ACCOUNT_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACCOUNT_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACCOUNT_APPUSERID];
+        dataItem.assignedByAppUserID =
+            element[ColumnsBase.KEY_ACCOUNT_ASSIGNEDBYAPPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACCOUNT_APPUSERGROUPID];
+        dataItem.isArchived = element[ColumnsBase.KEY_ACCOUNT_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACCOUNT_ISDELETED];
+        dataItem.leadQualificationID =
+            element[ColumnsBase.KEY_ACCOUNT_LEADQUALIFICATIONID];
+
+        dataItem.localMediaPath =
+            element[Columns.KEY_ACCOUNT_LOGO_LOCALMEDIAPATH];
+        dataItem.isUploaded = element[Columns.KEY_ACCOUNT_LOGO_ISUPLOADED];
+
+        dataItem.accountSegmentName =
+            element[ColumnsBase.KEY_ACCOUNTSEGMENT_ACCOUNTSEGMENTNAME];
+        dataItem.accountStatusName =
+            element[ColumnsBase.KEY_ACCOUNTSTATUS_ACCOUNTSTATUSNAME];
+        dataItem.accountTypeName =
+            element[ColumnsBase.KEY_ACCOUNTTYPE_ACCOUNTTYPENAME];
+        dataItem.parentAccountName =
+            element[ColumnsBase.KEY_ACCOUNT_PARENTACCOUNTNAME];
+        dataItem.creditRatingName =
+            element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
+        dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
+
+        /// some setters left - sir will give another class for this
+
+        // Add any other property assignments here
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return dataItem;
+  }
   
+
 }

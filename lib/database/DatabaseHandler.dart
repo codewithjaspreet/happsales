@@ -4223,7 +4223,7 @@ class DatabaseHandler {
     return true;
   }
 
-   Future<int> executeScalar(String sql) async {
+    Future<int> executeScalar(String sql) async {
     int itemCount = 0;
     try {
       final db = await database;
