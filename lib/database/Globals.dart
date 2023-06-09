@@ -73,11 +73,23 @@ class Globals {
   static String ENCRYPTION_KEY = "2hAfEsA\$2a975ei!";
   static String locationAddress = "";
 
- static String getStringValue(dynamic obj) {
-    if (obj == null || obj.toString() == "null") {
+ static String getStringValue(Object obj) {
+    if (obj.toString() == "null") {
       return "";
     } else {
       return obj.toString();
     }
   }
+
+  static  tryParseLongForDBId(Object obj) {
+  String retVal = "";
+  try {
+    int retVal2 = int.parse(obj.toString());
+    retVal = retVal2.toString();
+  } catch (e) {
+    retVal = "-1"; // or null if preferred
+  }
+  return retVal;
+}
+
 }
