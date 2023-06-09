@@ -1,3 +1,5 @@
+import 'BaseEntity.dart';
+
 class AccountBase {
   String? _accountID;
   String? _accountCode;
@@ -61,6 +63,7 @@ class AccountBase {
   String? _accountCodeInternal;
 
 
+ 
   AccountBase();
 
 
@@ -315,6 +318,14 @@ class AccountBase {
   set accountCodeInternal(String? value) => _accountCodeInternal = value;
 
 
+
+  /// base entity getters and setters 
+  /// 
+  /// 
+  /// 
+  
+
+
   AccountBase.fromMapObject(Map<String, dynamic> map){
 
     _accountID = map['accountID'];
@@ -372,6 +383,7 @@ class AccountBase {
     _appUserName = map['appUserName'];
     _appUserGroupName = map['appUserGroupName'];
     _accountCodeInternal = map['accountCodeInternal'];
+   
 
     
   }
@@ -439,6 +451,8 @@ class AccountBase {
       'appUserName': _appUserName,
       'appUserGroupName': _appUserGroupName,
       'accountCodeInternal': _accountCodeInternal,
+      
+      
     };
  }
 

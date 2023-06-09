@@ -7,7 +7,8 @@ import '../DatabaseHandler.dart';
 import '../Models/Account.dart';
 import '../Globals.dart';
 import '../TablesBase.dart';
-
+import '../Models/AccountBase.dart';
+import '../Models/Account.dart';
 class AccountDataHandlerBase {
 
 
@@ -86,7 +87,7 @@ static Future<List<Account>> GetAccountRecordsPaged(
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
       for (var element in result) {
-        Account dataItem = new Account();
+        Account dataItem =  Account();
 
         // Update property assignments using dot notation
         dataItem.accountID = element[ColumnsBase.KEY_ID];
@@ -177,6 +178,22 @@ static Future<List<Account>> GetAccountRecordsPaged(
         dataItem.creditRatingName =
             element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
         dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ID];
+
+        // dataItem.IsDeleted = element[ColumnsBase.KEY_ISDIRTY];
+
+        
+
+          //dataItem.id = element[ColumnsBase.KEY_ISDIRTY];
+          // dataItem. = element[ColumnsBase.KEY_ISDELETED];
+          // dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+          // dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+          // dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+          // dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+          // dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+          // dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+          // dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
 
         dataList.add(dataItem);
 
