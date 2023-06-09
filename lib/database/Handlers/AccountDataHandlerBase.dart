@@ -85,7 +85,7 @@ static Future<List<Account>> GetAccountRecordsPaged(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -184,9 +184,6 @@ static Future<List<Account>> GetAccountRecordsPaged(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
@@ -233,7 +230,7 @@ static Future<List<Account>> GetAccountRecords(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -332,9 +329,6 @@ static Future<List<Account>> GetAccountRecords(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
@@ -373,7 +367,7 @@ static Future<Account?> GetAccountRecord(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -470,9 +464,6 @@ static Future<Account?> GetAccountRecord(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
@@ -502,7 +493,7 @@ static Future<Account?> GetMasterAccountRecord(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -599,9 +590,6 @@ static Future<Account?> GetMasterAccountRecord(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
@@ -629,7 +617,7 @@ static Future<Account?> GetAccountRecordByUid(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -726,9 +714,6 @@ static Future<Account?> GetAccountRecordByUid(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
@@ -753,7 +738,7 @@ static Future<List<Account>> GetAccountUpSyncRecords(
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = new Account();
 
         // Update property assignments using dot notation
@@ -852,9 +837,6 @@ static Future<List<Account>> GetAccountUpSyncRecords(
 
         // Add any other property assignments here
       }
-
-          //db.close();
-          );
     } catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;

@@ -99,7 +99,7 @@ class AccountDataHandler {
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = Account();
 
         // Update property assignments using dot notation
@@ -194,7 +194,7 @@ class AccountDataHandler {
 
         // Add any other property assignments here
         dataList.add(dataItem);
-      });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -254,7 +254,7 @@ class AccountDataHandler {
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = Account();
 
         // Update property assignments using dot notation
@@ -351,7 +351,7 @@ class AccountDataHandler {
 
         // Add any other property assignments here
         dataList.add(dataItem);
-      });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -371,7 +371,7 @@ class AccountDataHandler {
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = Account();
 
         // Update property assignments using dot notation
@@ -467,7 +467,7 @@ class AccountDataHandler {
         /// some setters left - sir will give another class for this
 
         // Add any other property assignments here
-      });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -489,7 +489,7 @@ class AccountDataHandler {
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = Account();
 
         // Update property assignments using dot notation
@@ -585,7 +585,7 @@ class AccountDataHandler {
         /// some setters left - sir will give another class for this
 
         // Add any other property assignments here
-      });
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -605,7 +605,7 @@ class AccountDataHandler {
 
               final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
         Account dataItem = Account();
 
         // Update property assignments using dot notation
@@ -701,7 +701,7 @@ class AccountDataHandler {
         /// some setters left - sir will give another class for this
 
         // Add any other property assignments here
-      });
+      }
         }
         catch(e){
           print(e.toString());
@@ -725,7 +725,7 @@ class AccountDataHandler {
 
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
-      result.forEach((element) {
+      for (var element in result) {
          dataItem =  Account();
 
         // Update property assignments using dot notation
@@ -821,7 +821,7 @@ class AccountDataHandler {
         /// some setters left - sir will give another class for this
 
         // Add any other property assignments here
-      });
+      }
     } catch (e) {
       print(e.toString());
     }
