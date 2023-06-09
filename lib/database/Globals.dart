@@ -92,4 +92,13 @@ class Globals {
   return retVal;
 }
 
+static bool isNullOrEmpty(String value1) {
+  if (value1 == null || value1.trim().isEmpty) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
 }

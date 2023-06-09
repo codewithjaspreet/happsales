@@ -9,23 +9,20 @@ class Account extends AccountBase {
 
 
   Account();
-
   
+
+  String? get localMediaPath => _localMediaPath;
+
+  set localMediaPath(String? value) {
+    _localMediaPath = value;
+  }
+
+  String? get isUploaded => _isUploaded;
+
+  set isUploaded(String? value) {
+    _isUploaded = value;
+  }
     
 
-  String? getLocalMediaPath() {
-    return _localMediaPath;
-  }
 
-  void setLocalMediaPath(String localMediaPath) {
-    _localMediaPath = localMediaPath;
-  }
-
-  String? getIsUploaded() {
-    return _isUploaded;
-  }
-
-  void setIsUploaded(String isUploaded) {
-    _isUploaded = isUploaded;
-  }
 }
