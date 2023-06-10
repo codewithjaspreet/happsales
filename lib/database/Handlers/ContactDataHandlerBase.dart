@@ -23,7 +23,8 @@ class ContactHandlerDataBase {
       String sortDirection,
       Map<String, String> filterHashMap,
       int pageIndex,
-      int pageSize) async {
+      int pageSize) async
+       {
     List<Contact> dataList = [];
     try {
       int startRowIndex = ((pageIndex - 1) * pageSize);
@@ -1057,7 +1058,6 @@ class ContactHandlerDataBase {
    }
 
 
-
   static Future<int> UpdateContactRecord(DatabaseHandler databaseHandler, String id1,Contact dataItem)async {
         
         int id = 0;
@@ -1406,7 +1406,7 @@ class ContactHandlerDataBase {
     }
     
 
-Future<String> getServerId(Database databaseHandler, String id) async {
+  Future<String> getServerId(Database databaseHandler, String id) async {
     String serverId = "-1";
     try {
       id = Globals.tryParseLongForDBId(id);
@@ -1428,7 +1428,7 @@ Future<String> getServerId(Database databaseHandler, String id) async {
     return serverId;
   }
 
-Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
+  Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
   String localId = "";
   try {
     id = Globals.tryParseLongForDBId(id);
@@ -1455,10 +1455,7 @@ Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
   return localId;
 }
 
-
-
-
- static Future<List<Contact>> GetContactUpSyncRecords(
+  static Future<List<Contact>> GetContactUpSyncRecords(
       DatabaseHandler databaseHandler, String searchString) async {
     List<Contact> dataList = [];
     try {

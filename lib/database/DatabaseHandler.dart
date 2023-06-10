@@ -2656,16 +2656,16 @@ class DatabaseHandler {
 // table initialisation done
         },
         onUpgrade: (db, oldVersion, newVersion) {
-          if (oldVersion <= 2) {
-            Upgrade_Tables_V2(db);
-            Upgrade_DownSyncTables_V2(
-                db, Globals.AppUserUID, Globals.AppUserGroupUID);
-          }
+            //  if (oldVersion <= 2) {
+           
+            // }
 
-          if (oldVersion <= 3) {
+            Upgrade_Tables_V2(db);
+            Upgrade_DownSyncTables_V2( db, Globals.AppUserUID, Globals.AppUserGroupUID);
+
+
             Upgrade_Tables_V3(db);
-            Upgrade_DownSyncTables_V3(
-                db, Globals.AppUserUID, Globals.AppUserGroupUID);
+            Upgrade_DownSyncTables_V3( db, Globals.AppUserUID, Globals.AppUserGroupUID);
 
             Upgrade_Tables_V6(db);
 
@@ -2680,7 +2680,12 @@ class DatabaseHandler {
             Upgrade_Tables_V11(db);
             Upgrade_Tables_V12(db);
             Upgrade_Tables_V13(db);
-          }
+
+            
+          // if (oldVersion <= 3) 
+          // {
+         
+          // }
         },
       );
     } catch (e) {}

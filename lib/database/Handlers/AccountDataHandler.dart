@@ -9,23 +9,25 @@ import '../models/Account.dart';
 class AccountDataHandler {
  
 
-  // static int GetAccountProfileCompleteness(Database databaseHandler, String accountId)
+  // static Future<int> GetAccountProfileCompleteness(Database databaseHandler, String accountId) async
   //   {
 
   //       int profilePercentage = 0;
+
+  //       final db = await databaseHandler.database;
   //       String sql = "";
   //       try
   //       {
-  //           sql = "SELECT AccountSegmentID FROM Account WHERE Id = $accountId AND AppUserGroupID = " + Globals.AppUserGroupID;
+  //           sql = "SELECT AccountSegmentID FROM Account WHERE Id = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
   //           if(!Globals.isNullOrEmpty(databaseHandler.ExecuteStringValue(sql))) profilePercentage = profilePercentage + 5;
 
-  //           sql = "SELECT Phone FROM Account WHERE Id = $accountId AND AppUserGroupID = " + Globals.AppUserGroupID;
+  //           sql = "SELECT Phone FROM Account WHERE Id = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
   //           if(!Globals.isNullOrEmpty(databaseHandler.ExecuteStringValue(sql))) profilePercentage = profilePercentage + 5;
 
-  //           sql = "SELECT IndustryName FROM Account WHERE Id = $accountId AND AppUserGroupID = " + Globals.AppUserGroupID;
+  //           sql = "SELECT IndustryName FROM Account WHERE Id = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
   //           if(!Globals.isNullOrEmpty(databaseHandler.ExecuteStringValue(sql))) profilePercentage = profilePercentage + 10;
 
-  //           sql = "SELECT Website FROM Account WHERE Id = $accountId AND AppUserGroupID = " + Globals.AppUserGroupID;
+  //           sql = "SELECT Website FROM Account WHERE Id = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
   //           if(!Globals.isNullOrEmpty(databaseHandler.ExecuteStringValue(sql))) profilePercentage = profilePercentage + 10;
 
   //           sql = "SELECT Turnover FROM Account WHERE Id = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
@@ -38,7 +40,7 @@ class AccountDataHandler {
   //           if(!Globals.isNullOrEmpty(databaseHandler.ExecuteStringValue(sql))) profilePercentage = profilePercentage + 5;
 
   //           sql = "SELECT COUNT(AccountCategoryMappingID) FROM AccountCategoryMapping WHERE AccountID = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
-  //           if(databaseHandler.executeScalar(sql) > 0) profilePercentage = profilePercentage + 5;
+  //           if(db.executeScalar(sql) > 0) profilePercentage = profilePercentage + 5;
 
   //           sql = "SELECT COUNT(ContactID) FROM Contact WHERE AccountID = $accountId AND AppUserGroupID = ${Globals.AppUserGroupID}";
   //           if(databaseHandler.executeScalar(sql) > 0) profilePercentage = profilePercentage + 20;

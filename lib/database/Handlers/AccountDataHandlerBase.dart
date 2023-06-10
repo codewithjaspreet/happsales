@@ -893,7 +893,6 @@ class AccountDataHandlerBase {
     return id;
   }
 
-// getting  account server id from local id
 
   Future<String> getServerId(Database databaseHandler, String id) async {
     String serverId = "-1";
