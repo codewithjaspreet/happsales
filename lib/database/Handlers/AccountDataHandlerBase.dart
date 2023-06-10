@@ -386,7 +386,7 @@ static Future<Account?> GetAccountRecord(
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
       for (var element in result) {
-        Account dataItem = new Account();
+         dataItem = Account();
 
         // Update property assignments using dot notation
         dataItem.accountID = element[ColumnsBase.KEY_ID];
@@ -482,7 +482,9 @@ static Future<Account?> GetAccountRecord(
 
         // Add any other property assignments here
       }
-    } catch (ex) {
+    }
+    
+     catch (ex) {
       // Globals.HandleException(context, "AccountDataHandlerBase:GetAccountRecordsPaged()", ex);
       throw ex;
     }
