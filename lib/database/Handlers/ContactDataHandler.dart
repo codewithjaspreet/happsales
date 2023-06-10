@@ -6,7 +6,7 @@ import '../TablesBase.dart';
 import '../Models/Contact.dart';
 
 class ContactDataHandler {
-  
+
   static Future<List<Contact>> GetContactRecordsPaged(
       DatabaseHandler databaseHandler,
       String searchString,
@@ -549,7 +549,7 @@ class ContactDataHandler {
       selectQuery +=
           " WHERE A.${ColumnsBase.KEY_CONTACT_CONTACTNAME} = '$contactname' COLLATE NOCASE";
 
-      if (accountId.trim().length > 0) {
+      if (accountId.trim().isNotEmpty) {
         selectQuery +=
             " AND A.${ColumnsBase.KEY_CONTACT_ACCOUNTID} = $accountId";
       }
@@ -846,4 +846,6 @@ class ContactDataHandler {
     }
     return dataItem;
   }
+
+
 }
