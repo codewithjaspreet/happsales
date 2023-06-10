@@ -1,4 +1,6 @@
-class ContactBase{
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class ContactBase extends BaseEntity{
 
   String? _contactID;
   String? _contactCode;
@@ -201,8 +203,11 @@ class ContactBase{
   set appUserGroupID(String? value) => _appUserGroupID = value;
   String? get isArchived => _isArchived;
   set isArchived(String? value) => _isArchived = value;
+
   String? get isDeleted => _isDeleted;
   set isDeleted(String? value) => _isDeleted = value;
+
+
   String? get leadQualificationID => _leadQualificationID;
   set leadQualificationID(String? value) => _leadQualificationID = value;
   String? get accountName => _accountName;

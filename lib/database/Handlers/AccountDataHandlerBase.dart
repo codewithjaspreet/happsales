@@ -87,6 +87,7 @@ static Future<List<Account>> GetAccountRecordsPaged(
       final List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
       for (var element in result) {
+       
         Account dataItem =  Account();
 
         // Update property assignments using dot notation
