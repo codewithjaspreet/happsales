@@ -1,10 +1,10 @@
 import 'package:sqflite/sqflite.dart';
-import '../AppTables/Columns.dart';
-import '../AppTables/ColumnsBase.dart';
-import '../Globals.dart';
-import 'DatabaseHandler.dart';
-import '../AppTables/TablesBase.dart';
-import '../models/AccountModels/Account.dart';
+import '../../AppTables/Columns.dart';
+import '../../AppTables/ColumnsBase.dart';
+import '../../Globals.dart';
+import '../DatabaseHandler.dart';
+import '../../AppTables/TablesBase.dart';
+import '../../models/AccountModels/Account.dart';
 
 class AccountDataHandler {
  

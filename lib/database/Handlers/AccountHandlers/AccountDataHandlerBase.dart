@@ -1,14 +1,14 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../AppTables/Columns.dart';
-import '../AppTables/ColumnsBase.dart';
-import '../AppTables/ColumnsBase.dart';
-import '../Globals.dart';
-import 'DatabaseHandler.dart';
-import '../Models/Account.dart';
-import '../AppTables/TablesBase.dart';
-import '../Models/AccountBase.dart';
-import '../Models/Account.dart';
+import '../../AppTables/Columns.dart';
+import '../../AppTables/ColumnsBase.dart';
+import '../../AppTables/ColumnsBase.dart';
+import '../../Globals.dart';
+import '../DatabaseHandler.dart';
+import '../../Models/Account.dart';
+import '../../AppTables/TablesBase.dart';
+import '../../Models/AccountBase.dart';
+import '../../Models/Account.dart';
 
 class AccountDataHandlerBase {
   static Future<List<Account>> GetAccountRecordsPaged(
@@ -894,7 +894,7 @@ class AccountDataHandlerBase {
   }
 
 
-  Future<String> getServerId(Database databaseHandler, String id) async {
+  Future<String> getServerId(DatabaseHandler databaseHandler, String id) async {
     String serverId = "-1";
     try {
       id = Globals.tryParseLongForDBId(id);
@@ -903,7 +903,7 @@ class AccountDataHandlerBase {
       selectQuery += " FROM ${TablesBase.TABLE_ACCOUNT} A";
       selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
 
-      Database db = await databaseHandler.database;
+      final db = await databaseHandler.database;
       List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
       if (result.isNotEmpty) {
         serverId = result.first[ColumnsBase.KEY_ACCOUNT_ACCOUNTID].toString();
@@ -925,7 +925,7 @@ class AccountDataHandlerBase {
       selectQuery += "FROM ${TablesBase.TABLE_ACCOUNT} A ";
       selectQuery += "WHERE A.${ColumnsBase.KEY_ACCOUNT_ACCOUNTID} = $id";
 
-      Database db = await databaseHandler.database;
+      final db = await databaseHandler.database;
       List<Map<String, dynamic>> result = await db.rawQuery(selectQuery);
 
       if (result.isNotEmpty) {

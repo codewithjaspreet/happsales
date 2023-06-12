@@ -1,9 +1,9 @@
-import '../AppTables/ColumnsBase.dart';
-import '../Globals.dart';
-import '../models/ContactModels.dart/Contact.dart';
-import 'DatabaseHandler.dart';
-import '../Models/BaseEntity.dart';
-import '../AppTables/TablesBase.dart';
+import '../../AppTables/ColumnsBase.dart';
+import '../../Globals.dart';
+import '../../models/ContactModels.dart/Contact.dart';
+import '../DatabaseHandler.dart';
+import '../../Models/BaseEntity.dart';
+import '../../AppTables/TablesBase.dart';
 
 class ContactDataHandler {
 
