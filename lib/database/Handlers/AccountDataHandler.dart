@@ -4,7 +4,7 @@ import '../AppTables/ColumnsBase.dart';
 import 'DatabaseHandler.dart';
 import '../AppTables/Globals.dart';
 import '../AppTables/TablesBase.dart';
-import '../models/Account.dart';
+import '../models/AccountModels/Account.dart';
 
 class AccountDataHandler {
  
