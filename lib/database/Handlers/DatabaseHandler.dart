@@ -5,11 +5,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
-import 'Columns.dart';
-import 'ColumnsBase.dart';
-import 'Globals.dart';
-import 'Tables.dart';
-import 'TablesBase.dart';
+import '../AppTables/Columns.dart';
+import '../AppTables/ColumnsBase.dart';
+import '../AppTables/Globals.dart';
+import '../AppTables/Tables.dart';
+import '../AppTables/TablesBase.dart';
 
 class DatabaseHandler {
   static Database? _database;

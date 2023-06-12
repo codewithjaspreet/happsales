@@ -1,12 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../Columns.dart';
-import '../ColumnsBase.dart';
-import '../ColumnsBase.dart';
-import '../DatabaseHandler.dart';
+import '../AppTables/Columns.dart';
+import '../AppTables/ColumnsBase.dart';
+import '../AppTables/ColumnsBase.dart';
+import 'DatabaseHandler.dart';
 import '../Models/Account.dart';
-import '../Globals.dart';
-import '../TablesBase.dart';
+import '../AppTables/Globals.dart';
+import '../AppTables/TablesBase.dart';
 import '../Models/AccountBase.dart';
 import '../Models/Account.dart';
 

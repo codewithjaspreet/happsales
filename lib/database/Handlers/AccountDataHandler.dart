@@ -1,9 +1,9 @@
 import 'package:sqflite/sqflite.dart';
-import '../Columns.dart';
-import '../ColumnsBase.dart';
-import '../DatabaseHandler.dart';
-import '../Globals.dart';
-import '../TablesBase.dart';
+import '../AppTables/Columns.dart';
+import '../AppTables/ColumnsBase.dart';
+import 'DatabaseHandler.dart';
+import '../AppTables/Globals.dart';
+import '../AppTables/TablesBase.dart';
 import '../models/Account.dart';
 
 class AccountDataHandler {
