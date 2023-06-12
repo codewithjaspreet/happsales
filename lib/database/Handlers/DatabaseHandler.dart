@@ -7,9 +7,9 @@ import 'package:uuid/uuid.dart';
 
 import '../AppTables/Columns.dart';
 import '../AppTables/ColumnsBase.dart';
-import '../AppTables/Globals.dart';
 import '../AppTables/Tables.dart';
 import '../AppTables/TablesBase.dart';
+import '../Globals.dart';
 
 class DatabaseHandler {
   static Database? _database;

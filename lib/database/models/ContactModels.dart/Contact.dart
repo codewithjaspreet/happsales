@@ -1,4 +1,5 @@
-import 'package:happsales_crm/database/models/ContactBase.dart';
+import 'package:happsales_crm/database/models/ContactModels.dart/ContactBase.dart';
+
 
 class Contact extends ContactBase{
 

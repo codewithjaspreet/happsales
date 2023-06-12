@@ -7,10 +7,10 @@ import 'package:sqflite/sqflite.dart';
 
 import '../AppTables/Columns.dart';
 import '../AppTables/ColumnsBase.dart';
+import '../Globals.dart';
+import '../models/ContactModels.dart/Contact.dart';
 import 'DatabaseHandler.dart';
-import '../AppTables/Globals.dart';
 import '../AppTables/TablesBase.dart';
-import '../models/Contact.dart';
 
 class ContactHandlerDataBase {
 
