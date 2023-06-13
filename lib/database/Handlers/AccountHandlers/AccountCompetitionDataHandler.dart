@@ -42,18 +42,18 @@ class AccountCompetitionActivityDataHandler extends AccountCompetitionActivityDa
             int startRowIndex = ((pageIndex - 1) * pageSize);
 
             String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_ACCOUNTCOMPETITIONACTIVITY + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISACTIVE + ",'true')) = 'true' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
+            selectQuery += " FROM ${TablesBase.TABLE_ACCOUNTCOMPETITIONACTIVITY} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISARCHIVED},'false')) = 'false' ";
             if (searchString.trim().length > 0)
-                selectQuery += " AND A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_COMPETITIONACTIVITY + " LIKE '%" + searchString + "%'";
+                selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_COMPETITIONACTIVITY} LIKE '%$searchString%'";
 
             if (Globals.isIntegerString(accountId))
-                selectQuery += " AND A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID + " = " + accountId + "";
+                selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID} = $accountId";
             /* FILTER */
 			/*String groups = "";
 			String tags = "";
@@ -75,8 +75,8 @@ class AccountCompetitionActivityDataHandler extends AccountCompetitionActivityDa
 			if (tags.trim().length() > 0)
 				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
 
-            selectQuery += " ORDER BY A." + sortColumn + " COLLATE NOCASE " + sortDirection;
-            selectQuery += " LIMIT " + startRowIndex.toString() + "," + pageSize.toString();
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += " LIMIT $startRowIndex,$pageSize";
 
 
       final db = await databaseHandler.database;
@@ -148,17 +148,17 @@ class AccountCompetitionActivityDataHandler extends AccountCompetitionActivityDa
     static  Future<List<AccountCompetitionActivity>> GetAccountCompetitionActivityRecordsByOpportunityId(DatabaseHandler databaseHandler, String opportunityId)async {
         List<AccountCompetitionActivity> dataList = [];
         try {
-            String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",E." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_ACCOUNTCOMPETITIONACTIVITY + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " E ON A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_OPPORTUNITYID + " = E." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISACTIVE + ",'true')) = 'true' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
-            selectQuery += " AND A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_OPPORTUNITYID + " = " + opportunityId;
-            selectQuery += " ORDER BY A." + ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_COMPETITORNAME + " COLLATE NOCASE ASC ";
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},E.${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACCOUNTCOMPETITIONACTIVITY} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} E ON A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_OPPORTUNITYID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_ISARCHIVED},'false')) = 'false' ";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_OPPORTUNITYID} = $opportunityId";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_ACCOUNTCOMPETITIONACTIVITY_COMPETITORNAME} COLLATE NOCASE ASC ";
 
             
       final db = await databaseHandler.database;
