@@ -1,29 +1,3 @@
-/*************************************************************************
- *
- * HAPPSALES CONFIDENTIAL
- * ____________________________________
- *
- *  [2019-23] HappSales Private Limited
- *  www.happsales.com
- *  All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains the property of HappSales Private Limited.
- * The intellectual and technical concepts contained herein are proprietary to HappSales Private Limited
- * and  are protected by trade secret or copyright law.
- * Dissemination of this information or reproduction of this material is strictly forbidden unless prior
- * written permission is obtained from HappSales Private Limited.
- */
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// Class Name    : AccountCategoryMappingDataHandler
-// Created By    : Vijay Kumar Vettath
-// Created Date  : Dec-2019
-// Purpose       : Class containing the custom data handler methods for AccountCategoryMapping table.
-// Details       :
-// Change History:-
-// Date:
-// Author:
-// Change:
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 import "../../AppTables/ColumnsBase.dart";
