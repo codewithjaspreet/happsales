@@ -1,4 +1,6 @@
-class AccountBusinessPlanBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AccountBusinessPlanBase extends BaseEntity {
   String? _accountBusinessPlanID;
   String? _accountBusinessPlanCode;
   String? _businessPlans;

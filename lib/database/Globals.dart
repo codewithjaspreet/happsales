@@ -73,7 +73,7 @@ class Globals {
   static String ENCRYPTION_KEY = "2hAfEsA\$2a975ei!";
   static String locationAddress = "";
 
- static String getStringValue(Object obj) {
+  static String getStringValue(Object obj) {
     if (obj.toString() == "null") {
       return "";
     } else {
@@ -81,26 +81,42 @@ class Globals {
     }
   }
 
-  static  tryParseLongForDBId(Object obj) {
-  String retVal = "";
-  try {
-    int retVal2 = int.parse(obj.toString());
-    retVal = retVal2.toString();
-  } catch (e) {
-    retVal = "-1"; // or null if preferred
+  static tryParseLongForDBId(dynamic obj) {
+    String retVal = "";
+    try {
+      int retVal2 = int.parse(obj.toString());
+      retVal = retVal2.toString();
+    } catch (e) {
+      retVal = "-1"; // or null if preferred
+    }
+    return retVal;
   }
-  return retVal;
-}
 
-static bool isNullOrEmpty(String value1) {
-  if (value1 == null || value1.trim().isEmpty) {
-    return true;
-  } else {
-    return false;
+  static bool isNullOrEmpty(String value1) {
+    if (value1 == null || value1.trim().isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
-}
 
+  static  isIntegerString(dynamic value1) {
+    if (value1 != null && tryParseAsIntString(value1) != "")
+      return true;
+    else
+      return false;
+  }
 
-
-
+  static String tryParseAsIntString(dynamic obj) {
+    String retVal = "";
+    try {
+      if (obj != null) {
+        retVal = int.parse(obj as String).toString();
+      }
+    } catch (e) {
+      retVal = "";
+      // or retVal = null; if you prefer to return null
+    }
+    return retVal;
+  }
 }
