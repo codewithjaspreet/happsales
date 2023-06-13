@@ -1,4 +1,6 @@
-class ContactCategoryBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class ContactCategoryBase extends BaseEntity {
   String? _contactCategoryID;
   String? _contactCategoryCode;
   String? _contactCategoryName;

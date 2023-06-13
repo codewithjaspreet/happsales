@@ -1,4 +1,6 @@
-class ContactAlignmentBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class ContactAlignmentBase extends BaseEntity {
   String? _contactAlignmentID;
   String? _contactAlignmentCode;
   String? _contactAlignmentName;
