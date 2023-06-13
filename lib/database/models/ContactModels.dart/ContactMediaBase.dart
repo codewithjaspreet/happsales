@@ -1,4 +1,6 @@
-class ContactMediaBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class ContactMediaBase extends BaseEntity {
   String? _contactMediaID;
   String? _contactMediaCode;
   String? _contactMediaName;
