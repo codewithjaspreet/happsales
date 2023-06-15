@@ -4,11 +4,9 @@ import '../../AppTables/Columns.dart';
 import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/ColumnsBase.dart';
 import '../../Globals.dart';
+import '../../models/AccountModels/Account.dart';
 import '../DatabaseHandler.dart';
-import '../../Models/Account.dart';
 import '../../AppTables/TablesBase.dart';
-import '../../Models/AccountBase.dart';
-import '../../Models/Account.dart';
 
 class AccountDataHandlerBase {
   static Future<List<Account>> GetAccountRecordsPaged(
@@ -177,19 +175,17 @@ class AccountDataHandlerBase {
         dataItem.creditRatingName =
             element[ColumnsBase.KEY_CREDITRATING_CREDITRATINGNAME];
         dataItem.currencyName = element[ColumnsBase.KEY_CURRENCY_CURRENCYNAME];
-        dataItem.isDeleted = element[ColumnsBase.KEY_ID];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ISDELETED];
 
-        // dataItem.IsDeleted = element[ColumnsBase.KEY_ISDIRTY];
-
-        //dataItem.id = element[ColumnsBase.KEY_ISDIRTY];
-        // dataItem. = element[ColumnsBase.KEY_ISDELETED];
-        // dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
-        // dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
-        // dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
-        // dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
-        // dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
-        // dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
-        // dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
         dataList.add(dataItem);
 

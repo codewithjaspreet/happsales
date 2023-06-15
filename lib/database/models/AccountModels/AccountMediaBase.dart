@@ -1,4 +1,6 @@
-class AccountMediaBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AccountMediaBase extends BaseEntity {
   String? _accountMediaID;
   String? _accountMediaCode;
   String? _accountMediaName;
