@@ -1,4 +1,6 @@
-class AccountSegmentBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AccountSegmentBase extends BaseEntity {
   String? _accountSegmentID;
   String? _accountSegmentCode;
   String? _accountSegmentName;
