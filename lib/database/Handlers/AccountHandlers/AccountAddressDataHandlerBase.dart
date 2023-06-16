@@ -353,6 +353,8 @@ class AccountAddressDataHandlerBase {
 
       //db.close();
     } catch (ex) {
+
+      
       // Globals.HandleException(context, "AccountAddressDataHandlerBase:GetAccountAddressRecordsPaged()", ex);
       throw ex;
     }

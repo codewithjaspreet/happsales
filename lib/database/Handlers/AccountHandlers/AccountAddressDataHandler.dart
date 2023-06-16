@@ -159,7 +159,7 @@ class AccountAddressDataHandler extends AccountAddressDataHandlerBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "AccountAddressDataHandlerBase:GetAccountAddressRecordsPaged()", ex);
+    //  Globals.HandleException(context, "AccountAddressDataHandlerBase:GetAccountAddressRecordsPaged()", ex);
       throw ex;
     }
     return dataList;
@@ -274,7 +274,7 @@ class AccountAddressDataHandler extends AccountAddressDataHandlerBase {
   }
 
 
-     static Future<String> GetAccountAddressRecordByAdddressType(DatabaseHandler databaseHandler, String accountId, String adddressType) async {
+   static Future<String> GetAccountAddressRecordByAdddressType(DatabaseHandler databaseHandler, String accountId, String adddressType) async {
     
        String address = "";
 
