@@ -1,4 +1,5 @@
-import 'package:happsales_crm/database/models/OpportunityModels/OpportunityTypeBase.dart';
+
+import 'OpportunityApprovalTypeBase.dart';
 
 class OpportunityApprovalType extends OpportunityApprovalTypeBase{
 
