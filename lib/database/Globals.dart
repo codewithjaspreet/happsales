@@ -92,6 +92,16 @@ class Globals {
     return retVal;
   }
 
+  static void handleException(String source, dynamic ex) {
+  try {
+    print('AMI_ERROR: $source -> $ex');
+  } catch (e) {
+    // Handle any additional error logging or handling here
+    // print('AMI_ERROR: $source -> $ex');
+  }
+}
+
+
   static bool isNullOrEmpty(String value1) {
     if (value1 == null || value1.trim().isEmpty) {
       return true;
