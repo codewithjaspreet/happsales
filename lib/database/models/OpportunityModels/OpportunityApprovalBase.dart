@@ -1,4 +1,6 @@
-class OpportunityApprovalBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class OpportunityApprovalBase extends BaseEntity{
   String? opportunityApprovalID;
   String? opportunityApprovalCode;
   String? opportunityApprovalTitle;

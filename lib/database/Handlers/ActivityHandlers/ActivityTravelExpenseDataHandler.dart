@@ -18,8 +18,8 @@ class ActivityTravelExpenseDataHandler extends ActivityTravelExpenseDataHandlerB
             selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYTRAVEL} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ACTIVITYTRAVELID} = B.${ColumnsBase.KEY_ID}";
             selectQuery += " LEFT JOIN ${TablesBase.TABLE_EXPENSETYPE} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_EXPENSETYPEID} = E.${ColumnsBase.KEY_ID}";
             selectQuery += " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} F ON A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_MODEOFTRAVELID} = F.${ColumnsBase.KEY_ID}";
-            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = " + Globals.AppUserID.toString();
-            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_APPUSERGROUPID} = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
             selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ISDELETED},'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVELEXPENSE_ISACTIVE},'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ActivityTravelExpense_ISARCHIVED + ",'false')) = 'false' ";
