@@ -1,0 +1,1234 @@
+import '../../AppConstants.dart';
+import '../../AppTables/Columns.dart';
+import '../../AppTables/ColumnsBase.dart';
+import '../../AppTables/TablesBase.dart';
+import '../../Globals.dart';
+import '../../models/ActivityModels/ActivityTravel.dart';
+import '../DataBaseHandler.dart';
+
+class ActivityTravelDataHandlerBase {
+  static Future<List<ActivityTravel>> GetActivityTravelRecordsPaged(
+      DatabaseHandler databaseHandler,
+      String searchString,
+      String sortColumn,
+      String sortDirection,
+      Map<String, String> filterHashMap,
+      int pageIndex,
+      int pageSize) async {
+    List<ActivityTravel> dataList = [];
+    try {
+      int startRowIndex = ((pageIndex - 1) * pageSize);
+
+      String selectQuery =
+          "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},E.${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID} = B.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID} = E.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED},'false')) = 'false' ";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE},'true')) = 'true' ";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED},'false')) = 'false' ";
+      if (searchString.trim().isNotEmpty) {
+        selectQuery +=
+            " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE} LIKE '%$searchString%'";
+      }
+
+      /* FILTER */
+      /*String groups = "";
+			String tags = "";
+			String groupitem = "";
+			for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
+				String key1 = entry.getKey();
+				String value1 = entry.getValue();
+				if (entry.getKey().equals("XXXXX")) {
+					groupitem = value1;
+				} else {
+					groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
+					tags += (tags.equals("") ? value1 : "," + value1);
+				}
+			}
+			if (groupitem.trim().length() > 0)
+				selectQuery += " AND A." + ColumnsBase.KEY_ActivityTravel_Columns.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE + " IN(" + groupitem.trim() + ")";
+			if (groups.trim().length() > 0)
+				selectQuery += " AND TG." + ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
+			if (tags.trim().length() > 0)
+				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
+
+      selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+      selectQuery += " LIMIT $startRowIndex,$pageSize";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetActivityTravelRecordsPaged()", ex);
+      throw ex;
+    }
+    return dataList;
+  }
+
+  static Future<List<ActivityTravel>> GetActivityTravelRecords(
+      DatabaseHandler databaseHandler, String searchString) async {
+    List<ActivityTravel> dataList = [];
+    try {
+      String selectQuery =
+          "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},E.${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID} = B.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID} = E.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED},'false')) = 'false' ";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE},'true')) = 'true' ";
+      selectQuery +=
+          " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED},'false')) = 'false' ";
+      if (searchString.trim().isNotEmpty) {
+        selectQuery +=
+            " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE} LIKE '$searchString%'";
+      }
+      selectQuery +=
+          " OR A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE} LIKE '$searchString%'";
+      selectQuery +=
+          " ORDER BY A.${ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON} COLLATE NOCASE DESC ";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetActivityTravelRecords()", ex);
+      throw ex;
+    }
+    return dataList;
+  }
+
+  static Future<ActivityTravel?> GetActivityTravelRecord(
+      DatabaseHandler databaseHandler, String id) async {
+    ActivityTravel? dataItem;
+    try {
+      id = Globals.tryParseLongForDBId(id);
+
+      String selectQuery =
+          "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},E.${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID} = B.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID} = E.${ColumnsBase.KEY_ID}";
+      selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetActivityTravelRecord()", ex);
+      throw ex;
+    }
+    return dataItem;
+  }
+
+  static Future<ActivityTravel?> GetMasterActivityTravelRecord(
+      DatabaseHandler databaseHandler, String id) async {
+    ActivityTravel? dataItem;
+    try {
+      id = Globals.tryParseLongForDBId(id);
+
+      String selectQuery =
+          "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},E.${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID} = B.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID} = E.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " WHERE A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID} = $id";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+      selectQuery +=
+          " AND A.${ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetMasterActivityTravelRecord()", ex);
+      throw ex;
+    }
+    return dataItem;
+  }
+
+  static Future<int> AddActivityTravelRecord(
+      DatabaseHandler databaseHandler, ActivityTravel dataItem) async {
+    int id = 0;
+    try {
+      final db = await databaseHandler.database;
+      Map<String, dynamic> values = new Map();
+      if (dataItem.activityTravelID != null &&
+          dataItem.activityTravelID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID] =
+            dataItem.activityTravelID;
+      }
+      if (dataItem.activityTravelCode != null &&
+          dataItem.activityTravelCode != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE] =
+            dataItem.activityTravelCode;
+      }
+      if (dataItem.activityTravelTitle != null &&
+          dataItem.activityTravelTitle != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE] =
+            dataItem.activityTravelTitle;
+      }
+      if (dataItem.activityID != null && dataItem.activityID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID] = dataItem.activityID;
+      }
+      if (dataItem.activityTravelDate != null &&
+          dataItem.activityTravelDate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE] =
+            dataItem.activityTravelDate;
+      }
+      if (dataItem.activityTravelEndDate != null &&
+          dataItem.activityTravelEndDate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE] =
+            dataItem.activityTravelEndDate;
+      }
+      if (dataItem.travelPurposeName != null &&
+          dataItem.travelPurposeName != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME] =
+            dataItem.travelPurposeName;
+      }
+      if (dataItem.startLocation != null && dataItem.startLocation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION] =
+            dataItem.startLocation;
+      }
+      if (dataItem.endLocation != null && dataItem.endLocation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION] =
+            dataItem.endLocation;
+      }
+      if (dataItem.startLocationCoordinate != null &&
+          dataItem.startLocationCoordinate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE] =
+            dataItem.startLocationCoordinate;
+      }
+      if (dataItem.endLocationCoordinate != null &&
+          dataItem.endLocationCoordinate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE] =
+            dataItem.endLocationCoordinate;
+      }
+      if (dataItem.actualDistance != null &&
+          dataItem.actualDistance != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE] =
+            dataItem.actualDistance;
+      }
+      if (dataItem.distanceTravelled != null &&
+          dataItem.distanceTravelled != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED] =
+            dataItem.distanceTravelled;
+      }
+      if (dataItem.modeOfTravelID != null &&
+          dataItem.modeOfTravelID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID] =
+            dataItem.modeOfTravelID;
+      }
+      if (dataItem.travelExpense != null && dataItem.travelExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE] =
+            dataItem.travelExpense;
+      }
+      if (dataItem.reasonForDeviation != null &&
+          dataItem.reasonForDeviation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION] =
+            dataItem.reasonForDeviation;
+      }
+      if (dataItem.otherExpense != null && dataItem.otherExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE] =
+            dataItem.otherExpense;
+      }
+      if (dataItem.totalExpense != null && dataItem.totalExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE] =
+            dataItem.totalExpense;
+      }
+      if (dataItem.tags != null && dataItem.tags != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS] = dataItem.tags;
+      }
+      if (dataItem.isSubmitted != null && dataItem.isSubmitted != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED] =
+            dataItem.isSubmitted;
+      }
+      if (dataItem.remarks != null && dataItem.remarks != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS] = dataItem.remarks;
+      }
+      if (dataItem.approvalStatus != null &&
+          dataItem.approvalStatus != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS] =
+            dataItem.approvalStatus;
+      }
+      if (dataItem.approvedByAppUserName != null &&
+          dataItem.approvedByAppUserName != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME] =
+            dataItem.approvedByAppUserName;
+      }
+      if (dataItem.approvedTime != null && dataItem.approvedTime != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME] =
+            dataItem.approvedTime;
+      }
+      if (dataItem.approverRemarks != null &&
+          dataItem.approverRemarks != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS] =
+            dataItem.approverRemarks;
+      }
+      if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY] = dataItem.createdBy;
+      }
+      if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON] = dataItem.createdOn;
+      }
+      if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY] = dataItem.modifiedBy;
+      }
+      if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON] = dataItem.modifiedOn;
+      }
+      if (dataItem.deviceIdentifier != null &&
+          dataItem.deviceIdentifier != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER] =
+            dataItem.deviceIdentifier;
+      }
+      if (dataItem.referenceIdentifier != null &&
+          dataItem.referenceIdentifier != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER] =
+            dataItem.referenceIdentifier;
+      }
+      if (dataItem.location != null && dataItem.location != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION] = dataItem.location;
+      }
+      if (dataItem.isActive != null && dataItem.isActive != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE] = dataItem.isActive;
+      }
+      if (dataItem.uid != null && dataItem.uid != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_UID] = dataItem.uid;
+      }
+      if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID] = dataItem.appUserID;
+      }
+      if (dataItem.appUserGroupID != null &&
+          dataItem.appUserGroupID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID] =
+            dataItem.appUserGroupID;
+      }
+      if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED] = dataItem.isArchived;
+      }
+      if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED] = dataItem.isDeleted;
+      }
+      if (dataItem.id != null && dataItem.id != "null") {
+        values[ColumnsBase.KEY_ID] = dataItem.id;
+      }
+      if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+        values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+      }
+      if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+        values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+      }
+      if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+        values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+      }
+      if (dataItem.downSyncMessage != null &&
+          dataItem.downSyncMessage != "null") {
+        values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+      }
+      if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+        values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+      }
+      if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+        values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+      }
+      if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+        values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+      }
+      if (dataItem.modifiedByUser != null &&
+          dataItem.modifiedByUser != "null") {
+        values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+      }
+      if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+        values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+      }
+      values[ColumnsBase.KEY_UPSYNCINDEX] = 0;
+      values[ColumnsBase.KEY_ISACTIVE] = "true";
+      values[ColumnsBase.KEY_ISDELETED] = "false";
+
+      id = await db.insert(TablesBase.TABLE_ACTIVITYTRAVEL, values);
+//db.close(); change to dart , remove "get" keyword and follow camel case
+    } catch (ex) {
+      Globals.handleException("DatabaseHandler:AddActivityTravelRecord()", ex);
+      throw ex;
+    }
+    return id;
+  }
+
+  static Future<int> UpdateActivityTravelRecord(DatabaseHandler databaseHandler,
+      String id1, ActivityTravel dataItem) async {
+    int id = 0;
+    try {
+      final db = await databaseHandler.database;
+      Map<String, dynamic> values = new Map();
+      if (dataItem.activityTravelID != null &&
+          dataItem.activityTravelID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID] =
+            dataItem.activityTravelID;
+      }
+      if (dataItem.activityTravelCode != null &&
+          dataItem.activityTravelCode != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE] =
+            dataItem.activityTravelCode;
+      }
+      if (dataItem.activityTravelTitle != null &&
+          dataItem.activityTravelTitle != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE] =
+            dataItem.activityTravelTitle;
+      }
+      if (dataItem.activityID != null && dataItem.activityID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID] = dataItem.activityID;
+      }
+      if (dataItem.activityTravelDate != null &&
+          dataItem.activityTravelDate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE] =
+            dataItem.activityTravelDate;
+      }
+      if (dataItem.activityTravelEndDate != null &&
+          dataItem.activityTravelEndDate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE] =
+            dataItem.activityTravelEndDate;
+      }
+      if (dataItem.travelPurposeName != null &&
+          dataItem.travelPurposeName != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME] =
+            dataItem.travelPurposeName;
+      }
+      if (dataItem.startLocation != null && dataItem.startLocation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION] =
+            dataItem.startLocation;
+      }
+      if (dataItem.endLocation != null && dataItem.endLocation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION] =
+            dataItem.endLocation;
+      }
+      if (dataItem.startLocationCoordinate != null &&
+          dataItem.startLocationCoordinate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE] =
+            dataItem.startLocationCoordinate;
+      }
+      if (dataItem.endLocationCoordinate != null &&
+          dataItem.endLocationCoordinate != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE] =
+            dataItem.endLocationCoordinate;
+      }
+      if (dataItem.actualDistance != null &&
+          dataItem.actualDistance != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE] =
+            dataItem.actualDistance;
+      }
+      if (dataItem.distanceTravelled != null &&
+          dataItem.distanceTravelled != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED] =
+            dataItem.distanceTravelled;
+      }
+      if (dataItem.modeOfTravelID != null &&
+          dataItem.modeOfTravelID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID] =
+            dataItem.modeOfTravelID;
+      }
+      if (dataItem.travelExpense != null && dataItem.travelExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE] =
+            dataItem.travelExpense;
+      }
+      if (dataItem.reasonForDeviation != null &&
+          dataItem.reasonForDeviation != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION] =
+            dataItem.reasonForDeviation;
+      }
+      if (dataItem.otherExpense != null && dataItem.otherExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE] =
+            dataItem.otherExpense;
+      }
+      if (dataItem.totalExpense != null && dataItem.totalExpense != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE] =
+            dataItem.totalExpense;
+      }
+      if (dataItem.tags != null && dataItem.tags != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS] = dataItem.tags;
+      }
+      if (dataItem.isSubmitted != null && dataItem.isSubmitted != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED] =
+            dataItem.isSubmitted;
+      }
+      if (dataItem.remarks != null && dataItem.remarks != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS] = dataItem.remarks;
+      }
+      if (dataItem.approvalStatus != null &&
+          dataItem.approvalStatus != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS] =
+            dataItem.approvalStatus;
+      }
+      if (dataItem.approvedByAppUserName != null &&
+          dataItem.approvedByAppUserName != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME] =
+            dataItem.approvedByAppUserName;
+      }
+      if (dataItem.approvedTime != null && dataItem.approvedTime != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME] =
+            dataItem.approvedTime;
+      }
+      if (dataItem.approverRemarks != null &&
+          dataItem.approverRemarks != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS] =
+            dataItem.approverRemarks;
+      }
+      if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY] = dataItem.createdBy;
+      }
+      if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON] = dataItem.createdOn;
+      }
+      if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY] = dataItem.modifiedBy;
+      }
+      if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON] = dataItem.modifiedOn;
+      }
+      if (dataItem.deviceIdentifier != null &&
+          dataItem.deviceIdentifier != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER] =
+            dataItem.deviceIdentifier;
+      }
+      if (dataItem.referenceIdentifier != null &&
+          dataItem.referenceIdentifier != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER] =
+            dataItem.referenceIdentifier;
+      }
+      if (dataItem.location != null && dataItem.location != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION] = dataItem.location;
+      }
+      if (dataItem.isActive != null && dataItem.isActive != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE] = dataItem.isActive;
+      }
+      if (dataItem.uid != null && dataItem.uid != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_UID] = dataItem.uid;
+      }
+      if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID] = dataItem.appUserID;
+      }
+      if (dataItem.appUserGroupID != null &&
+          dataItem.appUserGroupID != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID] =
+            dataItem.appUserGroupID;
+      }
+      if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED] = dataItem.isArchived;
+      }
+      if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+        values[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED] = dataItem.isDeleted;
+      }
+      if (dataItem.id != null && dataItem.id != "null") {
+        values[ColumnsBase.KEY_ID] = dataItem.id;
+      }
+      if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+        values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+      }
+      if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+        values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+      }
+      if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+        values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+      }
+      if (dataItem.downSyncMessage != null &&
+          dataItem.downSyncMessage != "null") {
+        values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+      }
+      if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+        values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+      }
+      if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+        values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+      }
+      if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+        values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+      }
+      if (dataItem.modifiedByUser != null &&
+          dataItem.modifiedByUser != "null") {
+        values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+      }
+      if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+        values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+      }
+      id = await db.update(TablesBase.TABLE_ACTIVITYTRAVEL, values,
+          where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+      //db.close();
+    } catch (ex) {
+      Globals.handleException(
+          "DatabaseHandler:UpdateActivityTravelRecord()", ex);
+      throw ex;
+    }
+    return id;
+  }
+
+  static Future<int> DeleteActivityTravelRecord(
+      DatabaseHandler databaseHandler, String id1) async {
+    int id = 0;
+    try {
+      final db = await databaseHandler.database;
+
+      id = await db.delete(TablesBase.TABLE_ACTIVITYTRAVEL,
+          where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+      //db.close();
+    } catch (ex) {
+      Globals.handleException(
+          "DatabaseHandler:DeleteActivityTravelRecord()", ex);
+      throw ex;
+    }
+    return id;
+  }
+
+  static Future<String> GetServerId(
+      DatabaseHandler databaseHandler, String id) async {
+    String serverId = "-1";
+    try {
+      id = Globals.tryParseLongForDBId(id);
+
+      String selectQuery =
+          "SELECT A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      if (result != null && result.isNotEmpty) {
+        serverId = result[0][ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID]
+            .toString();
+      }
+      //db.close();a
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetServerId()", ex);
+      throw ex;
+    }
+    return serverId;
+  }
+
+  static Future<String> GetLocalId(
+      DatabaseHandler databaseHandler, String id) async {
+    String localId = "";
+    try {
+      id = Globals.tryParseLongForDBId(id);
+
+      String selectQuery = "SELECT A.${ColumnsBase.KEY_ID}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " WHERE A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID} = $id";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      if (result != null && result.isNotEmpty) {
+        localId = result[0][ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID]
+            .toString();
+      }
+      //db.close();a
+      //db.close();
+    } catch (ex) {
+      Globals.handleException("ActivityTravelDataHandlerBase:GetLocalId()", ex);
+      throw ex;
+    }
+    return localId;
+  }
+
+  static Future<List<ActivityTravel>> GetActivityTravelUpSyncRecords(
+      DatabaseHandler databaseHandler, String changeType) async {
+    List<ActivityTravel> dataList = [];
+    try {
+      String selectQuery =
+          "SELECT * FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+      if (changeType == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
+        selectQuery =
+            "SELECT * FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'false'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+      } else if (changeType == (AppConstants.DB_RECORD_DELETED)) {
+        selectQuery =
+            "SELECT * FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'true'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+      }
+      // ignore: prefer_interpolation_to_compose_strings
+      selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = " +
+          Globals.AppUserID.toString();
+      selectQuery +=
+          " AND ${ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+      //selectQuery += " AND " + ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID + " IN (SELECT  " + ColumnsBase.KEY_ID + " FROM " + TablesBase.TABLE_ACTIVITY + " WHERE coalesce(" + ColumnsBase.KEY_ACTIVITY_ACTIVITYID + ",'') <> '')";
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetActivityTravelUpSyncRecords()", ex);
+      throw ex;
+    }
+    return dataList;
+  }
+
+  static Future<ActivityTravel?> GetActivityTravelRecordByUid(
+      DatabaseHandler databaseHandler, String uid) async {
+    ActivityTravel? dataItem;
+    try {
+      String selectQuery =
+          "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},E.${ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME}";
+      selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYTRAVEL} A ";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} B ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID} = B.${ColumnsBase.KEY_ID}";
+      selectQuery +=
+          " LEFT JOIN ${TablesBase.TABLE_MODEOFTRAVEL} E ON A.${ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID} = E.${ColumnsBase.KEY_ID}";
+      selectQuery += " WHERE A.${ColumnsBase.KEY_ACTIVITYTRAVEL_UID} = '$uid'";
+      //selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
+      //selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+
+      final db = await databaseHandler.database;
+      List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+      for (var element in result) {
+        ActivityTravel dataItem = new ActivityTravel();
+
+        dataItem.activityTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELID];
+        dataItem.activityTravelCode =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELCODE];
+        dataItem.activityTravelTitle =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELTITLE];
+        dataItem.activityID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYID];
+        dataItem.activityTravelDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELDATE];
+        dataItem.activityTravelEndDate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTIVITYTRAVELENDDATE];
+        dataItem.travelPurposeName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELPURPOSENAME];
+        dataItem.startLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATION];
+        dataItem.endLocation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATION];
+        dataItem.startLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_STARTLOCATIONCOORDINATE];
+        dataItem.endLocationCoordinate =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ENDLOCATIONCOORDINATE];
+        dataItem.actualDistance =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ACTUALDISTANCE];
+        dataItem.distanceTravelled =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DISTANCETRAVELLED];
+        dataItem.modeOfTravelID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODEOFTRAVELID];
+        dataItem.travelExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TRAVELEXPENSE];
+        dataItem.reasonForDeviation =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REASONFORDEVIATION];
+        dataItem.otherExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_OTHEREXPENSE];
+        dataItem.totalExpense =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_TOTALEXPENSE];
+        dataItem.tags = element[ColumnsBase.KEY_ACTIVITYTRAVEL_TAGS];
+        dataItem.isSubmitted =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISSUBMITTED];
+        dataItem.remarks = element[ColumnsBase.KEY_ACTIVITYTRAVEL_REMARKS];
+        dataItem.approvalStatus =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVALSTATUS];
+        dataItem.approvedByAppUserName =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDBYAPPUSERNAME];
+        dataItem.approvedTime =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVEDTIME];
+        dataItem.approverRemarks =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPROVERREMARKS];
+        dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDBY];
+        dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYTRAVEL_CREATEDON];
+        dataItem.modifiedBy =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDBY];
+        dataItem.modifiedOn =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_MODIFIEDON];
+        dataItem.deviceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_DEVICEIDENTIFIER];
+        dataItem.referenceIdentifier =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_REFERENCEIDENTIFIER];
+        dataItem.location = element[ColumnsBase.KEY_ACTIVITYTRAVEL_LOCATION];
+        dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISACTIVE];
+        dataItem.uid = element[ColumnsBase.KEY_ACTIVITYTRAVEL_UID];
+        dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERID];
+        dataItem.appUserGroupID =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_APPUSERGROUPID];
+        dataItem.isArchived =
+            element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISARCHIVED];
+        dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYTRAVEL_ISDELETED];
+        dataItem.activityTitle =
+            element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+        dataItem.modeOfTravelName =
+            element[ColumnsBase.KEY_MODEOFTRAVEL_MODEOFTRAVELNAME];
+        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+      }
+    } catch (ex) {
+      Globals.handleException(
+          "ActivityTravelDataHandlerBase:GetActivityTravelRecordByUid()", ex);
+      throw ex;
+    }
+    return dataItem;
+  }
+
+  /*-------------------HAPPSALES-------------------*/
+}

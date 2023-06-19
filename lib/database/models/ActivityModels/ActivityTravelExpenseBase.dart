@@ -24,6 +24,19 @@ class ActivityTravelExpenseBase extends BaseEntity {
   String? _isArchived;
   String? _isDeleted;
 
+     String? _ActivityTravelTitle;
+     String? _ExpenseTypeName;
+     String? _ModeOfTravelName;
+
+     // getters and setters of these 3
+      String? get ActivityTravelTitle => _ActivityTravelTitle;
+      String? get ExpenseTypeName => _ExpenseTypeName;
+      String? get ModeOfTravelName => _ModeOfTravelName;
+
+      set ActivityTravelTitle(String? ActivityTravelTitle) => _ActivityTravelTitle = ActivityTravelTitle;
+      set ExpenseTypeName(String? ExpenseTypeName) => _ExpenseTypeName = ExpenseTypeName;
+      set ModeOfTravelName(String? ModeOfTravelName) => _ModeOfTravelName = ModeOfTravelName;
+
   ActivityTravelExpenseBase();
 
   String? get activityTravelExpenseID => _activityTravelExpenseID;
@@ -116,6 +129,11 @@ class ActivityTravelExpenseBase extends BaseEntity {
       'AppUserGroupID': _appUserGroupID,
       'IsArchived': _isArchived,
       'IsDeleted': _isDeleted,
+
+      'ActivityTravelTitle': _ActivityTravelTitle,
+      'ExpenseTypeName': _ExpenseTypeName,
+      'ModeOfTravelName': _ModeOfTravelName,
+
     };
   }
 
@@ -143,5 +161,11 @@ class ActivityTravelExpenseBase extends BaseEntity {
     _appUserGroupID = map['AppUserGroupID'];
     _isArchived = map['IsArchived'];
     _isDeleted = map['IsDeleted'];
+
+    _ActivityTravelTitle = map['ActivityTravelTitle'];
+    _ExpenseTypeName = map['ExpenseTypeName'];
+    _ModeOfTravelName = map['ModeOfTravelName'];
+    
   }
+
 }
