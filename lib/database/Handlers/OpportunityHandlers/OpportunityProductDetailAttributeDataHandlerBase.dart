@@ -803,7 +803,7 @@ class OpportunityProductDetailAttributeDataHandlerBase {
       List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
       if (result.length > 0) {
-        serverId = result[0][ColumnsBase.KEY_ID];
+        serverId = result[0][ColumnsBase.KEY_OPPORTUNITYPRODUCTDETAILATTRIBUTE_OPPORTUNITYPRODUCTDETAILATTRIBUTEID];
       }
     } catch (ex) {
       Globals.handleException(
