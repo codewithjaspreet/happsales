@@ -1,0 +1,6 @@
+import 'OpportunityProductDetailAttributeDataHandlerBase.dart';
+
+class OpportunityProductDetailAttributeDataHandler extends OpportunityProductDetailAttributeDataHandlerBase{
+
+
+}

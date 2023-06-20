@@ -22,6 +22,8 @@ class OpportunityProductBase extends BaseEntity {
   String? appUserName;
   String? appUserGroupName;
 
+  OpportunityProductBase();
+
   OpportunityProductBase.fromMapObject(Map<String, dynamic> map) {
     opportunityProductID = map['OpportunityProductID'];
     opportunityProductCode = map['OpportunityProductCode'];
