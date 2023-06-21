@@ -101,7 +101,7 @@ class ContactCategoryDataHandlerBase {
 
       //db.close();
     } catch (ex) {
-      //Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetContactCategoryRecordsPaged()", ex);
+    Globals.handleException( "ContactCategoryDataHandlerBase:GetContactCategoryRecordsPaged()", ex);
       throw ex;
     }
     return dataList;
@@ -231,7 +231,7 @@ class ContactCategoryDataHandlerBase {
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
       }
     } catch (ex) {
-      // Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetContactCategoryRecord()", ex);
+      Globals.handleException( "ContactCategoryDataHandlerBase:GetContactCategoryRecord()", ex);
       throw ex;
     }
     return dataItem;
@@ -287,7 +287,7 @@ class ContactCategoryDataHandlerBase {
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
       }
     } catch (ex) {
-      //  Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetContactCategoryRecordByUid()", ex);
+       Globals.handleException( "ContactCategoryDataHandlerBase:GetContactCategoryRecordByUid()", ex);
       throw ex;
     }
     return dataItem;
@@ -348,7 +348,7 @@ class ContactCategoryDataHandlerBase {
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
       }
     } catch (ex) {
-      //   Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetMasterContactCategoryRecord()", ex);
+        Globals.handleException( "ContactCategoryDataHandlerBase:GetMasterContactCategoryRecord()", ex);
       throw ex;
     }
     return dataItem;
@@ -450,7 +450,7 @@ class ContactCategoryDataHandlerBase {
       id = await db.insert(TablesBase.TABLE_CONTACTCATEGORY, values);
 //db.close(); // Commented out since you might not need to explicitly close the database in Dart
     } catch (ex) {
-      //  Globals.HandleException(context, "DatabaseHandler:AddContactCategoryRecord()", ex);
+       Globals.handleException( "DatabaseHandler:AddContactCategoryRecord()", ex);
       throw ex;
     }
     return id;
@@ -552,7 +552,7 @@ class ContactCategoryDataHandlerBase {
           where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
       //db.close();
     } catch (ex) {
-      //  Globals.HandleException(context, "DatabaseHandler:UpdateContactCategoryRecord()", ex);
+       Globals.handleException( "DatabaseHandler:UpdateContactCategoryRecord()", ex);
       throw ex;
     }
     return id;
@@ -567,7 +567,7 @@ class ContactCategoryDataHandlerBase {
           where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
       //db.close();
     } catch (ex) {
-      //  Globals.HandleException(context, "DatabaseHandler:DeleteContactCategoryRecord()", ex);
+       Globals.handleException( "DatabaseHandler:DeleteContactCategoryRecord()", ex);
       throw ex;
     }
     return id;
@@ -590,7 +590,7 @@ class ContactCategoryDataHandlerBase {
         serverId = result[0][ColumnsBase.KEY_CONTACTCATEGORY_CONTACTCATEGORYID];
       }
     } catch (ex) {
-      //   Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetServerId()", ex);
+        Globals.handleException( "ContactCategoryDataHandlerBase:GetServerId()", ex);
       throw ex;
     }
     return serverId;
@@ -613,7 +613,7 @@ class ContactCategoryDataHandlerBase {
         localId = result[0][ColumnsBase.KEY_CONTACTCATEGORY_CONTACTCATEGORYID];
       }
     } catch (ex) {
-      // Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetLocalId()", ex);
+      Globals.handleException( "ContactCategoryDataHandlerBase:GetLocalId()", ex);
       throw ex;
     }
     return localId;
@@ -677,7 +677,7 @@ class ContactCategoryDataHandlerBase {
       }
       //db.close();
     } catch (ex) {
-      //    Globals.HandleException(context, "ContactCategoryDataHandlerBase:GetContactCategoryUpSyncRecords()", ex);
+      Globals.handleException( "ContactCategoryDataHandlerBase:GetContactCategoryUpSyncRecords()", ex);
       throw ex;
     }
     return dataList;

@@ -175,7 +175,7 @@ import '../DataBaseHandler.dart';
 
 
         } catch ( ex) {
-          //  Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetContactAlignmentRecords()", ex);
+          Globals.handleException( "ContactAlignmentDataHandlerBase:GetContactAlignmentRecords()", ex);
             throw ex;
         }
         return dataList;
@@ -309,7 +309,7 @@ import '../DataBaseHandler.dart';
 
              }
         } catch ( ex) {
-           // Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetMasterContactAlignmentRecord()", ex);
+           Globals.handleException( "ContactAlignmentDataHandlerBase:GetMasterContactAlignmentRecord()", ex);
             throw ex;
         }
         return dataItem;
@@ -378,7 +378,7 @@ values[ColumnsBase.KEY_ISDELETED] = "false";
             id = await db.insert(TablesBase.TABLE_CONTACTALIGNMENT, values);
             //db.close();
         } catch ( ex) {
-      //      Globals.HandleException(context, "DatabaseHandler:AddContactAlignmentRecord()", ex);
+       Globals.handleException( "DatabaseHandler:AddContactAlignmentRecord()", ex);
             throw ex;
         }
         return id;
@@ -442,7 +442,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
             id =await  db.update(TablesBase.TABLE_CONTACTALIGNMENT, values, where:  "${ColumnsBase.KEY_ID} = $id1", whereArgs : null);
             //db.close();
         } catch ( ex) {
-            //Globals.HandleException(context, "DatabaseHandler:UpdateContactAlignmentRecord()", ex);
+            Globals.handleException( "DatabaseHandler:UpdateContactAlignmentRecord()", ex);
             throw ex;
         }
         return id;
@@ -455,7 +455,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
  id = await db.delete(TablesBase.TABLE_CONTACTALIGNMENT,   where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
             //db.close();
         } catch ( ex) {
-            //Globals.HandleException(context, "DatabaseHandler:DeleteContactAlignmentRecord()", ex);
+           Globals.handleException( "DatabaseHandler:DeleteContactAlignmentRecord()", ex);
             throw ex;
         }
         return id;
@@ -481,7 +481,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
 
         
         } catch ( ex) {
-         ///   Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetServerId()", ex);
+           Globals.handleException( "ContactAlignmentDataHandlerBase:GetServerId()", ex);
             throw ex;
         }
         return serverId;
@@ -506,7 +506,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
             }
             //db.close();
         } catch ( ex) {
-         //   Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetLocalId()", ex);
+          Globals.handleException( "ContactAlignmentDataHandlerBase:GetLocalId()", ex);
             throw ex;
         }
         return localId;
@@ -577,7 +577,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
 
              }
         } catch ( ex) {
-            //Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetContactAlignmentUpSyncRecords()", ex);
+            Globals.handleException( "ContactAlignmentDataHandlerBase:GetContactAlignmentUpSyncRecords()", ex);
             throw ex;
         }
         return dataList;
@@ -648,7 +648,7 @@ if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null")
         }
         catch( ex)
         {
-	   // Globals.HandleException(context, "ContactAlignmentDataHandlerBase:GetContactAlignmentRecordByUid()", ex);
+	    Globals.handleException( "ContactAlignmentDataHandlerBase:GetContactAlignmentRecordByUid()", ex);
             throw ex;
         }
         return dataItem;

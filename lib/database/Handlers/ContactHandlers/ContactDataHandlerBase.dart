@@ -210,7 +210,7 @@ class ContactHandlerDataBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+       Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataList;
@@ -398,7 +398,7 @@ class ContactHandlerDataBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+       Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataList;
@@ -557,7 +557,7 @@ class ContactHandlerDataBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+       Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataItem;
@@ -717,7 +717,7 @@ class ContactHandlerDataBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+      Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataItem;
@@ -1399,7 +1399,7 @@ class ContactHandlerDataBase {
             id = await db.delete(TablesBase.TABLE_CONTACT,  where:  "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
             //db.close();
         } catch ( ex) {
-            // Globals.HandleException(context, "DatabaseHandler:DeleteContactRecord()", ex);
+            Globals.handleException( "DatabaseHandler:DeleteContactRecord()", ex);
             throw ex;
         }
         return id;
@@ -1422,7 +1422,7 @@ class ContactHandlerDataBase {
       }
       //db.close();
     } catch (ex) {
-      // Globals.handleException(context, "AccountDataHandlerBase:GetServerId()", ex);
+      Globals.handleException( "AccountDataHandlerBase:GetServerId()", ex);
       throw ex;
     }
     return serverId;
@@ -1449,7 +1449,7 @@ class ContactHandlerDataBase {
     
     //db.close();
   } catch ( ex) {
-    // Globals.handleException(context, "AccountDataHandlerBase:getLocalId()", ex);
+    Globals.handleException( "AccountDataHandlerBase:getLocalId()", ex);
     throw ex;
   }
   return localId;
@@ -1601,7 +1601,7 @@ class ContactHandlerDataBase {
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+     Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataList;
@@ -1754,7 +1754,7 @@ static Future<Contact?> GetContactRecordByUid(
 
       //db.close();
     } catch (ex) {
-      // Globals.HandleException(context, "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
+      Globals.handleException( "ContactDataHandlerBase:GetContactRecordsPaged()", ex);
       throw ex;
     }
     return dataItem;
