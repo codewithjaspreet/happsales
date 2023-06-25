@@ -1,4 +1,6 @@
-class AppFeatureBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AppFeatureBase extends BaseEntity {
   String? _appFeatureID;
   String? _appFeatureCode;
   String? _appFeatureName;
