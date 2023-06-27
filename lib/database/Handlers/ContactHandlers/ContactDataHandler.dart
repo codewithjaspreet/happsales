@@ -4,8 +4,9 @@ import '../../models/ContactModels.dart/Contact.dart';
 import '../DatabaseHandler.dart';
 import '../../Models/BaseEntity.dart';
 import '../../AppTables/TablesBase.dart';
+import 'ContactDataHandlerBase.dart';
 
-class ContactDataHandler {
+class ContactDataHandler  extends ContactHandlerDataBase{
 
   static Future<List<Contact>> GetContactRecordsPaged(
       DatabaseHandler databaseHandler,

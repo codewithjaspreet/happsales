@@ -8,6 +8,9 @@ import '../DataBaseHandler.dart';
 
 class AccountSegmentDataHandlerBase {
 
+    
+    AccountSegmentDataHandlerBase();
+
      static Future<List<AccountSegment>> GetAccountSegmentRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize)async {
         List<AccountSegment> dataList = [];
         try {

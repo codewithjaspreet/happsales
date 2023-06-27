@@ -54,15 +54,15 @@ class AppFeatureFieldDataHandler extends AppFeatureFieldDataHandlerBase {
                                   dataItem.isDeleted  = element[ColumnsBase.KEY_APPFEATUREFIELD_ISDELETED];
                                   dataItem.appFeatureName  = element[ColumnsBase.KEY_APPFEATURE_APPFEATURENAME];
                                    dataItem.id = element[ColumnsBase.KEY_ID];
-        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
-        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
-        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
-        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
-        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
-        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
-        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
-        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
-        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+                                  dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+                                  dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+                                  dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+                                  dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+                                  dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+                                  dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+                                  dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+                                  dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+                                  dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
         dataList.add(dataItem);
 

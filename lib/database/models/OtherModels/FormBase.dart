@@ -34,6 +34,10 @@ class FormBase extends BaseEntity {
   String? _appUserName;
   String? _appUserGroupName;
 
+  FormBase();
+
+  // Getters
+
   String? get formID => _formID;
   String? get formCode => _formCode;
   String? get formName => _formName;
@@ -67,7 +71,135 @@ class FormBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
-  FormBase();
+  // Setters
+
+  set formID(String? formID) {
+    _formID = formID;
+  }
+
+  set formCode(String? formCode) {
+    _formCode = formCode;
+  }
+
+  set formName(String? formName) {
+    _formName = formName;
+  }
+
+  set businessFeatureID(String? businessFeatureID) {
+    _businessFeatureID = businessFeatureID;
+  }
+
+  set formType(String? formType) {
+    _formType = formType;
+  }
+
+  set linkTo(String? linkTo) {
+    _linkTo = linkTo;
+  }
+
+  set forStatus(String? forStatus) {
+    _forStatus = forStatus;
+  }
+
+  set sortOrder(String? sortOrder) {
+    _sortOrder = sortOrder;
+  }
+
+  set isMandatory(String? isMandatory) {
+    _isMandatory = isMandatory;
+  }
+
+  set displayInApp(String? displayInApp) {
+    _displayInApp = displayInApp;
+  }
+
+  set pdfSize(String? pdfSize) {
+    _pdfSize = pdfSize;
+  }
+
+  set dataScriptWeb(String? dataScriptWeb) {
+    _dataScriptWeb = dataScriptWeb;
+  }
+
+  set dataScriptApp(String? dataScriptApp) {
+    _dataScriptApp = dataScriptApp;
+  }
+
+  set parentFormID(String? parentFormID) {
+    _parentFormID = parentFormID;
+  }
+
+  set emailManualTemplateID(String? emailManualTemplateID) {
+    _emailManualTemplateID = emailManualTemplateID;
+  }
+
+  set emailAutomatedTemplateID(String? emailAutomatedTemplateID) {
+    _emailAutomatedTemplateID = emailAutomatedTemplateID;
+  }
+
+  set createdOn(String? createdOn) {
+    _createdOn = createdOn;
+  }
+
+  set createdBy(String? createdBy) {
+    _createdBy = createdBy;
+  }
+
+  set modifiedOn(String? modifiedOn) {
+    _modifiedOn = modifiedOn;
+  }
+
+  set modifiedBy(String? modifiedBy) {
+    _modifiedBy = modifiedBy;
+  }
+
+  set isActive(String? isActive) {
+    _isActive = isActive;
+  }
+
+  set uid(String? uid) {
+    _uid = uid;
+  }
+
+  set appUserID(String? appUserID) {
+    _appUserID = appUserID;
+  }
+
+  set appUserGroupID(String? appUserGroupID) {
+    _appUserGroupID = appUserGroupID;
+  }
+
+  set isArchived(String? isArchived) {
+    _isArchived = isArchived;
+  }
+
+  set isDeleted(String? isDeleted) {
+    _isDeleted = isDeleted;
+  }
+
+  set businessFeatureName(String? businessFeatureName) {
+    _businessFeatureName = businessFeatureName;
+  }
+
+  set parentFormName(String? parentFormName) {
+    _parentFormName = parentFormName;
+  }
+
+  set emailManualTemplateName(String? emailManualTemplateName) {
+    _emailManualTemplateName = emailManualTemplateName;
+  }
+
+  set emailAutomatedTemplateTitle(String? emailAutomatedTemplateTitle) {
+    _emailAutomatedTemplateTitle = emailAutomatedTemplateTitle;
+  }
+
+  set appUserName(String? appUserName) {
+    _appUserName = appUserName;
+  }
+
+  set appUserGroupName(String? appUserGroupName) {
+    _appUserGroupName = appUserGroupName;
+  }
 
   FormBase.fromMap(Map<String, dynamic> map)
       : _formID = map['FormID'],

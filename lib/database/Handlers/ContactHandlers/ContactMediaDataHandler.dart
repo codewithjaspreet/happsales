@@ -2,5 +2,7 @@ import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactMediaData
 
 class ContactMediaDataHandler extends ContactMediaDataHandlerBase{
 
+
+ContactMediaDataHandler() ;
   
 }

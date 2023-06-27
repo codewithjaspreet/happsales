@@ -12,15 +12,15 @@ class BaseEntity {
   static final String KEY_OWNERUSERID = 'OwnerUserID';
 
   String? _id;
-  bool? _isDirty;
-  bool? _isDeleted1;
+  String? _isDirty;
+  String? _isDeleted1;
   String? _upSyncMessage;
   String? _downSyncMessage;
-  DateTime? _sCreatedOn;
-  DateTime? _sModifiedOn;
+  String? _sCreatedOn;
+  String? _sModifiedOn;
   String? _createdByUser;
   String? _modifiedByUser;
-  int? _upSyncIndex;
+  String? _upSyncIndex;
   String? _ownerUserID;
 
   BaseEntity();
@@ -28,11 +28,11 @@ class BaseEntity {
   String? get id => _id;
   set id(String? value) => _id = value;
 
-  bool? get isDirty => _isDirty;
-  set isDirty(bool? value) => _isDirty = value;
+  String? get isDirty => _isDirty;
+  set isDirty(String? value) => _isDirty = value;
 
-  bool? get isDeleted1 => _isDeleted1;
-  set isDeleted1(bool? value) => _isDeleted1 = value;
+  String? get isDeleted1 => _isDeleted1;
+  set isDeleted1(String? value) => _isDeleted1 = value;
 
   String? get upSyncMessage => _upSyncMessage;
   set upSyncMessage(String? value) => _upSyncMessage = value;
@@ -40,11 +40,11 @@ class BaseEntity {
   String? get downSyncMessage => _downSyncMessage;
   set downSyncMessage(String? value) => _downSyncMessage = value;
 
-  DateTime? get sCreatedOn => _sCreatedOn;
-  set sCreatedOn(DateTime? value) => _sCreatedOn = value;
+  String? get sCreatedOn => _sCreatedOn;
+  set sCreatedOn(String? value) => _sCreatedOn = value;
 
-  DateTime? get sModifiedOn => _sModifiedOn;
-  set sModifiedOn(DateTime? value) => _sModifiedOn = value;
+  String? get sModifiedOn => _sModifiedOn;
+  set sModifiedOn(String? value) => _sModifiedOn = value;
 
   String? get createdByUser => _createdByUser;
   set createdByUser(String? value) => _createdByUser = value;
@@ -52,8 +52,8 @@ class BaseEntity {
   String? get modifiedByUser => _modifiedByUser;
   set modifiedByUser(String? value) => _modifiedByUser = value;
 
-  int? get upSyncIndex => _upSyncIndex;
-  set upSyncIndex(int? value) => _upSyncIndex = value;
+  String? get upSyncIndex => _upSyncIndex;
+  set upSyncIndex(String? value) => _upSyncIndex = value;
 
   String? get ownerUserID => _ownerUserID;
   set ownerUserID(String? value) => _ownerUserID = value;

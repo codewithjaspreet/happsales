@@ -8,6 +8,8 @@ import '../DataBaseHandler.dart';
 
 class ContactMediaDataHandlerBase {
 
+  ContactMediaDataHandlerBase();
+
      static Future<List<ContactMedia>> GetContactMediaRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize)async {
         List<ContactMedia> dataList = [];
         try {
