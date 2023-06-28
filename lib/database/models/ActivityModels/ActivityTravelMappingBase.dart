@@ -20,6 +20,8 @@ class ActivityTravelMappingBase extends BaseEntity {
   String? _appUserName;
   String? _appUserGroupName;
 
+  ActivityTravelMappingBase();
+
   String? get activityTravelMappingID => _activityTravelMappingID;
   set activityTravelMappingID(String? value) {
     _activityTravelMappingID = value;

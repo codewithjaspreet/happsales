@@ -1,7 +1,7 @@
 
 
  import '../../AppConstants.dart';
-import '../../AppTables/Columns.dart';
+import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/TablesBase.dart';
 import '../../Globals.dart';
@@ -15,18 +15,18 @@ class ActivityApprovalDataHandlerBase {
         try {
             int startRowIndex = ((pageIndex - 1) * pageSize);
 
-            String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",F." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " AS " + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE;
-            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVALTYPE + " B ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVAL + " F ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ISACTIVE + ",'true')) = 'true' ";
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME},C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},F.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} AS ${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVALTYPE} B ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVAL} F ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ISACTIVE},'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ActivityApproval_ISARCHIVED + ",'false')) = 'false' ";
             if (searchString.trim().length > 0) {
-              selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " LIKE '%" + searchString.replaceAll("'", "''") + "%'";
+              selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} LIKE '%${searchString.replaceAll("'", "''")}%'";
             }
 
             /* FILTER */
@@ -50,8 +50,8 @@ class ActivityApprovalDataHandlerBase {
 			if (tags.trim().length() > 0)
 				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
 
-            selectQuery += " ORDER BY A." + sortColumn + " COLLATE NOCASE " + sortDirection;
-            selectQuery += " LIMIT " + startRowIndex.toString() + "," + pageSize.toString();
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += " LIMIT $startRowIndex,$pageSize";
 
             final db = await databaseHandler.database;
 
@@ -122,20 +122,20 @@ dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
      static Future<List<ActivityApproval>> GetActivityApprovalRecords(DatabaseHandler databaseHandler, String searchString) async{
         List<ActivityApproval> dataList = [];
         try {
-            String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",F." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " AS " + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE;
-            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVALTYPE + " B ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVAL + " F ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ISACTIVE + ",'true')) = 'true' ";
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME},C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},F.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} AS ${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVALTYPE} B ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVAL} F ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ISACTIVE},'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ActivityApproval_ISARCHIVED + ",'false')) = 'false' ";
             if (searchString.trim().length > 0) {
-              selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " LIKE '" + searchString.replaceAll("'", "''") + "%'";
+              selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} LIKE '${searchString.replaceAll("'", "''")}%'";
             }
-            selectQuery += " ORDER BY A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " COLLATE NOCASE ASC ";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} COLLATE NOCASE ASC ";
 
          final db = await databaseHandler.database;
 
@@ -205,14 +205,14 @@ dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
         try {
             id = Globals.tryParseLongForDBId(id);
 
-            String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",F." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " AS " + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE;
-            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVALTYPE + " B ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVAL + " F ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " = " + id;
-            selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME},C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},F.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} AS ${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVALTYPE} B ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVAL} F ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
            final db = await databaseHandler.database;
 
@@ -280,12 +280,12 @@ dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
         ActivityApproval? dataItem ;
         try {
 
-            String selectQuery = "SELECT A.* " + ",B." + ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",F." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE + " AS " + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE;
-            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVALTYPE + " B ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYAPPROVAL + " F ON A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_UID + " = '" + uid + "'";
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME},C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},F.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} AS ${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVALTYPE} B ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVAL} F ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_UID} = '$uid'";
             //selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
             //selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
 final db = await databaseHandler.database;
@@ -630,7 +630,7 @@ if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
 if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
   values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
 }
-            id = await db.update(TablesBase.TABLE_ACTIVITYAPPROVAL, values, where: ColumnsBase.KEY_ID + " = " + id1, whereArgs: null);
+            id = await db.update(TablesBase.TABLE_ACTIVITYAPPROVAL, values, where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
             //db.close();
         } catch ( ex) {
             Globals.handleException( "DatabaseHandler:UpdateActivityApprovalRecord()", ex);
@@ -701,14 +701,14 @@ static Future<String> getLocalId(DatabaseHandler databaseHandler, String id) asy
      static Future<List<ActivityApproval>> GetActivityApprovalUpSyncRecords(DatabaseHandler databaseHandler, String changeType) async{
         List<ActivityApproval> dataList = [];
         try {
-            String selectQuery = "SELECT * FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex.toString();
+            String selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
             if (changeType == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
-                selectQuery = "SELECT * FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'false' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex.toString();
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'false'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
             } else if (changeType == (AppConstants.DB_RECORD_DELETED)) {
-                selectQuery = "SELECT * FROM " + TablesBase.TABLE_ACTIVITYAPPROVAL + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'true' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex.toString();
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'true'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
             }
-            selectQuery += " AND " + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND " + ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND ${ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
             //selectQuery += " AND " + ColumnsBase.KEY_ACTIVITYAPPROVAL_ACCOUNTID + " IN (SELECT " + ColumnsBase.KEY_ID + " FROM " + TablesBase.TABLE_ACCOUNT + " WHERE COALESCE(" + ColumnsBase.KEY_ACCOUNT_ACCOUNTID + ",'') <> '')";
 
          final db = await databaseHandler.database;
@@ -773,5 +773,79 @@ dataList.add(dataItem);
         return dataList;
     }
 
+   static Future<ActivityApproval?> GetMasterActivityApprovalRecord(DatabaseHandler databaseHandler, String id) async {
+        ActivityApproval? dataItem ;
+        try {
+            id = Globals.tryParseLongForDBId(id);
 
+            String selectQuery = "SELECT A.* ,B.${ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME},C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},F.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE} AS ${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE}";
+            selectQuery += " FROM ${TablesBase.TABLE_ACTIVITYAPPROVAL} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVALTYPE} B ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITYAPPROVAL} F ON A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+             final db = await databaseHandler.database;
+
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                  ActivityApproval dataItem = new ActivityApproval();
+
+                  dataItem.activityApprovalID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALID];
+                  dataItem.activityApprovalCode = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALCODE];
+                  dataItem.activityApprovalTitle = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTITLE];
+                  dataItem.activityApprovalTypeID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYAPPROVALTYPEID];
+                  dataItem.activityID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ACTIVITYID];
+                  dataItem.requestDate = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_REQUESTDATE];
+                  dataItem.requestDetail = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_REQUESTDETAIL];
+                  dataItem.isSubmitted = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ISSUBMITTED];
+                  dataItem.parentActivityApprovalID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALID];
+                  dataItem.parentActivityApprovalTitle = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE];
+                  dataItem.approvalStatus = element[ColumnsBase.KEY_ACTIVITY_APPROVALSTATUS];
+                  dataItem.approvalByAppUserID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_APPROVALBYAPPUSERID];
+                  dataItem.approvalTime = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_APPROVALTIME];
+                  dataItem.approverRemarks = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_APPROVERREMARKS];
+                  dataItem.isApprovalCompleted = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ISAPPROVALCOMPLETED];
+                  dataItem.createdOn = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_CREATEDON];
+                  dataItem.createdBy = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_CREATEDBY];
+                  dataItem.modifiedOn = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_MODIFIEDON];
+                  dataItem.modifiedBy = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_MODIFIEDBY];
+                  dataItem.deviceIdentifier = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_DEVICEIDENTIFIER];
+                  dataItem.referenceIdentifier = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_REFERENCEIDENTIFIER];
+                  dataItem.location = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_LOCATION];
+
+                  dataItem.isActive = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ISACTIVE];
+dataItem.uid = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_UID];
+dataItem.appUserID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERID];
+dataItem.appUserGroupID = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_APPUSERGROUPID];
+dataItem.isArchived = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ISARCHIVED];
+dataItem.isDeleted = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_ISDELETED];
+dataItem.activityApprovalTypeName = element[ColumnsBase.KEY_ACTIVITYAPPROVALTYPE_ACTIVITYAPPROVALTYPENAME];
+dataItem.activityTitle = element[ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE];
+dataItem.parentActivityApprovalTitle = element[ColumnsBase.KEY_ACTIVITYAPPROVAL_PARENTACTIVITYAPPROVALTITLE];
+dataItem.id = element[ColumnsBase.KEY_ID];
+dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+                  
+            }
+        } catch ( ex) {
+            Globals.handleException( "ActivityApprovalDataHandlerBase:GetMasterActivityApprovalRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 }

@@ -27,6 +27,8 @@ class ActivityTravelMediaBase extends BaseEntity {
   String? _appUserName;
   String? _appUserGroupName;
 
+  ActivityTravelMediaBase();
+
   String? get activityTravelMediaID => _activityTravelMediaID;
   set activityTravelMediaID(String? value) {
     _activityTravelMediaID = value;

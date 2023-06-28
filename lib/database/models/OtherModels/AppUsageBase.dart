@@ -1,4 +1,6 @@
-class AppUsageBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AppUsageBase  extends BaseEntity{
   String? _appUsageID;
   String? _appUsageCode;
   String? _appUsageName;

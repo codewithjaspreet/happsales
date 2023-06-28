@@ -1,4 +1,6 @@
-class AppUserLocationBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AppUserLocationBase extends BaseEntity {
   String? _appUserLocationID;
   String? _appUserLocationCode;
   String? _appUserLocationTitle;

@@ -1,4 +1,6 @@
-class AppReportBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AppReportBase extends BaseEntity {
   String? _appReportID;
   String? _appReportCode;
   String? _appReportName;
