@@ -32,6 +32,7 @@ import '../Handlers/AccountHandlers/AccountTypeHandlerBase.dart';
 import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/DatabaseHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandler.dart';
+import '../Handlers/OpportunityHandlers/OpportunityProductDetailDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/AppFeatureDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/BusinessUnitDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/CurrencyDataHandler.dart';
@@ -84,7 +85,11 @@ import '../models/OpportunityModels/OpportunityMedia.dart';
 import '../models/OpportunityModels/OpportunityName.dart';
 import '../models/OpportunityModels/OpportunityPermission.dart';
 import '../models/OpportunityModels/OpportunityPriority.dart';
+import '../models/OpportunityModels/OpportunityProduct.dart';
+import '../models/OpportunityModels/OpportunityProductDetail.dart';
+import '../models/OpportunityModels/OpportunityProductDetailAttribute.dart';
 import '../models/OpportunityModels/OpportunityStage.dart';
+import '../models/OpportunityModels/OpportunityStatus.dart';
 import '../models/OpportunityModels/OpportunityType.dart';
 import '../models/OtherModels/AddressType.dart';
 import '../models/OtherModels/AppFeature.dart';
@@ -115,6 +120,7 @@ import '../models/OtherModels/Country.dart';
 import '../models/OtherModels/CreditRating.dart';
 import '../models/OtherModels/Currency.dart';
 // base entity;
+
 
 
 import '../Handlers/ContactHandlers/ContactDataHandlerBase.dart';
@@ -10161,9 +10167,669 @@ OpportunityName copyJsonDataToOpportunityName(
   }
 
 
+OpportunityProduct copyJsonDataToOpportunityProduct(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityProduct opportunityProduct,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityProductID")) {
+        opportunityProduct.opportunityProductID = jsonObj["OpportunityProductID"];
+      }
+      if (jsonObj.containsKey("OpportunityProductCode")) {
+        opportunityProduct.opportunityProductCode = jsonObj["OpportunityProductCode"];
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
+        Opportunity ?opportunity =  await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        if (opportunity != null) {
+          opportunityProduct.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("ProductID")) {
+        String productId = jsonObj["ProductID"];
+        productId = productId != null && productId != "" ? productId : "-1";
+        Product product = ProductDataHandler.getMasterProductRecord(dbHandler, productId);
+        if (product != null) {
+          opportunityProduct.productID = product.id;
+        }
+      }
+
+   if (jsonObj.containsKey("Price")) {
+  String bigValue = jsonObj["Price"];
+  String price = bigValue;
+  if (bigValue.contains("E")) {
+    BigInt bi = BigInt.parse(bigValue);
+    price = bi.toUnsigned(64).toString();
+  }
+  opportunityProduct.price =(price);
+}
+
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityProduct.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityProduct.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityProduct.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityProduct.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityProduct.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityProduct.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityProduct.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityProduct.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityProduct.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityProduct.isDeleted = jsonObj["IsDeleted"];
+      }
+      if (jsonObj.containsKey("ReferenceIdentifier")) {
+        opportunityProduct.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+      }
+
+      opportunityProduct.isDirty = "false";
+      opportunityProduct.isDeleted1 = "false";
+      opportunityProduct.upSyncMessage = "";
+      opportunityProduct.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityProduct.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityProduct.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityProduct.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityProduct.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityProduct.upSyncIndex = "0";
+      opportunityProduct.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityProduct()", ex);
+    }
+    return opportunityProduct;
+  }
+OpportunityProductDetail copyJsonDataToOpportunityProductDetail(
+    Context context,
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityProductDetail opportunityProductDetail,
+    bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("OpportunityProductDetailID")) {
+      opportunityProductDetail.opportunityProductDetailID =
+          jsonObj["OpportunityProductDetailID"];
+    }
+    if (jsonObj.containsKey("OpportunityProductDetailCode")) {
+      opportunityProductDetail.opportunityProductDetailCode =
+          jsonObj["OpportunityProductDetailCode"];
+    }
+
+    if (jsonObj.containsKey("OpportunityProductID")) {
+      String opportunityProductId =
+          jsonObj["OpportunityProductID"].toString();
+      opportunityProductId = opportunityProductId.isNotEmpty
+          ? opportunityProductId
+          : "-1";
+      OpportunityProduct opportunityProduct =
+          OpportunityProductDataHandler.getMasterOpportunityProductRecord(
+        dbHandler,
+        context,
+        opportunityProductId,
+      );
+      if (opportunityProduct != null) {
+        opportunityProductDetail.opportunityProductID = opportunityProduct.id;
+      }
+    }
+
+    if (jsonObj.containsKey("Attribute")) {
+      opportunityProductDetail.attribute = jsonObj["Attribute"];
+    }
+
+    if (jsonObj.containsKey("Price")) {
+      String bigValue = jsonObj["Price"];
+      String price = bigValue;
+      if (bigValue.contains("E")) {
+        BigInt bi = BigInt.parse(bigValue);
+        price = bi.toInt().toString();
+      }
+      opportunityProductDetail.price = price;
+    }
+    
+    if (jsonObj.containsKey("Quantity")) {
+      opportunityProductDetail.quantity = jsonObj["Quantity"];
+    }
+
+    String bigValue = jsonObj["Amount"];
+    String amount = bigValue;
+    if (bigValue.contains("E")) {
+      BigInt bi = BigInt.parse(bigValue);
+      amount = bi.toInt().toString();
+    }
+    opportunityProductDetail.amount = amount;
+
+    if (jsonObj.containsKey("Remarks")) {
+      opportunityProductDetail.remarks = jsonObj["Remarks"];
+    }
+
+    if (jsonObj.containsKey("SupplierAccountID")) {
+      String accountId = jsonObj["SupplierAccountID"].toString();
+      accountId = accountId.isNotEmpty ? accountId : "-1";
+      Account account = AccountDataHandler.getMasterAccountRecord(
+        dbHandler,
+        context,
+        accountId,
+      );
+      if (account != null) {
+        opportunityProductDetail.supplierAccountID = account.id;
+      }
+    }
+
+    if (jsonObj.containsKey("CreatedBy")) {
+      opportunityProductDetail.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityProductDetail.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      opportunityProductDetail.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityProductDetail.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      opportunityProductDetail.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      opportunityProductDetail.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      opportunityProductDetail.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      opportunityProductDetail.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      opportunityProductDetail.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      opportunityProductDetail.isDeleted = jsonObj["IsDeleted"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      opportunityProductDetail.referenceIdentifier =
+          jsonObj["ReferenceIdentifier"];
+    }
+
+    opportunityProductDetail.isDirty = "false";
+    opportunityProductDetail.isDeleted1 = "false";
+    opportunityProductDetail.upSyncMessage = "";
+    opportunityProductDetail.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityProductDetail.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityProductDetail.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      opportunityProductDetail.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      opportunityProductDetail.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    opportunityProductDetail.upSyncIndex = "0";
+    opportunityProductDetail.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException(
+      
+      "JSONDataCopier:CopyJsonDataToOpportunityProductDetail()",
+      ex,
+    );
+  }
+  return opportunityProductDetail;
+}
+Future<OpportunityProductDetailAttribute> copyJsonDataToOpportunityProductDetailAttribute(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityProductDetailAttribute opportunityProductDetailAttribute,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("OpportunityProductDetailAttributeID")) {
+      opportunityProductDetailAttribute.opportunityProductDetailAttributeID =
+          jsonObj["OpportunityProductDetailAttributeID"];
+    }
+    if (jsonObj.containsKey("OpportunityProductDetailAttributeCode")) {
+      opportunityProductDetailAttribute.opportunityProductDetailAttributeCode =
+          jsonObj["OpportunityProductDetailAttributeCode"];
+    }
+
+    if (jsonObj.containsKey("OpportunityProductDetailID")) {
+      String opportunityProductDetailId =
+          jsonObj["OpportunityProductDetailID"].toString();
+      opportunityProductDetailId = opportunityProductDetailId.isNotEmpty
+          ? opportunityProductDetailId
+          : "-1";
+      OpportunityProductDetail? opportunityProductDetail =await
+          OpportunityProductDetailDataHandlerBase.GetMasterOpportunityProductDetailRecord(
+        dbHandler,
+        opportunityProductDetailId,
+      );
+      if (opportunityProductDetail != null) {
+        opportunityProductDetailAttribute.opportunityProductDetailID =
+            opportunityProductDetail.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AttributeID")) {
+      String attributeId = jsonObj["AttributeID"].toString();
+      attributeId = attributeId.isNotEmpty ? attributeId : "-1";
+      Attribute attribute = AttributeDataHandler.getMasterAttributeRecord(
+        dbHandler,
+        context,
+        attributeId,
+      );
+      if (attribute != null) {
+        opportunityProductDetailAttribute.attributeID = attribute.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AttributeValueID")) {
+      String attributeValueId = jsonObj["AttributeValueID"].toString();
+      attributeValueId = attributeValueId.isNotEmpty ? attributeValueId : "-1";
+      AttributeValue attributeValue =
+          AttributeValueDataHandler.getMasterAttributeValueRecord(
+        dbHandler,
+        attributeValueId,
+      );
+      if (attributeValue != null) {
+        opportunityProductDetailAttribute.attributeValueID =
+            attributeValue.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AttributeValue")) {
+      opportunityProductDetailAttribute.attributeValue =
+          jsonObj["AttributeValue"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      opportunityProductDetailAttribute.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityProductDetailAttribute.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      opportunityProductDetailAttribute.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityProductDetailAttribute.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      opportunityProductDetailAttribute.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      opportunityProductDetailAttribute.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      opportunityProductDetailAttribute.referenceIdentifier =
+          jsonObj["ReferenceIdentifier"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      opportunityProductDetailAttribute.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      opportunityProductDetailAttribute.appUserGroupID =
+          jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      opportunityProductDetailAttribute.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      opportunityProductDetailAttribute.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    opportunityProductDetailAttribute.isDirty = "false";
+    opportunityProductDetailAttribute.isDeleted1 = "false";
+    opportunityProductDetailAttribute.upSyncMessage = "";
+    opportunityProductDetailAttribute.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityProductDetailAttribute.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityProductDetailAttribute.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      opportunityProductDetailAttribute.createdByUser =
+          jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      opportunityProductDetailAttribute.modifiedByUser =
+          jsonObj["ModifiedByUser"];
+    }
+    opportunityProductDetailAttribute.upSyncIndex = "0";
+    opportunityProductDetailAttribute.ownerUserID =
+        Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      
+      "JSONDataCopier:CopyJsonDataToOpportunityProductDetailAttribute()",
+      ex,
+    );
+  }
+  return opportunityProductDetailAttribute;
+}
+
+Future<OpportunityStage> copyJsonDataToOpportunityStage(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityStage opportunityStage,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("OpportunityStageID")) {
+      opportunityStage.opportunityStageID = jsonObj["OpportunityStageID"];
+    }
+    if (jsonObj.containsKey("OpportunityStageCode")) {
+      opportunityStage.opportunityStageCode =
+          jsonObj["OpportunityStageCode"];
+    }
+    if (jsonObj.containsKey("OpportunityStageName")) {
+      opportunityStage.opportunityStageName =
+          jsonObj["OpportunityStageName"];
+    }
+    if (jsonObj.containsKey("Description")) {
+      opportunityStage.description = jsonObj["Description"];
+    }
+    if (jsonObj.containsKey("SequentialOrder")) {
+      opportunityStage.sequentialOrder = jsonObj["SequentialOrder"];
+    }
+    if (jsonObj.containsKey("IsPipeline")) {
+      opportunityStage.isPipeline = jsonObj["IsPipeline"];
+    }
+    if (jsonObj.containsKey("Probability")) {
+      opportunityStage.probability = jsonObj["Probability"];
+    }
+    if (jsonObj.containsKey("Indicator")) {
+      opportunityStage.indicator = jsonObj["Indicator"];
+    }
+    if (jsonObj.containsKey("StagnantAlertDays")) {
+      opportunityStage.stagnantAlertDays = jsonObj["StagnantAlertDays"];
+    }
+    if (jsonObj.containsKey("WorkflowStageID")) {
+      opportunityStage.workflowStageID = jsonObj["WorkflowStageID"];
+    }
+    if (jsonObj.containsKey("WorkflowStageName")) {
+      opportunityStage.workflowStageName = jsonObj["WorkflowStageName"];
+    }
+    if (jsonObj.containsKey("AlertMessage")) {
+      opportunityStage.alertMessage = jsonObj["AlertMessage"];
+    }
+    if (jsonObj.containsKey("OpportunityStageType")) {
+      opportunityStage.opportunityStageType =
+          jsonObj["OpportunityStageType"];
+    }
+    if (jsonObj.containsKey("ActionOnSelection")) {
+      opportunityStage.actionOnSelection =
+          jsonObj["ActionOnSelection"];
+    }
+    if (jsonObj.containsKey("InternalCode")) {
+      opportunityStage.internalCode = jsonObj["InternalCode"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStage.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      opportunityStage.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStage.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      opportunityStage.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      opportunityStage.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      opportunityStage.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      opportunityStage.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      opportunityStage.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      opportunityStage.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      opportunityStage.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    opportunityStage.isDirty = "false";
+    opportunityStage.isDeleted1 = "false";
+    opportunityStage.upSyncMessage = "";
+    opportunityStage.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStage.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStage.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      opportunityStage.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      opportunityStage.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    opportunityStage.upSyncIndex = "0";
+    opportunityStage.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      context,
+      "JSONDataCopier:CopyJsonDataToOpportunityStage()",
+      ex,
+    );
+  }
+  return opportunityStage;
+}
+
+
+OpportunityStageType copyJsonDataToOpportunityStageType(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityStageType opportunityStageType,
+    bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("OpportunityStageTypeID")) {
+      opportunityStageType.opportunityStageTypeID =
+          jsonObj["OpportunityStageTypeID"];
+    }
+    if (jsonObj.containsKey("OpportunityStageTypeCode")) {
+      opportunityStageType.opportunityStageTypeCode =
+          jsonObj["OpportunityStageTypeCode"];
+    }
+    if (jsonObj.containsKey("OpportunityStageID")) {
+      opportunityStageType.opportunityStageID =
+          jsonObj["OpportunityStageID"];
+    }
+    if (jsonObj.containsKey("OpportunityTypeID")) {
+      opportunityStageType.opportunityTypeID =
+          jsonObj["OpportunityTypeID"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      opportunityStageType.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStageType.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      opportunityStageType.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStageType.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      opportunityStageType.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      opportunityStageType.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      opportunityStageType.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      opportunityStageType.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      opportunityStageType.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      opportunityStageType.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    opportunityStageType.isDirty = "false";
+    opportunityStageType.isDeleted1 = "false";
+    opportunityStageType.upSyncMessage = "";
+    opportunityStageType.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStageType.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStageType.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      opportunityStageType.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      opportunityStageType.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    opportunityStageType.upSyncIndex = "0";
+    opportunityStageType.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToOpportunityStageType()",
+      ex,
+    );
+  }
+  return opportunityStageType;
+}
+
+OpportunityStatus copyJsonDataToOpportunityStatus(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityStatus opportunityStatus,
+    bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("OpportunityStatusID")) {
+      opportunityStatus.opportunityStatusID =
+          jsonObj["OpportunityStatusID"];
+    }
+    if (jsonObj.containsKey("OpportunityStatusCode")) {
+      opportunityStatus.opportunityStatusCode =
+          jsonObj["OpportunityStatusCode"];
+    }
+    if (jsonObj.containsKey("OpportunityStatusName")) {
+      opportunityStatus.opportunityStatusName =
+          jsonObj["OpportunityStatusName"];
+    }
+    if (jsonObj.containsKey("SequentialOrder")) {
+      opportunityStatus.sequentialOrder = jsonObj["SequentialOrder"];
+    }
+    if (jsonObj.containsKey("Probability")) {
+      opportunityStatus.probability = jsonObj["Probability"];
+    }
+    if (jsonObj.containsKey("Indicator")) {
+      opportunityStatus.indicator = jsonObj["Indicator"];
+    }
+    if (jsonObj.containsKey("InternalCode")) {
+      opportunityStatus.internalCode = jsonObj["InternalCode"];
+    }
+    if (jsonObj.containsKey("WorkflowStageID")) {
+      opportunityStatus.workflowStageID = jsonObj["WorkflowStageID"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStatus.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      opportunityStatus.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStatus.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      opportunityStatus.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      opportunityStatus.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      opportunityStatus.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      opportunityStatus.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      opportunityStatus.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      opportunityStatus.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      opportunityStatus.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    opportunityStatus.isDirty = "false";
+    opportunityStatus.isDeleted1 = "false";
+    opportunityStatus.upSyncMessage = "";
+    opportunityStatus.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      opportunityStatus.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      opportunityStatus.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      opportunityStatus.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      opportunityStatus.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    opportunityStatus.upSyncIndex = "0";
+    opportunityStatus.ownerUserID = Globals.appUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      context,
+      "JSONDataCopier:CopyJsonDataToOpportunityStatus()",
+      ex,
+    );
+  }
+  return opportunityStatus;
+}
 
 
 }
+
 
 
 
