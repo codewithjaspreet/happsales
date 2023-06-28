@@ -35,6 +35,71 @@ class FinancialInstitutionBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
+  set financialInstitutionID(String? value) {
+  _financialInstitutionID = value;
+}
+
+set financialInstitutionCode(String? value) {
+  _financialInstitutionCode = value;
+}
+
+set financialInstitutionName(String? value) {
+  _financialInstitutionName = value;
+}
+
+set description(String? value) {
+  _description = value;
+}
+
+set createdOn(String? value) {
+  _createdOn = value;
+}
+
+set createdBy(String? value) {
+  _createdBy = value;
+}
+
+set modifiedOn(String? value) {
+  _modifiedOn = value;
+}
+
+set modifiedBy(String? value) {
+  _modifiedBy = value;
+}
+
+set isActive(String? value) {
+  _isActive = value;
+}
+
+set uid(String? value) {
+  _uid = value;
+}
+
+set appUserID(String? value) {
+  _appUserID = value;
+}
+
+set appUserGroupID(String? value) {
+  _appUserGroupID = value;
+}
+
+set isArchived(String? value) {
+  _isArchived = value;
+}
+
+set isDeleted(String? value) {
+  _isDeleted = value;
+}
+
+set appUserName(String? value) {
+  _appUserName = value;
+}
+
+set appUserGroupName(String? value) {
+  _appUserGroupName = value;
+}
+
+
   FinancialInstitutionBase();
 
   FinancialInstitutionBase.fromMap(Map<String, dynamic> map)

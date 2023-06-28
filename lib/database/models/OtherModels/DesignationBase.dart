@@ -36,6 +36,66 @@ class DesignationBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
+  set designationID(String? designationID) {
+    _designationID = designationID;
+  }
+
+  set designationCode(String? designationCode) {
+    _designationCode = designationCode;
+  }
+
+  set designationName(String? designationName) {
+    _designationName = designationName;
+  }
+
+  set createdOn(String? createdOn) {
+    _createdOn = createdOn;
+  }
+
+  set createdBy(String? createdBy) {
+    _createdBy = createdBy;
+  }
+
+  set modifiedOn(String? modifiedOn) {
+    _modifiedOn = modifiedOn;
+  }
+
+  set modifiedBy(String? modifiedBy) {
+    _modifiedBy = modifiedBy;
+  }
+
+  set isActive(String? isActive) {
+    _isActive = isActive;
+  }
+
+  set uid(String? uid) {
+    _uid = uid;
+  }
+
+  set appUserID(String? appUserID) {
+    _appUserID = appUserID;
+  }
+
+  set appUserGroupID(String? appUserGroupID) {
+    _appUserGroupID = appUserGroupID;
+  }
+
+  set isArchived(String? isArchived) {
+    _isArchived = isArchived;
+  }
+
+  set isDeleted(String? isDeleted) {
+    _isDeleted = isDeleted;
+  }
+
+  set appUserName(String? appUserName) {
+    _appUserName = appUserName;
+  }
+
+  set appUserGroupName(String? appUserGroupName) {
+    _appUserGroupName = appUserGroupName;
+  }
+
   DesignationBase.fromMap(Map<String, dynamic> map)
       : _designationID = map['DesignationID'],
         _designationCode = map['DesignationCode'],

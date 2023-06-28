@@ -29,67 +29,60 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter:
-    sdk: flutter
-
+  auto_size_text: ^3.0.0
+  awesome_dialog: ^3.0.2
+  bubble_tab_indicator: ^0.1.6
+  buttons_tabbar: null
+  chat_bubbles: ^1.4.1
+  connectivity_plus: ^3.0.3
+  contacts_service: null
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_screenutil: ^5.6.1
-  sliding_up_panel: ^2.0.0+1
-  get_storage: ^2.0.3
-  flutter_advanced_switch: ^3.0.1
-  sqflite: ^2.2.5
-  flutter_multi_select_items: ^0.4.2
-  geolocator:
-  geocoding:
-  shared_preferences: ^2.0.17
-  dio:
-  flutter_chat_ui:
-  syncfusion_flutter_core: ^21.2.6 
-  google_fonts:
-  syncfusion_flutter_sliders: ^21.2.6
-  bubble_tab_indicator: ^0.1.6
-  intl: ^0.18.0
-  table_calendar: ^3.0.9
-  search_choices:
-  introduction_screen:
-  custom_searchable_dropdown:
-  http:
-  timeline_tile:
+  custom_searchable_dropdown: null
+  dio: null
+  dropdown_button2: null
   dropdown_plus: ^0.0.9
-  flutter_phone_direct_caller: ^2.1.1
-  url_launcher: ^6.1.10
-  path_provider:
-  flutter_chat_bubble: ^2.0.2
-  uuid:
-  auto_size_text: ^3.0.0
-  buttons_tabbar:
-  awesome_dialog: ^3.0.2
-  dropdown_button2:
-  connectivity_plus: ^3.0.3
-  chat_bubbles: ^1.4.1
+  flutter:
+    sdk: flutter
   flutter_advanced_segment: ^3.0.2
-  percent_indicator: ^4.2.3
-  popover: ^0.2.8+2
+  flutter_advanced_switch: ^3.0.1
+  flutter_chat_bubble: ^2.0.2
+  flutter_chat_ui: null
+  flutter_multi_select_items: ^0.4.2
+  flutter_phone_direct_caller: ^2.1.1
+  flutter_screenutil: ^5.6.1
   flutter_timer_countdown: ^1.0.5
-  permission_handler: 
-  contacts_service: 
+  geocoding: null
+  geolocator: null
+  get_storage: ^2.0.3
+  google_fonts: null
+  http: null
+  intl: ^0.18.0
+  introduction_screen: null
+  path_provider: null
+  percent_indicator: ^4.2.3
+  permission_handler: null
+  popover: ^0.2.8+2
+  search_choices: null
+  shared_preferences: ^2.0.17
+  sliding_up_panel: ^2.0.0+1
+  sqflite: ^2.2.5
+  syncfusion_flutter_core: ^21.2.6
+  syncfusion_flutter_sliders: ^21.2.6
+  table_calendar: ^3.0.9
+  timeline_tile: null
+  url_launcher: ^6.1.10
+  uuid: null
 dev_dependencies:
+  decimal: ^2.3.2
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -101,39 +94,39 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
 
-     - assets/Icons/Android/5_Login/drawable-hdpi/img_login.png
-     - assets/Icons/Android/2_StoryBoard screen_1/drawable-hdpi/img_story_board_1.png
-     - assets/Icons/Android/3_StoryBoard screen_2/drawable-hdpi/img_story_board_2.png
-     - assets/Icons/Android/4_StoryBoard screen_3/drawable-hdpi/img_story_board_3.png
-     - assets/Icons/Android/1_Splash screen/drawable-hdpi/ic_logo.png
-     - assets/Icons/Android/6_Forget Password/forgotpassword.png
-     - assets/Icons/Android/7_DashBoard/Activity/drawable-hdpi/img_dashboard_activity.png
-     - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
-     - assets/8_Menu/ic_account.svg
-     - assets/
-     - assets/contacts/
-     - assets/accounts/
-     - assets/notes/
-     - assets/ami/
-     - assets/opportunity/
-     - assets/recommend.png
-     - assets/activities/
-     - assets/resources/
-     - assets/expenses/
-     - assets/expenses/location.png
-     - assets/settings/
-     - assets/resources/punch.png
-     - assets/reports/
-     - assets/dashboard/
-     - assets/chats/
-
+    - assets/Icons/Android/5_Login/drawable-hdpi/img_login.png
+    - assets/Icons/Android/2_StoryBoard
+      screen_1/drawable-hdpi/img_story_board_1.png
+    - assets/Icons/Android/3_StoryBoard
+      screen_2/drawable-hdpi/img_story_board_2.png
+    - assets/Icons/Android/4_StoryBoard
+      screen_3/drawable-hdpi/img_story_board_3.png
+    - assets/Icons/Android/1_Splash screen/drawable-hdpi/ic_logo.png
+    - assets/Icons/Android/6_Forget Password/forgotpassword.png
+    - assets/Icons/Android/7_DashBoard/Activity/drawable-hdpi/img_dashboard_activity.png
+    - assets/Icons/Android/7_DashBoard/Opportunity/drawable-hdpi/img_dashboard_opportunity.png
+    - assets/8_Menu/ic_account.svg
+    - assets/
+    - assets/contacts/
+    - assets/accounts/
+    - assets/notes/
+    - assets/ami/
+    - assets/opportunity/
+    - assets/recommend.png
+    - assets/activities/
+    - assets/resources/
+    - assets/expenses/
+    - assets/expenses/location.png
+    - assets/settings/
+    - assets/resources/punch.png
+    - assets/reports/
+    - assets/dashboard/
+    - assets/chats/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -141,28 +134,25 @@ flutter:
   # example:
   fonts:
 
-     - family: roboto_bold
-       fonts:
-         - asset: fonts/roboto_bold.ttf
+    - family: roboto_bold
+      fonts:
+        - asset: fonts/roboto_bold.ttf
 
-     - family: roboto_light
-       fonts:
-          - asset: fonts/roboto_light.ttf
+    - family: roboto_light
+      fonts:
+        - asset: fonts/roboto_light.ttf
 
-     - family: roboto_medium
-       fonts:
-          - asset: fonts/roboto_medium.ttf
+    - family: roboto_medium
+      fonts:
+        - asset: fonts/roboto_medium.ttf
 
+    - family: roboto_regular
+      fonts:
+        - asset: fonts/roboto_regular.ttf
 
-
-     - family: roboto_regular
-       fonts:
-         - asset: fonts/roboto_regular.ttf
-
-
-     - family: oswald
-       fonts:
-         - asset: fonts/oswald_bold.ttf
+    - family: oswald
+      fonts:
+        - asset: fonts/oswald_bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,

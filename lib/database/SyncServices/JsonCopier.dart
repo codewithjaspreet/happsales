@@ -10,11 +10,19 @@ import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityPriorit
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityProductDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityStatusDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityTravelDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactAlignmentDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactCategoryDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactMediaDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityApprovalDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityApprovalTypeDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityPriorityDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStageDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityTypeDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OtherHandlers/CreditRatingDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OtherHandlers/CurrencyDataHandlerBase.dart';
 import 'package:happsales_crm/database/models/ActivityModels/ActivityBusinessUnit.dart';
+import 'package:happsales_crm/database/models/OtherModels/AppUserTertitory.dart';
 import 'package:happsales_crm/database/models/OtherModels/BusinessUnit.dart';
 import '../Globals.dart';
 import '../Handlers/AccountHandlers/AccountDataHandler.dart';
@@ -61,7 +69,23 @@ import '../models/ActivityModels/ActivityTravelMapping.dart';
 import '../models/ActivityModels/ActivityTravelMedia.dart';
 import '../models/ActivityModels/ActivityType.dart';
 import '../models/ContactModels.dart/Contact.dart';
+import '../models/ContactModels.dart/ContactAlignment.dart';
+import '../models/ContactModels.dart/ContactCategory.dart';
+import '../models/ContactModels.dart/ContactMedia.dart';
+import '../models/ContactModels.dart/ContactTitle.dart';
 import '../models/OpportunityModels/Opportunity.dart';
+import '../models/OpportunityModels/OpportunityApproval.dart';
+import '../models/OpportunityModels/OpportunityApprovalType.dart';
+import '../models/OpportunityModels/OpportunityBusinessUnit.dart';
+import '../models/OpportunityModels/OpportunityContact.dart';
+import '../models/OpportunityModels/OpportunityFulfillmentStatus.dart';
+import '../models/OpportunityModels/OpportunityMeasure.dart';
+import '../models/OpportunityModels/OpportunityMedia.dart';
+import '../models/OpportunityModels/OpportunityName.dart';
+import '../models/OpportunityModels/OpportunityPermission.dart';
+import '../models/OpportunityModels/OpportunityPriority.dart';
+import '../models/OpportunityModels/OpportunityStage.dart';
+import '../models/OpportunityModels/OpportunityType.dart';
 import '../models/OtherModels/AddressType.dart';
 import '../models/OtherModels/AppFeature.dart';
 import '../models/OtherModels/AppFeatureField.dart';
@@ -72,20 +96,53 @@ import '../models/OtherModels/AppUsage.dart';
 import '../models/OtherModels/AppUser.dart';
 import '../models/OtherModels/AppUserLocation.dart';
 import '../models/OtherModels/AppUserMessage.dart';
+import '../models/OtherModels/AppUserProduct.dart';
+import '../models/OtherModels/AppUserRemark.dart';
+import '../models/OtherModels/AppUserRole.dart';
+import '../models/OtherModels/AppUserTeam.dart';
+import '../models/OtherModels/AppUserTeamMember.dart';
 import '../models/OtherModels/AppUserType.dart';
+import '../models/OtherModels/Attribute.dart';
+import '../models/OtherModels/AttributeValue.dart';
+import '../models/OtherModels/BusinessEmail.dart';
 import '../models/OtherModels/BusinessFeature.dart';
+import '../models/OtherModels/ChatMessage.dart';
+import '../models/OtherModels/ChatUserAndGroup.dart';
+import '../models/OtherModels/ChatUserGroupMember.dart';
+import '../models/OtherModels/Competitor.dart';
+import '../models/OtherModels/ContentType.dart';
+import '../models/OtherModels/Country.dart';
 import '../models/OtherModels/CreditRating.dart';
 import '../models/OtherModels/Currency.dart';
 // base entity;
 
 
 import '../Handlers/ContactHandlers/ContactDataHandlerBase.dart';
+import '../models/OtherModels/CustomerMeeting.dart';
+import '../models/OtherModels/Department.dart';
+import '../models/OtherModels/Designation.dart';
+import '../models/OtherModels/EmailManualTemplate.dart';
 import '../models/OtherModels/ExpenseType.dart';
+import '../models/OtherModels/FieldAttendance.dart';
+import '../models/OtherModels/FinancialInstitution.dart';
+import '../models/OtherModels/FinancialYear.dart';
 import '../models/OtherModels/Form.dart';
+import '../models/OtherModels/FormCell.dart';
+import '../models/OtherModels/FormCellElement.dart';
 import '../models/OtherModels/FormCellElementBase.dart';
+import '../models/OtherModels/FormSection.dart';
+import '../models/OtherModels/Industry..dart';
+import '../models/OtherModels/LeadSource.dart';
+import '../models/OtherModels/Location.dart';
 import '../models/OtherModels/ModeOfTravel.dart';
+import '../models/OtherModels/Note.dart';
+import '../models/OtherModels/NoteMedia.dart';
+import '../models/OtherModels/NotePermission.dart';
+import '../models/OtherModels/Notification.dart';
+import '../models/OtherModels/NotificationAssignment.dart';
 import '../models/OtherModels/Product.dart';
 import '../models/OtherModels/Territory.dart';
+import '../models/OtherModels/UserRole.dart';
 import 'Utility.dart';
 
 class JSONCopier {
@@ -1257,7 +1314,7 @@ static Future<AccountFormValue> copyJsonDataToAccountFormValue(
           ? formCellElementId
           : '-1';
       FormCellElement formCellElement = await FormCellElementDataHandler
-          .getMasterFormCellElementRecord(dbHandler, context, formCellElementId);
+          .getMasterFormCellElementRecord(dbHandler,  formCellElementId);
       if (formCellElement != null) {
         accountFormValue.formCellElementID = formCellElement.id;
       }
@@ -1366,7 +1423,7 @@ static Future<AccountFormValue> copyJsonDataToAccountFormValue(
       contentTypeId =
           (contentTypeId != null && contentTypeId != '') ? contentTypeId : '-1';
       ContentType contentType = await ContentTypeDataHandler
-          .getMasterContentTypeRecord(dbHandler, context, contentTypeId);
+          .getMasterContentTypeRecord(dbHandler,  contentTypeId);
       if (contentType != null) {
         accountMedia.contentTypeID = contentType.id;
       }
@@ -1658,7 +1715,7 @@ static Future<AccountSegment> copyJsonDataToAccountSegment(
     accountSegment.ownerUserID = Globals.AppUserID.toString();
   } catch (ex) {
     Globals.handleException(
-        context, 'JSONDataCopier:CopyJsonDataToAccountSegment()', ex);
+         'JSONDataCopier:CopyJsonDataToAccountSegment()', ex);
   }
   return accountSegment;
 }
@@ -1763,7 +1820,7 @@ static Future<AccountTerritory> copyJsonDataToAccountTerritory(
       territoryId = territoryId.isNotEmpty ? territoryId : '-1';
       Territory territory = TerritoryDataHandlerBase.getMasterTerritoryRecord(
         dbHandler,
-        context,
+        
         territoryId,
       );
       if (territory != null) {
@@ -1776,7 +1833,7 @@ static Future<AccountTerritory> copyJsonDataToAccountTerritory(
       accountId = accountId.isNotEmpty ? accountId : '-1';
       Account account = AccountDataHandler.getMasterAccountRecord(
         dbHandler,
-        context,
+        
         accountId,
       );
       if (account != null) {
@@ -1841,7 +1898,7 @@ static Future<AccountTerritory> copyJsonDataToAccountTerritory(
     accountTerritory.ownerUserID = Globals.appUserID.toString();
   } catch (ex) {
     Globals.handleException(
-        context, 'JSONDataCopier:CopyJsonDataToAccountTerritory()', ex);
+         'JSONDataCopier:CopyJsonDataToAccountTerritory()', ex);
   }
   return accountTerritory;
 }
@@ -1937,7 +1994,7 @@ Future<Activity> copyJsonDataToActivity( DatabaseHandler dbHandler, dynamic json
     if (jsonObj.containsKey("ActivityTypeID")) {
       String activityTypeId = jsonObj["ActivityTypeID"];
       activityTypeId = activityTypeId != null && activityTypeId.isNotEmpty ? activityTypeId : "-1";
-      ActivityType? activityType = await ActivityTypeDataHandlerBase.GetMasterActivityTypeRecord(dbHandler, context, activityTypeId);
+      ActivityType? activityType = await ActivityTypeDataHandlerBase.GetMasterActivityTypeRecord(dbHandler,  activityTypeId);
       if (activityType != null) {
         activity.activityTypeID = activityType.id;
       }
@@ -2060,7 +2117,7 @@ if (jsonObj.containsKey("ProductInstallationDetailID")) {
 /*if (jsonObj.containsKey("ProductInstallationDetailID")) {
   String productInstallationDetailId = jsonObj["ProductInstallationDetailID"];
   productInstallationDetailId = productInstallationDetailId != null && productInstallationDetailId.isNotEmpty ? productInstallationDetailId : "-1";
-  ProductInstallationDetail productInstallationDetail = ProductInstallationDetailDataHandler.GetMasterProductInstallationDetailRecord(dbHandler, context, productInstallationDetailId);
+  ProductInstallationDetail productInstallationDetail = ProductInstallationDetailDataHandler.GetMasterProductInstallationDetailRecord(dbHandler,  productInstallationDetailId);
   if (productInstallationDetail != null) {
     activity.productInstallationDetailID = productInstallationDetail.getId();
   }
@@ -2354,7 +2411,7 @@ Future<ActivityApproval> copyJsonDataToActivityApproval(
 
 
 Future<ActivityApprovalType> copyJsonDataToActivityApprovalType(
-   context,
+   
   DatabaseHandler dbHandler,
   Map<String, dynamic> jsonObj,
   ActivityApprovalType activityApprovalType,
@@ -2446,7 +2503,7 @@ Future<ActivityApprovalType> copyJsonDataToActivityApprovalType(
     activityApprovalType.ownerUserID = Globals.AppUserID.toString();
   } catch (e) {
     Globals.handleException(
-        context, 'JSONDataCopier:CopyJsonDataToActivityApprovalType()', e);
+         'JSONDataCopier:CopyJsonDataToActivityApprovalType()', e);
   }
   return activityApprovalType;
 }
@@ -2689,7 +2746,7 @@ Future<ActivityMedia> copyJsonDataToActivityMedia(
           : '-1';
       ContentType contentType = ContentTypeDataHandlerBase.GetMasterContentTypeRecord(
         dbHandler,
-        context,
+        
         contentTypeId,
       );
       if (contentType != null) {
@@ -2806,7 +2863,7 @@ Future<ActivityPermission> copyJsonDataToActivityPermission(
           : '-1';
       Activity activity = ActivityDataHandler.GetMasterActivityRecord(
         dbHandler,
-        context,
+        
         activityId,
       );
       if (activity != null) {
@@ -2872,7 +2929,7 @@ Future<ActivityPermission> copyJsonDataToActivityPermission(
     activityPermission.ownerUserID = Globals.AppUserID.toString();
   } catch (e) {
     Globals.handleException(
-      context,
+      
       'JSONDataCopier:CopyJsonDataToActivityPermission()',
       e,
     );
@@ -3006,7 +3063,7 @@ Future<ActivityProduct> copyJsonDataToActivityProduct(
       productId = productId.isNotEmpty ? productId : '-1';
       Product product = await ProductDataHandlerBase.GetMasterProductRecord(
         dbHandler,
-        context,
+        
         productId,
       );
       if (product != null) {
@@ -3074,7 +3131,7 @@ Future<ActivityProduct> copyJsonDataToActivityProduct(
     activityProduct.ownerUserID = Globals.AppUserID.toString();
   } catch (e) {
     Globals.handleException(
-      context,
+      
       'JSONDataCopier:CopyJsonDataToActivityProduct()',
       e,
     );
@@ -3320,7 +3377,7 @@ Future<ActivityStatus> copyJsonDataToActivityStatus(
         Globals.AppUserID.toString();
   } catch (e) {
     Globals.handleException(
-      context,
+      
       'JSONDataCopier:CopyJsonDataToActivityStatus()',
       e,
     );
@@ -3810,7 +3867,7 @@ ActivityTravelMapping copyJsonDataToActivityTravelMapping(
       Activity activity =
           ActivityDataHandler.GetMasterActivityRecord(
         dbHandler,
-        context,
+        
         activityId,
       );
       if (activity != null) {
@@ -3931,7 +3988,7 @@ ActivityTravelMedia copyJsonDataToActivityTravelMedia(
       ContentType ?contentType =await 
           ContentTypeDataHandlerBase.GetMasterContentTypeRecord(
         dbHandler,
-        context,
+        
         contentTypeId,
       );
       if (contentType != null) {
@@ -4291,7 +4348,7 @@ Future<AppFeature> copyJsonDataToAppFeature(
       AppFeatureGroup? appFeatureGroup =await
           AppFeatureGroupDataHandlerBase.GetMasterAppFeatureGroupRecord(
         dbHandler,
-        context,
+        
         appFeatureGroupId,
       );
       if (appFeatureGroup != null) {
@@ -4384,7 +4441,7 @@ Future<AppFeature> copyJsonDataToAppFeature(
     appFeature.ownerUserID = Globals.AppUserID.toString();
   } catch (e) {
     Globals.handleException(
-      context,
+      
       'JSONDataCopier:CopyJsonDataToAppFeature()',
       e,
     );
@@ -5347,6 +5404,4764 @@ Future<AppUserMessage> copyJsonDataToAppUserMessage(
   }
   return appUserMessage;
 }
+
+Future<AppUserProduct> copyJsonDataToAppUserProduct(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserProduct appUserProduct,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserProductID")) {
+      appUserProduct.appUserProductID = jsonObj["AppUserProductID"];
+    }
+    if (jsonObj.containsKey("AppUserProductCode")) {
+      appUserProduct.appUserProductCode = jsonObj["AppUserProductCode"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserProduct.appUserID = jsonObj["AppUserID"];
+    }
+
+    if (jsonObj.containsKey("ProductID")) {
+      String productId = jsonObj["ProductID"];
+      productId = productId != null && productId != "" ? productId : "-1";
+      Product product = await ProductDataHandlerBase.getMasterProductRecord(
+        dbHandler,
+        productId,
+      );
+      if (product != null) {
+        appUserProduct.productID = product.id;
+      }
+    }
+
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserProduct.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserProduct.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserProduct.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserProduct.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserProduct.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserProduct.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserProduct.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserProduct.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserProduct.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserProduct.isDirty = "false";
+    appUserProduct.isDeleted1 = "false";
+    appUserProduct.upSyncMessage = "";
+    appUserProduct.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserProduct.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserProduct.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserProduct.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserProduct.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserProduct.upSyncIndex = "0";
+    /* if (jsonObj.containsKey("AppUserID")) {
+      appUserProduct.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserProduct.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserProduct()",
+      ex,
+    );
+  }
+  return appUserProduct;
+}
+
+Future<AppUserRemark> copyJsonDataToAppUserRemark(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserRemark appUserRemark,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserRemarkID")) {
+      appUserRemark.appUserRemarkID = jsonObj["AppUserRemarkID"];
+    }
+    if (jsonObj.containsKey("AppUserRemarkCode")) {
+      appUserRemark.appUserRemarkCode = jsonObj["AppUserRemarkCode"];
+    }
+    if (jsonObj.containsKey("AppUserRemarkDetails")) {
+      appUserRemark.appUserRemarkDetails = jsonObj["AppUserRemarkDetails"];
+    }
+    if (jsonObj.containsKey("AppUserRemarkObject")) {
+      appUserRemark.appUserRemarkObject = jsonObj["AppUserRemarkObject"];
+    }
+    if (jsonObj.containsKey("AppUserRemarkObjectID")) {
+      appUserRemark.appUserRemarkObjectID = jsonObj["AppUserRemarkObjectID"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserRemark.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserRemark.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserRemark.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserRemark.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("DeviceIdentifier")) {
+      appUserRemark.deviceIdentifier = jsonObj["DeviceIdentifier"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      appUserRemark.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+    }
+    if (jsonObj.containsKey("Location")) {
+      appUserRemark.location = jsonObj["Location"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserRemark.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserRemark.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserRemark.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserRemark.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserRemark.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserRemark.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserRemark.isDirty = "false";
+    appUserRemark.isDeleted1 = "false";
+    appUserRemark.upSyncMessage = "";
+    appUserRemark.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserRemark.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserRemark.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserRemark.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserRemark.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserRemark.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserRemark.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserRemark.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserRemark()",
+      ex,
+    );
+  }
+  return appUserRemark;
+}
+Future<AppUserRole> copyJsonDataToAppUserRole(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserRole appUserRole,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserRoleID")) {
+      appUserRole.appUserRoleID = jsonObj["AppUserRoleID"];
+    }
+    if (jsonObj.containsKey("AppUserRoleCode")) {
+      appUserRole.appUserRoleCode = jsonObj["AppUserRoleCode"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserRole.appUserID = jsonObj["AppUserID"];
+    }
+
+    if (jsonObj.containsKey("UserRoleID")) {
+      String userRoleId = jsonObj["UserRoleID"];
+      userRoleId = userRoleId != null && userRoleId.isNotEmpty ? userRoleId : "-1";
+      UserRole userRole = await UserRoleDataHandlerBase.getMasterUserRoleRecord(
+        dbHandler,
+    
+        userRoleId,
+      );
+      if (userRole != null) {
+        appUserRole.userRoleID = userRole.id;
+      }
+    }
+
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserRole.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserRole.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserRole.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserRole.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserRole.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserRole.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserRole.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserRole.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserRole.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserRole.isDirty = "false";
+    appUserRole.isDeleted1 = "false";
+    appUserRole.upSyncMessage = "";
+    appUserRole.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserRole.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserRole.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserRole.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserRole.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserRole.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserRole.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserRole.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserRole()",
+      ex,
+    );
+  }
+  return appUserRole;
+}
+
+Future<AppUserTeam> copyJsonDataToAppUserTeam(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserTeam appUserTeam,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserTeamID")) {
+      appUserTeam.appUserTeamID = jsonObj["AppUserTeamID"];
+    }
+    if (jsonObj.containsKey("AppUserTeamCode")) {
+      appUserTeam.appUserTeamCode = jsonObj["AppUserTeamCode"];
+    }
+    if (jsonObj.containsKey("AppUserTeamName")) {
+      appUserTeam.appUserTeamName = jsonObj["AppUserTeamName"];
+    }
+    if (jsonObj.containsKey("AppUserTeamDescription")) {
+      appUserTeam.appUserTeamDescription = jsonObj["AppUserTeamDescription"];
+    }
+    if (jsonObj.containsKey("TeamLeadAppUserID")) {
+      appUserTeam.teamLeadAppUserID = jsonObj["TeamLeadAppUserID"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserTeam.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTeam.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserTeam.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTeam.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserTeam.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserTeam.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserTeam.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserTeam.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserTeam.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserTeam.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserTeam.isDirty = "false";
+    appUserTeam.isDeleted1 = "false";
+    appUserTeam.upSyncMessage = "";
+    appUserTeam.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTeam.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTeam.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserTeam.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserTeam.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserTeam.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserTeam.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserTeam.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserTeam()",
+      ex,
+    );
+  }
+  return appUserTeam;
+}
+
+Future<AppUserTeamMember> copyJsonDataToAppUserTeamMember(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserTeamMember appUserTeamMember,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserTeamMemberID")) {
+      appUserTeamMember.appUserTeamMemberID = jsonObj["AppUserTeamMemberID"];
+    }
+    if (jsonObj.containsKey("AppUserTeamMemberCode")) {
+      appUserTeamMember.appUserTeamMemberCode = jsonObj["AppUserTeamMemberCode"];
+    }
+    if (jsonObj.containsKey("AppUserTeamID")) {
+      String appUserTeamId = jsonObj["AppUserTeamID"];
+      appUserTeamId = appUserTeamId != null && appUserTeamId != "" ? appUserTeamId : "-1";
+      AppUserTeam appUserTeam = await AppUserTeamDataHandlerBase.getMasterAppUserTeamRecord(dbHandler, appUserTeamId);
+      if (appUserTeam != null) {
+        appUserTeamMember.appUserTeamID = appUserTeam.id;
+      }
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserTeamMember.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserTeamMember.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTeamMember.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserTeamMember.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTeamMember.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserTeamMember.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserTeamMember.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserTeamMember.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserTeamMember.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserTeamMember.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserTeamMember.isDirty = "false";
+    appUserTeamMember.isDeleted1 = "false";
+    appUserTeamMember.upSyncMessage = "";
+    appUserTeamMember.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTeamMember.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTeamMember.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserTeamMember.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserTeamMember.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserTeamMember.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserTeamMember.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserTeamMember.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserTeamMember()",
+      ex,
+    );
+  }
+  return appUserTeamMember;
+}
+Future<AppUserTertitory> copyJsonDataToAppUserTerritory(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    AppUserTertitory appUserTerritory,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("AppUserTerritoryID")) {
+      appUserTerritory.appUserTerritoryID = jsonObj["AppUserTerritoryID"];
+    }
+    if (jsonObj.containsKey("AppUserTerritoryCode")) {
+      appUserTerritory.appUserTerritoryCode = jsonObj["AppUserTerritoryCode"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserTerritory.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("TerritoryID")) {
+      String territoryId = jsonObj["TerritoryID"];
+      territoryId = territoryId != null && territoryId != "" ? territoryId : "-1";
+      Territory territory = await TerritoryDataHandlerBase.getMasterTerritoryRecord(dbHandler, territoryId);
+      if (territory != null) {
+        appUserTerritory.territoryID = territory.id;
+      }
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserTerritory.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTerritory.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserTerritory.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTerritory.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserTerritory.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserTerritory.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserTerritory.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      appUserTerritory.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserTerritory.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserTerritory.isDirty = "false";
+    appUserTerritory.isDeleted1 = "false";
+    appUserTerritory.upSyncMessage = "";
+    appUserTerritory.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserTerritory.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserTerritory.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserTerritory.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserTerritory.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserTerritory.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserTerritory.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserTerritory.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserTerritory()",
+      ex,
+    );
+  }
+  return appUserTerritory;
+}
+
+AppUserType copyJsonDataToAppUserType(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  AppUserType appUserType,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("AppUserTypeID")) {
+      appUserType.appUserTypeID = jsonObj["AppUserTypeID"];
+    }
+    if (jsonObj.containsKey("AppUserTypeCode")) {
+      appUserType.appUserTypeCode = jsonObj["AppUserTypeCode"];
+    }
+    if (jsonObj.containsKey("AppUserTypeName")) {
+      appUserType.appUserTypeName = jsonObj["AppUserTypeName"];
+    }
+    if (jsonObj.containsKey("IsExternalUser")) {
+      appUserType.isExternalUser = jsonObj["IsExternalUser"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      appUserType.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserType.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      appUserType.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserType.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      appUserType.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      appUserType.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      appUserType.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      appUserType.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      appUserType.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    appUserType.isDirty = "false";
+    appUserType.isDeleted1 = "false";
+    appUserType.upSyncMessage = "";
+    appUserType.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      appUserType.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      appUserType.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      appUserType.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      appUserType.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    appUserType.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID")) {
+      appUserType.ownerUserID = jsonObj["AppUserID"];
+    }*/
+    appUserType.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+      "JSONDataCopier:CopyJsonDataToAppUserType()",
+      ex,
+    );
+  }
+  return appUserType;
+}
+
+Attribute copyJsonDataToAttribute(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  Attribute attribute,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("AttributeID")) {
+      attribute.attributeID = jsonObj["AttributeID"];
+    }
+    if (jsonObj.containsKey("AttributeCode")) {
+      attribute.attributeCode = jsonObj["AttributeCode"];
+    }
+    if (jsonObj.containsKey("AttributeName")) {
+      attribute.attributeName = jsonObj["AttributeName"];
+    }
+    if (jsonObj.containsKey("Description")) {
+      attribute.description = jsonObj["Description"];
+    }
+    if (jsonObj.containsKey("ApplyToAllProducts")) {
+      attribute.applyToAllProducts = jsonObj["ApplyToAllProducts"];
+    }
+
+    if (jsonObj.containsKey("ParentAttributeID")) {
+      String attributeId = jsonObj["ParentAttributeID"];
+      attributeId = attributeId != null && attributeId.isNotEmpty ? attributeId : "-1";
+      Attribute? attribute1 =await 
+          AttributeDataHandlerBase.getMasterAttributeRecord(dbHandler, attributeId);
+      if (attribute1 != null) {
+        attribute.parentAttributeID = attribute1.id;
+      }
+    }
+
+    if (jsonObj.containsKey("IsSelfReferencing")) {
+      attribute.isSelfReferencing = jsonObj["IsSelfReferencing"];
+    }
+    if (jsonObj.containsKey("SequentialOrder")) {
+      attribute.sequentialOrder = jsonObj["SequentialOrder"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      attribute.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      attribute.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      attribute.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      attribute.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      attribute.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      attribute.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      attribute.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      attribute.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      attribute.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      attribute.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    attribute.isDirty = "false";
+    attribute.isDeleted1 = "false";
+    attribute.upSyncMessage = "";
+    attribute.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      attribute.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      attribute.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      attribute.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      attribute.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    attribute.upSyncIndex = "0";
+    attribute.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException("JSONDataCopier:CopyJsonDataToAttribute()", ex);
+  }
+  return attribute;
+}
+AttributeValue copyJsonDataToAttributeValue(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  AttributeValue attributeValue,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("AttributeValueID")) {
+      attributeValue.attributeValueID = jsonObj["AttributeValueID"];
+    }
+    if (jsonObj.containsKey("AttributeValueCode")) {
+      attributeValue.attributeValueCode = jsonObj["AttributeValueCode"];
+    }
+    if (jsonObj.containsKey("AttributeValueName")) {
+      attributeValue.attributeValueName = jsonObj["AttributeValueName"];
+    }
+
+    if (jsonObj.containsKey("AttributeID")) {
+      String attributeId = jsonObj["AttributeID"];
+      attributeId = attributeId != null && attributeId.isNotEmpty ? attributeId : "-1";
+      Attribute? attribute = AttributeDataHandlerBase.getMasterAttributeRecord(
+        dbHandler,
+        attributeId,
+      );
+      if (attribute != null) {
+        attributeValue.attributeID = attribute.id;
+      }
+    }
+
+    if (jsonObj.containsKey("Description")) {
+      attributeValue.description = jsonObj["Description"];
+    }
+    if (jsonObj.containsKey("Multiplier")) {
+      attributeValue.multiplier = jsonObj["Multiplier"];
+    }
+
+    if (jsonObj.containsKey("ParentAttributeValueID")) {
+      String attributeValueId = jsonObj["ParentAttributeValueID"];
+      attributeValueId = attributeValueId != null && attributeValueId.isNotEmpty ? attributeValueId : "-1";
+      AttributeValue attributeValue1 = AttributeValueDataHandler.getMasterAttributeValueRecord(
+        dbHandler,
+        
+        attributeValueId,
+      );
+      if (attributeValue1 != null) {
+        attributeValue.parentAttributeValueID = attributeValue1.id;
+      }
+    }
+
+    if (jsonObj.containsKey("CreatedOn")) {
+      attributeValue.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      attributeValue.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      attributeValue.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      attributeValue.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      attributeValue.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      attributeValue.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      attributeValue.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      attributeValue.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      attributeValue.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      attributeValue.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    attributeValue.isDirty = "false";
+    attributeValue.isDeleted1 = "false";
+    attributeValue.upSyncMessage = "";
+    attributeValue.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      attributeValue.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      attributeValue.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      attributeValue.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      attributeValue.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    attributeValue.upSyncIndex = "0";
+    attributeValue.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToAttributeValue()", ex);
+  }
+  return attributeValue;
+}
+
+BusinessEmail copyJsonDataToBusinessEmail(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  BusinessEmail businessEmail,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("BusinessEmailID")) {
+      businessEmail.businessEmailID = jsonObj["BusinessEmailID"];
+    }
+    if (jsonObj.containsKey("BusinessEmailCode")) {
+      businessEmail.businessEmailCode = jsonObj["BusinessEmailCode"];
+    }
+    if (jsonObj.containsKey("BusinessEmailAddress")) {
+      businessEmail.businessEmailAddress = jsonObj["BusinessEmailAddress"];
+    }
+    if (jsonObj.containsKey("Purpose")) {
+      businessEmail.purpose = jsonObj["Purpose"];
+    }
+    if (jsonObj.containsKey("Remarks")) {
+      businessEmail.remarks = jsonObj["Remarks"];
+    }
+    if (jsonObj.containsKey("IsApproved")) {
+      businessEmail.isApproved = jsonObj["IsApproved"];
+    }
+    if (jsonObj.containsKey("HSRemarks")) {
+      businessEmail.hsRemarks = jsonObj["HSRemarks"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessEmail.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      businessEmail.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessEmail.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      businessEmail.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      businessEmail.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      businessEmail.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      businessEmail.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      businessEmail.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      businessEmail.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      businessEmail.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    businessEmail.isDirty = "false";
+    businessEmail.isDeleted1 = "false";
+    businessEmail.upSyncMessage = "";
+    businessEmail.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessEmail.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessEmail.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      businessEmail.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      businessEmail.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    businessEmail.upSyncIndex = "0";
+    businessEmail.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToBusinessEmail()", ex);
+  }
+  return businessEmail;
+}
+
+BusinessFeature copyJsonDataToBusinessFeature(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  BusinessFeature businessFeature,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("BusinessFeatureID")) {
+      businessFeature.businessFeatureID = jsonObj["BusinessFeatureID"];
+    }
+    if (jsonObj.containsKey("BusinessFeatureCode")) {
+      businessFeature.businessFeatureCode = jsonObj["BusinessFeatureCode"];
+    }
+    if (jsonObj.containsKey("BusinessFeatureName")) {
+      businessFeature.businessFeatureName = jsonObj["BusinessFeatureName"];
+    }
+    if (jsonObj.containsKey("AppIcon")) {
+      businessFeature.appIcon = jsonObj["AppIcon"];
+    }
+    if (jsonObj.containsKey("ConsoleIcon")) {
+      businessFeature.consoleIcon = jsonObj["ConsoleIcon"];
+    }
+    if (jsonObj.containsKey("DescriptionText")) {
+      businessFeature.descriptionText = jsonObj["DescriptionText"];
+    }
+    if (jsonObj.containsKey("DescriptionHtml")) {
+      businessFeature.descriptionHtml = jsonObj["DescriptionHtml"];
+    }
+    if (jsonObj.containsKey("InternalCode")) {
+      businessFeature.internalCode = jsonObj["InternalCode"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessFeature.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      businessFeature.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessFeature.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      businessFeature.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      businessFeature.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      businessFeature.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      businessFeature.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      businessFeature.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      businessFeature.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      businessFeature.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    businessFeature.isDirty = "false";
+    businessFeature.isDeleted1 = "false";
+    businessFeature.upSyncMessage = "";
+    businessFeature.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessFeature.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessFeature.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      businessFeature.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      businessFeature.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    businessFeature.upSyncIndex = "0";
+    businessFeature.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToBusinessFeature()", ex);
+  }
+  return businessFeature;
+}
+
+BusinessUnit copyJsonDataToBusinessUnit(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  BusinessUnit businessUnit,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("BusinessUnitID")) {
+      businessUnit.businessUnitID = jsonObj["BusinessUnitID"];
+    }
+    if (jsonObj.containsKey("BusinessUnitCode")) {
+      businessUnit.businessUnitCode = jsonObj["BusinessUnitCode"];
+    }
+    if (jsonObj.containsKey("BusinessUnitName")) {
+      businessUnit.businessUnitName = jsonObj["BusinessUnitName"];
+    }
+    if (jsonObj.containsKey("Description")) {
+      businessUnit.description = jsonObj["Description"];
+    }
+    if (jsonObj.containsKey("HeadOfBusinessUnitAppUserID")) {
+      businessUnit.headOfBusinessUnitAppUserID = jsonObj["HeadOfBusinessUnitAppUserID"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessUnit.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      businessUnit.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessUnit.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      businessUnit.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      businessUnit.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      businessUnit.isDeleted = jsonObj["IsDeleted"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      businessUnit.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      businessUnit.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      businessUnit.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      businessUnit.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+    }
+
+    businessUnit.isDirty = "false";
+    businessUnit.isDeleted1 = "false";
+    businessUnit.upSyncMessage = "";
+    businessUnit.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      businessUnit.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      businessUnit.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      businessUnit.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      businessUnit.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    businessUnit.upSyncIndex = "0";
+    businessUnit.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToBusinessUnit()", ex);
+  }
+  return businessUnit;
+}
+
+
+
+ChatMessage copyJsonDataToChatMessage(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  ChatMessage chatMessage,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("ChatMessageID")) {
+      chatMessage.chatMessageID = jsonObj["ChatMessageID"];
+    }
+    if (jsonObj.containsKey("ChatMessageCode")) {
+      chatMessage.chatMessageCode = jsonObj["ChatMessageCode"];
+    }
+    if (jsonObj.containsKey("ChatMessageContent")) {
+      chatMessage.chatMessageContent = jsonObj["ChatMessageContent"];
+    }
+    if (jsonObj.containsKey("ContentType")) {
+      chatMessage.contentType = jsonObj["ContentType"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupID")) {
+      chatMessage.chatUserAndGroupID = jsonObj["ChatUserAndGroupID"];
+    }
+    if (jsonObj.containsKey("ToChatUserAndGroupID")) {
+      chatMessage.toChatUserAndGroupID = jsonObj["ToChatUserAndGroupID"];
+    }
+    if (jsonObj.containsKey("LocalMediaPath")) {
+      chatMessage.localMediaPath = jsonObj["LocalMediaPath"];
+    }
+    if (jsonObj.containsKey("IsUploaded")) {
+      chatMessage.isUploaded = jsonObj["IsUploaded"];
+    }
+    if (jsonObj.containsKey("MediaPath")) {
+      chatMessage.mediaPath = jsonObj["MediaPath"];
+    }
+    if (jsonObj.containsKey("IsRead")) {
+      chatMessage.isRead = jsonObj["IsRead"];
+    }
+    if (jsonObj.containsKey("ReadStatus")) {
+      chatMessage.readStatus = jsonObj["ReadStatus"];
+    }
+    if (jsonObj.containsKey("ObjectName")) {
+      chatMessage.objectName = jsonObj["ObjectName"];
+    }
+    if (jsonObj.containsKey("ObjectID")) {
+      chatMessage.objectID = jsonObj["ObjectID"];
+    }
+    if (jsonObj.containsKey("ObjectCode")) {
+      chatMessage.objectCode = jsonObj["ObjectCode"];
+    }
+    if (jsonObj.containsKey("ObjectAction")) {
+      chatMessage.objectAction = jsonObj["ObjectAction"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatMessage.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      chatMessage.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatMessage.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      chatMessage.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      chatMessage.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      chatMessage.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      chatMessage.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      chatMessage.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      chatMessage.isDeleted = jsonObj["IsDeleted"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      chatMessage.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("AppUserName")) {
+      chatMessage.appUserName = jsonObj["AppUserName"];
+    }
+    if (jsonObj.containsKey("ToAppUserID")) {
+      chatMessage.toAppUserID = jsonObj["ToAppUserID"];
+    }
+    if (jsonObj.containsKey("ToChatUserAndGroupUid")) {
+      chatMessage.toChatUserAndGroupUid = jsonObj["ToChatUserAndGroupUid"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupName")) {
+      chatMessage.chatUserAndGroupName = jsonObj["ChatUserAndGroupName"];
+    }
+    if (jsonObj.containsKey("ToChatUserAndGroupName")) {
+      chatMessage.toChatUserAndGroupName = jsonObj["ToChatUserAndGroupName"];
+    }
+
+    chatMessage.isDirty = "false";
+    chatMessage.isDeleted1 = "false";
+    chatMessage.upSyncMessage = "";
+    chatMessage.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatMessage.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatMessage.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      chatMessage.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      chatMessage.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    chatMessage.upSyncIndex = "0";
+    chatMessage.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToChatMessage()", ex);
+  }
+  return chatMessage;
+}
+
+
+
+ChatUserAndGroup copyJsonDataToChatUserAndGroup(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  ChatUserAndGroup chatUserAndGroup,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("ChatUserAndGroupID")) {
+      chatUserAndGroup.chatUserAndGroupID = jsonObj["ChatUserAndGroupID"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupCode")) {
+      chatUserAndGroup.chatUserAndGroupCode = jsonObj["ChatUserAndGroupCode"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupName")) {
+      chatUserAndGroup.chatUserAndGroupName = jsonObj["ChatUserAndGroupName"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupLogo")) {
+      chatUserAndGroup.chatUserAndGroupLogo = jsonObj["ChatUserAndGroupLogo"];
+    }
+    if (jsonObj.containsKey("ChatUserAndGroupDescription")) {
+      chatUserAndGroup.chatUserAndGroupDescription =
+          jsonObj["ChatUserAndGroupDescription"];
+    }
+    if (jsonObj.containsKey("PhoneNumber")) {
+      chatUserAndGroup.phoneNumber = jsonObj["PhoneNumber"];
+    }
+    if (jsonObj.containsKey("Email")) {
+      chatUserAndGroup.email = jsonObj["Email"];
+    }
+    if (jsonObj.containsKey("TargetAppUserID")) {
+      chatUserAndGroup.targetAppUserID = jsonObj["TargetAppUserID"];
+    }
+    if (jsonObj.containsKey("IsGroup")) {
+      chatUserAndGroup.isGroup = jsonObj["IsGroup"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      chatUserAndGroup.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatUserAndGroup.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      chatUserAndGroup.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatUserAndGroup.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      chatUserAndGroup.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      chatUserAndGroup.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      chatUserAndGroup.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      chatUserAndGroup.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      chatUserAndGroup.isDeleted = jsonObj["IsDeleted"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      chatUserAndGroup.isArchived = jsonObj["IsArchived"];
+    }
+
+    chatUserAndGroup.isDirty = "false";
+    chatUserAndGroup.isDeleted1 = "false";
+    chatUserAndGroup.upSyncMessage = "";
+    chatUserAndGroup.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatUserAndGroup.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatUserAndGroup.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      chatUserAndGroup.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      chatUserAndGroup.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    chatUserAndGroup.upSyncIndex = "0";
+    chatUserAndGroup.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToChatUserAndGroup()", ex);
+  }
+  return chatUserAndGroup;
+}
+
+ChatUserGroupMember copyJsonDataToChatUserGroupMember(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  ChatUserGroupMember chatUserGroupMember,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("ChatUserGroupMemberID")) {
+      chatUserGroupMember.chatUserGroupMemberID =
+          jsonObj["ChatUserGroupMemberID"];
+    }
+    if (jsonObj.containsKey("ChatUserGroupMemberCode")) {
+      chatUserGroupMember.chatUserGroupMemberCode =
+          jsonObj["ChatUserGroupMemberCode"];
+    }
+
+    if (jsonObj.containsKey("ChatUserAndGroupID")) {
+      String chatUserAndGroupId = jsonObj["ChatUserAndGroupID"];
+      chatUserAndGroupId = chatUserAndGroupId != null && chatUserAndGroupId.isNotEmpty
+          ? chatUserAndGroupId
+          : "-1";
+      ChatUserAndGroup chatUserAndGroup =
+          ChatUserAndGroupDataHandlerBase.getMasterChatUserAndGroupRecord(
+              dbHandler, chatUserAndGroupId);
+      if (chatUserAndGroup != null) {
+        chatUserGroupMember.chatUserAndGroupID = chatUserAndGroup.id;
+      }
+    }
+
+    if (jsonObj.containsKey("TargetAppUserID")) {
+      chatUserGroupMember.targetAppUserID = jsonObj["TargetAppUserID"];
+    }
+    if (jsonObj.containsKey("MemberName")) {
+      chatUserGroupMember.memberName = jsonObj["MemberName"];
+    }
+    if (jsonObj.containsKey("MemberDescription")) {
+      chatUserGroupMember.memberDescription =
+          jsonObj["MemberDescription"];
+    }
+    if (jsonObj.containsKey("PhoneNumber")) {
+      chatUserGroupMember.phoneNumber = jsonObj["PhoneNumber"];
+    }
+    if (jsonObj.containsKey("Email")) {
+      chatUserGroupMember.email = jsonObj["Email"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      chatUserGroupMember.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatUserGroupMember.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      chatUserGroupMember.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatUserGroupMember.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      chatUserGroupMember.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      chatUserGroupMember.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      chatUserGroupMember.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      chatUserGroupMember.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      chatUserGroupMember.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      chatUserGroupMember.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    chatUserGroupMember.isDirty = "false";
+    chatUserGroupMember.isDeleted1 = "false";
+    chatUserGroupMember.upSyncMessage = "";
+    chatUserGroupMember.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      chatUserGroupMember.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      chatUserGroupMember.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      chatUserGroupMember.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      chatUserGroupMember.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    chatUserGroupMember.upSyncIndex = "0";
+    chatUserGroupMember.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+         "JSONDataCopier:CopyJsonDataToChatUserGroupMember()", ex);
+  }
+  return chatUserGroupMember;
+}
+
+
+Competitor copyJsonDataToCompetitor(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  Competitor competitor,
+  bool isForNew,
+) {
+  try {
+    if (jsonObj.containsKey("CompetitorID")) {
+      competitor.competitorID = jsonObj["CompetitorID"];
+    }
+    if (jsonObj.containsKey("CompetitorCode")) {
+      competitor.competitorCode = jsonObj["CompetitorCode"];
+    }
+    if (jsonObj.containsKey("CompetitorName")) {
+      competitor.competitorName = jsonObj["CompetitorName"];
+    }
+    if (jsonObj.containsKey("Description")) {
+      competitor.description = jsonObj["Description"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      competitor.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      competitor.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      competitor.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      competitor.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      competitor.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      competitor.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      competitor.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      competitor.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      competitor.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      competitor.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    competitor.isDirty = "false";
+    competitor.isDeleted1 = "false";
+    competitor.upSyncMessage = "";
+    competitor.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      competitor.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      competitor.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      competitor.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      competitor.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    competitor.upSyncIndex = "0";
+    competitor.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException(
+         "JSONDataCopier:CopyJsonDataToCompetitor()", ex);
+  }
+  return competitor;
+}
+
+
+Future<Contact> copyJsonDataToContact(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  Contact contact,
+  bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("ContactID")) {
+      contact.contactID = jsonObj["ContactID"];
+    }
+    if (jsonObj.containsKey("ContactCode")) {
+      contact.contactCode = jsonObj["ContactCode"];
+    }
+    if (jsonObj.containsKey("Title")) {
+      contact.title = jsonObj["Title"];
+    }
+    if (jsonObj.containsKey("FirstName")) {
+      contact.firstName = jsonObj["FirstName"];
+    }
+    if (jsonObj.containsKey("MiddleName")) {
+      contact.middleName = jsonObj["MiddleName"];
+    }
+    if (jsonObj.containsKey("LastName")) {
+      contact.lastName = jsonObj["LastName"];
+    }
+    if (jsonObj.containsKey("ContactName")) {
+      contact.contactName = jsonObj["ContactName"];
+    }
+    if (jsonObj.containsKey("ContactIdentifier")) {
+      contact.contactIdentifier = jsonObj["ContactIdentifier"];
+    }
+    if (jsonObj.containsKey("AccountName")) {
+      contact.accountName = jsonObj["AccountName"];
+    }
+
+    if (jsonObj.containsKey("AccountID")) {
+      String accountId = jsonObj["AccountID"];
+      accountId = accountId != null && accountId != "" ? accountId : "-1";
+      Account? account =await 
+          AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      if (account != null) {
+        contact.accountID = account.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContactCategoryID")) {
+      String contactCategoryId = jsonObj["ContactCategoryID"];
+      contactCategoryId =
+          contactCategoryId != null && contactCategoryId != "" ? contactCategoryId : "-1";
+      ContactCategory ?contactCategory =await 
+          ContactCategoryDataHandlerBase.GetMasterContactCategoryRecord(dbHandler, contactCategoryId);
+      if (contactCategory != null) {
+        contact.contactCategoryID = contactCategory.id;
+      }
+    }
+
+    if (jsonObj.containsKey("DepartmentName")) {
+      contact.departmentName = jsonObj["DepartmentName"];
+    }
+    if (jsonObj.containsKey("Designation")) {
+      contact.designation = jsonObj["Designation"];
+    }
+    if (jsonObj.containsKey("RolesAndResponsibilities")) {
+      contact.rolesAndResponsibilities = jsonObj["RolesAndResponsibilities"];
+    }
+    if (jsonObj.containsKey("ReportingManager")) {
+      contact.reportingManager = jsonObj["ReportingManager"];
+    }
+
+    if (jsonObj.containsKey("ReportingContactID")) {
+      String contactId = jsonObj["ReportingContactID"];
+      contactId = contactId != null && contactId != "" ? contactId : "-1";
+      Contact? contact1 =await 
+          ContactHandlerDataBase.GetMasterContactRecord(dbHandler, contactId);
+      if (contact1 != null) {
+        contact.reportingContactID = contact1.id;
+      }
+    }
+
+    if (jsonObj.containsKey("MobileNumber")) {
+      contact.mobileNumber = jsonObj["MobileNumber"];
+    }
+    if (jsonObj.containsKey("AlternateMobileNumber")) {
+      contact.alternateMobileNumber = jsonObj["AlternateMobileNumber"];
+    }
+    if (jsonObj.containsKey("WorkPhone")) {
+      contact.workPhone = jsonObj["WorkPhone"];
+    }
+    if (jsonObj.containsKey("ResidencePhone")) {
+      contact.residencePhone = jsonObj["ResidencePhone"];
+    }
+    if (jsonObj.containsKey("Email")) {
+      contact.email = jsonObj["Email"];
+    }
+    if (jsonObj.containsKey("AlternateEmail")) {
+      contact.alternateEmail = jsonObj["AlternateEmail"];
+    }
+    if (jsonObj.containsKey("AddressLine1")) {
+      contact.addressLine1 = jsonObj["AddressLine1"];
+    }
+    if (jsonObj.containsKey("AddressLine2")) {
+      contact.addressLine2 = jsonObj["AddressLine2"];
+    }
+    if (jsonObj.containsKey("AddressLine3")) {
+      contact.addressLine3 = jsonObj["AddressLine3"];
+    }
+    if (jsonObj.containsKey("City")) {
+      contact.city = jsonObj["City"];
+    }
+    if (jsonObj.containsKey("State")) {
+      contact.state = jsonObj["State"];
+    }
+    if (jsonObj.containsKey("Country")) {
+      contact.country = jsonObj["Country"];
+    }
+    if (jsonObj.containsKey("PIN")) {
+      contact.pin = jsonObj["PIN"];
+    }
+    if (jsonObj.containsKey("GPSCoordinates")) {
+      contact.gpsCoordinates = jsonObj["GPSCoordinates"];
+    }
+    if (jsonObj.containsKey("LinkedIn")) {
+      contact.linkedIn = jsonObj["LinkedIn"];
+    }
+    if (jsonObj.containsKey("PastAccounts")) {
+      contact.pastAccounts = jsonObj["PastAccounts"];
+    }
+    if (jsonObj.containsKey("PastDesignations")) {
+      contact.pastDesignations = jsonObj["PastDesignations"];
+    }
+    if (jsonObj.containsKey("DateOfBirth")) {
+      contact.dateOfBirth = jsonObj["DateOfBirth"];
+    }
+    if (jsonObj.containsKey("RemindBirthday")) {
+      contact.remindBirthday = jsonObj["RemindBirthday"];
+    }
+
+    if (jsonObj.containsKey("ContactAlignmentID")) {
+      String contactAlignmentId = jsonObj["ContactAlignmentID"];
+      contactAlignmentId =
+          contactAlignmentId != null && contactAlignmentId != "" ? contactAlignmentId : "-1";
+      ContactAlignment? contactAlignment = await  ContactAlignmentDataHandlerBase.GetMasterContactAlignmentRecord(
+          dbHandler, contactAlignmentId);
+      if (contactAlignment != null) {
+        contact.contactAlignmentID = contactAlignment.id;
+      }
+    }
+    if (jsonObj.containsKey("ContactCodeInternal")) {
+      contact.contactCodeInternal = jsonObj["ContactCodeInternal"];
+    }
+    if (jsonObj.containsKey("Remarks")) {
+      contact.remarks = jsonObj["Remarks"];
+    }
+    if (jsonObj.containsKey("ReferenceHistory")) {
+      contact.referenceHistory = jsonObj["ReferenceHistory"];
+    }
+    if (jsonObj.containsKey("IsPrimaryContact")) {
+      contact.isPrimaryContact = jsonObj["IsPrimaryContact"];
+    }
+    if (jsonObj.containsKey("Tags")) {
+      contact.tags = jsonObj["Tags"];
+    }
+    if (jsonObj.containsKey("FreeTextField1")) {
+      contact.freeTextField1 = jsonObj["FreeTextField1"];
+    }
+    if (jsonObj.containsKey("FreeTextField2")) {
+      contact.freeTextField2 = jsonObj["FreeTextField2"];
+    }
+    if (jsonObj.containsKey("FreeTextField3")) {
+      contact.freeTextField3 = jsonObj["FreeTextField3"];
+    }
+    if (jsonObj.containsKey("CompanyName")) {
+      contact.companyName = jsonObj["CompanyName"];
+    }
+    if (jsonObj.containsKey("TaxPayerIdentificationNumber")) {
+      contact.taxPayerIdentificationNumber = jsonObj["TaxPayerIdentificationNumber"];
+    }
+    if (jsonObj.containsKey("SocialSecurityNumber")) {
+      contact.socialSecurityNumber = jsonObj["SocialSecurityNumber"];
+    }
+    if (jsonObj.containsKey("PassportNumber")) {
+      contact.passportNumber = jsonObj["PassportNumber"];
+    }
+    if (jsonObj.containsKey("DrivingLicenseNumber")) {
+      contact.drivingLicenseNumber = jsonObj["DrivingLicenseNumber"];
+    }
+    if (jsonObj.containsKey("VoterIDCardNumber")) {
+      contact.voterIDCardNumber = jsonObj["VoterIDCardNumber"];
+    }
+    if (jsonObj.containsKey("MarketingContactID")) {
+      contact.marketingContactID = jsonObj["MarketingContactID"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      contact.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      contact.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      contact.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      contact.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("DeviceIdentifier")) {
+      contact.deviceIdentifier = jsonObj["DeviceIdentifier"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      contact.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      contact.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      contact.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      contact.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AssignedByAppUserID")) {
+      contact.assignedByAppUserID = jsonObj["AssignedByAppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      contact.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      contact.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      contact.isDeleted = jsonObj["IsDeleted"];
+    }
+    if (jsonObj.containsKey("LeadQualificationID")) {
+      contact.leadQualificationID = jsonObj["LeadQualificationID"];
+    }
+
+    contact.isDirty = "false";
+    contact.isDeleted1 = "false";
+    contact.upSyncMessage = "";
+    contact.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      contact.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      contact.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      contact.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      contact.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    contact.upSyncIndex = "0";
+    contact.ownerUserID = Globals.AppUserID.toString();
+
+  } catch ( ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContact()", ex);
+  }
+  return contact;
+}
+
+
+static Future<ContactAlignment> copyJsonDataToContactAlignment( DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ContactAlignment contactAlignment, bool isForNew) async {
+  try {
+    contactAlignment.contactAlignmentID = jsonObj["ContactAlignmentID"] as String;
+    contactAlignment.contactAlignmentCode = jsonObj["ContactAlignmentCode"] as String;
+    contactAlignment.contactAlignmentName = jsonObj["ContactAlignmentName"] as String;
+    contactAlignment.indicatorColor = jsonObj["IndicatorColor"] as String;
+    contactAlignment.createdOn = jsonObj["CreatedOn"] as String;
+    contactAlignment.createdBy = jsonObj["CreatedBy"] as String;
+    contactAlignment.modifiedOn = jsonObj["ModifiedOn"] as String;
+    contactAlignment.modifiedBy = jsonObj["ModifiedBy"] as String;
+    contactAlignment.isActive = jsonObj["IsActive"] as String;
+    contactAlignment.uid = jsonObj["Uid"] as String;
+    contactAlignment.appUserID = jsonObj["AppUserID"] as String;
+    contactAlignment.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    contactAlignment.isArchived = jsonObj["IsArchived"] as String;
+    contactAlignment.isDeleted = jsonObj["IsDeleted"] as String;
+
+    contactAlignment.isDirty = "false";
+    contactAlignment.isDeleted1 = "false";
+    contactAlignment.upSyncMessage = "";
+    contactAlignment.downSyncMessage = "";
+    contactAlignment.sCreatedOn = jsonObj["CreatedOn"] as String;
+    contactAlignment.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    contactAlignment.createdByUser = jsonObj["CreatedByUser"] as String;
+    contactAlignment.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    contactAlignment.upSyncIndex = "0";
+    contactAlignment.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContactAlignment()", ex);
+  }
+  return contactAlignment;
+}
+
+ContactCategory copyJsonDataToContactCategory( DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ContactCategory contactCategory, bool isForNew) {
+  try {
+    contactCategory.contactCategoryID = jsonObj["ContactCategoryID"] as String;
+    contactCategory.contactCategoryCode = jsonObj["ContactCategoryCode"] as String;
+    contactCategory.contactCategoryName = jsonObj["ContactCategoryName"] as String;
+    contactCategory.createdOn = jsonObj["CreatedOn"] as String;
+    contactCategory.createdBy = jsonObj["CreatedBy"] as String;
+    contactCategory.modifiedOn = jsonObj["ModifiedOn"] as String;
+    contactCategory.modifiedBy = jsonObj["ModifiedBy"] as String;
+    contactCategory.isActive = jsonObj["IsActive"] as String;
+    contactCategory.uid = jsonObj["Uid"] as String;
+    contactCategory.appUserID = jsonObj["AppUserID"] as String;
+    contactCategory.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    contactCategory.isArchived = jsonObj["IsArchived"] as String;
+    contactCategory.isDeleted = jsonObj["IsDeleted"] as String;
+
+    contactCategory.isDirty = "false";
+    contactCategory.isDeleted1 = "false";
+    contactCategory.upSyncMessage = "";
+    contactCategory.downSyncMessage = "";
+    contactCategory.sCreatedOn = jsonObj["CreatedOn"] as String;
+    contactCategory.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    contactCategory.createdByUser = jsonObj["CreatedByUser"] as String;
+    contactCategory.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    contactCategory.upSyncIndex = "0";
+    contactCategory.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContactCategory()", ex);
+  }
+  return contactCategory;
+}
+
+Future<ContactMedia> copyJsonDataToContactMedia(, DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ContactMedia contactMedia, bool isForNew) async {
+  try {
+    contactMedia.contactMediaID = jsonObj["ContactMediaID"] as String;
+    contactMedia.contactMediaCode = jsonObj["ContactMediaCode"] as String;
+    contactMedia.contactMediaName = jsonObj["ContactMediaName"] as String;
+
+    if (jsonObj.containsKey("ContactID")) {
+      String contactId = jsonObj["ContactID"] as String;
+      contactId = contactId != null && contactId.isNotEmpty ? contactId : "-1";
+      Contact? contact =await  ContactHandlerDataBase.GetMasterContactRecord(dbHandler, contactId);
+      if (contact != null) {
+        contactMedia.contactID = contact.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContentTypeID")) {
+      String contentTypeId = jsonObj["ContentTypeID"] as String;
+      contentTypeId = contentTypeId != null && contentTypeId.isNotEmpty ? contentTypeId : "-1";
+      ContentType contentType = ContentTypeDataHandlerBase.getMasterContentTypeRecord(dbHandler, contentTypeId);
+      if (contentType != null) {
+        contactMedia.contentTypeID = contentType.id;
+      }
+    }
+
+    contactMedia.mediaPath = jsonObj["MediaPath"] as String;
+    contactMedia.mediaContent = jsonObj["MediaContent"] as String;
+    contactMedia.description = jsonObj["Description"] as String;
+    contactMedia.tags = jsonObj["Tags"] as String;
+    contactMedia.createdBy = jsonObj["CreatedBy"] as String;
+    contactMedia.createdOn = jsonObj["CreatedOn"] as String;
+    contactMedia.modifiedBy = jsonObj["ModifiedBy"] as String;
+    contactMedia.modifiedOn = jsonObj["ModifiedOn"] as String;
+    contactMedia.deviceIdentifier = jsonObj["DeviceIdentifier"] as String;
+    contactMedia.referenceIdentifier = jsonObj["ReferenceIdentifier"] as String;
+    contactMedia.isActive = jsonObj["IsActive"] as String;
+    contactMedia.uid = jsonObj["Uid"] as String;
+    contactMedia.appUserID = jsonObj["AppUserID"] as String;
+    contactMedia.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    contactMedia.isArchived = jsonObj["IsArchived"] as String;
+    contactMedia.isDeleted = jsonObj["IsDeleted"] as String;
+
+    contactMedia.isDirty = "false";
+    contactMedia.isDeleted1 = "false";
+    contactMedia.upSyncMessage = "";
+    contactMedia.downSyncMessage = "";
+    contactMedia.sCreatedOn = jsonObj["CreatedOn"] as String;
+    contactMedia.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    contactMedia.createdByUser = jsonObj["CreatedByUser"] as String;
+    contactMedia.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    contactMedia.upSyncIndex = "0";
+    contactMedia.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContactMedia()", ex);
+  }
+  return contactMedia;
+}
+
+ContactTitle copyJsonDataToContactTitle(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ContactTitle contactTitle, bool isForNew) {
+  try {
+    contactTitle.contactTitleID = jsonObj["ContactTitleID"] as String;
+    contactTitle.contactTitleCode = jsonObj["ContactTitleCode"] as String;
+    contactTitle.contactTitleName = jsonObj["ContactTitleName"] as String;
+    contactTitle.createdOn = jsonObj["CreatedOn"] as String;
+    contactTitle.createdBy = jsonObj["CreatedBy"] as String;
+    contactTitle.modifiedOn = jsonObj["ModifiedOn"] as String;
+    contactTitle.modifiedBy = jsonObj["ModifiedBy"] as String;
+    contactTitle.isActive = jsonObj["IsActive"] as String;
+    contactTitle.uid = jsonObj["Uid"] as String;
+    contactTitle.appUserID = jsonObj["AppUserID"] as String;
+    contactTitle.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    contactTitle.isArchived = jsonObj["IsArchived"] as String;
+    contactTitle.isDeleted = jsonObj["IsDeleted"] as String;
+
+    contactTitle.isDirty = "false";
+    contactTitle.isDeleted1 = "false";
+    contactTitle.upSyncMessage = "";
+    contactTitle.downSyncMessage = "";
+    contactTitle.sCreatedOn = jsonObj["CreatedOn"] as String;
+    contactTitle.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    contactTitle.createdByUser = jsonObj["CreatedByUser"] as String;
+    contactTitle.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    contactTitle.upSyncIndex = "0";
+    contactTitle.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContactTitle()", ex);
+  }
+  return contactTitle;
+}
+
+ContentType copyJsonDataToContentType(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ContentType contentType, bool isForNew) {
+  try {
+    contentType.contentTypeID = jsonObj["ContentTypeID"] as String;
+    contentType.contentTypeCode = jsonObj["ContentTypeCode"] as String;
+    contentType.contentTypeName = jsonObj["ContentTypeName"] as String;
+    contentType.createdOn = jsonObj["CreatedOn"] as String;
+    contentType.createdBy = jsonObj["CreatedBy"] as String;
+    contentType.modifiedOn = jsonObj["ModifiedOn"] as String;
+    contentType.modifiedBy = jsonObj["ModifiedBy"] as String;
+    contentType.isActive = jsonObj["IsActive"] as String;
+    contentType.uid = jsonObj["Uid"] as String;
+    contentType.appUserID = jsonObj["AppUserID"] as String;
+    contentType.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    contentType.isArchived = jsonObj["IsArchived"] as String;
+    contentType.isDeleted = jsonObj["IsDeleted"] as String;
+
+    contentType.isDirty = "false";
+    contentType.isDeleted1 = "false";
+    contentType.upSyncMessage = "";
+    contentType.downSyncMessage = "";
+    contentType.sCreatedOn = jsonObj["CreatedOn"] as String;
+    contentType.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    contentType.createdByUser = jsonObj["CreatedByUser"] as String;
+    contentType.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    contentType.upSyncIndex = "0";
+    contentType.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToContentType()", ex);
+  }
+  return contentType;
+}
+
+Country copyJsonDataToCountry(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Country country, bool isForNew) {
+  try {
+    country.countryID = jsonObj["CountryID"] as String;
+    country.countryCode = jsonObj["CountryCode"] as String;
+    country.countryName = jsonObj["CountryName"] as String;
+    country.createdOn = jsonObj["CreatedOn"] as String;
+    country.createdBy = jsonObj["CreatedBy"] as String;
+    country.modifiedOn = jsonObj["ModifiedOn"] as String;
+    country.modifiedBy = jsonObj["ModifiedBy"] as String;
+    country.isActive = jsonObj["IsActive"] as String;
+    country.uid = jsonObj["Uid"] as String;
+    country.appUserID = jsonObj["AppUserID"] as String;
+    country.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    country.isArchived = jsonObj["IsArchived"] as String;
+    country.isDeleted = jsonObj["IsDeleted"] as String;
+
+    country.isDirty = "false";
+    country.isDeleted1 = "false";
+    country.upSyncMessage = "";
+    country.downSyncMessage = "";
+    country.sCreatedOn = jsonObj["CreatedOn"] as String;
+    country.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    country.createdByUser = jsonObj["CreatedByUser"] as String;
+    country.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    country.upSyncIndex = "0";
+    country.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToCountry()", ex);
+  }
+  return country;
+}
+CreditRating copyJsonDataToCreditRating(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, CreditRating creditRating, bool isForNew) {
+  try {
+    creditRating.creditRatingID = jsonObj["CreditRatingID"] as String;
+    creditRating.creditRatingCode = jsonObj["CreditRatingCode"] as String;
+    creditRating.creditRatingName = jsonObj["CreditRatingName"] as String;
+    creditRating.creditRatingDescription = jsonObj["CreditRatingDescription"] as String;
+    creditRating.createdOn = jsonObj["CreatedOn"] as String;
+    creditRating.createdBy = jsonObj["CreatedBy"] as String;
+    creditRating.modifiedOn = jsonObj["ModifiedOn"] as String;
+    creditRating.modifiedBy = jsonObj["ModifiedBy"] as String;
+    creditRating.isActive = jsonObj["IsActive"] as String;
+    creditRating.uid = jsonObj["Uid"] as String;
+    creditRating.appUserID = jsonObj["AppUserID"] as String;
+    creditRating.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    creditRating.isArchived = jsonObj["IsArchived"] as String;
+    creditRating.isDeleted = jsonObj["IsDeleted"] as String;
+
+    creditRating.isDirty = "false";
+    creditRating.isDeleted1 = "false";
+    creditRating.upSyncMessage = "";
+    creditRating.downSyncMessage = "";
+    creditRating.sCreatedOn = jsonObj["CreatedOn"] as String;
+    creditRating.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    creditRating.createdByUser = jsonObj["CreatedByUser"] as String;
+    creditRating.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    creditRating.upSyncIndex = "0";
+    creditRating.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToCreditRating()", ex);
+  }
+  return creditRating;
+}
+Future<Currency> copyJsonDataToCurrency(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Currency currency, bool isForNew) async {
+  try {
+    currency.currencyID = jsonObj["CurrencyID"] as String;
+    currency.currencyCode = jsonObj["CurrencyCode"] as String;
+    currency.currencyName = jsonObj["CurrencyName"] as String;
+
+    if (jsonObj.containsKey("CountryID")) {
+      String countryId = jsonObj["CountryID"] as String;
+      countryId = countryId != null && countryId.isNotEmpty ? countryId : "-1";
+      Country country = await  CountryDataHandler.getMasterCountryRecord(dbHandler, countryId);
+      if (country != null) {
+        currency.countryID = country.id;
+      }
+    }
+
+    currency.standardCurrencyCode = jsonObj["StandardCurrencyCode"] as String;
+    currency.currencySymbol = jsonObj["CurrencySymbol"] as String;
+    currency.exchangeRate = jsonObj["ExchangeRate"] as String;
+    currency.isDefaultCurrency = jsonObj["IsDefaultCurrency"] as String;
+    currency.createdOn = jsonObj["CreatedOn"] as String;
+    currency.createdBy = jsonObj["CreatedBy"] as String;
+    currency.modifiedOn = jsonObj["ModifiedOn"] as String;
+    currency.modifiedBy = jsonObj["ModifiedBy"] as String;
+    currency.isActive = jsonObj["IsActive"] as String;
+    currency.uid = jsonObj["Uid"] as String;
+    currency.appUserID = jsonObj["AppUserID"] as String;
+    currency.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    currency.isArchived = jsonObj["IsArchived"] as String;
+    currency.isDeleted = jsonObj["IsDeleted"] as String;
+
+    currency.isDirty = "false";
+    currency.isDeleted1 = "false";
+    currency.upSyncMessage = "";
+    currency.downSyncMessage = "";
+    currency.sCreatedOn = jsonObj["CreatedOn"] as String;
+    currency.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    currency.createdByUser = jsonObj["CreatedByUser"] as String;
+    currency.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    currency.upSyncIndex = "0";
+    currency.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToCurrency()", ex);
+  }
+  return currency;
+}
+
+Future<CustomerMeeting> copyJsonDataToCustomerMeeting( DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, CustomerMeeting customerMeeting, bool isForNew) async {
+  try {
+    customerMeeting.customerMeetingID = jsonObj["CustomerMeetingID"] as String;
+    customerMeeting.customerMeetingCode = jsonObj["CustomerMeetingCode"] as String;
+    customerMeeting.customerMeetingTitle = jsonObj["CustomerMeetingTitle"] as String;
+
+    if (jsonObj.containsKey("ActivityID")) {
+      String activityId = jsonObj["ActivityID"] as String;
+      activityId = activityId != null && activityId.isNotEmpty ? activityId : "-1";
+      Activity? activity = await ActivityDataHandlerBase.GetMasterActivityRecord(dbHandler, activityId);
+      if (activity != null) {
+        customerMeeting.activityID = activity.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AccountID")) {
+      String accountId = jsonObj["AccountID"] as String;
+      accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
+      Account?account = await AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      if (account != null) {
+        customerMeeting.accountID = account.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContactID")) {
+      String contactId = jsonObj["ContactID"] as String;
+      contactId = contactId != null && contactId.isNotEmpty ? contactId : "-1";
+      Contact ?contact = await ContactHandlerDataBase.GetMasterContactRecord(dbHandler, contactId);
+      if (contact != null) {
+        customerMeeting.contactID = contact.id;
+      }
+    }
+
+    customerMeeting.customerMeetingDate = jsonObj["CustomerMeetingDate"] as String;
+    customerMeeting.punchInTime = jsonObj["PunchInTime"] as String;
+    customerMeeting.punchOutTime = jsonObj["PunchOutTime"] as String;
+    customerMeeting.punchInLocation = jsonObj["PunchInLocation"] as String;
+    customerMeeting.punchOutLocation = jsonObj["PunchOutLocation"] as String;
+    customerMeeting.remarks = jsonObj["Remarks"] as String;
+    customerMeeting.createdBy = jsonObj["CreatedBy"] as String;
+    customerMeeting.createdOn = jsonObj["CreatedOn"] as String;
+    customerMeeting.modifiedBy = jsonObj["ModifiedBy"] as String;
+    customerMeeting.modifiedOn = jsonObj["ModifiedOn"] as String;
+    customerMeeting.deviceIdentifier = jsonObj["DeviceIdentifier"] as String;
+    customerMeeting.referenceIdentifier = jsonObj["ReferenceIdentifier"] as String;
+    customerMeeting.isActive = jsonObj["IsActive"] as String;
+    customerMeeting.uid = jsonObj["Uid"] as String;
+    customerMeeting.appUserID = jsonObj["AppUserID"] as String;
+    customerMeeting.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    customerMeeting.isArchived = jsonObj["IsArchived"] as String;
+    customerMeeting.isDeleted = jsonObj["IsDeleted"] as String;
+
+    customerMeeting.isDirty = "false";
+    customerMeeting.isDeleted1 = "false";
+    customerMeeting.upSyncMessage = "";
+    customerMeeting.downSyncMessage = "";
+    customerMeeting.sCreatedOn = jsonObj["CreatedOn"] as String;
+    customerMeeting.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    customerMeeting.createdByUser = jsonObj["CreatedByUser"] as String;
+    customerMeeting.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    customerMeeting.upSyncIndex = "0";
+    customerMeeting.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToCustomerMeeting()", ex);
+  }
+  return customerMeeting;
+}
+Department copyJsonDataToDepartment(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Department department, bool isForNew) {
+  try {
+    department.departmentID = jsonObj["DepartmentID"] as String;
+    department.departmentCode = jsonObj["DepartmentCode"] as String;
+    department.departmentName = jsonObj["DepartmentName"] as String;
+    department.createdOn = jsonObj["CreatedOn"] as String;
+    department.createdBy = jsonObj["CreatedBy"] as String;
+    department.modifiedOn = jsonObj["ModifiedOn"] as String;
+    department.modifiedBy = jsonObj["ModifiedBy"] as String;
+    department.isActive = jsonObj["IsActive"] as String;
+    department.uid = jsonObj["Uid"] as String;
+    department.appUserID = jsonObj["AppUserID"] as String;
+    department.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    department.isArchived = jsonObj["IsArchived"] as String;
+    department.isDeleted = jsonObj["IsDeleted"] as String;
+
+    department.isDirty = "false";
+    department.isDeleted1 = "false";
+    department.upSyncMessage = "";
+    department.downSyncMessage = "";
+    department.sCreatedOn = jsonObj["CreatedOn"] as String;
+    department.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    department.createdByUser = jsonObj["CreatedByUser"] as String;
+    department.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    department.upSyncIndex = "0";
+    department.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToDepartment()", ex);
+  }
+  return department;
+}
+
+Designation copyJsonDataToDesignation(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Designation designation, bool isForNew) {
+  try {
+    designation.designationID = jsonObj["DesignationID"] as String;
+    designation.designationCode = jsonObj["DesignationCode"] as String;
+    designation.designationName = jsonObj["DesignationName"] as String;
+    designation.createdOn = jsonObj["CreatedOn"] as String;
+    designation.createdBy = jsonObj["CreatedBy"] as String;
+    designation.modifiedOn = jsonObj["ModifiedOn"] as String;
+    designation.modifiedBy = jsonObj["ModifiedBy"] as String;
+    designation.isActive = jsonObj["IsActive"] as String;
+    designation.uid = jsonObj["Uid"] as String;
+    designation.appUserID = jsonObj["AppUserID"] as String;
+    designation.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    designation.isArchived = jsonObj["IsArchived"] as String;
+    designation.isDeleted = jsonObj["IsDeleted"] as String;
+
+    designation.isDirty = "false";
+    designation.isDeleted1 = "false";
+    designation.upSyncMessage = "";
+    designation.downSyncMessage = "";
+    designation.sCreatedOn = jsonObj["CreatedOn"] as String;
+    designation.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    designation.createdByUser = jsonObj["CreatedByUser"] as String;
+    designation.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    designation.upSyncIndex = "0";
+    designation.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToDesignation()", ex);
+  }
+  return designation;
+}
+
+EmailManualTemplate copyJsonDataToEmailManualTemplate(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, EmailManualTemplate emailManualTemplate, bool isForNew) {
+  try {
+    emailManualTemplate.emailManualTemplateID = jsonObj["EmailManualTemplateID"] as String;
+    emailManualTemplate.emailManualTemplateCode = jsonObj["EmailManualTemplateCode"] as String;
+    emailManualTemplate.emailManualTemplateName = jsonObj["EmailManualTemplateName"] as String;
+    emailManualTemplate.emailTemplateType = jsonObj["EmailTemplateType"] as String;
+    emailManualTemplate.subject = jsonObj["Subject"] as String;
+    emailManualTemplate.mailBody = jsonObj["MailBody"] as String;
+    emailManualTemplate.fromEmail = jsonObj["FromEmail"] as String;
+    emailManualTemplate.toEmail = jsonObj["ToEmail"] as String;
+    emailManualTemplate.ccEmail = jsonObj["CcEmail"] as String;
+    emailManualTemplate.emailType = jsonObj["EMailType"] as String;
+    emailManualTemplate.isSystemDefined = jsonObj["IsSystemDefined"] as String;
+    emailManualTemplate.createdOn = jsonObj["CreatedOn"] as String;
+    emailManualTemplate.createdBy = jsonObj["CreatedBy"] as String;
+    emailManualTemplate.modifiedOn = jsonObj["ModifiedOn"] as String;
+    emailManualTemplate.modifiedBy = jsonObj["ModifiedBy"] as String;
+    emailManualTemplate.isActive = jsonObj["IsActive"] as String;
+    emailManualTemplate.uid = jsonObj["Uid"] as String;
+    emailManualTemplate.appUserID = jsonObj["AppUserID"] as String;
+    emailManualTemplate.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    emailManualTemplate.isDeleted = jsonObj["IsDeleted"] as String;
+
+    emailManualTemplate.isDirty = "false";
+    emailManualTemplate.isDeleted1 = "false";
+    emailManualTemplate.upSyncMessage = "";
+    emailManualTemplate.downSyncMessage = "";
+    emailManualTemplate.sCreatedOn = jsonObj["CreatedOn"] as String;
+    emailManualTemplate.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    emailManualTemplate.createdByUser = jsonObj["CreatedByUser"] as String;
+    emailManualTemplate.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    emailManualTemplate.upSyncIndex = "0";
+    emailManualTemplate.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToEmailManualTemplate()", ex);
+  }
+  return emailManualTemplate;
+}
+
+FieldAttendance copyJsonDataToFieldAttendance(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, FieldAttendance fieldAttendance, bool isForNew) {
+  try {
+    fieldAttendance.fieldAttendanceID = jsonObj["FieldAttendanceID"] as String;
+    fieldAttendance.fieldAttendanceCode = jsonObj["FieldAttendanceCode"] as String;
+    fieldAttendance.fieldAttendanceTitle = jsonObj["FieldAttendanceTitle"] as String;
+    fieldAttendance.fieldAttendanceDate = jsonObj["FieldAttendanceDate"] as String;
+    if (isForNew) {
+      fieldAttendance.punchInTime = jsonObj["PunchInTime"] as String;
+      fieldAttendance.punchOutTime = jsonObj["PunchOutTime"] as String;
+      fieldAttendance.punchInLocation = jsonObj["PunchInLocation"] as String;
+      fieldAttendance.userSpecifiedPunchInLocation = jsonObj["UserSpecifiedPunchInLocation"] as String;
+      fieldAttendance.punchOutLocation = jsonObj["PunchOutLocation"] as String;
+      fieldAttendance.userSpecifiedPunchOutLocation = jsonObj["UserSpecifiedPunchOutLocation"] as String;
+    }
+    fieldAttendance.remarks = jsonObj["Remarks"] as String;
+    fieldAttendance.createdBy = jsonObj["CreatedBy"] as String;
+    fieldAttendance.createdOn = jsonObj["CreatedOn"] as String;
+    fieldAttendance.modifiedBy = jsonObj["ModifiedBy"] as String;
+    fieldAttendance.modifiedOn = jsonObj["ModifiedOn"] as String;
+    fieldAttendance.deviceIdentifier = jsonObj["DeviceIdentifier"] as String;
+    fieldAttendance.referenceIdentifier = jsonObj["ReferenceIdentifier"] as String;
+    fieldAttendance.isActive = jsonObj["IsActive"] as String;
+    fieldAttendance.uid = jsonObj["Uid"] as String;
+    fieldAttendance.appUserID = jsonObj["AppUserID"] as String;
+    fieldAttendance.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    fieldAttendance.isArchived = jsonObj["IsArchived"] as String;
+    fieldAttendance.isDeleted = jsonObj["IsDeleted"] as String;
+
+    fieldAttendance.isDirty = "false";
+    fieldAttendance.isDeleted1 = "false";
+    fieldAttendance.upSyncMessage = "";
+    fieldAttendance.downSyncMessage = "";
+    fieldAttendance.sCreatedOn = jsonObj["CreatedOn"] as String;
+    fieldAttendance.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    fieldAttendance.createdByUser = jsonObj["CreatedByUser"] as String;
+    fieldAttendance.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    fieldAttendance.upSyncIndex = "0";
+    fieldAttendance.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFieldAttendance()", ex);
+  }
+  return fieldAttendance;
+}
+
+ExpenseType copyJsonDataToExpenseType(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ExpenseType expenseType, bool isForNew) {
+  try {
+    expenseType.expenseTypeID = jsonObj["ExpenseTypeID"] as String;
+    expenseType.expenseTypeCode = jsonObj["ExpenseTypeCode"] as String;
+    expenseType.expenseTypeName = jsonObj["ExpenseTypeName"] as String;
+    expenseType.isTravelRequired = jsonObj["IsTravelRequired"] as String;
+    expenseType.calculateDistanceTravelled = jsonObj["CalculateDistanceTravelled"] as String;
+    expenseType.createdOn = jsonObj["CreatedOn"] as String;
+    expenseType.createdBy = jsonObj["CreatedBy"] as String;
+    expenseType.modifiedOn = jsonObj["ModifiedOn"] as String;
+    expenseType.modifiedBy = jsonObj["ModifiedBy"] as String;
+    expenseType.isActive = jsonObj["IsActive"] as String;
+    expenseType.uid = jsonObj["Uid"] as String;
+    expenseType.appUserID = jsonObj["AppUserID"] as String;
+    expenseType.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    expenseType.isArchived = jsonObj["IsArchived"] as String;
+    expenseType.isDeleted = jsonObj["IsDeleted"] as String;
+
+    expenseType.isDirty = "false";
+    expenseType.isDeleted1 = "false";
+    expenseType.upSyncMessage = "";
+    expenseType.downSyncMessage = "";
+    expenseType.sCreatedOn = jsonObj["CreatedOn"] as String;
+    expenseType.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    expenseType.createdByUser = jsonObj["CreatedByUser"] as String;
+    expenseType.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    expenseType.upSyncIndex = "0";
+    expenseType.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToExpenseType()", ex);
+  }
+  return expenseType;
+}
+
+FinancialInstitution copyJsonDataToFinancialInstitution(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, FinancialInstitution financialInstitution, bool isForNew) {
+  try {
+    financialInstitution.financialInstitutionID = jsonObj["FinancialInstitutionID"] as String;
+    financialInstitution.financialInstitutionCode = jsonObj["FinancialInstitutionCode"] as String;
+    financialInstitution.financialInstitutionName = jsonObj["FinancialInstitutionName"] as String;
+    financialInstitution.description = jsonObj["Description"] as String;
+    financialInstitution.createdOn = jsonObj["CreatedOn"] as String;
+    financialInstitution.createdBy = jsonObj["CreatedBy"] as String;
+    financialInstitution.modifiedOn = jsonObj["ModifiedOn"] as String;
+    financialInstitution.modifiedBy = jsonObj["ModifiedBy"] as String;
+    financialInstitution.isActive = jsonObj["IsActive"] as String;
+    financialInstitution.uid = jsonObj["Uid"] as String;
+    financialInstitution.appUserID = jsonObj["AppUserID"] as String;
+    financialInstitution.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    financialInstitution.isArchived = jsonObj["IsArchived"] as String;
+    financialInstitution.isDeleted = jsonObj["IsDeleted"] as String;
+
+    financialInstitution.isDirty = "false";
+    financialInstitution.isDeleted1 = "false";
+    financialInstitution.upSyncMessage = "";
+    financialInstitution.downSyncMessage = "";
+    financialInstitution.sCreatedOn = jsonObj["CreatedOn"] as String;
+    financialInstitution.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    financialInstitution.createdByUser = jsonObj["CreatedByUser"] as String;
+    financialInstitution.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    financialInstitution.upSyncIndex = "0";
+    financialInstitution.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFinancialInstitution()", ex);
+  }
+  return financialInstitution;
+}
+FinancialYear copyJsonDataToFinancialYear(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, FinancialYear financialYear, bool isForNew) {
+  try {
+    financialYear.financialYearID = jsonObj["FinancialYearID"] as String;
+    financialYear.financialYearCode = jsonObj["FinancialYearCode"] as String;
+    financialYear.financialYearName = jsonObj["FinancialYearName"] as String;
+    financialYear.actualFinancialYear = jsonObj["ActualFinancialYear"] as String;
+    financialYear.financialYearStartDate = jsonObj["FinancialYearStartDate"] as String;
+    financialYear.financialYearEndDate = jsonObj["FinancialYearEndDate"] as String;
+    financialYear.createdBy = jsonObj["CreatedBy"] as String;
+    financialYear.createdOn = jsonObj["CreatedOn"] as String;
+    financialYear.modifiedBy = jsonObj["ModifiedBy"] as String;
+    financialYear.modifiedOn = jsonObj["ModifiedOn"] as String;
+    financialYear.isActive = jsonObj["IsActive"] as String;
+    financialYear.uid = jsonObj["Uid"] as String;
+    financialYear.appUserID = jsonObj["AppUserID"] as String;
+    financialYear.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    financialYear.isArchived = jsonObj["IsArchived"] as String;
+    financialYear.isDeleted = jsonObj["IsDeleted"] as String;
+
+    financialYear.isDirty = "false";
+    financialYear.isDeleted1 = "false";
+    financialYear.upSyncMessage = "";
+    financialYear.downSyncMessage = "";
+    financialYear.sCreatedOn = jsonObj["CreatedOn"] as String;
+    financialYear.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    financialYear.createdByUser = jsonObj["CreatedByUser"] as String;
+    financialYear.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    financialYear.upSyncIndex = "0";
+    financialYear.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFinancialYear()", ex);
+  }
+  return financialYear;
+}
+
+static Future<Form> copyJsonDataToForm(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Form form, bool isForNew) async {
+  try {
+    form.formID = jsonObj["FormID"] as String;
+    form.formCode = jsonObj["FormCode"] as String;
+    form.formName = jsonObj["FormName"] as String;
+
+    if (jsonObj.containsKey("BusinessFeatureID")) {
+      String businessFeatureId = jsonObj["BusinessFeatureID"] as String;
+      businessFeatureId = businessFeatureId != null && businessFeatureId.isNotEmpty ? businessFeatureId : "-1";
+      BusinessFeature? businessFeature = await BusinessFeatureDataHandler.getMasterBusinessFeatureRecord(dbHandler,  businessFeatureId);
+      if (businessFeature != null) {
+        form.businessFeatureID = businessFeature.id;
+      }
+    }
+
+    form.formType = jsonObj["FormType"] as String;
+    form.linkTo = jsonObj["LinkTo"] as String;
+    form.forStatus = jsonObj["ForStatus"] as String;
+    form.sortOrder = jsonObj["SortOrder"] as String;
+    form.isMandatory = jsonObj["IsMandatory"] as String;
+    form.displayInApp = jsonObj["DisplayInApp"] as String;
+    form.pdfSize = jsonObj["PDFSize"] as String;
+    form.dataScriptWeb = jsonObj["DataScriptWeb"] as String;
+    form.dataScriptApp = jsonObj["DataScriptApp"] as String;
+
+    if (jsonObj.containsKey("ParentFormID")) {
+      String formId = jsonObj["ParentFormID"] as String;
+      formId = formId != null && formId.isNotEmpty ? formId : "-1";
+      Form form1 = await FormDataHandlerBase.GetMasterFormRecord(dbHandler, formId);
+      if (form1 != null) {
+        form.parentFormID = form1.id;
+      }
+    }
+
+    if (jsonObj.containsKey("EmailManualTemplateID")) {
+      String emailManualTemplateId = jsonObj["EmailManualTemplateID"] as String;
+      emailManualTemplateId = emailManualTemplateId != null && emailManualTemplateId.isNotEmpty ? emailManualTemplateId : "-1";
+      EmailManualTemplate? emailManualTemplate = await EmailManualTemplateDataHandler.getMasterEmailManualTemplateRecord(dbHandler,  emailManualTemplateId);
+      if (emailManualTemplate != null) {
+        form.emailManualTemplateID = emailManualTemplate.id;
+      }
+    }
+
+    form.emailAutomatedTemplateID = jsonObj["EmailAutomatedTemplateID"] as String;
+    form.createdOn = jsonObj["CreatedOn"] as String;
+    form.createdBy = jsonObj["CreatedBy"] as String;
+    form.modifiedOn = jsonObj["ModifiedOn"] as String;
+    form.modifiedBy = jsonObj["ModifiedBy"] as String;
+    form.isActive = jsonObj["IsActive"] as String;
+    form.uid = jsonObj["Uid"] as String;
+    form.appUserID = jsonObj["AppUserID"] as String;
+    form.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    form.isArchived = jsonObj["IsArchived"] as String;
+    form.isDeleted = jsonObj["IsDeleted"] as String;
+
+    form.isDirty = "false";
+    form.isDeleted1 = "false";
+    form.upSyncMessage = "";
+    form.downSyncMessage = "";
+    form.sCreatedOn = jsonObj["CreatedOn"] as String;
+    form.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    form.createdByUser = jsonObj["CreatedByUser"] as String;
+    form.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    form.upSyncIndex = "0";
+    form.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToForm()", ex);
+  }
+  return form;
+}
+
+FormCell copyJsonDataToFormCell(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, FormCell formCell, bool isForNew) {
+  try {
+    formCell.formCellID = jsonObj["FormCellID"] as String;
+    formCell.formCellCode = jsonObj["FormCellCode"] as String;
+    formCell.formCellName = jsonObj["FormCellName"] as String;
+
+    if (jsonObj.containsKey("FormSectionID")) {
+      String formSectionId = jsonObj["FormSectionID"] as String;
+      formSectionId = formSectionId != null && formSectionId.isNotEmpty ? formSectionId : "-1";
+      FormSection formSection = FormSectionDataHandler.getMasterFormSectionRecord(dbHandler, formSectionId);
+      if (formSection != null) {
+        formCell.formSectionID = formSection.id;
+      }
+    }
+
+    formCell.rowIndex = jsonObj["RowIndex"] as String;
+    formCell.columnIndex = jsonObj["ColumnIndex"] as String;
+    formCell.rowSpan = jsonObj["RowSpan"] as String;
+    formCell.columnSpan = jsonObj["ColumnSpan"] as String;
+    formCell.alignment = jsonObj["Alignment"] as String;
+    formCell.verticalAlignment = jsonObj["VerticalAlignment"] as String;
+    formCell.createdOn = jsonObj["CreatedOn"] as String;
+    formCell.createdBy = jsonObj["CreatedBy"] as String;
+    formCell.modifiedOn = jsonObj["ModifiedOn"] as String;
+    formCell.modifiedBy = jsonObj["ModifiedBy"] as String;
+    formCell.isActive = jsonObj["IsActive"] as String;
+    formCell.uid = jsonObj["Uid"] as String;
+    formCell.referenceIdentifier = jsonObj["ReferenceIdentifier"] as String;
+    formCell.appUserID = jsonObj["AppUserID"] as String;
+    formCell.appUserGroupID = jsonObj["AppUserGroupID"] as String;
+    formCell.isArchived = jsonObj["IsArchived"] as String;
+    formCell.isDeleted = jsonObj["IsDeleted"] as String;
+
+    formCell.isDirty = "false";
+    formCell.isDeleted1 = "false";
+    formCell.upSyncMessage = "";
+    formCell.downSyncMessage = "";
+    formCell.sCreatedOn = jsonObj["CreatedOn"] as String;
+    formCell.sModifiedOn = jsonObj["ModifiedOn"] as String;
+    formCell.createdByUser = jsonObj["CreatedByUser"] as String;
+    formCell.modifiedByUser = jsonObj["ModifiedByUser"] as String;
+    formCell.upSyncIndex = "0";
+    formCell.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFormCell()", );
+  }
+  return formCell;
+}
+
+Future<FormCellElement> copyJsonDataToFormCellElement(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    FormCellElement formCellElement,
+    bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("FormCellElementID")) {
+      formCellElement.formCellElementID = jsonObj["FormCellElementID"];
+    }
+    if (jsonObj.containsKey("FormCellElementCode")) {
+      formCellElement.formCellElementCode = jsonObj["FormCellElementCode"];
+    }
+    if (jsonObj.containsKey("FormCellElementName")) {
+      formCellElement.formCellElementName = jsonObj["FormCellElementName"];
+    }
+
+    if (jsonObj.containsKey("FormCellID")) {
+      String formCellId = jsonObj["FormCellID"];
+      formCellId = formCellId != null && formCellId != "" ? formCellId : "-1";
+      FormCell formCell =
+          await FormCellDataHandler.getMasterFormCellRecord(dbHandler, formCellId);
+      if (formCell != null) {
+        formCellElement.formCellID = formCell.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ControlName")) {
+      formCellElement.controlName = jsonObj["ControlName"];
+    }
+    if (jsonObj.containsKey("ControlType")) {
+      formCellElement.controlType = jsonObj["ControlType"];
+    }
+    if (jsonObj.containsKey("ControlLabel")) {
+      formCellElement.controlLabel = jsonObj["ControlLabel"];
+    }
+    if (jsonObj.containsKey("ShowControlLabelIn")) {
+      formCellElement.showControlLabelIn = jsonObj["ShowControlLabelIn"];
+    }
+    if (jsonObj.containsKey("CheckBoxLabelPosition")) {
+      formCellElement.checkBoxLabelPosition = jsonObj["CheckBoxLabelPosition"];
+    }
+    if (jsonObj.containsKey("ControlValues")) {
+      formCellElement.controlValues = jsonObj["ControlValues"];
+    }
+    if (jsonObj.containsKey("DefaultValue")) {
+      formCellElement.defaultValue = jsonObj["DefaultValue"];
+    }
+    if (jsonObj.containsKey("Height")) {
+      formCellElement.height = jsonObj["Height"];
+    }
+    if (jsonObj.containsKey("Width")) {
+      formCellElement.width = jsonObj["Width"];
+    }
+    if (jsonObj.containsKey("IsRequired")) {
+      formCellElement.isRequired = jsonObj["IsRequired"];
+    }
+    if (jsonObj.containsKey("IsPlaceHolder")) {
+      formCellElement.isPlaceHolder = jsonObj["IsPlaceHolder"];
+    }
+    if (jsonObj.containsKey("PlaceHolderWidth")) {
+      formCellElement.placeHolderWidth = jsonObj["PlaceHolderWidth"];
+    }
+    if (jsonObj.containsKey("DisplayInApp")) {
+      formCellElement.displayInApp = jsonObj["DisplayInApp"];
+    }
+    if (jsonObj.containsKey("DisplayInReport")) {
+      formCellElement.displayInReport = jsonObj["DisplayInReport"];
+    }
+    if (jsonObj.containsKey("HorizontalAlignment")) {
+      formCellElement.horizontalAlignment = jsonObj["HorizontalAlignment"];
+    }
+    if (jsonObj.containsKey("VerticalAlignment")) {
+      formCellElement.verticalAlignment = jsonObj["VerticalAlignment"];
+    }
+    if (jsonObj.containsKey("FontSize")) {
+      formCellElement.fontSize = jsonObj["FontSize"];
+    }
+    if (jsonObj.containsKey("FontWeight")) {
+      formCellElement.fontWeight = jsonObj["FontWeight"];
+    }
+    if (jsonObj.containsKey("ForeColor")) {
+      formCellElement.foreColor = jsonObj["ForeColor"];
+    }
+    if (jsonObj.containsKey("BackgroundColor")) {
+      formCellElement.backgroundColor = jsonObj["BackgroundColor"];
+    }
+    if (jsonObj.containsKey("SequentialOrder")) {
+      formCellElement.sequentialOrder = jsonObj["SequentialOrder"];
+    }
+    if (jsonObj.containsKey("StartOnNewLine")) {
+      formCellElement.startOnNewLine = jsonObj["StartOnNewLine"];
+    }
+    if (jsonObj.containsKey("LineBreakAfter")) {
+      formCellElement.lineBreakAfter = jsonObj["LineBreakAfter"];
+    }
+    if (jsonObj.containsKey("PaddingLeft")) {
+      formCellElement.paddingLeft = jsonObj["PaddingLeft"];
+    }
+    if (jsonObj.containsKey("PaddingRight")) {
+      formCellElement.paddingRight = jsonObj["PaddingRight"];
+    }
+    if (jsonObj.containsKey("NeedAutoNumber")) {
+      formCellElement.needAutoNumber = jsonObj["NeedAutoNumber"];
+    }
+    if (jsonObj.containsKey("AutoNumberPrefix")) {
+      formCellElement.autoNumberPrefix = jsonObj["AutoNumberPrefix"];
+    }
+    if (jsonObj.containsKey("AutoNumber")) {
+      formCellElement.autoNumber = jsonObj["AutoNumber"];
+    }
+    if (jsonObj.containsKey("IsDisabled")) {
+      formCellElement.isDisabled = jsonObj["IsDisabled"];
+    }
+
+    if (jsonObj.containsKey("AttributeID")) {
+      String attributeId = jsonObj["AttributeID"];
+      attributeId = attributeId != null && attributeId != "" ? attributeId : "-1";
+      Attribute attribute =
+          await AttributeDataHandler.getMasterAttributeRecord(dbHandler, attributeId);
+      if (attribute != null) {
+        formCellElement.attributeID = attribute.id;
+      }
+    }
+
+    if (jsonObj.containsKey("CanTriggerEvent")) {
+      formCellElement.canTriggerEvent = jsonObj["CanTriggerEvent"];
+    }
+    if (jsonObj.containsKey("DataScriptApp1")) {
+      formCellElement.dataScriptApp1 = jsonObj["DataScriptApp1"];
+    }
+    if (jsonObj.containsKey("DataScriptApp2")) {
+      formCellElement.dataScriptApp2 = jsonObj["DataScriptApp2"];
+    }
+    if (jsonObj.containsKey("DataScriptWeb1")) {
+      formCellElement.dataScriptWeb1 = jsonObj["DataScriptWeb1"];
+    }
+    if (jsonObj.containsKey("DataScriptWeb2")) {
+      formCellElement.dataScriptWeb2 = jsonObj["DataScriptWeb2"];
+    }
+    if (jsonObj.containsKey("EventClassName")) {
+      formCellElement.eventClassName = jsonObj["EventClassName"];
+    }
+    if (jsonObj.containsKey("IsTotalValue")) {
+      formCellElement.isTotalValue = jsonObj["IsTotalValue"];
+    }
+    if (jsonObj.containsKey("SignatureType")) {
+      formCellElement.signatureType = jsonObj["SignatureType"];
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      formCellElement.createdOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      formCellElement.createdBy = jsonObj["CreatedBy"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      formCellElement.modifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      formCellElement.modifiedBy = jsonObj["ModifiedBy"];
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      formCellElement.isActive = jsonObj["IsActive"];
+    }
+    if (jsonObj.containsKey("Uid")) {
+      formCellElement.uid = jsonObj["Uid"];
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      formCellElement.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      formCellElement.appUserID = jsonObj["AppUserID"];
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      formCellElement.appUserGroupID = jsonObj["AppUserGroupID"];
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      formCellElement.isArchived = jsonObj["IsArchived"];
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      formCellElement.isDeleted = jsonObj["IsDeleted"];
+    }
+
+    formCellElement.isDirty = "false";
+    formCellElement.isDeleted1 = "false";
+    formCellElement.upSyncMessage = "";
+    formCellElement.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      formCellElement.sCreatedOn = jsonObj["CreatedOn"];
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      formCellElement.sModifiedOn = jsonObj["ModifiedOn"];
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      formCellElement.createdByUser = jsonObj["CreatedByUser"];
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      formCellElement.modifiedByUser = jsonObj["ModifiedByUser"];
+    }
+    formCellElement.upSyncIndex = "0";
+    formCellElement.ownerUserID = Globals.AppUserID.toString();
+
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFormCellElement()", ex);
+  }
+  return formCellElement;
+}
+
+Future<FormSection> copyJsonDataToFormSection(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, FormSection formSection, bool isForNew) async {
+  try {
+    if (jsonObj.containsKey("FormSectionID")) {
+      formSection.formSectionID = jsonObj["FormSectionID"].toString();
+    }
+    if (jsonObj.containsKey("FormSectionCode")) {
+      formSection.formSectionCode = jsonObj["FormSectionCode"].toString();
+    }
+    if (jsonObj.containsKey("FormSectionName")) {
+      formSection.formSectionName = jsonObj["FormSectionName"].toString();
+    }
+
+    if (jsonObj.containsKey("FormID")) {
+      String formId = jsonObj["FormID"].toString();
+      formId = (formId != null && formId.isNotEmpty) ? formId : "-1";
+      Form? form = await  FormDataHandlerBase.GetMasterFormRecord(dbHandler, formId);
+      if (form != null) {
+        formSection.formID = form.id;
+      }
+    }
+
+    if (jsonObj.containsKey("NumberOfRows")) {
+      formSection.numberOfRows = jsonObj["NumberOfRows"].toString();
+    }
+    if (jsonObj.containsKey("NumberOfColumns")) {
+      formSection.numberOfColumns = jsonObj["NumberOfColumns"].toString();
+    }
+    if (jsonObj.containsKey("ColumnWidths")) {
+      formSection.columnWidths = jsonObj["ColumnWidths"].toString();
+    }
+    if (jsonObj.containsKey("SectionStyle")) {
+      formSection.sectionStyle = jsonObj["SectionStyle"].toString();
+    }
+    if (jsonObj.containsKey("ShowHeaderIn")) {
+      formSection.showHeaderIn = jsonObj["ShowHeaderIn"].toString();
+    }
+    if (jsonObj.containsKey("SectionType")) {
+      formSection.sectionType = jsonObj["SectionType"].toString();
+    }
+    if (jsonObj.containsKey("SectionOrder")) {
+      formSection.sectionOrder = jsonObj["SectionOrder"].toString();
+    }
+    if (jsonObj.containsKey("BackgroundColor")) {
+      formSection.backgroundColor = jsonObj["BackgroundColor"].toString();
+    }
+    if (jsonObj.containsKey("DisplayInApp")) {
+      formSection.displayInApp = jsonObj["DisplayInApp"].toString();
+    }
+    if (jsonObj.containsKey("DisplayInReport")) {
+      formSection.displayInReport = jsonObj["DisplayInReport"].toString();
+    }
+    if (jsonObj.containsKey("IsRepeatable")) {
+      formSection.isRepeatable = jsonObj["IsRepeatable"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      formSection.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      formSection.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      formSection.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      formSection.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      formSection.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      formSection.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      formSection.referenceIdentifier = jsonObj["ReferenceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      formSection.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      formSection.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      formSection.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      formSection.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    formSection.isDirty = "false";
+    formSection.isDeleted1 = "false";
+    formSection.upSyncMessage = "";
+    formSection.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      formSection.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      formSection.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      formSection.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      formSection.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    formSection.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID"))
+      formSection.ownerUserID = jsonObj["AppUserID"].toString();*/
+    formSection.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToFormSection()", ex);
+  }
+  return formSection;
+}
+
+
+Industry copyJsonDataToIndustry(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Industry industry, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("IndustryID")) {
+      industry.industryID = jsonObj["IndustryID"].toString();
+    }
+    if (jsonObj.containsKey("IndustryCode")) {
+      industry.industryCode = jsonObj["IndustryCode"].toString();
+    }
+    if (jsonObj.containsKey("IndustryName")) {
+      industry.industryName = jsonObj["IndustryName"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      industry.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      industry.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      industry.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      industry.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      industry.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      industry.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      industry.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      industry.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      industry.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      industry.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    industry.isDirty = "false";
+    industry.isDeleted1 = "false";
+    industry.upSyncMessage = "";
+    industry.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      industry.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      industry.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      industry.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      industry.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    industry.upSyncIndex = "0";
+    /*if (jsonObj.containsKey("AppUserID"))
+      industry.ownerUserID = jsonObj["AppUserID"].toString();*/
+    industry.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToIndustry()", ex);
+  }
+  return industry;
+}
+
+LeadSource copyJsonDataToLeadSource(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, LeadSource leadSource, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("LeadSourceID")) {
+      leadSource.leadSourceID = jsonObj["LeadSourceID"].toString();
+    }
+    if (jsonObj.containsKey("LeadSourceCode")) {
+      leadSource.leadSourceCode = jsonObj["LeadSourceCode"].toString();
+    }
+    if (jsonObj.containsKey("LeadSourceName")) {
+      leadSource.leadSourceName = jsonObj["LeadSourceName"].toString();
+    }
+    if (jsonObj.containsKey("Description")) {
+      leadSource.description = jsonObj["Description"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      leadSource.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      leadSource.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      leadSource.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      leadSource.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      leadSource.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      leadSource.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      leadSource.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      leadSource.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      leadSource.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    leadSource.isDirty = "false";
+    leadSource.isDeleted1 = "false";
+    leadSource.upSyncMessage = "";
+    leadSource.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      leadSource.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      leadSource.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      leadSource.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      leadSource.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    leadSource.upSyncIndex = "0";
+    leadSource.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToLeadSource()", ex);
+  }
+  return leadSource;
+}
+
+Location copyJsonDataToLocation(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Location location, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("LocationID")) {
+      location.locationID = jsonObj["LocationID"].toString();
+    }
+    if (jsonObj.containsKey("LocationName")) {
+      location.locationName = jsonObj["LocationName"].toString();
+    }
+    if (jsonObj.containsKey("City")) {
+      location.city = jsonObj["City"].toString();
+    }
+    if (jsonObj.containsKey("District")) {
+      location.district = jsonObj["District"].toString();
+    }
+    if (jsonObj.containsKey("Taluk")) {
+      location.taluk = jsonObj["Taluk"].toString();
+    }
+    if (jsonObj.containsKey("State")) {
+      location.state = jsonObj["State"].toString();
+    }
+    if (jsonObj.containsKey("PINCode")) {
+      location.pinCode = jsonObj["PINCode"].toString();
+    }
+    if (jsonObj.containsKey("Country")) {
+      location.country = jsonObj["Country"].toString();
+    }
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToLocation()", ex);
+  }
+  return location;
+}
+
+ModeOfTravel copyJsonDataToModeOfTravel(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, ModeOfTravel modeOfTravel, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("ModeOfTravelID")) {
+      modeOfTravel.modeOfTravelID = jsonObj["ModeOfTravelID"].toString();
+    }
+    if (jsonObj.containsKey("ModeOfTravelCode")) {
+      modeOfTravel.modeOfTravelCode = jsonObj["ModeOfTravelCode"].toString();
+    }
+    if (jsonObj.containsKey("ModeOfTravelName")) {
+      modeOfTravel.modeOfTravelName = jsonObj["ModeOfTravelName"].toString();
+    }
+    if (jsonObj.containsKey("RatePerKilometer")) {
+      modeOfTravel.ratePerKilometer = jsonObj["RatePerKilometer"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      modeOfTravel.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      modeOfTravel.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      modeOfTravel.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      modeOfTravel.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      modeOfTravel.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      modeOfTravel.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      modeOfTravel.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      modeOfTravel.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      modeOfTravel.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      modeOfTravel.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    modeOfTravel.isDirty = "false";
+    modeOfTravel.isDeleted1 = "false";
+    modeOfTravel.upSyncMessage = "";
+    modeOfTravel.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      modeOfTravel.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      modeOfTravel.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      modeOfTravel.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      modeOfTravel.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    modeOfTravel.upSyncIndex = "0";
+    modeOfTravel.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToModeOfTravel()", ex);
+  }
+  return modeOfTravel;
+}
+
+Future<Note> copyJsonDataToNote(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Note note, bool isForNew) async {
+  try {
+    if (jsonObj.containsKey("NoteID")) {
+      note.noteID = jsonObj["NoteID"].toString();
+    }
+    if (jsonObj.containsKey("NoteCode")) {
+      note.noteCode = jsonObj["NoteCode"].toString();
+    }
+
+    if (jsonObj.containsKey("AccountID")) {
+      String accountId = jsonObj["AccountID"].toString();
+      accountId = (accountId != null && accountId.isNotEmpty) ? accountId : "-1";
+      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      if (account != null) {
+        note.accountID = account.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContactID")) {
+      String contactId = jsonObj["ContactID"].toString();
+      contactId = (contactId != null && contactId.isNotEmpty) ? contactId : "-1";
+      Contact? contact = await  ContactHandlerDataBase.GetMasterContactRecord(dbHandler, contactId);
+      if (contact != null) {
+        note.contactID = contact.id;
+      }
+    }
+
+    if (jsonObj.containsKey("OpportunityID")) {
+      String opportunityId = jsonObj["OpportunityID"].toString();
+      opportunityId = (opportunityId != null && opportunityId.isNotEmpty) ? opportunityId : "-1";
+      Opportunity? opportunity =await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+      if (opportunity != null) {
+        note.opportunityID = opportunity.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ActivityID")) {
+      String activityId = jsonObj["ActivityID"].toString();
+      activityId = (activityId != null && activityId.isNotEmpty) ? activityId : "-1";
+      Activity? activity =await ActivityDataHandlerBase.GetMasterActivityRecord(dbHandler, activityId);
+      if (activity != null) {
+        note.activityID = activity.id;
+      }
+    }
+
+    if (jsonObj.containsKey("OpportunityStageID")) {
+      String opportunityStageId = jsonObj["OpportunityStageID"].toString();
+      opportunityStageId = (opportunityStageId != null && opportunityStageId.isNotEmpty) ? opportunityStageId : "-1";
+      OpportunityStage ?opportunityStage = await  OpportunityStageDataHandlerBase.GetMasterOpportunityStageRecord(dbHandler, opportunityStageId);
+      if (opportunityStage != null) {
+        note.opportunityStageID = opportunityStage.id;
+      }
+    }
+
+    if (jsonObj.containsKey("IsPersonal")) {
+      note.isPersonal = jsonObj["IsPersonal"].toString();
+    }
+    if (jsonObj.containsKey("NoteTitle")) {
+      note.noteTitle = jsonObj["NoteTitle"].toString();
+    }
+    if (jsonObj.containsKey("NoteDate")) {
+      note.noteDate = jsonObj["NoteDate"].toString();
+    }
+    if (jsonObj.containsKey("NoteContent")) {
+      note.noteContent = jsonObj["NoteContent"].toString();
+    }
+    if (jsonObj.containsKey("Tags")) {
+      note.tags = jsonObj["Tags"].toString();
+    }
+    if (jsonObj.containsKey("FreeTextField1")) {
+      note.freeTextField1 = jsonObj["FreeTextField1"].toString();
+    }
+    if (jsonObj.containsKey("FreeTextField2")) {
+      note.freeTextField2 = jsonObj["FreeTextField2"].toString();
+    }
+    if (jsonObj.containsKey("FreeTextField3")) {
+      note.freeTextField3 = jsonObj["FreeTextField3"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      note.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      note.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      note.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      note.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("DeviceIdentifier")) {
+      note.deviceIdentifier = jsonObj["DeviceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      note.referenceIdentifier = jsonObj["ReferenceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      note.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      note.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      note.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      note.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      note.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      note.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+    note.isDirty = "false";
+    note.isDeleted1 = "false";
+    note.upSyncMessage = "";
+    note.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      note.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      note.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      note.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      note.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    note.upSyncIndex = "0";
+    note.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToNote()", ex);
+  }
+  return note;
+}
+NoteMedia copyJsonDataToNoteMedia(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, NoteMedia noteMedia, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("NoteMediaID")) {
+      noteMedia.noteMediaID = jsonObj["NoteMediaID"].toString();
+    }
+    if (jsonObj.containsKey("NoteMediaCode")) {
+      noteMedia.noteMediaCode = jsonObj["NoteMediaCode"].toString();
+    }
+    if (jsonObj.containsKey("NoteMediaName")) {
+      noteMedia.noteMediaName = jsonObj["NoteMediaName"].toString();
+    }
+
+    if (jsonObj.containsKey("NoteID")) {
+      String noteId = jsonObj["NoteID"].toString();
+      noteId = (noteId != null && noteId.isNotEmpty) ? noteId : "-1";
+      Note note = NoteDataHandler.getMasterNoteRecord(dbHandler,  noteId);
+      if (note != null) {
+        noteMedia.noteID = note.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContentTypeID")) {
+      String contentTypeId = jsonObj["ContentTypeID"].toString();
+      contentTypeId = (contentTypeId != null && contentTypeId.isNotEmpty) ? contentTypeId : "-1";
+      ContentType contentType = ContentTypeDataHandler.getMasterContentTypeRecord(dbHandler,  contentTypeId);
+      if (contentType != null) {
+        noteMedia.contentTypeId = contentType.id;
+      }
+    }
+
+    if (jsonObj.containsKey("MediaPath")) {
+      noteMedia.mediaPath = jsonObj["MediaPath"].toString();
+    }
+    if (jsonObj.containsKey("MediaContent")) {
+      noteMedia.mediaContent = jsonObj["MediaContent"].toString();
+    }
+    if (jsonObj.containsKey("Description")) {
+      noteMedia.description = jsonObj["Description"].toString();
+    }
+    if (jsonObj.containsKey("Tags")) {
+      noteMedia.tags = jsonObj["Tags"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      noteMedia.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      noteMedia.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      noteMedia.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      noteMedia.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("DeviceIdentifier")) {
+      noteMedia.deviceIdentifier = jsonObj["DeviceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      noteMedia.referenceIdentifier = jsonObj["ReferenceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      noteMedia.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      noteMedia.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      noteMedia.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      noteMedia.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      noteMedia.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      noteMedia.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    noteMedia.isDirty = "false";
+    noteMedia.isDeleted1 = "false";
+    noteMedia.upSyncMessage = "";
+    noteMedia.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      noteMedia.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      noteMedia.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      noteMedia.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      noteMedia.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    noteMedia.upSyncIndex = "0";
+    noteMedia.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToNoteMedia()", ex);
+  }
+  return noteMedia;
+}
+
+NotePermission copyJsonDataToNotePermission(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, NotePermission notePermission, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("NotePermissionID")) {
+      notePermission.notePermissionID = jsonObj["NotePermissionID"].toString();
+    }
+    if (jsonObj.containsKey("NotePermissionCode")) {
+      notePermission.notePermissionCode = jsonObj["NotePermissionCode"].toString();
+    }
+
+    if (jsonObj.containsKey("NoteID")) {
+      String noteId = jsonObj["NoteID"].toString();
+      noteId = (noteId != null && noteId.isNotEmpty) ? noteId : "-1";
+      Note note = NoteDataHandler.getMasterNoteRecord(dbHandler,  noteId);
+      if (note != null) {
+        notePermission.noteID = note.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AppUserID")) {
+      notePermission.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("PermissionLevel")) {
+      notePermission.permissionLevel = jsonObj["PermissionLevel"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      notePermission.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      notePermission.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notePermission.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      notePermission.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      notePermission.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      notePermission.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      notePermission.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      notePermission.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      notePermission.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    notePermission.isDirty = "false";
+    notePermission.isDeleted1 = "false";
+    notePermission.upSyncMessage = "";
+    notePermission.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      notePermission.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notePermission.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      notePermission.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      notePermission.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    notePermission.upSyncIndex = "0";
+    /*if (jsonObj.has("AppUserID"))
+        notePermission.setOwnerUserID(jsonObj.optString("AppUserID"));*/
+    notePermission.ownerUserID = Globals.appUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToNotePermission()", ex);
+  }
+  return notePermission;
+}
+
+Notification copyJsonDataToNotification(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, Notification notification, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("NotificationID")) {
+      notification.notificationID = jsonObj["NotificationID"].toString();
+    }
+    if (jsonObj.containsKey("NotificationCode")) {
+      notification.notificationCode = jsonObj["NotificationCode"].toString();
+    }
+    if (jsonObj.containsKey("NotificationTitle")) {
+      notification.notificationTitle = jsonObj["NotificationTitle"].toString();
+    }
+    if (jsonObj.containsKey("NotificationDetails")) {
+      notification.notificationDetails = jsonObj["NotificationDetails"].toString();
+    }
+    if (jsonObj.containsKey("NotificationDate")) {
+      notification.notificationDate = jsonObj["NotificationDate"].toString();
+    }
+    if (jsonObj.containsKey("SendToAll")) {
+      notification.sendToAll = jsonObj["SendToAll"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      notification.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      notification.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      notification.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notification.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      notification.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      notification.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserID")) {
+      notification.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      notification.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      notification.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      notification.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    notification.isDirty = "false";
+    notification.isDeleted1 = "false";
+    notification.upSyncMessage = "";
+    notification.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      notification.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notification.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      notification.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      notification.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    notification.upSyncIndex = "0";
+    /*if (jsonObj.has("AppUserID"))
+        notification.setOwnerUserID(jsonObj.optString("AppUserID"));*/
+    notification.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToNotification()", ex);
+  }
+  return notification;
+}
+
+NotificationAssignment copyJsonDataToNotificationAssignment(  DatabaseHandler dbHandler, Map<String, dynamic> jsonObj, NotificationAssignment notificationAssignment, bool isForNew) {
+  try {
+    if (jsonObj.containsKey("NotificationAssignmentID")) {
+      notificationAssignment.notificationAssignmentID = jsonObj["NotificationAssignmentID"].toString();
+    }
+    if (jsonObj.containsKey("NotificationAssignmentCode")) {
+      notificationAssignment.notificationAssignmentCode = jsonObj["NotificationAssignmentCode"].toString();
+    }
+    if (jsonObj.containsKey("NotificationAssignmentTitle")) {
+      notificationAssignment.notificationAssignmentTitle = jsonObj["NotificationAssignmentTitle"].toString();
+    }
+
+    if (jsonObj.containsKey("NotificationID")) {
+      String notificationId = jsonObj["NotificationID"].toString();
+      notificationId = (notificationId != null && notificationId.isNotEmpty) ? notificationId : "-1";
+      Notification notification = NotificationDataHandler.getMasterNotificationRecord(dbHandler,  notificationId);
+      if (notification != null) {
+        notificationAssignment.notificationID = notification.id;
+      }
+    }
+
+    if (jsonObj.containsKey("AppUserID")) {
+      notificationAssignment.appUserID = jsonObj["AppUserID"].toString();
+    }
+    if (jsonObj.containsKey("CreatedBy")) {
+      notificationAssignment.createdBy = jsonObj["CreatedBy"].toString();
+    }
+    if (jsonObj.containsKey("CreatedOn")) {
+      notificationAssignment.createdOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedBy")) {
+      notificationAssignment.modifiedBy = jsonObj["ModifiedBy"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notificationAssignment.modifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("DeviceIdentifier")) {
+      notificationAssignment.deviceIdentifier = jsonObj["DeviceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("ReferenceIdentifier")) {
+      notificationAssignment.referenceIdentifier = jsonObj["ReferenceIdentifier"].toString();
+    }
+    if (jsonObj.containsKey("Location")) {
+      notificationAssignment.location = jsonObj["Location"].toString();
+    }
+    if (jsonObj.containsKey("IsActive")) {
+      notificationAssignment.isActive = jsonObj["IsActive"].toString();
+    }
+    if (jsonObj.containsKey("Uid")) {
+      notificationAssignment.uid = jsonObj["Uid"].toString();
+    }
+    if (jsonObj.containsKey("AppUserGroupID")) {
+      notificationAssignment.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+    }
+    if (jsonObj.containsKey("IsArchived")) {
+      notificationAssignment.isArchived = jsonObj["IsArchived"].toString();
+    }
+    if (jsonObj.containsKey("IsDeleted")) {
+      notificationAssignment.isDeleted = jsonObj["IsDeleted"].toString();
+    }
+
+    notificationAssignment.isDirty = "false";
+    notificationAssignment.isDeleted1 = "false";
+    notificationAssignment.upSyncMessage = "";
+    notificationAssignment.downSyncMessage = "";
+    if (jsonObj.containsKey("CreatedOn")) {
+      notificationAssignment.sCreatedOn = jsonObj["CreatedOn"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedOn")) {
+      notificationAssignment.sModifiedOn = jsonObj["ModifiedOn"].toString();
+    }
+    if (jsonObj.containsKey("CreatedByUser")) {
+      notificationAssignment.createdByUser = jsonObj["CreatedByUser"].toString();
+    }
+    if (jsonObj.containsKey("ModifiedByUser")) {
+      notificationAssignment.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+    }
+    notificationAssignment.upSyncIndex = "0";
+    /*if (jsonObj.has("AppUserID"))
+        notificationAssignment.setOwnerUserID(jsonObj.optString("AppUserID"));*/
+    notificationAssignment.ownerUserID = Globals.AppUserID.toString();
+  } catch (ex) {
+    Globals.handleException( "JSONDataCopier:CopyJsonDataToNotificationAssignment()", ex);
+  }
+  return notificationAssignment;
+}
+
+Future<Opportunity> copyJsonDataToOpportunity(
+  DatabaseHandler dbHandler,
+  dynamic jsonObj,
+  Opportunity opportunity,
+  bool isForNew,
+) async {
+  try {
+    if (jsonObj.containsKey("OpportunityID")) {
+      opportunity.opportunityID = jsonObj["OpportunityID"].toString();
+    }
+    if (jsonObj.containsKey("OpportunityCode")) {
+      opportunity.opportunityCode = jsonObj["OpportunityCode"].toString();
+    }
+    if (jsonObj.containsKey("OpportunityName")) {
+      opportunity.opportunityName = jsonObj["OpportunityName"].toString();
+    }
+    if (jsonObj.containsKey("AssignmentDetails")) {
+      opportunity.assignmentDetails =
+          Utility.getEmptyIfNull(jsonObj["AssignmentDetails"].toString());
+    }
+    if (jsonObj.containsKey("OpportunityDetail")) {
+      opportunity.opportunityDetail =
+          jsonObj["OpportunityDetail"].toString();
+    }
+    if (jsonObj.containsKey("LeadSource")) {
+      opportunity.leadSource = jsonObj["LeadSource"].toString();
+    }
+
+    if (jsonObj.containsKey("OpportunityTypeID")) {
+      String opportunityTypeId = jsonObj["OpportunityTypeID"].toString();
+      opportunityTypeId = opportunityTypeId.isNotEmpty ? opportunityTypeId : "-1";
+      OpportunityType? opportunityType =
+          await OpportunityTypeDataHandlerBase.GetMasterOpportunityTypeRecord(
+              dbHandler, opportunityTypeId);
+      if (opportunityType != null) {
+        opportunity.opportunityTypeID = opportunityType.getId();
+      }
+    }
+
+    if (jsonObj.containsKey("AccountID")) {
+      String accountId = jsonObj["AccountID"].toString();
+      accountId = accountId.isNotEmpty ? accountId : "-1";
+      Account ?account = await AccountDataHandlerBase.GetMasterAccountRecord(
+          dbHandler, accountId);
+      if (account != null) {
+        opportunity.accountID = account.id;
+      }
+    }
+
+    if (jsonObj.containsKey("ContactID")) {
+  String contactId = jsonObj["ContactID"].toString();
+  contactId = contactId.isNotEmpty ? contactId : "-1";
+  Contact? contact = await ContactHandlerDataBase.GetMasterContactRecord(
+      dbHandler, contactId);
+  if (contact != null) {
+    opportunity.contactID = contact.id;
+  }
+}
+
+if (jsonObj.containsKey("OpportunityMeasure")) {
+  opportunity.opportunityMeasure = jsonObj["OpportunityMeasure"].toString();
+}
+
+String bigValue = jsonObj["OpportunityValue"].toString();
+String opportunityValue = bigValue;
+if (bigValue.contains("E")) {
+  BigInt bi = BigInt.parse(bigValue);
+  opportunityValue = bi.toInt().toString();
+}
+opportunity.opportunityValue = opportunityValue;
+
+if (jsonObj.containsKey("CurrencyID")) {
+  String currencyId = jsonObj["CurrencyID"].toString();
+  currencyId = currencyId.isNotEmpty ? currencyId : "-1";
+  Currency? currency = await CurrencyDataHandlerBase.GetMasterCurrencyRecord(
+      dbHandler, currencyId);
+  if (currency != null) {
+    opportunity.currencyID = currency.id;
+  }
+}
+
+bigValue = jsonObj["GrossProfit"].toString();
+String grossProfit = bigValue;
+if (grossProfit.contains("E")) {
+  BigInt bi = BigInt.parse(bigValue);
+  grossProfit = bi.toInt().toString();
+}
+opportunity.grossProfit = grossProfit;
+
+if (jsonObj.containsKey("DealRegistrationNumber")) {
+  opportunity.dealRegistrationNumber =
+      jsonObj["DealRegistrationNumber"].toString();
+}
+if (jsonObj.containsKey("ClosureDate")) {
+  opportunity.closureDate = jsonObj["ClosureDate"].toString();
+}
+if (jsonObj.containsKey("Probability")) {
+  opportunity.probability = jsonObj["Probability"].toString();
+}
+
+if (jsonObj.containsKey("OpportunityPriorityID")) {
+  String opportunityPriorityId = jsonObj["OpportunityPriorityID"].toString();
+  opportunityPriorityId =
+      opportunityPriorityId.isNotEmpty ? opportunityPriorityId : "-1";
+  OpportunityPriority ?opportunityPriority =
+      await OpportunityPriorityDataHandlerBase.GetMasterOpportunityPriorityRecord(
+          dbHandler, opportunityPriorityId);
+  if (opportunityPriority != null) {
+    opportunity.opportunityPriorityID = opportunityPriority.id;
+  }
+}
+if (jsonObj.containsKey("OpportunityStageID")) {
+  String opportunityStageId = jsonObj["OpportunityStageID"].toString();
+  opportunityStageId =
+      opportunityStageId.isNotEmpty ? opportunityStageId : "-1";
+  OpportunityStage opportunityStage =
+      await OpportunityStageDataHandler.GetMasterOpportunityStageRecord(
+          dbHandler,  opportunityStageId);
+  if (opportunityStage != null) {
+    opportunity.opportunityStageID = opportunityStage.getId();
+  }
+}
+
+if (jsonObj.containsKey("OpportunityStatusID")) {
+  String opportunityStatusId = jsonObj["OpportunityStatusID"].toString();
+  opportunityStatusId =
+      opportunityStatusId.isNotEmpty ? opportunityStatusId : "-1";
+  OpportunityStatus opportunityStatus =
+      await OpportunityStatusDataHandler.GetMasterOpportunityStatusRecord(
+          dbHandler,  opportunityStatusId);
+  if (opportunityStatus != null) {
+    opportunity.opportunityStatusID = opportunityStatus.getId();
+  }
+}
+
+if (jsonObj.containsKey("ActualOpportunityValue")) {
+  opportunity.actualOpportunityValue =
+      jsonObj["ActualOpportunityValue"].toString();
+}
+
+if (jsonObj.containsKey("LostToCompetitor")) {
+  opportunity.lostToCompetitor = jsonObj["LostToCompetitor"].toString();
+}
+if (jsonObj.containsKey("ReasonForOpportunityStatus")) {
+  opportunity.reasonForOpportunityStatus =
+      jsonObj["ReasonForOpportunityStatus"].toString();
+}
+
+if (jsonObj.containsKey("PlannedDeliveryDate")) {
+  opportunity.plannedDeliveryDate =
+      jsonObj["PlannedDeliveryDate"].toString();
+}
+if (jsonObj.containsKey("ActualDeliveryDate")) {
+  opportunity.actualDeliveryDate =
+      jsonObj["ActualDeliveryDate"].toString();
+}
+if (jsonObj.containsKey("CurrentActionOwner")) {
+  opportunity.currentActionOwner =
+      jsonObj["CurrentActionOwner"].toString();
+}
+if (jsonObj.containsKey("CustomerCallID")) {
+  opportunity.customerCallID = jsonObj["CustomerCallID"].toString();
+}
+if (jsonObj.containsKey("CustomerSatisfactionID")) {
+  opportunity.customerSatisfactionID =
+      jsonObj["CustomerSatisfactionID"].toString();
+}
+if (jsonObj.containsKey("ReferenceIdentifier")) {
+  opportunity.referenceIdentifier =
+      jsonObj["ReferenceIdentifier"].toString();
+}
+
+if (jsonObj.containsKey("OpportunityIdentifier")) {
+  opportunity.opportunityIdentifier =
+      jsonObj["OpportunityIdentifier"].toString();
+}
+if (jsonObj.containsKey("PurchaseOrderNumber")) {
+  opportunity.purchaseOrderNumber =
+      jsonObj["PurchaseOrderNumber"].toString();
+}
+if (jsonObj.containsKey("QuotationNumber")) {
+  opportunity.quotationNumber = jsonObj["QuotationNumber"].toString();
+}
+if (jsonObj.containsKey("IsFinanceRequired")) {
+  opportunity.isFinanceRequired = jsonObj["IsFinanceRequired"].toString();
+}
+if (jsonObj.containsKey("FinanceBy")) {
+  opportunity.financeBy = jsonObj["FinanceBy"].toString();
+}
+if (jsonObj.containsKey("FinanceRemarks")) {
+  opportunity.financeRemarks = jsonObj["FinanceRemarks"].toString();
+}
+if (jsonObj.containsKey("IsApprovalRequired")) {
+  opportunity.isApprovalRequired =
+      jsonObj["IsApprovalRequired"].toString();
+}
+
+if (jsonObj.containsKey("ParentOpportunityID")) {
+  String opportunityId = jsonObj["ParentOpportunityID"].toString();
+  opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
+  Opportunity opportunity1 = await OpportunityDataHandler.GetMasterOpportunityRecord(
+      dbHandler,  opportunityId);
+  if (opportunity1 != null) {
+    opportunity.parentOpportunityID = opportunity1.getId();
+  }
+}
+
+if (jsonObj.containsKey("IsRecurringOpportunity")) {
+  opportunity.isRecurringOpportunity =
+      jsonObj["IsRecurringOpportunity"].toString();
+}
+if (jsonObj.containsKey("RecurrenceIntervalInDays")) {
+  opportunity.recurrenceIntervalInDays =
+      jsonObj["RecurrenceIntervalInDays"].toString();
+}
+if (jsonObj.containsKey("RecurrenceCount")) {
+  opportunity.recurrenceCount = jsonObj["RecurrenceCount"].toString();
+}
+
+if (jsonObj.containsKey("RecurringOpportunityID")) {
+  String opportunityId = jsonObj["RecurringOpportunityID"].toString();
+  opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
+  Opportunity opportunity2 = await OpportunityDataHandler.GetMasterOpportunityRecord(
+      dbHandler,  opportunityId);
+  if (opportunity2 != null) {
+    opportunity.recurringOpportunityID = opportunity2.getId();
+  }
+}
+
+if (jsonObj.containsKey("DateGeneratedForRecurring")) {
+  opportunity.dateGeneratedForRecurring =
+      jsonObj["DateGeneratedForRecurring"].toString();
+}
+if (jsonObj.containsKey("OpportunityAssignmentID")) {
+  opportunity.opportunityAssignmentID =
+      jsonObj["OpportunityAssignmentID"].toString();
+}
+
+if (jsonObj.containsKey("SupplierAccountID")) {
+  String accountId = jsonObj["SupplierAccountID"].toString();
+  accountId = accountId.isNotEmpty ? accountId : "-1";
+  Account account1 = await AccountDataHandler.GetMasterAccountRecord(
+      dbHandler,  accountId);
+  if (account1 != null) {
+    opportunity.supplierAccountID = account1.getId();
+  }
+}
+
+if (jsonObj.containsKey("OpportunityCodeInternal")) {
+  opportunity.opportunityCodeInternal =
+      jsonObj["OpportunityCodeInternal"].toString();
+}
+
+if (jsonObj.containsKey("Tags")) {
+  opportunity.tags = jsonObj["Tags"].toString();
+}
+if (jsonObj.containsKey("FreeTextField1")) {
+  opportunity.freeTextField1 = jsonObj["FreeTextField1"].toString();
+}
+if (jsonObj.containsKey("FreeTextField2")) {
+  opportunity.freeTextField2 = jsonObj["FreeTextField2"].toString();
+}
+if (jsonObj.containsKey("FreeTextField3")) {
+  opportunity.freeTextField3 = jsonObj["FreeTextField3"].toString();
+}
+if (jsonObj.containsKey("IsAssigned")) {
+  opportunity.isAssigned = jsonObj["IsAssigned"].toString();
+}
+if (jsonObj.containsKey("AssignedDate")) {
+  opportunity.assignedDate = jsonObj["AssignedDate"].toString();
+}
+if (jsonObj.containsKey("AssignedByAppUserID")) {
+  opportunity.assignedByAppUserID =
+      jsonObj["AssignedByAppUserID"].toString();
+}
+if (jsonObj.containsKey("AssignmentRemarks")) {
+  opportunity.assignmentRemarks =
+      jsonObj["AssignmentRemarks"].toString();
+}
+if (jsonObj.containsKey("OpportunityFulfillmentStatus")) {
+  opportunity.opportunityFulfillmentStatus =
+      jsonObj["OpportunityFulfillmentStatus"].toString();
+}
+if (jsonObj.containsKey("IsOpportunityFulfilled")) {
+  opportunity.isOpportunityFulfilled =
+      jsonObj["IsOpportunityFulfilled"].toString();
+}
+if (jsonObj.containsKey("CreatedBy")) {
+  opportunity.createdBy = jsonObj["CreatedBy"].toString();
+}
+if (jsonObj.containsKey("CreatedOn")) {
+  opportunity.createdOn = jsonObj["CreatedOn"].toString();
+}
+if (jsonObj.containsKey("ModifiedBy")) {
+  opportunity.modifiedBy = jsonObj["ModifiedBy"].toString();
+}
+if (jsonObj.containsKey("ModifiedOn")) {
+  opportunity.modifiedOn = jsonObj["ModifiedOn"].toString();
+}
+if (jsonObj.containsKey("IsWonAlerted")) {
+  opportunity.isWonAlerted = jsonObj["IsWonAlerted"].toString();
+}
+if (jsonObj.containsKey("IsNewAlerted")) {
+  opportunity.isNewAlerted = jsonObj["IsNewAlerted"].toString();
+}
+if (jsonObj.containsKey("IsActive")) {
+  opportunity.isActive = jsonObj["IsActive"].toString();
+}
+if (jsonObj.containsKey("IsLocked")) {
+  opportunity.isLocked = jsonObj["IsLocked"].toString();
+}
+if (jsonObj.containsKey("IsApproved")) {
+  opportunity.isApproved = jsonObj["IsApproved"].toString();
+}
+if (jsonObj.containsKey("Uid")) {
+  opportunity.uid = jsonObj["Uid"].toString();
+}
+if (jsonObj.containsKey("AppUserID")) {
+  opportunity.appUserID = jsonObj["AppUserID"].toString();
+}
+if (jsonObj.containsKey("AppUserGroupID")) {
+  opportunity.appUserGroupID = jsonObj["AppUserGroupID"].toString();
+}
+if (jsonObj.containsKey("IsArchived")) {
+  opportunity.isArchived = jsonObj["IsArchived"].toString();
+}
+if (jsonObj.containsKey("IsDeleted")) {
+  opportunity.isDeleted = jsonObj["IsDeleted"].toString();
+}
+if (jsonObj.containsKey("LeadQualificationID")) {
+  opportunity.leadQualificationID =
+      jsonObj["LeadQualificationID"].toString();
+}
+if (jsonObj.containsKey("WorkFlowDetails")) {
+  opportunity.workFlowDetails =
+      Utility.getEmptyIfNull(jsonObj["WorkFlowDetails"].toString());
+}
+if (jsonObj.containsKey("RequestedDeliveryDate")) {
+  opportunity.requestedDeliveryDate =
+      jsonObj["RequestedDeliveryDate"].toString();
+}
+if (jsonObj.containsKey("PlannedDeliveryDate")) {
+  opportunity.plannedDeliveryDate =
+      jsonObj["PlannedDeliveryDate"].toString();
+}
+if (jsonObj.containsKey("ActualDeliveryDate")) {
+  opportunity.actualDeliveryDate =
+      jsonObj["ActualDeliveryDate"].toString();
+}
+opportunity.isDirty = "false";
+opportunity.isDeleted1 = "false";
+opportunity.upSyncMessage = "";
+opportunity.downSyncMessage = "";
+if (jsonObj.containsKey("CreatedOn")) {
+  opportunity.sCreatedOn = jsonObj["CreatedOn"].toString();
+}
+if (jsonObj.containsKey("ModifiedOn")) {
+  opportunity.sModifiedOn = jsonObj["ModifiedOn"].toString();
+}
+if (jsonObj.containsKey("CreatedByUser")) {
+  opportunity.createdByUser = jsonObj["CreatedByUser"].toString();
+}
+if (jsonObj.containsKey("ModifiedByUser")) {
+  opportunity.modifiedByUser = jsonObj["ModifiedByUser"].toString();
+}
+opportunity.upSyncIndex = "0";
+/*if (jsonObj.has("AppUserID"))
+  opportunity.ownerUserID = jsonObj.optString("AppUserID");*/
+opportunity.ownerUserID = Globals.AppUserID.toString();
+
+
+
+
+  } catch (ex) {
+    Globals.handleException(
+         "JSONDataCopier:CopyJsonDataToOpportunity()", ex);
+  }
+  return opportunity;
+}
+
+
+Future<OpportunityApproval> copyJsonDataToOpportunityApproval(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityApproval opportunityApproval,
+    bool isForNew,
+  ) async {
+    try {
+      if (jsonObj.containsKey("OpportunityApprovalID")) {
+        opportunityApproval.opportunityApprovalID = jsonObj["OpportunityApprovalID"];
+      }
+      if (jsonObj.containsKey("OpportunityApprovalCode")) {
+        opportunityApproval.opportunityApprovalCode = jsonObj["OpportunityApprovalCode"];
+      }
+      if (jsonObj.containsKey("OpportunityApprovalTitle")) {
+        opportunityApproval.opportunityApprovalTitle = jsonObj["OpportunityApprovalTitle"];
+      }
+
+      if (jsonObj.containsKey("OpportunityApprovalTypeID")) {
+        String opportunityApprovalTypeId = jsonObj["OpportunityApprovalTypeID"];
+        opportunityApprovalTypeId = opportunityApprovalTypeId != null && opportunityApprovalTypeId != "" ? opportunityApprovalTypeId : "-1";
+        OpportunityApprovalType ?opportunityApprovalType = await  OpportunityApprovalTypeDataHandlerBase.GetMasterOpportunityApprovalTypeRecord(dbHandler, opportunityApprovalTypeId);
+        if (opportunityApprovalType != null) {
+          opportunityApproval.opportunityApprovalTypeID = opportunityApprovalType.id;
+        }
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
+        Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        if (opportunity != null) {
+          opportunityApproval.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("RequestDate")) {
+        opportunityApproval.requestDate = jsonObj["RequestDate"];
+      }
+      if (jsonObj.containsKey("RequestDetail")) {
+        opportunityApproval.requestDetail = jsonObj["RequestDetail"];
+      }
+      if (jsonObj.containsKey("IsSubmitted")) {
+        opportunityApproval.isSubmitted = jsonObj["IsSubmitted"];
+      }
+
+      if (jsonObj.containsKey("ParentOpportunityApprovalID")) {
+        String opportunityApprovalId = jsonObj["ParentOpportunityApprovalID"];
+        opportunityApprovalId = opportunityApprovalId != null && opportunityApprovalId != "" ? opportunityApprovalId : "-1";
+        OpportunityApproval? opportunityApproval1 = await OpportunityApprovalDataHandlerBase.GetMasterOpportunityApprovalRecord(dbHandler, opportunityApprovalId);
+        if (opportunityApproval1 != null) {
+          opportunityApproval.parentOpportunityApprovalID = opportunityApproval1.id;
+        }
+      }
+
+      if (jsonObj.containsKey("ApprovalStatus")) {
+        opportunityApproval.approvalStatus = jsonObj["ApprovalStatus"];
+      }
+      if (jsonObj.containsKey("ApprovalByAppUserID")) {
+        opportunityApproval.approvalByAppUserID = jsonObj["ApprovalByAppUserID"];
+      }
+      if (jsonObj.containsKey("ApprovalTime")) {
+        opportunityApproval.approvalTime = jsonObj["ApprovalTime"];
+      }
+      if (jsonObj.containsKey("ApproverRemarks")) {
+        opportunityApproval.approverRemarks = jsonObj["ApproverRemarks"];
+      }
+      if (jsonObj.containsKey("IsApprovalCompleted")) {
+        opportunityApproval.isApprovalCompleted = jsonObj["IsApprovalCompleted"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityApproval.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityApproval.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityApproval.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityApproval.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("DeviceIdentifier")) {
+        opportunityApproval.deviceIdentifier = jsonObj["DeviceIdentifier"];
+      }
+      if (jsonObj.containsKey("ReferenceIdentifier")) {
+        opportunityApproval.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+      }
+      if (jsonObj.containsKey("Location")) {
+        opportunityApproval.location = jsonObj["Location"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityApproval.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityApproval.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityApproval.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityApproval.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityApproval.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityApproval.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityApproval.isDirty = "false";
+      opportunityApproval.isDeleted1 = "false";
+      opportunityApproval.upSyncMessage = "";
+      opportunityApproval.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityApproval.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityApproval.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityApproval.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityApproval.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityApproval.upSyncIndex = "0";
+      opportunityApproval.ownerUserID = Globals.appUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityApproval()", ex);
+    }
+    return opportunityApproval;
+  }
+OpportunityApprovalType copyJsonDataToOpportunityApprovalType(
+    BuildContext context,
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityApprovalType opportunityApprovalType,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityApprovalTypeID")) {
+        opportunityApprovalType.opportunityApprovalTypeID = jsonObj["OpportunityApprovalTypeID"];
+      }
+      if (jsonObj.containsKey("OpportunityApprovalTypeCode")) {
+        opportunityApprovalType.opportunityApprovalTypeCode = jsonObj["OpportunityApprovalTypeCode"];
+      }
+      if (jsonObj.containsKey("OpportunityApprovalTypeName")) {
+        opportunityApprovalType.opportunityApprovalTypeName = jsonObj["OpportunityApprovalTypeName"];
+      }
+      if (jsonObj.containsKey("Description")) {
+        opportunityApprovalType.description = jsonObj["Description"];
+      }
+
+      if (jsonObj.containsKey("OpportunityTypeID")) {
+        String opportunityTypeId = jsonObj["OpportunityTypeID"];
+        opportunityTypeId = opportunityTypeId != null && opportunityTypeId != "" ? opportunityTypeId : "-1";
+        OpportunityType opportunityType = OpportunityTypeDataHandlerBase.getMasterOpportunityTypeRecord(dbHandler, context, opportunityTypeId);
+        if (opportunityType != null) {
+          opportunityApprovalType.opportunityTypeID = opportunityType.id;
+        }
+      }
+
+      if (jsonObj.containsKey("InternalCode")) {
+        opportunityApprovalType.internalCode = jsonObj["InternalCode"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityApprovalType.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityApprovalType.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityApprovalType.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityApprovalType.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityApprovalType.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityApprovalType.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityApprovalType.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityApprovalType.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityApprovalType.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityApprovalType.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityApprovalType.isDirty = "false";
+      opportunityApprovalType.isDeleted1 = "false";
+      opportunityApprovalType.upSyncMessage = "";
+      opportunityApprovalType.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityApprovalType.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityApprovalType.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityApprovalType.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityApprovalType.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityApprovalType.upSyncIndex = "0";
+      opportunityApprovalType.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException(context, "JSONDataCopier:CopyJsonDataToOpportunityApprovalType()", ex);
+    }
+    return opportunityApprovalType;
+  }
+
+Future<OpportunityBusinessUnit> copyJsonDataToOpportunityBusinessUnit(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityBusinessUnit opportunityBusinessUnit,
+    bool isForNew,
+  ) async {
+    try {
+      if (jsonObj.containsKey("OpportunityBusinessUnitID")) {
+        opportunityBusinessUnit.opportunityBusinessUnitID = jsonObj["OpportunityBusinessUnitID"];
+      }
+      if (jsonObj.containsKey("OpportunityBusinessUnitCode")) {
+        opportunityBusinessUnit.opportunityBusinessUnitCode = jsonObj["OpportunityBusinessUnitCode"];
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
+        Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandle, opportunityId);
+        if (opportunity != null) {
+          opportunityBusinessUnit.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("BusinessUnitID")) {
+        String businessUnitId = jsonObj["BusinessUnitID"];
+        businessUnitId = businessUnitId != null && businessUnitId != "" ? businessUnitId : "-1";
+        BusinessUnit? businessUnit =await  BusinessUnitDataHandlerBase.GetMasterBusinessUnitRecord(dbHandler, businessUnitId);
+        if (businessUnit != null) {
+          opportunityBusinessUnit.businessUnitID = businessUnit.id;
+        }
+      }
+
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityBusinessUnit.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityBusinessUnit.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityBusinessUnit.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityBusinessUnit.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityBusinessUnit.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityBusinessUnit.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityBusinessUnit.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityBusinessUnit.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("ReferenceIdentifier")) {
+        opportunityBusinessUnit.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityBusinessUnit.isDeleted = jsonObj["IsDeleted"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityBusinessUnit.isArchived = jsonObj["IsArchived"];
+      }
+
+      opportunityBusinessUnit.isDirty = "false";
+      opportunityBusinessUnit.isDeleted1 = "false";
+      opportunityBusinessUnit.upSyncMessage = "";
+      opportunityBusinessUnit.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityBusinessUnit.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityBusinessUnit.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityBusinessUnit.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityBusinessUnit.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityBusinessUnit.upSyncIndex = "0";
+      opportunityBusinessUnit.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityBusinessUnit()", ex);
+    }
+    return opportunityBusinessUnit;
+  }
+
+  Future<OpportunityContact> copyJsonDataToOpportunityContact(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityContact opportunityContact,
+    bool isForNew,
+  ) async {
+    try {
+      if (jsonObj.containsKey("OpportunityContactID")) {
+        opportunityContact.opportunityContactID = jsonObj["OpportunityContactID"];
+      }
+      if (jsonObj.containsKey("OpportunityContactCode")) {
+        opportunityContact.opportunityContactCode = jsonObj["OpportunityContactCode"];
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
+        Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        if (opportunity != null) {
+          opportunityContact.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("ContactID")) {
+        String contactId = jsonObj["ContactID"];
+        contactId = contactId != null && contactId != "" ? contactId : "-1";
+        Contact? contact =await  ContactHandlerDataBase.GetMasterContactRecord(dbHandler, contactId);
+        if (contact != null) {
+          opportunityContact.contactID = contact.id;
+        }
+      }
+
+      if (jsonObj.containsKey("ContactName")) {
+        opportunityContact.contactName = jsonObj["ContactName"];
+      }
+      if (jsonObj.containsKey("Description")) {
+        opportunityContact.description = jsonObj["Description"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityContact.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityContact.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityContact.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityContact.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityContact.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityContact.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityContact.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityContact.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityContact.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityContact.isDeleted = jsonObj["IsDeleted"];
+      }
+      if (jsonObj.containsKey("ReferenceIdentifier")) {
+        opportunityContact.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+      }
+
+      opportunityContact.isDirty = "false";
+      opportunityContact.isDeleted1 = "false";
+      opportunityContact.upSyncMessage = "";
+      opportunityContact.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityContact.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityContact.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityContact.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityContact.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityContact.upSyncIndex = "0";
+      opportunityContact.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityContact()", ex);
+    }
+    return opportunityContact;
+  }
+Future<OpportunityFulfillmentStatus> copyJsonDataToOpportunityFulfillmentStatus(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityFulfillmentStatus opportunityFulfillmentStatus,
+    bool isForNew,
+  ) async {
+    try {
+      if (jsonObj.containsKey("OpportunityFulfillmentStatusID")) {
+        opportunityFulfillmentStatus.opportunityFulfillmentStatusID = jsonObj["OpportunityFulfillmentStatusID"];
+      }
+      if (jsonObj.containsKey("OpportunityFulfillmentStatusCode")) {
+        opportunityFulfillmentStatus.opportunityFulfillmentStatusCode = jsonObj["OpportunityFulfillmentStatusCode"];
+      }
+      if (jsonObj.containsKey("OpportunityFulfillmentStatusName")) {
+        opportunityFulfillmentStatus.opportunityFulfillmentStatusName = jsonObj["OpportunityFulfillmentStatusName"];
+      }
+      if (jsonObj.containsKey("SequentialOrder")) {
+        opportunityFulfillmentStatus.sequentialOrder = jsonObj["SequentialOrder"];
+      }
+      if (jsonObj.containsKey("Indicator")) {
+        opportunityFulfillmentStatus.indicator = jsonObj["Indicator"];
+      }
+      if (jsonObj.containsKey("InternalCode")) {
+        opportunityFulfillmentStatus.internalCode = jsonObj["InternalCode"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityFulfillmentStatus.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityFulfillmentStatus.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityFulfillmentStatus.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityFulfillmentStatus.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityFulfillmentStatus.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityFulfillmentStatus.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityFulfillmentStatus.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityFulfillmentStatus.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityFulfillmentStatus.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityFulfillmentStatus.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityFulfillmentStatus.isDirty = "false";
+      opportunityFulfillmentStatus.isDeleted1 = "false";
+      opportunityFulfillmentStatus.upSyncMessage = "";
+      opportunityFulfillmentStatus.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityFulfillmentStatus.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityFulfillmentStatus.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityFulfillmentStatus.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityFulfillmentStatus.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityFulfillmentStatus.upSyncIndex = "0";
+      /*if (jsonObj.containsKey("AppUserID"))
+          opportunityFulfillmentStatus.ownerUserID = jsonObj["AppUserID"];*/
+      opportunityFulfillmentStatus.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException(context, "JSONDataCopier:CopyJsonDataToOpportunityFulfillmentStatus()", ex);
+    }
+    return opportunityFulfillmentStatus;
+  }
+
+OpportunityMeasure copyJsonDataToOpportunityMeasure(
+     
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityMeasure opportunityMeasure,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityMeasureID")) {
+        opportunityMeasure.opportunityMeasureID = jsonObj["OpportunityMeasureID"];
+      }
+      if (jsonObj.containsKey("OpportunityMeasureCode")) {
+        opportunityMeasure.opportunityMeasureCode = jsonObj["OpportunityMeasureCode"];
+      }
+      if (jsonObj.containsKey("OpportunityMeasureName")) {
+        opportunityMeasure.opportunityMeasureName = jsonObj["OpportunityMeasureName"];
+      }
+      if (jsonObj.containsKey("InternalCode")) {
+        opportunityMeasure.internalCode = jsonObj["InternalCode"];
+      }
+      if (jsonObj.containsKey("IsDefault")) {
+        opportunityMeasure.isDefault = jsonObj["IsDefault"];
+      }
+      if (jsonObj.containsKey("SequentialOrder")) {
+        opportunityMeasure.sequentialOrder = jsonObj["SequentialOrder"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityMeasure.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityMeasure.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityMeasure.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityMeasure.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityMeasure.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityMeasure.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityMeasure.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityMeasure.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityMeasure.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityMeasure.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityMeasure.isDirty = "false";
+      opportunityMeasure.isDeleted1 = "false";
+      opportunityMeasure.upSyncMessage = "";
+      opportunityMeasure.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityMeasure.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityMeasure.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityMeasure.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityMeasure.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityMeasure.upSyncIndex = "0";
+      opportunityMeasure.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityMeasure()", ex);
+    }
+    return opportunityMeasure;
+  }
+Future<OpportunityMedia> copyJsonDataToOpportunityMedia(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityMedia opportunityMedia,
+    bool isForNew,
+  ) async {
+    try {
+      if (jsonObj.containsKey("OpportunityMediaID")) {
+        opportunityMedia.opportunityMediaID = jsonObj["OpportunityMediaID"];
+      }
+      if (jsonObj.containsKey("OpportunityMediaCode")) {
+        opportunityMedia.opportunityMediaCode = jsonObj["OpportunityMediaCode"];
+      }
+      if (jsonObj.containsKey("OpportunityMediaName")) {
+        opportunityMedia.opportunityMediaName = jsonObj["OpportunityMediaName"];
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
+        Opportunity ?opportunity =  await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        if (opportunity != null) {
+          opportunityMedia.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("ContentTypeID")) {
+        String contentTypeId = jsonObj["ContentTypeID"];
+        contentTypeId = contentTypeId != null && contentTypeId != "" ? contentTypeId : "-1";
+        ContentType contentType = ContentTypeDataHandler.getMasterContentTypeRecord(dbHandler, context, contentTypeId);
+        if (contentType != null) {
+          opportunityMedia.contentTypeID = contentType.id;
+        }
+      }
+
+      if (jsonObj.containsKey("MediaPath")) {
+        opportunityMedia.mediaPath = jsonObj["MediaPath"];
+      }
+      if (jsonObj.containsKey("MediaContent")) {
+        opportunityMedia.mediaContent = jsonObj["MediaContent"];
+      }
+      if (jsonObj.containsKey("Description")) {
+        opportunityMedia.description = jsonObj["Description"];
+      }
+      if (jsonObj.containsKey("Tags")) {
+        opportunityMedia.tags = jsonObj["Tags"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityMedia.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityMedia.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityMedia.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityMedia.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityMedia.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityMedia.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityMedia.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityMedia.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityMedia.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityMedia.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityMedia.isDirty = "false";
+      opportunityMedia.isDeleted1 = "false";
+      opportunityMedia.upSyncMessage = "";
+      opportunityMedia.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityMedia.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityMedia.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityMedia.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityMedia.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityMedia.upSyncIndex = "0";
+      opportunityMedia.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityMedia()", ex);
+    }
+    return opportunityMedia;
+  }
+
+
+OpportunityName copyJsonDataToOpportunityName(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityName opportunityName,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityNameID")) {
+        opportunityName.opportunityNameID = jsonObj["OpportunityNameID"];
+      }
+      if (jsonObj.containsKey("OpportunityNameCode")) {
+        opportunityName.opportunityNameCode = jsonObj["OpportunityNameCode"];
+      }
+      if (jsonObj.containsKey("OpportunityNameEntry")) {
+        opportunityName.opportunityNameEntry = jsonObj["OpportunityNameEntry"];
+      }
+      if (jsonObj.containsKey("Description")) {
+        opportunityName.description = jsonObj["Description"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityName.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityName.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityName.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityName.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityName.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityName.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityName.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityName.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("ReferenceIdentifier")) {
+        opportunityName.referenceIdentifier = jsonObj["ReferenceIdentifier"];
+      }
+
+      opportunityName.isDirty = "false";
+      opportunityName.isDeleted1 = "false";
+      opportunityName.upSyncMessage = "";
+      opportunityName.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityName.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityName.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityName.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityName.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityName.upSyncIndex = "0";
+      opportunityName.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityName()", ex);
+    }
+    return opportunityName;
+  }
+
+  OpportunityPermission copyJsonDataToOpportunityPermission(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityPermission opportunityPermission,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityPermissionID")) {
+        opportunityPermission.opportunityPermissionID = jsonObj["OpportunityPermissionID"];
+      }
+      if (jsonObj.containsKey("OpportunityPermissionCode")) {
+        opportunityPermission.opportunityPermissionCode = jsonObj["OpportunityPermissionCode"];
+      }
+
+      if (jsonObj.containsKey("OpportunityID")) {
+        String opportunityId = jsonObj["OpportunityID"];
+        opportunityId = opportunityId != null && opportunityId.isNotEmpty ? opportunityId : "-1";
+        Opportunity? opportunity = await  OpportunityApprovalDataHandlerBase.GetMasterOpportunityApprovalRecord(dbHandler, opportunityId);
+        if (opportunity != null) {
+          opportunityPermission.opportunityID = opportunity.id;
+        }
+      }
+
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityPermission.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("PermissionLevel")) {
+        opportunityPermission.permissionLevel = jsonObj["PermissionLevel"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityPermission.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityPermission.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityPermission.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityPermission.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityPermission.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityPermission.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityPermission.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsArchived")) {
+        opportunityPermission.isArchived = jsonObj["IsArchived"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityPermission.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityPermission.isDirty = "false";
+      opportunityPermission.isDeleted1 = "false";
+      opportunityPermission.upSyncMessage = "";
+      opportunityPermission.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityPermission.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityPermission.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityPermission.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityPermission.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityPermission.upSyncIndex = "0";
+      opportunityPermission.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityPermission()", ex);
+    }
+    return opportunityPermission;
+  }
+
+  OpportunityPriority copyJsonDataToOpportunityPriority(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    OpportunityPriority opportunityPriority,
+    bool isForNew,
+  ) {
+    try {
+      if (jsonObj.containsKey("OpportunityPriorityID")) {
+        opportunityPriority.opportunityPriorityID = jsonObj["OpportunityPriorityID"];
+      }
+      if (jsonObj.containsKey("OpportunityPriorityCode")) {
+        opportunityPriority.opportunityPriorityCode = jsonObj["OpportunityPriorityCode"];
+      }
+      if (jsonObj.containsKey("OpportunityPriorityName")) {
+        opportunityPriority.opportunityPriorityName = jsonObj["OpportunityPriorityName"];
+      }
+      if (jsonObj.containsKey("Description")) {
+        opportunityPriority.description = jsonObj["Description"];
+      }
+      if (jsonObj.containsKey("IsDefault")) {
+        opportunityPriority.isDefault = jsonObj["IsDefault"];
+      }
+      if (jsonObj.containsKey("PriorityOrder")) {
+        opportunityPriority.priorityOrder = jsonObj["PriorityOrder"];
+      }
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityPriority.createdOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("CreatedBy")) {
+        opportunityPriority.createdBy = jsonObj["CreatedBy"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityPriority.modifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedBy")) {
+        opportunityPriority.modifiedBy = jsonObj["ModifiedBy"];
+      }
+      if (jsonObj.containsKey("IsActive")) {
+        opportunityPriority.isActive = jsonObj["IsActive"];
+      }
+      if (jsonObj.containsKey("Uid")) {
+        opportunityPriority.uid = jsonObj["Uid"];
+      }
+      if (jsonObj.containsKey("AppUserID")) {
+        opportunityPriority.appUserID = jsonObj["AppUserID"];
+      }
+      if (jsonObj.containsKey("AppUserGroupID")) {
+        opportunityPriority.appUserGroupID = jsonObj["AppUserGroupID"];
+      }
+      if (jsonObj.containsKey("IsDeleted")) {
+        opportunityPriority.isDeleted = jsonObj["IsDeleted"];
+      }
+
+      opportunityPriority.isDirty = "false";
+      opportunityPriority.isDeleted1 = "false";
+      opportunityPriority.upSyncMessage = "";
+      opportunityPriority.downSyncMessage = "";
+      if (jsonObj.containsKey("CreatedOn")) {
+        opportunityPriority.sCreatedOn = jsonObj["CreatedOn"];
+      }
+      if (jsonObj.containsKey("ModifiedOn")) {
+        opportunityPriority.sModifiedOn = jsonObj["ModifiedOn"];
+      }
+      if (jsonObj.containsKey("CreatedByUser")) {
+        opportunityPriority.createdByUser = jsonObj["CreatedByUser"];
+      }
+      if (jsonObj.containsKey("ModifiedByUser")) {
+        opportunityPriority.modifiedByUser = jsonObj["ModifiedByUser"];
+      }
+      opportunityPriority.upSyncIndex = "0";
+      opportunityPriority.ownerUserID = Globals.AppUserID.toString();
+    } catch (ex) {
+      Globals.handleException( "JSONDataCopier:CopyJsonDataToOpportunityPriority()", ex);
+    }
+    return opportunityPriority;
+  }
+
+
+
 
 }
 

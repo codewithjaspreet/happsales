@@ -51,6 +51,103 @@ class FormCellBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
+  set formCellID(String? value) {
+  _formCellID = value;
+}
+
+set formCellCode(String? value) {
+  _formCellCode = value;
+}
+
+set formCellName(String? value) {
+  _formCellName = value;
+}
+
+set formSectionID(String? value) {
+  _formSectionID = value;
+}
+
+set rowIndex(String? value) {
+  _rowIndex = value;
+}
+
+set columnIndex(String? value) {
+  _columnIndex = value;
+}
+
+set rowSpan(String? value) {
+  _rowSpan = value;
+}
+
+set columnSpan(String? value) {
+  _columnSpan = value;
+}
+
+set alignment(String? value) {
+  _alignment = value;
+}
+
+set verticalAlignment(String? value) {
+  _verticalAlignment = value;
+}
+
+set createdOn(String? value) {
+  _createdOn = value;
+}
+
+set createdBy(String? value) {
+  _createdBy = value;
+}
+
+set modifiedOn(String? value) {
+  _modifiedOn = value;
+}
+
+set modifiedBy(String? value) {
+  _modifiedBy = value;
+}
+
+set isActive(String? value) {
+  _isActive = value;
+}
+
+set uid(String? value) {
+  _uid = value;
+}
+
+set referenceIdentifier(String? value) {
+  _referenceIdentifier = value;
+}
+
+set appUserID(String? value) {
+  _appUserID = value;
+}
+
+set appUserGroupID(String? value) {
+  _appUserGroupID = value;
+}
+
+set isArchived(String? value) {
+  _isArchived = value;
+}
+
+set isDeleted(String? value) {
+  _isDeleted = value;
+}
+
+set formSectionName(String? value) {
+  _formSectionName = value;
+}
+
+set appUserName(String? value) {
+  _appUserName = value;
+}
+
+set appUserGroupName(String? value) {
+  _appUserGroupName = value;
+}
+
+
   FormCellBase();
 
   FormCellBase.fromMap(Map<String, dynamic> map)

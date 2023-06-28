@@ -461,7 +461,3 @@ class FormCellElementBase extends BaseEntity {
     _appUserGroupName = map['AppUserGroupName'];
   }
 }
-class FormCellElement extends FormCellElementBase{
-
-  FormCellElement();
-}

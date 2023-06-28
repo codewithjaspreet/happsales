@@ -53,6 +53,107 @@ class FieldAttendanceBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
+
+set fieldAttendanceID(String? value) {
+  _fieldAttendanceID = value;
+}
+
+set fieldAttendanceCode(String? value) {
+  _fieldAttendanceCode = value;
+}
+
+set fieldAttendanceTitle(String? value) {
+  _fieldAttendanceTitle = value;
+}
+
+set fieldAttendanceDate(String? value) {
+  _fieldAttendanceDate = value;
+}
+
+set punchInTime(String? value) {
+  _punchInTime = value;
+}
+
+set punchOutTime(String? value) {
+  _punchOutTime = value;
+}
+
+set punchInLocation(String? value) {
+  _punchInLocation = value;
+}
+
+set userSpecifiedPunchInLocation(String? value) {
+  _userSpecifiedPunchInLocation = value;
+}
+
+set punchOutLocation(String? value) {
+  _punchOutLocation = value;
+}
+
+set userSpecifiedPunchOutLocation(String? value) {
+  _userSpecifiedPunchOutLocation = value;
+}
+
+set remarks(String? value) {
+  _remarks = value;
+}
+
+set createdBy(String? value) {
+  _createdBy = value;
+}
+
+set createdOn(String? value) {
+  _createdOn = value;
+}
+
+set modifiedBy(String? value) {
+  _modifiedBy = value;
+}
+
+set modifiedOn(String? value) {
+  _modifiedOn = value;
+}
+
+set deviceIdentifier(String? value) {
+  _deviceIdentifier = value;
+}
+
+set referenceIdentifier(String? value) {
+  _referenceIdentifier = value;
+}
+
+set isActive(String? value) {
+  _isActive = value;
+}
+
+set uid(String? value) {
+  _uid = value;
+}
+
+set appUserID(String? value) {
+  _appUserID = value;
+}
+
+set appUserGroupID(String? value) {
+  _appUserGroupID = value;
+}
+
+set isArchived(String? value) {
+  _isArchived = value;
+}
+
+set isDeleted(String? value) {
+  _isDeleted = value;
+}
+
+set appUserName(String? value) {
+  _appUserName = value;
+}
+
+set appUserGroupName(String? value) {
+  _appUserGroupName = value;
+}
+
   FieldAttendanceBase();
    
 

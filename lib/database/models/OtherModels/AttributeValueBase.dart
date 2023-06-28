@@ -1,4 +1,6 @@
-class AttributeValueBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AttributeValueBase  extends BaseEntity{
   String? _attributeValueID;
   String? _attributeValueCode;
   String? _attributeValueName;

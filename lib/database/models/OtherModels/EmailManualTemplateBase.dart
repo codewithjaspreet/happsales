@@ -49,6 +49,95 @@ class EmailManualTemplateBase extends BaseEntity {
   String? get appUserName => _appUserName;
   String? get appUserGroupName => _appUserGroupName;
 
+  set emailManualTemplateID(String? value) {
+  _emailManualTemplateID = value;
+}
+
+set emailManualTemplateCode(String? value) {
+  _emailManualTemplateCode = value;
+}
+
+set emailManualTemplateName(String? value) {
+  _emailManualTemplateName = value;
+}
+
+set emailTemplateType(String? value) {
+  _emailTemplateType = value;
+}
+
+set subject(String? value) {
+  _subject = value;
+}
+
+set mailBody(String? value) {
+  _mailBody = value;
+}
+
+set fromEmail(String? value) {
+  _fromEmail = value;
+}
+
+set toEmail(String? value) {
+  _toEmail = value;
+}
+
+set ccEmail(String? value) {
+  _ccEmail = value;
+}
+
+set emailType(String? value) {
+  _emailType = value;
+}
+
+set isSystemDefined(String? value) {
+  _isSystemDefined = value;
+}
+
+set createdOn(String? value) {
+  _createdOn = value;
+}
+
+set createdBy(String? value) {
+  _createdBy = value;
+}
+
+set modifiedOn(String? value) {
+  _modifiedOn = value;
+}
+
+set modifiedBy(String? value) {
+  _modifiedBy = value;
+}
+
+set isActive(String? value) {
+  _isActive = value;
+}
+
+set uid(String? value) {
+  _uid = value;
+}
+
+set appUserID(String? value) {
+  _appUserID = value;
+}
+
+set appUserGroupID(String? value) {
+  _appUserGroupID = value;
+}
+
+set isDeleted(String? value) {
+  _isDeleted = value;
+}
+
+set appUserName(String? value) {
+  _appUserName = value;
+}
+
+set appUserGroupName(String? value) {
+  _appUserGroupName = value;
+}
+
+
   EmailManualTemplateBase.fromMap(Map<String, dynamic> map)
       : _emailManualTemplateID = map['EmailManualTemplateID'],
         _emailManualTemplateCode = map['EmailManualTemplateCode'],

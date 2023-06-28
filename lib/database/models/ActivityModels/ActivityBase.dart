@@ -77,6 +77,21 @@ class ActivityBase  extends BaseEntity{
   String? _appUserGroupName;
   String? _isApprovalRequiredOnCompletion;
   String? _completedDate;
+   String? _principalName;
+     String ?_activityCodeInternal; 
+
+     // Setters and getters for these two
+      String? get activityCodeInternal => _activityCodeInternal;
+  set activityCodeInternal(String? value) {
+
+    _activityCodeInternal = value;
+  }
+  String? get principalName => _principalName;
+
+  set principalName(String? value) {
+    _principalName = value;
+  }
+
 
   // Getters
   String? get activityID => _activityID;
@@ -315,6 +330,19 @@ Map<String, dynamic> toJson() {
   data['AppUserGroupName'] = _appUserGroupName;
   data['IsApprovalRequiredOnCompletion'] = _isApprovalRequiredOnCompletion;
   data['CompletedDate'] = _completedDate;
+
+  //for new
+
+  //  String? _principalName;
+  //    String ?_activityCodeInternal; 
+
+  data['PrincipalName'] = _principalName;
+
+  data['ActivityCodeInternal'] = _activityCodeInternal;
+
+
+
+
   return data;
 }
 ActivityBase.fromMapObject(Map<String, dynamic> map) {
@@ -394,6 +422,14 @@ ActivityBase.fromMapObject(Map<String, dynamic> map) {
   _appUserGroupName = map['AppUserGroupName'];
   _isApprovalRequiredOnCompletion = map['IsApprovalRequiredOnCompletion'];
   _completedDate = map['CompletedDate'];
+
+  //  String? _principalName;
+  //    String ?_activityCodeInternal; 
+
+  _principalName = map['PrincipalName'];
+
+  _activityCodeInternal = map['ActivityCodeInternal'];
+
 }
 
 
