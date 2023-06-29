@@ -2,7 +2,6 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../AppTables/Columns.dart';
 import '../../AppTables/ColumnsBase.dart';
-import '../../AppTables/ColumnsBase.dart';
 import '../../Globals.dart';
 import '../../models/AccountModels/Account.dart';
 import '../DatabaseHandler.dart';
@@ -873,7 +872,7 @@ class AccountDataHandlerBase {
     return dataList;
   }
 
-  Future<int> deleteAccountRecord(Database databaseHandler, String id1) async {
+ static  Future<int> deleteAccountRecord(Database databaseHandler, String id1) async {
     final db = await databaseHandler.database;
 
     // Remove the account from the database by id.
@@ -890,7 +889,7 @@ class AccountDataHandlerBase {
   }
 
 
-  Future<String> getServerId(DatabaseHandler databaseHandler, String id) async {
+  static Future<String> getServerId(DatabaseHandler databaseHandler, String id) async {
     String serverId = "-1";
     try {
       id = Globals.tryParseLongForDBId(id);
@@ -912,7 +911,7 @@ class AccountDataHandlerBase {
     return serverId;
   }
 
-  Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
+  static Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
     String localId = "";
     try {
       id = Globals.tryParseLongForDBId(id);

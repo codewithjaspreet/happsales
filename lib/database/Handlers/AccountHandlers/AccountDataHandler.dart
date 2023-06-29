@@ -1,3 +1,4 @@
+import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountDataHandlerBase.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../AppTables/Columns.dart';
 import '../../AppTables/ColumnsBase.dart';
@@ -6,7 +7,7 @@ import '../DatabaseHandler.dart';
 import '../../AppTables/TablesBase.dart';
 import '../../models/AccountModels/Account.dart';
 
-class AccountDataHandler {
+class AccountDataHandler extends AccountDataHandlerBase{
  
 
   // static Future<int> GetAccountProfileCompleteness(Database databaseHandler, String accountId) async
