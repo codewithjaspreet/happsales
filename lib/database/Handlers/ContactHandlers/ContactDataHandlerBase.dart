@@ -1406,7 +1406,7 @@ class ContactHandlerDataBase {
     }
     
 
-  Future<String> getServerId(Database databaseHandler, String id) async {
+  static Future<String> getServerId(DatabaseHandler databaseHandler, String id) async {
     String serverId = "-1";
     try {
       id = Globals.tryParseLongForDBId(id);
@@ -1428,7 +1428,7 @@ class ContactHandlerDataBase {
     return serverId;
   }
 
-  Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
+  static Future<String> getLocalId(DatabaseHandler databaseHandler, String id) async {
   String localId = "";
   try {
     id = Globals.tryParseLongForDBId(id);

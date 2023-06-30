@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+
 class Utility{
 
   static String getEmptyIfNull(String str) {
@@ -5,6 +7,18 @@ class Utility{
     return "";
   }
   return str;
+}
+
+
+static isNetworkConnected() async {
+  var connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult == ConnectivityResult.mobile) {
+    return true;
+  } else if (connectivityResult == ConnectivityResult.wifi) {
+    return true;
+  }
+  return false;
+
 }
 
 }

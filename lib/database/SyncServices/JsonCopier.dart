@@ -2005,7 +2005,7 @@ static Future<AccountType> copyJsonDataToAccountType(
 }
 
 
-Future<Activity> copyJsonDataToActivity( DatabaseHandler dbHandler, dynamic jsonObj, Activity activity, bool isForNew) async{
+static Future<Activity> copyJsonDataToActivity( DatabaseHandler dbHandler, dynamic jsonObj, Activity activity, bool isForNew) async{
   try {
     if (jsonObj.containsKey("ActivityID")) {
       activity.activityID = jsonObj["ActivityID"];

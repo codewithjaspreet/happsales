@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Globals {
   static String USER_TOKEN = "";
   static String USER_TOKEN_ALT = "";
@@ -102,6 +104,13 @@ class Globals {
 }
 
 
+static String getDateTimeNowDBFormat() {
+  DateFormat sdf = DateFormat("yyyy-MM-dd'T'HH:mm:ss");  //"yyyy-MMM-dd hh:mm"
+  String currentDateandTime = sdf.format(DateTime.now());
+  return currentDateandTime;
+}
+
+
   static bool isNullOrEmpty(String value1) {
     if (value1 == null || value1.trim().isEmpty) {
       return true;
@@ -129,4 +138,15 @@ class Globals {
     }
     return retVal;
   }
+
+  static bool tryParseBoolean(dynamic obj) {
+  bool retVal = false;
+  try {
+    retVal = obj.toString().toLowerCase() == 'true';
+  } catch (ex) {
+    retVal = false; // or null if that is your preference
+  }
+  return retVal;
+}
+
 }

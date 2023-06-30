@@ -61,6 +61,7 @@ dependencies:
   http: null
   intl: ^0.18.0
   introduction_screen: null
+  logger: ^1.4.0
   path_provider: null
   percent_indicator: ^4.2.3
   permission_handler: null
@@ -75,13 +76,13 @@ dependencies:
   timeline_tile: null
   url_launcher: ^6.1.10
   uuid: null
-  logger: ^1.4.0
 
 dev_dependencies:
   decimal: ^2.3.2
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  http: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
