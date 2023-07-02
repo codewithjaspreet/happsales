@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 
 class Globals {
@@ -103,6 +105,17 @@ class Globals {
   }
 }
 
+static int tryParseInt(dynamic obj) {
+  int retVal = -1;
+  try {
+    retVal = int.parse(obj.toString());
+  } catch (FormatException) {
+    retVal = -1; // or null if that is your preference
+  }
+  return retVal;
+}
+
+
 
 static String getDateTimeNowDBFormat() {
   DateFormat sdf = DateFormat("yyyy-MM-dd'T'HH:mm:ss");  //"yyyy-MMM-dd hh:mm"
@@ -148,5 +161,22 @@ static String getDateTimeNowDBFormat() {
   }
   return retVal;
 }
+static String removeRootPath(String filePath) {
+  filePath = filePath.replaceAll("/root_path", "");
+  filePath = filePath.replaceAll("/ROOT_PATH", "");
+  return filePath;
+}
+
+static bool isJSONArray(String test) {
+  bool retValue = false;
+  try {
+    json.decode(test);
+    retValue = true;
+  } catch (e) {
+    // Handle the exception if needed
+  }
+  return retValue;
+}
+
 
 }

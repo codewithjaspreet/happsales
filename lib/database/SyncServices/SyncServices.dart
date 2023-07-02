@@ -94,7 +94,7 @@ class SyncService{
 
      static Long DEFAULT_SYNC_INTERVAL = (5 * 1000) as Long;
      static final String LOG_TAG = "HS_SYNC";
-     static late DatabaseHandler dbHandler;
+     static  DatabaseHandler dbHandler = DatabaseHandler();
 
      static var logger = Logger();
 
@@ -1689,9 +1689,9 @@ void upSyncActivity(Activity activity) {
 
 }
 
-void upSyncOpportunity(Opportunity opportunity) {
+Future<void> upSyncOpportunity(Opportunity opportunity) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/opportunity";
 
       Map<String, dynamic> postData = {
@@ -1811,8 +1811,6 @@ void upSyncOpportunity(Opportunity opportunity) {
     logger.e("Error: SyncService:UpSyncOpportunity() 4-> $e");
   }
 }
-
-
 
 
 void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
@@ -3413,7 +3411,7 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
           if (jsonResponse != null) {
             try {
               var activityTravelExpenseReturn = ActivityTravelExpense();
-             await  JSONCopier.CopyJsonDataToActivityTravelExpense(, dbHandler, jsonResponse, activityTravelExpenseReturn, false);
+               await  JSONCopier.CopyJsonDataToActivityTravelExpense(dbHandler, jsonResponse, activityTravelExpenseReturn, false);
               activityTravelExpenseReturn.isDirty = "false";
               activityTravelExpenseReturn.upSyncMessage = "SUCCESS";
               activityTravelExpenseReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3460,7 +3458,6 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
     logError("Error: SyncService:UpSyncActivityTravelExpense() 4-> $e");
   }
 }
-
 
 Future<void> upSyncFieldAttendance(FieldAttendance fieldAttendance) async {
   try {
@@ -3611,7 +3608,6 @@ Future<void> upSyncAppUserRemark(AppUserRemark appUserRemark) async {
     logError("Error: SyncService:upSyncAppUserRemark() 5-> $e");
   }
 }
-
 
 Future<void> upSyncAccountForm(AccountForm accountForm) async {
   try {
@@ -3814,7 +3810,6 @@ Future<void> upSyncReimbursement(Reimbursement reimbursement) async {
     logError("Error: SyncService:upSyncReimbursement() 5-> $e");
   }
 }
-
 
 Future<void> upSyncReimbursementDetail(ReimbursementDetail reimbursementDetail) async {
   try {
@@ -4062,7 +4057,6 @@ Future<void> upSyncActivityPermission(ActivityPermission activityPermission) asy
   }
 }
 
-
 Future<void> upSyncNotePermission(NotePermission notePermission)async {
   try {
     if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
@@ -4211,7 +4205,6 @@ Future<void> upSyncOpportunityPermission(OpportunityPermission opportunityPermis
   }
 }
 
-
 Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
   try {
     if (await  Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
@@ -4285,8 +4278,6 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
     logError("Error: SyncService:UpSyncActivityTeam() 4-> ${e.toString()}");
   }
 }
-
-
 
 Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
   try {
@@ -4367,8 +4358,6 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
   }
 }
 
-
-
 Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
@@ -4443,6 +4432,7 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
     logError("Error: SyncService:UpSyncOpportunityTeam() 4-> ${e.toString()}");
   }
 }
+
 Future<void> upSyncActivityTravelMapping(ActivityTravelMapping activityTravelMapping) async{
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
@@ -4667,8 +4657,6 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
   }
 }
 
-
-
 void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUnit) {
   try {
     if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
@@ -4743,7 +4731,6 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
     logError("Error: SyncService:UpSyncOpportunityBusinessUnit() 4-> ${e.toString()}");
   }
 }
-
 
 Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
   try {
@@ -4919,7 +4906,6 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
   }
 }
 
-
 void upSyncAppLog(AppLog appLog) {
   try {
     if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
@@ -4995,8 +4981,6 @@ void upSyncAppLog(AppLog appLog) {
     //logError("Error: SyncService:UpSyncAppLog() 4-> ${e.toString()}");
   }
 }
-
-
 
 Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
   try {
@@ -5076,8 +5060,6 @@ Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
     logError('Error: SyncService:UpSyncHSSupportTicket() 4-> $e');
   }
 }
-
-
 
 void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async {
   try {
@@ -5161,8 +5143,6 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
     logError('Error: SyncService:UpSyncHSSupportTicketMedia() 4-> $e');
   }
 }
-
-
 
 Future<void> upSyncReminder(Reminder reminder) async {
   try {
@@ -5250,7 +5230,11 @@ Future<void> upSyncReminder(Reminder reminder) async {
 }
 
 
-    //*************************************DOWN-SYNC***************************************
+//*************************************DOWN-SYNC***************************************
+
+
+//*************************************************************************************
+
 
 
 

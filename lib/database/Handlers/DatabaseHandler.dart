@@ -18,6 +18,9 @@ class DatabaseHandler {
 
   DatabaseHandler._();
 
+
+  DatabaseHandler();
+
    Future<Database> get database async {
     if (_database != null) return _database!;
 
