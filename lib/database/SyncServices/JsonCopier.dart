@@ -10931,7 +10931,7 @@ Future<OpportunityTeam> copyJsonDataToOpportunityTeam(
       opportunityTeam.modifiedByUser = jsonObj["ModifiedByUser"];
     }
     opportunityTeam.upSyncIndex = "0";
-    opportunityTeam.ownerUserID = Globals.appUserID.toString();
+    opportunityTeam.ownerUserID = Globals.AppUserID.toString();
   } catch (ex) {
     Globals.handleException(
       "JSONDataCopier:CopyJsonDataToOpportunityTeam()",

@@ -10,7 +10,7 @@ class Utility{
 }
 
 
-static isNetworkConnected() async {
+static Future<bool> isNetworkConnected() async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.mobile) {
     return true;
