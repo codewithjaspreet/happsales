@@ -5254,7 +5254,7 @@ Future<void> upSyncReminder(Reminder reminder) async {
 
 
 
-  Future<void> downSyncMaxDates() async {
+Future<void> downSyncMaxDates() async {
     try {
       if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
         final url =
@@ -5323,7 +5323,7 @@ Future<void> upSyncReminder(Reminder reminder) async {
     }
   }
 
-  Future<void> downSyncAccounts(String typeOfData) async {
+Future<void> downSyncAccounts(String typeOfData) async {
     try {
       if (await await Utility.isNetworkConnected() &&
           Globals.USER_TOKEN != '') {
@@ -6990,8 +6990,6 @@ Future<void> downSyncActivityMedia(String typeOfData) async {
 }
 
 
-
-
 Future<void> downSyncActivityPermissions(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
@@ -7064,7 +7062,6 @@ Future<void> downSyncActivityPermissions(String typeOfData) async {
     LogError('Error: SyncService:DownSyncActivityPermission() 3-> $e');
   }
 }
-
 
 
 Future<void> downSyncActivityPriorities(String typeOfData) async {
@@ -7141,8 +7138,6 @@ Future<void> downSyncActivityPriorities(String typeOfData) async {
 }
 
 
-
-
 Future<void> downSyncActivityProducts(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
@@ -7215,7 +7210,6 @@ Future<void> downSyncActivityProducts(String typeOfData) async {
     LogError('Error: SyncService:DownSyncActivityProduct() 3-> $e');
   }
 }
-
 
 
 Future<void> downSyncActivityProductDetails(String typeOfData) async {
@@ -7292,7 +7286,6 @@ Future<void> downSyncActivityProductDetails(String typeOfData) async {
 }
 
 
-
 Future<void> downSyncActivityStatuses(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
@@ -7365,7 +7358,6 @@ Future<void> downSyncActivityStatuses(String typeOfData) async {
     LogError('Error: SyncService:DownSyncActivityStatus() 3-> $e');
   }
 }
-
 
 
 Future<void> downSyncActivityTeams(String typeOfData) async {
@@ -7442,7 +7434,6 @@ Future<void> downSyncActivityTeams(String typeOfData) async {
 }
 
 
-
 Future<void> downSyncActivityTravels(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
@@ -7515,7 +7506,6 @@ Future<void> downSyncActivityTravels(String typeOfData) async {
     LogError('Error: SyncService:DownSyncActivityTravel() 3-> $e');
   }
 }
-
 
 
 Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
@@ -7592,7 +7582,6 @@ Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
 }
 
 
-
 Future<void> downSyncActivityTravelMappings(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
@@ -7665,7 +7654,6 @@ Future<void> downSyncActivityTravelMappings(String typeOfData) async {
     LogError('Error: SyncService:DownSyncActivityTravelMapping() 3-> $e');
   }
 }
-
 
 
 Future<void> downSyncActivityTravelMedia(String typeOfData) async {
@@ -9144,5 +9132,8 @@ Future<void> downSyncBusinessUnits(String typeOfData) async {
 
 
 }
+
+
+
 
 }
