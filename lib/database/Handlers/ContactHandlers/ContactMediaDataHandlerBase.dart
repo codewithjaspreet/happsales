@@ -78,7 +78,6 @@ class ContactMediaDataHandlerBase {
 
                     dataItem.contactName = ele[ColumnsBase.KEY_CONTACT_CONTACTNAME];
                     dataItem.contentTypeName = ele[ColumnsBase.KEY_CONTENTTYPE_CONTENTTYPENAME];
-                    dataList.add(dataItem);
                     dataItem.id = ele[ColumnsBase.KEY_ID];
         dataItem.isDirty = ele[ColumnsBase.KEY_ISDIRTY];
         dataItem.isDeleted1 = ele[ColumnsBase.KEY_ISDELETED];

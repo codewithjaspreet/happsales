@@ -1,0 +1,855 @@
+
+
+
+import 'package:happsales_crm/database/AppConstants.dart';
+
+import '../../AppTables/ColumnsBase.dart';
+import '../../AppTables/TablesBase.dart';
+import '../../Globals.dart';
+import '../../models/OtherModels/ChatMessage.dart';
+import '../DataBaseHandler.dart';
+
+class ChatMessageDataHandlerBase {
+
+     static Future<List<ChatMessage>> GetChatMessageRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) async{
+        List<ChatMessage> dataList = [];
+        try {
+            int startRowIndex = ((pageIndex - 1) * pageSize);
+
+            String selectQuery = "SELECT A.* ";
+            //+ ",D." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + ",E." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + " AS " + ColumnsBase.KEY_CHATUSERANDGROUP_TOCHATUSERANDGROUPNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} D ON A.${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} E ON A.${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED},'false')) = 'false' ";
+            if (searchString.trim().length > 0)
+                selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME} LIKE '%$searchString%'";
+
+            /* FILTER */
+			/*String groups = "";
+			String tags = "";
+			String groupitem = "";
+			for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
+				String key1 = entry.getKey();
+				String value1 = entry.getValue();
+				if (entry.getKey().equals("XXXXX")) {
+					groupitem = value1;
+				} else {
+					groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
+					tags += (tags.equals("") ? value1 : "," + value1);
+				}
+			}
+			if (groupitem.trim().length() > 0)
+				selectQuery += " AND A." + ColumnsBase.KEY_ChatMessage_Columns.KEY_CHATMESSAGE_OBJECTNAME + " IN(" + groupitem.trim() + ")";
+			if (groups.trim().length() > 0)
+				selectQuery += " AND TG." + ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
+			if (tags.trim().length() > 0)
+				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
+
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += " LIMIT $startRowIndex,$pageSize";
+
+
+            final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    ChatMessage dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+dataList.add(dataItem);
+
+                    
+
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetChatMessageRecordsPaged()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
+
+     static Future<List<ChatMessage>> GetChatMessageRecords(DatabaseHandler databaseHandler,  String searchString)async {
+        List<ChatMessage> dataList = [];
+        try {
+            String selectQuery = "SELECT A.* ";
+            //+ ",D." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + ",E." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + " AS " + ColumnsBase.KEY_CHATUSERANDGROUP_TOCHATUSERANDGROUPNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} D ON A.${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} E ON A.${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED},'false')) = 'false' ";
+            if (searchString.trim().isNotEmpty)
+                selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME} LIKE '$searchString%'";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME} COLLATE NOCASE ASC ";
+
+          
+
+            final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    ChatMessage dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+dataList.add(dataItem);
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetChatMessageRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
+
+     static Future<ChatMessage?> GetChatMessageRecord(DatabaseHandler databaseHandler,  String id) async{
+        ChatMessage? dataItem;
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.* ";
+            //+ ",D." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + ",E." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + " AS " + ColumnsBase.KEY_CHATUSERANDGROUP_TOCHATUSERANDGROUPNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} D ON A.${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} E ON A.${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+            
+
+            final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                     dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetChatMessageRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
+
+     static Future<ChatMessage?> GetMasterChatMessageRecord(DatabaseHandler databaseHandler,  String id) async{
+        ChatMessage? dataItem;
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.* ";
+            //+ ",D." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + ",E." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME + " AS " + ColumnsBase.KEY_CHATUSERANDGROUP_TOCHATUSERANDGROUPNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} D ON A.${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} E ON A.${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+          
+
+            final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    ChatMessage dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetMasterChatMessageRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
+
+     static Future<int> AddChatMessageRecord(DatabaseHandler databaseHandler,  ChatMessage dataItem)async {
+        int id = 0;
+        try {
+            final db = await  databaseHandler.database;
+            Map<String, dynamic> values = {};
+
+if (dataItem.chatMessageID != null && dataItem.chatMessageID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID] = dataItem.chatMessageID;
+}
+if (dataItem.chatMessageCode != null && dataItem.chatMessageCode != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE] = dataItem.chatMessageCode;
+}
+if (dataItem.chatMessageContent != null && dataItem.chatMessageContent != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT] = dataItem.chatMessageContent;
+}
+if (dataItem.contentType != null && dataItem.contentType != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE] = dataItem.contentType;
+}
+if (dataItem.chatUserAndGroupID != null && dataItem.chatUserAndGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID] = dataItem.chatUserAndGroupID;
+}
+if (dataItem.toChatUserAndGroupID != null && dataItem.toChatUserAndGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID] = dataItem.toChatUserAndGroupID;
+}
+if (dataItem.localMediaPath != null && dataItem.localMediaPath != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH] = dataItem.localMediaPath;
+}
+if (dataItem.isUploaded != null && dataItem.isUploaded != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED] = dataItem.isUploaded;
+}
+if (dataItem.mediaPath != null && dataItem.mediaPath != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH] = dataItem.mediaPath;
+}
+if (dataItem.isRead != null && dataItem.isRead != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISREAD] = dataItem.isRead;
+}
+if (dataItem.readStatus != null && dataItem.readStatus != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_READSTATUS] = dataItem.readStatus;
+}
+if (dataItem.objectName != null && dataItem.objectName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME] = dataItem.objectName;
+}
+if (dataItem.objectID != null && dataItem.objectID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTID] = dataItem.objectID;
+}
+if (dataItem.objectCode != null && dataItem.objectCode != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE] = dataItem.objectCode;
+}
+if (dataItem.objectAction != null && dataItem.objectAction != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION] = dataItem.objectAction;
+}
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CREATEDON] = dataItem.createdOn;
+}
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY] = dataItem.createdBy;
+}
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON] = dataItem.modifiedOn;
+}
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY] = dataItem.modifiedBy;
+}
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE] = dataItem.isActive;
+}
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_UID] = dataItem.uid;
+}
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERID] = dataItem.appUserID;
+}
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISDELETED] = dataItem.isDeleted;
+}
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED] = dataItem.isArchived;
+}
+if (dataItem.appUserName != null && dataItem.appUserName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME] = dataItem.appUserName;
+}
+if (dataItem.toAppUserID != null && dataItem.toAppUserID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID] = dataItem.toAppUserID;
+}
+if (dataItem.toChatUserAndGroupUid != null && dataItem.toChatUserAndGroupUid != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID] = dataItem.toChatUserAndGroupUid;
+}
+if (dataItem.chatUserAndGroupName != null && dataItem.chatUserAndGroupName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME] = dataItem.chatUserAndGroupName;
+}
+if (dataItem.toChatUserAndGroupName != null && dataItem.toChatUserAndGroupName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME] = dataItem.toChatUserAndGroupName;
+}
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+values[ColumnsBase.KEY_UPSYNCINDEX] = 0;
+values[ColumnsBase.KEY_ISACTIVE] = "true";
+values[ColumnsBase.KEY_ISDELETED] = "false";
+
+
+            id = await db.insert(TablesBase.TABLE_CHATMESSAGE, values);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:AddChatMessageRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> UpdateChatMessageRecord(DatabaseHandler databaseHandler,  String id1, ChatMessage dataItem)async {
+        int id = 0;
+        try {
+            final db = await databaseHandler.database;
+            Map<String, dynamic> values = {};
+
+if (dataItem.chatMessageID != null && dataItem.chatMessageID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID] = dataItem.chatMessageID;
+}
+if (dataItem.chatMessageCode != null && dataItem.chatMessageCode != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE] = dataItem.chatMessageCode;
+}
+if (dataItem.chatMessageContent != null && dataItem.chatMessageContent != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT] = dataItem.chatMessageContent;
+}
+if (dataItem.contentType != null && dataItem.contentType != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE] = dataItem.contentType;
+}
+if (dataItem.chatUserAndGroupID != null && dataItem.chatUserAndGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID] = dataItem.chatUserAndGroupID;
+}
+if (dataItem.toChatUserAndGroupID != null && dataItem.toChatUserAndGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID] = dataItem.toChatUserAndGroupID;
+}
+if (dataItem.localMediaPath != null && dataItem.localMediaPath != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH] = dataItem.localMediaPath;
+}
+if (dataItem.isUploaded != null && dataItem.isUploaded != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED] = dataItem.isUploaded;
+}
+if (dataItem.mediaPath != null && dataItem.mediaPath != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH] = dataItem.mediaPath;
+}
+if (dataItem.isRead != null && dataItem.isRead != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISREAD] = dataItem.isRead;
+}
+if (dataItem.readStatus != null && dataItem.readStatus != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_READSTATUS] = dataItem.readStatus;
+}
+if (dataItem.objectName != null && dataItem.objectName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME] = dataItem.objectName;
+}
+if (dataItem.objectID != null && dataItem.objectID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTID] = dataItem.objectID;
+}
+if (dataItem.objectCode != null && dataItem.objectCode != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE] = dataItem.objectCode;
+}
+if (dataItem.objectAction != null && dataItem.objectAction != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION] = dataItem.objectAction;
+}
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CREATEDON] = dataItem.createdOn;
+}
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY] = dataItem.createdBy;
+}
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON] = dataItem.modifiedOn;
+}
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY] = dataItem.modifiedBy;
+}
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE] = dataItem.isActive;
+}
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_UID] = dataItem.uid;
+}
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERID] = dataItem.appUserID;
+}
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISDELETED] = dataItem.isDeleted;
+}
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED] = dataItem.isArchived;
+}
+if (dataItem.appUserName != null && dataItem.appUserName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME] = dataItem.appUserName;
+}
+if (dataItem.toAppUserID != null && dataItem.toAppUserID != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID] = dataItem.toAppUserID;
+}
+if (dataItem.toChatUserAndGroupUid != null && dataItem.toChatUserAndGroupUid != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID] = dataItem.toChatUserAndGroupUid;
+}
+if (dataItem.chatUserAndGroupName != null && dataItem.chatUserAndGroupName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME] = dataItem.chatUserAndGroupName;
+}
+if (dataItem.toChatUserAndGroupName != null && dataItem.toChatUserAndGroupName != "null") {
+  values[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME] = dataItem.toChatUserAndGroupName;
+}
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+if(dataItem.upSyncIndex != null && dataItem.upSyncIndex != "null"){
+
+  values[ColumnsBase.KEY_UPSYNCINDEX] = dataItem.upSyncIndex;
+}
+
+            id = await db.update(TablesBase.TABLE_CHATMESSAGE, values, where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:UpdateChatMessageRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> DeleteChatMessageRecord(DatabaseHandler databaseHandler,  String id1)async {
+        int id = 0;
+        try {
+            final db = await  databaseHandler.database;
+            id =await  db.delete(TablesBase.TABLE_CHATMESSAGE, where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:DeleteChatMessageRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<String> GetServerId(DatabaseHandler databaseHandler,  String id)async {
+        String serverId = "-1";
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID}";
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+
+            final db = await databaseHandler.database;
+
+            List<Map> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                serverId = result[0][ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+            }
+            
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetServerId()", ex);
+            throw ex;
+        }
+        return serverId;
+    }
+
+     static Future<String> GetLocalId(DatabaseHandler databaseHandler,  String id) async{
+        String localId = "";
+        try {
+
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_ID}";
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID} = $id";
+
+            final db = await databaseHandler.database;
+            List<Map> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                localId = result[0][ColumnsBase.KEY_ID];
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetLocalId()", ex);
+            throw ex;
+        }
+        return localId;
+    }
+
+     static Future<List<ChatMessage>> GetChatMessageUpSyncRecords(DatabaseHandler databaseHandler,  String changeType)async {
+        List<ChatMessage> dataList = [];
+        try {
+            String selectQuery = "SELECT * FROM ${TablesBase.TABLE_CHATMESSAGE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            if (changeType  == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_CHATMESSAGE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'false'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            } else if (changeType == (AppConstants.DB_RECORD_DELETED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_CHATMESSAGE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'true'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            }
+            selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND ${ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+             final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    ChatMessage dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+dataList.add(dataItem);
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetChatMessageUpSyncRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
+
+
+     static Future<ChatMessage?> GetChatMessageRecordByUid(DatabaseHandler databaseHandler,  String uid) async{
+        ChatMessage? dataItem;
+        try {
+
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_CHATUSERANDGROUP_CHATUSERANDGROUPNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_CHATMESSAGE} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} D ON A.${ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CHATUSERANDGROUP} E ON A.${ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID} = E.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_CHATMESSAGE_UID} = '$uid'";
+            //selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            //selectQuery += " AND A." + ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+
+             final db =  await databaseHandler.database;
+            List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    ChatMessage dataItem = new ChatMessage();
+
+                    dataItem.chatMessageID = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGEID];
+                    dataItem.chatMessageCode = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECODE];
+                    dataItem.chatMessageContent = element[ColumnsBase.KEY_CHATMESSAGE_CHATMESSAGECONTENT];
+                    dataItem.contentType = element[ColumnsBase.KEY_CHATMESSAGE_CONTENTTYPE];
+                    dataItem.chatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPID];
+                    dataItem.toChatUserAndGroupID = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPID];
+                    dataItem.localMediaPath = element[ColumnsBase.KEY_CHATMESSAGE_LOCALMEDIAPATH];
+                    dataItem.isUploaded = element[ColumnsBase.KEY_CHATMESSAGE_ISUPLOADED];
+                    dataItem.mediaPath  = element[ColumnsBase.KEY_CHATMESSAGE_MEDIAPATH];
+                    dataItem.isRead = element[ColumnsBase.KEY_CHATMESSAGE_ISREAD];
+                    dataItem.readStatus = element[ColumnsBase.KEY_CHATMESSAGE_READSTATUS];
+                    dataItem.objectName = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTNAME];
+                    dataItem.objectID = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTID];
+                    dataItem.objectCode = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTCODE];
+                    dataItem.objectAction = element[ColumnsBase.KEY_CHATMESSAGE_OBJECTACTION];
+                    dataItem.createdOn = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_CHATMESSAGE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_CHATMESSAGE_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_CHATMESSAGE_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_CHATMESSAGE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_CHATMESSAGE_ISDELETED];
+                    dataItem.isArchived = element[ColumnsBase.KEY_CHATMESSAGE_ISARCHIVED];
+                    dataItem.appUserName = element[ColumnsBase.KEY_CHATMESSAGE_APPUSERNAME];
+                    dataItem.toAppUserID = element[ColumnsBase.KEY_CHATMESSAGE_TOAPPUSERID];
+                    dataItem.toChatUserAndGroupUid = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPUID];
+                    dataItem.chatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_CHATUSERANDGROUPNAME];
+                    dataItem.toChatUserAndGroupName = element[ColumnsBase.KEY_CHATMESSAGE_TOCHATUSERANDGROUPNAME];
+
+
+
+                        dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "ChatMessageDataHandlerBase:GetChatMessageRecordByUid()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
+
+    /*-------------------HAPPSALES-------------------*/
+
+}

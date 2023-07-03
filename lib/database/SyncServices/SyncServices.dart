@@ -5256,7 +5256,7 @@ Future<void> upSyncReminder(Reminder reminder) async {
 
 Future<void> downSyncMaxDates() async {
     try {
-      if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
         final url =
             AppConstants.API_VERSION_URL + '/DownSyncManager/GetMaxServerDate';
 
@@ -9133,7 +9133,94 @@ Future<void> downSyncBusinessUnits(String typeOfData) async {
 
 }
 
+Future<void> downSyncChatMessages(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetChatMessagePaged';
+
+      final dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = int.tryParse(dataItem.records);
+        final pageSize = int.tryParse(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = int.tryParse(dataItem.page);
+        ChatMessagesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': ChatMessagesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (final jsonObject in jsonArray) {
+            ChatMessage? chatMessage;
+            final id = jsonObject['ChatMessageID'] as String;
+            final uid = jsonObject['Uid'] as String;
+
+            if (id != '') {
+              chatMessage = ChatMessageDataHandler.GetMasterChatMessageRecord(dbHandler, context, id);
+            }
+
+            if (chatMessage == null && doDoubleCheck && uid != '') {
+              chatMessage = ChatMessageDataHandler.GetChatMessageRecordByUid(dbHandler, context, uid);
+            }
+
+            if (chatMessage == null) {
+              chatMessage = ChatMessage();
+              chatMessage = JSONCopier.CopyJsonDataToChatMessage(context, dbHandler, jsonObject, chatMessage, true);
+              final rid = ChatMessageDataHandler.AddChatMessageRecord(dbHandler, context, chatMessage);
+            } else {
+              chatMessage = JSONCopier.CopyJsonDataToChatMessage(context, dbHandler, jsonObject, chatMessage, false);
+              final rid = ChatMessageDataHandler.UpdateChatMessageRecord(dbHandler, context, chatMessage.id, chatMessage);
+            }
+          }
+
+          final isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) {
+            ChatMessagesPageCurrent = 0;
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncChatMessage() 3-> $e');
+  } finally {
+    // Finally block code
+  }
+}
 
 
 
+ String getPostDataString(Map<String, dynamic> params) {
+    StringBuffer result = StringBuffer();
+    try {
+      bool first = true;
+
+      params.forEach((key, value) {
+        if (first) {
+          first = false;
+        } else {
+          result.write("&");
+        }
+
+        result.write(Uri.encodeQueryComponent(key));
+        result.write("=");
+        result.write(Uri.encodeQueryComponent(value.toString()));
+      });
+    } catch (error) {
+      Globals.handleException("SyncService:GetPostDataString()", error);
+    }
+    return result.toString();
+  }
 }

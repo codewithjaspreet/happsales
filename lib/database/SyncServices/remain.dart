@@ -157,7 +157,7 @@ class Remain {
             AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountPaged';
 
         final dataItem = SyncDataHandler.GetAppSyncItemRecord(
-            dbHandler, context, typeOfData);
+            dbHandler,  typeOfData);
         if (dataItem != null && dataItem.records != '0') {
           int records = Globals.TryParseInt(dataItem.records);
           int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -185,10 +185,10 @@ class Remain {
               var id = jsonObject['AccountID'].toString();
               var uid = jsonObject['Uid'].toString();
               var account = AccountDataHandler.GetMasterAccountRecord(
-                  dbHandler, context, id);
+                  dbHandler,  id);
               if (account == null && doDoubleCheck && uid != '') {
                 account = AccountDataHandler.GetAccountRecordByUid(
-                    dbHandler, context, uid);
+                    dbHandler,  uid);
               }
 
               if (account == null) {
@@ -236,7 +236,7 @@ Future<void> downSyncAccountAddresses(String typeOfData) async {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountAddressPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -265,19 +265,19 @@ Future<void> downSyncAccountAddresses(String typeOfData) async {
               var id = jsonObject['AccountAddressID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountAddress = AccountAddressDataHandler.GetMasterAccountAddressRecord(dbHandler, context, id);
+                accountAddress = AccountAddressDataHandler.GetMasterAccountAddressRecord(dbHandler,  id);
               }
               if (accountAddress == null && doDoubleCheck && uid.isNotEmpty) {
-                accountAddress = AccountAddressDataHandler.GetAccountAddressRecordByUid(dbHandler, context, uid);
+                accountAddress = AccountAddressDataHandler.GetAccountAddressRecordByUid(dbHandler,  uid);
               }
 
               if (accountAddress == null) {
                 accountAddress = AccountAddress();
-                accountAddress = JSONCopier.CopyJsonDataToAccountAddress(context, dbHandler, jsonObject, accountAddress, true);
-                var rid = AccountAddressDataHandlerB.AddAccountAddressRecord(dbHandler, context, accountAddress);
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress( dbHandler, jsonObject, accountAddress, true);
+                var rid = AccountAddressDataHandlerB.AddAccountAddressRecord(dbHandler,  accountAddress);
               } else {
-                accountAddress = JSONCopier.CopyJsonDataToAccountAddress(context, dbHandler, jsonObject, accountAddress, false);
-                var rid = AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler, context, accountAddress.id, accountAddress);
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress( dbHandler, jsonObject, accountAddress, false);
+                var rid = AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler,  accountAddress.id, accountAddress);
               }
             }
           }
@@ -313,7 +313,7 @@ Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessPlanPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -342,19 +342,19 @@ Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
               var id = jsonObject['AccountBusinessPlanID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountBusinessPlan = AccountBusinessPlanDataHandler.GetMasterAccountBusinessPlanRecord(dbHandler, context, id);
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetMasterAccountBusinessPlanRecord(dbHandler,  id);
               }
               if (accountBusinessPlan == null && doDoubleCheck && uid.isNotEmpty) {
-                accountBusinessPlan = AccountBusinessPlanDataHandler.GetAccountBusinessPlanRecordByUid(dbHandler, context, uid);
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetAccountBusinessPlanRecordByUid(dbHandler,  uid);
               }
 
               if (accountBusinessPlan == null) {
                 accountBusinessPlan = AccountBusinessPlan();
-                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan(context, dbHandler, jsonObject, accountBusinessPlan, true);
-                var rid = AccountBusinessPlanDataHandler.AddAccountBusinessPlanRecord(dbHandler, context, accountBusinessPlan);
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan( dbHandler, jsonObject, accountBusinessPlan, true);
+                var rid = AccountBusinessPlanDataHandler.AddAccountBusinessPlanRecord(dbHandler,  accountBusinessPlan);
               } else {
-                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan(context, dbHandler, jsonObject, accountBusinessPlan, false);
-                var rid = AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler, context, accountBusinessPlan.id, accountBusinessPlan);
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan( dbHandler, jsonObject, accountBusinessPlan, false);
+                var rid = AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler,  accountBusinessPlan.id, accountBusinessPlan);
               }
             }
           }
@@ -386,7 +386,7 @@ Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessUnitPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -415,19 +415,19 @@ Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
               var id = jsonObject['AccountBusinessUnitID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountBusinessUnit = AccountBusinessUnitDataHandler.GetMasterAccountBusinessUnitRecord(dbHandler, context, id);
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetMasterAccountBusinessUnitRecord(dbHandler,  id);
               }
               if (accountBusinessUnit == null && doDoubleCheck && uid.isNotEmpty) {
-                accountBusinessUnit = AccountBusinessUnitDataHandler.GetAccountBusinessUnitRecordByUid(dbHandler, context, uid);
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetAccountBusinessUnitRecordByUid(dbHandler,  uid);
               }
 
               if (accountBusinessUnit == null) {
                 accountBusinessUnit = AccountBusinessUnit();
-                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit(context, dbHandler, jsonObject, accountBusinessUnit, true);
-                var rid = AccountBusinessUnitDataHandler.AddAccountBusinessUnitRecord(dbHandler, context, accountBusinessUnit);
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit( dbHandler, jsonObject, accountBusinessUnit, true);
+                var rid = AccountBusinessUnitDataHandler.AddAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit);
               } else {
-                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit(context, dbHandler, jsonObject, accountBusinessUnit, false);
-                var rid = AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler, context, accountBusinessUnit.id, accountBusinessUnit);
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit( dbHandler, jsonObject, accountBusinessUnit, false);
+                var rid = AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit.id, accountBusinessUnit);
               }
             }
           }
@@ -459,7 +459,7 @@ Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBuyingProcessPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -488,19 +488,19 @@ Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
               var id = jsonObject['AccountBuyingProcessID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountBuyingProcess = AccountBuyingProcessDataHandler.GetMasterAccountBuyingProcessRecord(dbHandler, context, id);
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetMasterAccountBuyingProcessRecord(dbHandler,  id);
               }
               if (accountBuyingProcess == null && doDoubleCheck && uid.isNotEmpty) {
-                accountBuyingProcess = AccountBuyingProcessDataHandler.GetAccountBuyingProcessRecordByUid(dbHandler, context, uid);
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetAccountBuyingProcessRecordByUid(dbHandler,  uid);
               }
 
               if (accountBuyingProcess == null) {
                 accountBuyingProcess = AccountBuyingProcess();
-                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess(context, dbHandler, jsonObject, accountBuyingProcess, true);
-                var rid = AccountBuyingProcessDataHandler.AddAccountBuyingProcessRecord(dbHandler, context, accountBuyingProcess);
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess( dbHandler, jsonObject, accountBuyingProcess, true);
+                var rid = AccountBuyingProcessDataHandler.AddAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess);
               } else {
-                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess(context, dbHandler, jsonObject, accountBuyingProcess, false);
-                var rid = AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler, context, accountBuyingProcess.id, accountBuyingProcess);
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess( dbHandler, jsonObject, accountBuyingProcess, false);
+                var rid = AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess.id, accountBuyingProcess);
               }
             }
           }
@@ -531,7 +531,7 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -560,19 +560,19 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
               var id = jsonObject['AccountCategoryID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountCategory = AccountCategoryDataHandler.GetMasterAccountCategoryRecord(dbHandler, context, id);
+                accountCategory = AccountCategoryDataHandler.GetMasterAccountCategoryRecord(dbHandler,  id);
               }
               if (accountCategory == null && doDoubleCheck && uid.isNotEmpty) {
-                accountCategory = AccountCategoryDataHandler.GetAccountCategoryRecordByUid(dbHandler, context, uid);
+                accountCategory = AccountCategoryDataHandler.GetAccountCategoryRecordByUid(dbHandler,  uid);
               }
 
               if (accountCategory == null) {
                 accountCategory = AccountCategory();
-                accountCategory = JSONCopier.CopyJsonDataToAccountCategory(context, dbHandler, jsonObject, accountCategory, true);
-                var rid = AccountCategoryDataHandler.AddAccountCategoryRecord(dbHandler, context, accountCategory);
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory( dbHandler, jsonObject, accountCategory, true);
+                var rid = AccountCategoryDataHandler.AddAccountCategoryRecord(dbHandler,  accountCategory);
               } else {
-                accountCategory = JSONCopier.CopyJsonDataToAccountCategory(context, dbHandler, jsonObject, accountCategory, false);
-                var rid = AccountCategoryDataHandler.UpdateAccountCategoryRecord(dbHandler, context, accountCategory.id, accountCategory);
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory( dbHandler, jsonObject, accountCategory, false);
+                var rid = AccountCategoryDataHandler.UpdateAccountCategoryRecord(dbHandler,  accountCategory.id, accountCategory);
               }
             }
           }
@@ -605,7 +605,7 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
     dataItem.page = "0";
     dataItem.records = "0";
     // dataItem.lMaxDate = dataItem.sMaxDate;
-    int rid = await syncDataHandler.updateAppSyncItemRecord(dbHandler, context, dataItem.id, dataItem);
+    int rid = await syncDataHandler.updateAppSyncItemRecord(dbHandler,  dataItem.id, dataItem);
     logMessage("Reset of paging ${dataItem.tableName}");
   } catch ( ex) {
      Globals.handleException( "SyncService:ResetRecordCount()", ex);
@@ -613,14 +613,13 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
 }
 
 
-import 'package:http/http.dart' as http;
 
 Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
       String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryMappingPaged';
 
-      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.TryParseInt(dataItem.records);
         int pageSize = Globals.TryParseInt(dataItem.pgSize);
@@ -649,19 +648,19 @@ Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
               var id = jsonObject['AccountCategoryMappingID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                accountCategoryMapping = AccountCategoryMappingDataHandler.GetMasterAccountCategoryMappingRecord(dbHandler, context, id);
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetMasterAccountCategoryMappingRecord(dbHandler,  id);
               }
               if (accountCategoryMapping == null && doDoubleCheck && uid.isNotEmpty) {
-                accountCategoryMapping = AccountCategoryMappingDataHandler.GetAccountCategoryMappingRecordByUid(dbHandler, context, uid);
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetAccountCategoryMappingRecordByUid(dbHandler,  uid);
               }
 
               if (accountCategoryMapping == null) {
                 accountCategoryMapping = AccountCategoryMapping();
-                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping(context, dbHandler, jsonObject, accountCategoryMapping, true);
-                var rid = AccountCategoryMappingDataHandler.AddAccountCategoryMappingRecord(dbHandler, context, accountCategoryMapping);
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping( dbHandler, jsonObject, accountCategoryMapping, true);
+                var rid = AccountCategoryMappingDataHandler.AddAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping);
               } else {
-                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping(context, dbHandler, jsonObject, accountCategoryMapping, false);
-                var rid = AccountCategoryMappingDataHandler.UpdateAccountCategoryMappingRecord(dbHandler, context, accountCategoryMapping.getId(), accountCategoryMapping);
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping( dbHandler, jsonObject, accountCategoryMapping, false);
+                var rid = AccountCategoryMappingDataHandler.UpdateAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping.getId(), accountCategoryMapping);
               }
             }
           }
