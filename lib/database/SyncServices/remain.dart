@@ -7,6 +7,7 @@ import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountDataHandl
 import '../AppConstants.dart';
 import '../Globals.dart';
 import '../Handlers/DataBaseHandler.dart';
+import '../models/AccountModels/AccountBuyingProcess.dart';
 import 'JsonCopier.dart';
 import 'Utility.dart';
 import 'package:http/http.dart' as http;
@@ -43,19 +44,7 @@ class Remain {
     return isAllPagesDone;
   }
 
-  void resetRecordCount(AppSyncItem dataItem) {
-    try {
-      dataItem.page = '0';
-      dataItem.records = '0';
-      // dataItem.lMaxDate = dataItem.sMaxDate; // Uncomment this line if needed
-      // Assuming that SyncDataHandler.UpdateAppSyncItemRecord() is a synchronous method
-      // Replace it with the appropriate asynchronous method if needed
-      SyncDataHandler.updateAppSyncItemRecord(dbHandler, dataItem.id, dataItem);
-      logMessage("Reset of paging ${dataItem.tableName}");
-    } catch (ex) {
-      handleException("SyncService:ResetRecordCount()", ex);
-    }
-  }
+
 
   String getPostDataString(Map<String, dynamic> params) {
     StringBuffer result = StringBuffer();
@@ -231,7 +220,7 @@ class Remain {
               LogError('Error decoding server error response: $e');
             }
           } else {
-            ResetRecordCount(dataItem);
+            resetRecordCount(dataItem);
           }
         }
       }
@@ -240,7 +229,464 @@ class Remain {
     }
   }
 
-  
+
+
+Future<void> downSyncAccountAddresses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountAddressPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountAddressesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountAddressesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountAddress accountAddress;
+              var id = jsonObject['AccountAddressID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountAddress = AccountAddressDataHandler.GetMasterAccountAddressRecord(dbHandler, context, id);
+              }
+              if (accountAddress == null && doDoubleCheck && uid.isNotEmpty) {
+                accountAddress = AccountAddressDataHandler.GetAccountAddressRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountAddress == null) {
+                accountAddress = AccountAddress();
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress(context, dbHandler, jsonObject, accountAddress, true);
+                var rid = AccountAddressDataHandlerB.AddAccountAddressRecord(dbHandler, context, accountAddress);
+              } else {
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress(context, dbHandler, jsonObject, accountAddress, false);
+                var rid = AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler, context, accountAddress.id, accountAddress);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountAddressesPageCurrent = 0;
+        } 
+        
+        else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } 
+        
+        else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountAddress() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessPlanPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountBusinessPlansPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBusinessPlansPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBusinessPlan accountBusinessPlan;
+              var id = jsonObject['AccountBusinessPlanID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetMasterAccountBusinessPlanRecord(dbHandler, context, id);
+              }
+              if (accountBusinessPlan == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetAccountBusinessPlanRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountBusinessPlan == null) {
+                accountBusinessPlan = AccountBusinessPlan();
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan(context, dbHandler, jsonObject, accountBusinessPlan, true);
+                var rid = AccountBusinessPlanDataHandler.AddAccountBusinessPlanRecord(dbHandler, context, accountBusinessPlan);
+              } else {
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan(context, dbHandler, jsonObject, accountBusinessPlan, false);
+                var rid = AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler, context, accountBusinessPlan.id, accountBusinessPlan);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBusinessPlansPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBusinessPlan() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessUnitPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountBusinessUnitsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBusinessUnitsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBusinessUnit accountBusinessUnit;
+              var id = jsonObject['AccountBusinessUnitID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetMasterAccountBusinessUnitRecord(dbHandler, context, id);
+              }
+              if (accountBusinessUnit == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetAccountBusinessUnitRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountBusinessUnit == null) {
+                accountBusinessUnit = AccountBusinessUnit();
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit(context, dbHandler, jsonObject, accountBusinessUnit, true);
+                var rid = AccountBusinessUnitDataHandler.AddAccountBusinessUnitRecord(dbHandler, context, accountBusinessUnit);
+              } else {
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit(context, dbHandler, jsonObject, accountBusinessUnit, false);
+                var rid = AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler, context, accountBusinessUnit.id, accountBusinessUnit);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBusinessUnitsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBusinessUnit() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountBuyingProcessPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountBuyingProcessesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBuyingProcessesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBuyingProcess accountBuyingProcess;
+              var id = jsonObject['AccountBuyingProcessID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetMasterAccountBuyingProcessRecord(dbHandler, context, id);
+              }
+              if (accountBuyingProcess == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetAccountBuyingProcessRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountBuyingProcess == null) {
+                accountBuyingProcess = AccountBuyingProcess();
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess(context, dbHandler, jsonObject, accountBuyingProcess, true);
+                var rid = AccountBuyingProcessDataHandler.AddAccountBuyingProcessRecord(dbHandler, context, accountBuyingProcess);
+              } else {
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess(context, dbHandler, jsonObject, accountBuyingProcess, false);
+                var rid = AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler, context, accountBuyingProcess.id, accountBuyingProcess);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBuyingProcessesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBuyingProcess() 3-> $e');
+  }
+}
+
+Future<void> downSyncAccountCategories(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountCategoriesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountCategoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountCategory accountCategory;
+              var id = jsonObject['AccountCategoryID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountCategory = AccountCategoryDataHandler.GetMasterAccountCategoryRecord(dbHandler, context, id);
+              }
+              if (accountCategory == null && doDoubleCheck && uid.isNotEmpty) {
+                accountCategory = AccountCategoryDataHandler.GetAccountCategoryRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountCategory == null) {
+                accountCategory = AccountCategory();
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory(context, dbHandler, jsonObject, accountCategory, true);
+                var rid = AccountCategoryDataHandler.AddAccountCategoryRecord(dbHandler, context, accountCategory);
+              } else {
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory(context, dbHandler, jsonObject, accountCategory, false);
+                var rid = AccountCategoryDataHandler.UpdateAccountCategoryRecord(dbHandler, context, accountCategory.id, accountCategory);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountCategoriesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountCategory() 3-> $e');
+  }
+}
+
+
+
+  Future<void> resetRecordCount(AppSyncItem dataItem) async {
+  try {
+    dataItem.page = "0";
+    dataItem.records = "0";
+    // dataItem.lMaxDate = dataItem.sMaxDate;
+    int rid = await syncDataHandler.updateAppSyncItemRecord(dbHandler, context, dataItem.id, dataItem);
+    logMessage("Reset of paging ${dataItem.tableName}");
+  } catch ( ex) {
+     Globals.handleException( "SyncService:ResetRecordCount()", ex);
+  }
+}
+
+
+import 'package:http/http.dart' as http;
+
+Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryMappingPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.TryParseInt(dataItem.records);
+        int pageSize = Globals.TryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.page);
+        AccountCategoryMappingsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountCategoryMappingsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountCategoryMapping accountCategoryMapping;
+              var id = jsonObject['AccountCategoryMappingID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetMasterAccountCategoryMappingRecord(dbHandler, context, id);
+              }
+              if (accountCategoryMapping == null && doDoubleCheck && uid.isNotEmpty) {
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetAccountCategoryMappingRecordByUid(dbHandler, context, uid);
+              }
+
+              if (accountCategoryMapping == null) {
+                accountCategoryMapping = AccountCategoryMapping();
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping(context, dbHandler, jsonObject, accountCategoryMapping, true);
+                var rid = AccountCategoryMappingDataHandler.AddAccountCategoryMappingRecord(dbHandler, context, accountCategoryMapping);
+              } else {
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping(context, dbHandler, jsonObject, accountCategoryMapping, false);
+                var rid = AccountCategoryMappingDataHandler.UpdateAccountCategoryMappingRecord(dbHandler, context, accountCategoryMapping.getId(), accountCategoryMapping);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountCategoryMappingsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountCategoryMapping() 3-> $e');
+  }
+}
+
 
 
 }

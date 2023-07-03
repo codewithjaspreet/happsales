@@ -4,12 +4,14 @@ import 'dart:math';
 
 import 'package:happsales_crm/database/AppTables/ColumnsBase.dart';
 import 'package:happsales_crm/database/AppTables/TablesBase.dart';
+import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountBusinessUnitHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountCategoryDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountFormValueDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityProductDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityTravelMappingDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactAlignmentDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactCategoryDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityProductDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityProductDetailDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStageDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStatusDataHandlerBase.dart';
@@ -22,8 +24,22 @@ import '../Handlers/AccountHandlers/AccountMappingDataHandlerBase.dart';
 import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/ContactHandlers/ContactDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
+import '../models/AccountModels/AccountCategory.dart';
+import '../models/AccountModels/AccountSegment.dart';
+import '../models/AccountModels/AccountStatus.dart';
+import '../models/ActivityModels/ActivityApprovalType.dart';
+import '../models/ActivityModels/ActivityMeasure.dart';
 import '../models/OpportunityModels/OpportunityProductDetailAttribute.dart';
+import '../models/OtherModels/AppFeatureField.dart';
+import '../models/OtherModels/AppFeatureGroup.dart';
 import '../models/OtherModels/AppLog.dart';
+import '../models/OtherModels/AppReport.dart';
+import '../models/OtherModels/AppUser.dart';
+import '../models/OtherModels/AppUserTeam.dart';
+import '../models/OtherModels/AttributeValue.dart';
+import '../models/OtherModels/BusinessEmail.dart';
+import '../models/OtherModels/BusinessFeature.dart';
+import '../models/OtherModels/BusinessUnit.dart';
 import '../models/OtherModels/Reminder.dart';
 
 import '../AppConstants.dart';
@@ -85,6 +101,7 @@ import '../models/OtherModels/Reimbursement.dart';
 import '../models/OtherModels/ReimbursementDetail.dart';
 import 'JsonCopier.dart';
 import 'Utility.dart';
+import 'await Utility.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -1394,7 +1411,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
     void upSyncAccountCategoryMapping(AccountCategoryMapping accountCategoryMapping) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
       String url = AppConstants.API_VERSION_URL + '/accountcategorymapping';
 
       Map<String, dynamic> postData = {
@@ -1465,7 +1482,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 void upSyncContact(Contact contact) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
       String url = AppConstants.API_VERSION_URL + "/contact";
 
       Map<String, dynamic> postData = {
@@ -1580,7 +1597,7 @@ void upSyncContact(Contact contact) async {
 }
 
 void upSyncActivity(Activity activity) {
-  if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+  if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
     String url = AppConstants.API_VERSION_URL + "/activity";
 
     Map<String, dynamic> postData = {
@@ -1691,7 +1708,7 @@ void upSyncActivity(Activity activity) {
 
 Future<void> upSyncOpportunity(Opportunity opportunity) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/opportunity";
 
       Map<String, dynamic> postData = {
@@ -1815,7 +1832,7 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
 
 void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
       String url = '${AppConstants.API_VERSION_URL}/customermeeting';
 
       Map<String, dynamic> postData = {
@@ -1894,7 +1911,7 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
 
 void upSyncActivityProduct(String activityId, List<ActivityProduct> activityProductListOriginal, List<ActivityProductDetail> activityProductDetailListOriginal, List<ActivityProduct> activityProductList, List<ActivityProductDetail> activityProductDetailList) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/activityproduct/savecollection';
       Map<String, String> headers = {'Authorization': 'Bearer ${Globals.USER_TOKEN}'};
 
@@ -2004,9 +2021,9 @@ var userdata2 = jsonEncode(activityProductDetailList);
 }
 
  
-  void upSyncOpportunityProduct(String opportunityId, List<OpportunityProduct> opportunityProductListOriginal, List<OpportunityProductDetail> opportunityProductDetailListOriginal, List<OpportunityProduct> opportunityProductList, List<OpportunityProductDetail> opportunityProductDetailList) {
+  Future<void> upSyncOpportunityProduct(String opportunityId, List<OpportunityProduct> opportunityProductListOriginal, List<OpportunityProductDetail> opportunityProductDetailListOriginal, List<OpportunityProduct> opportunityProductList, List<OpportunityProductDetail> opportunityProductDetailList)async {
   try {
-    if (Utility.isNetworkConnected(opportunityProductList) && Globals.USER_TOKEN != "") {
+    if (await  Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunityproduct/savecollection";
 
       var userdata1 = jsonEncode(opportunityProductList);
@@ -2034,13 +2051,13 @@ var userdata2 = jsonEncode(activityProductDetailList);
             var cid = jsonObj["CID"];
             var sid = jsonObj["SID"];
             if (Globals.tryParseAsIntString(cid) != "" && Globals.tryParseAsIntString(sid) != "") {
-              var opportunityProduct = OpportunityProductDataHandler.getOpportunityProductRecord(dbHandler,  cid);
+              List<OpportunityProduct> opportunityProduct = await  OpportunityProductDataHandlerBase.GetOpportunityProductRecords(dbHandler,  cid);
               if (opportunityProduct != null) {
                 opportunityProduct.upSyncIndex = Globals.SyncIndex.toString();
                 opportunityProduct.opportunityProductID = sid;
                 opportunityProduct.isDirty = "false";
                 opportunityProduct.upSyncMessage = "SUCCESS";
-                var rid = OpportunityProductDataHandler.updateOpportunityProductRecord(dbHandler,  opportunityProduct.id, opportunityProduct);
+                var rid = OpportunityProductDataHandlerBase.UpdateOpportunityProductRecord(dbHandler,  opportunityProduct.id, opportunityProduct);
               }
             }
           }
@@ -2058,7 +2075,7 @@ var userdata2 = jsonEncode(activityProductDetailList);
                 opportunityProductDetail.opportunityProductDetailID = sid;
                 opportunityProductDetail.isDirty = "false";
                 opportunityProductDetail.upSyncMessage = "SUCCESS";
-                var rid = OpportunityProductDetailDataHandler.updateOpportunityProductDetailRecord(dbHandler,  opportunityProductDetail.id, opportunityProductDetail);
+                var rid = await  OpportunityProductDetailDataHandlerBase.UpdateOpportunityProductDetailRecord(dbHandler,  opportunityProductDetail.id, opportunityProductDetail);
               }
             }
           }
@@ -2092,7 +2109,7 @@ var userdata2 = jsonEncode(activityProductDetailList);
 
 void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute opportunityProductDetailAttribute) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunityproductdetailattribute";
 
       var postData = {
@@ -2174,7 +2191,7 @@ void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute o
 
 void upSyncAccountAddress(AccountAddress accountAddress) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountaddress";
 
       var postData = {
@@ -2263,7 +2280,7 @@ void upSyncAccountAddress(AccountAddress accountAddress) {
 
 void upSyncOpportunityContact(OpportunityContact opportunityContact) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunitycontact";
 
       var postData = {
@@ -2343,7 +2360,7 @@ void upSyncOpportunityContact(OpportunityContact opportunityContact) {
 
 void upSyncAccountPhone(AccountPhone accountPhone) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountphone";
 
       var postData = {
@@ -2423,7 +2440,7 @@ void upSyncAccountPhone(AccountPhone accountPhone) {
 
 void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountbuyingprocess";
 
       var postData = {
@@ -2501,7 +2518,7 @@ void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
 
 void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountbusinessplan";
 
       var postData = {
@@ -2540,7 +2557,7 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
           if (jsonResponse != null) {
             try {
               var accountBusinessPlanReturn = AccountBusinessPlan();
-              JSONCopier.CopyJsonDataToAccountBusinessPlan(, dbHandler, jsonResponse, accountBusinessPlanReturn, false);
+              JSONCopier.CopyJsonDataToAccountBusinessPlan( dbHandler, jsonResponse, accountBusinessPlanReturn, false);
               accountBusinessPlanReturn.isDirty = "false";
               accountBusinessPlanReturn.upSyncMessage = "SUCCESS";
               accountBusinessPlanReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -2581,7 +2598,7 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
 
 void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetitionActivity) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountcompetitionactivity";
 
       var postData = {
@@ -2621,7 +2638,7 @@ void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetit
           if (jsonResponse != null) {
             try {
               var accountCompetitionActivityReturn = AccountCompetitionActivity();
-              JSONCopier.CopyJsonDataToAccountCompetitionActivity(, dbHandler, jsonResponse, accountCompetitionActivityReturn, false);
+              JSONCopier.CopyJsonDataToAccountCompetitionActivity( dbHandler, jsonResponse, accountCompetitionActivityReturn, false);
               accountCompetitionActivityReturn.isDirty = "false";
               accountCompetitionActivityReturn.upSyncMessage = "SUCCESS";
               accountCompetitionActivityReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -2661,7 +2678,7 @@ void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetit
 
 void upSyncNote(Note note) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/note";
 
       var postData = {
@@ -2708,7 +2725,7 @@ void upSyncNote(Note note) {
           if (jsonResponse != null) {
             try {
               var noteReturn = Note();
-              JSONCopier.CopyJsonDataToNote(, dbHandler, jsonResponse, noteReturn, false);
+              JSONCopier.CopyJsonDataToNote( dbHandler, jsonResponse, noteReturn, false);
               noteReturn.isDirty = "false";
               noteReturn.upSyncMessage = "SUCCESS";
               noteReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -2747,7 +2764,7 @@ void upSyncNote(Note note) {
 
 void upSyncActivityTravel(ActivityTravel activityTravel) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitytravel";
 
       var postData = {
@@ -2802,7 +2819,7 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
           if (jsonResponse != null) {
             try {
               var activityTravelReturn = ActivityTravel();
-              JSONCopier.CopyJsonDataToActivityTravel(, dbHandler, jsonResponse, activityTravelReturn, false);
+              JSONCopier.CopyJsonDataToActivityTravel( dbHandler, jsonResponse, activityTravelReturn, false);
               activityTravelReturn.isDirty = "false";
               activityTravelReturn.upSyncMessage = "SUCCESS";
               activityTravelReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -2844,7 +2861,7 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
 
 void upSyncAccountMedia(AccountMedia accountMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountmedia";
 
       var postData = {
@@ -2932,7 +2949,7 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
 
 void upSyncContactMedia(ContactMedia contactMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/contactmedia";
 
       var postData = {
@@ -2975,7 +2992,7 @@ void upSyncContactMedia(ContactMedia contactMedia) {
           if (jsonResponse != null) {
             try {
               var contactMediaReturn = ContactMedia();
-              JSONCopier.CopyJsonDataToContactMedia(, dbHandler, jsonResponse, contactMediaReturn, false);
+              JSONCopier.CopyJsonDataToContactMedia( dbHandler, jsonResponse, contactMediaReturn, false);
               contactMediaReturn.isDirty = "false";
               contactMediaReturn.upSyncMessage = "SUCCESS";
               contactMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3017,7 +3034,7 @@ void upSyncContactMedia(ContactMedia contactMedia) {
 
 void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunitymedia";
 
       var postData = {
@@ -3058,7 +3075,7 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
           if (jsonResponse != null) {
             try {
               var opportunityMediaReturn = OpportunityMedia();
-              JSONCopier.CopyJsonDataToOpportunityMedia(, dbHandler, jsonResponse, opportunityMediaReturn, false);
+              JSONCopier.CopyJsonDataToOpportunityMedia( dbHandler, jsonResponse, opportunityMediaReturn, false);
               opportunityMediaReturn.isDirty = "false";
               opportunityMediaReturn.upSyncMessage = "SUCCESS";
               opportunityMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3100,7 +3117,7 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
 
 void upSyncActivityMedia(ActivityMedia activityMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitymedia";
 
       var postData = {
@@ -3144,7 +3161,7 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
           if (jsonResponse != null) {
             try {
               var activityMediaReturn = ActivityMedia();
-              JSONCopier.CopyJsonDataToActivityMedia(, dbHandler, jsonResponse, activityMediaReturn, false);
+              JSONCopier.CopyJsonDataToActivityMedia( dbHandler, jsonResponse, activityMediaReturn, false);
               activityMediaReturn.isDirty = "false";
               activityMediaReturn.upSyncMessage = "SUCCESS";
               activityMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3187,7 +3204,7 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
 
 void upSyncNoteMedia(NoteMedia noteMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/notemedia";
 
       var postData = {
@@ -3230,7 +3247,7 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
           if (jsonResponse != null) {
             try {
               var noteMediaReturn = NoteMedia();
-              JSONCopier.CopyJsonDataToNoteMedia(, dbHandler, jsonResponse, noteMediaReturn, false);
+              JSONCopier.CopyJsonDataToNoteMedia( dbHandler, jsonResponse, noteMediaReturn, false);
               noteMediaReturn.isDirty = "false";
               noteMediaReturn.upSyncMessage = "SUCCESS";
               noteMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3273,7 +3290,7 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
 
 void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitytravelmedia";
 
       var postData = {
@@ -3316,7 +3333,7 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
           if (jsonResponse != null) {
             try {
               var activityTravelMediaReturn = ActivityTravelMedia();
-              JSONCopier.CopyJsonDataToActivityTravelMedia(, dbHandler, jsonResponse, activityTravelMediaReturn, false);
+              JSONCopier.CopyJsonDataToActivityTravelMedia( dbHandler, jsonResponse, activityTravelMediaReturn, false);
               activityTravelMediaReturn.isDirty = "false";
               activityTravelMediaReturn.upSyncMessage = "SUCCESS";
               activityTravelMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
@@ -3367,7 +3384,7 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
 
 Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExpense)async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitytravelexpense";
 
       var postData = {
@@ -3461,7 +3478,7 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
 
 Future<void> upSyncFieldAttendance(FieldAttendance fieldAttendance) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/fieldattendance";
 
       var postData = {
@@ -3500,7 +3517,7 @@ Future<void> upSyncFieldAttendance(FieldAttendance fieldAttendance) async {
           if (jsonObject != null) {
             try {
               var fieldAttendanceReturn = FieldAttendance();
-              await JSONCopier.copyJsonDataToFieldAttendance(, dbHandler, jsonObject, fieldAttendanceReturn, false);
+              await JSONCopier.copyJsonDataToFieldAttendance( dbHandler, jsonObject, fieldAttendanceReturn, false);
               var fieldAttendance1 = FieldAttendanceDataHandler.getFieldAttendanceRecord(dbHandler, fieldAttendance.id);
               if (fieldAttendance1 != null) {
                 fieldAttendance1.fieldAttendanceCode = fieldAttendanceReturn.fieldAttendanceCode;
@@ -3542,7 +3559,7 @@ Future<void> upSyncFieldAttendance(FieldAttendance fieldAttendance) async {
 
 Future<void> upSyncAppUserRemark(AppUserRemark appUserRemark) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/appuserremark";
 
       var postData = {
@@ -3611,7 +3628,7 @@ Future<void> upSyncAppUserRemark(AppUserRemark appUserRemark) async {
 
 Future<void> upSyncAccountForm(AccountForm accountForm) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/accountform";
 
       var postData = {
@@ -3648,7 +3665,7 @@ Future<void> upSyncAccountForm(AccountForm accountForm) async {
           if (jsonObject != null) {
             try {
               var accountFormReturn = AccountForm();
-              await JSONCopier.copyJsonDataToAccountForm(, dbHandler, jsonObject, accountFormReturn, false);
+              await JSONCopier.copyJsonDataToAccountForm( dbHandler, jsonObject, accountFormReturn, false);
               accountFormReturn.isDirty = "false";
               accountFormReturn.upSyncMessage = "SUCCESS";
               accountFormReturn.upSyncIndex = Globals.syncIndex.toString();
@@ -3681,7 +3698,7 @@ Future<void> upSyncAccountForm(AccountForm accountForm) async {
 
 Future<void> upSyncAccountFormValue(String accountFormId, List<AccountFormValue> accountFormValueListOriginal, List<AccountFormValue> accountFormValueList) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/accountformvalue/savecollection";
 
       var postData = {
@@ -3744,8 +3761,8 @@ Future<void> upSyncAccountFormValue(String accountFormId, List<AccountFormValue>
 
 Future<void> upSyncReimbursement(Reimbursement reimbursement) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/reimbursement";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/reimbursement";
 
       var postData = {
         "ReimbursementID": !Globals.isNullOrEmpty(reimbursement.reimbursementID) ? reimbursement.reimbursementID : "-1",
@@ -3780,7 +3797,7 @@ Future<void> upSyncReimbursement(Reimbursement reimbursement) async {
           if (jsonObject != null) {
             try {
               var reimbursementReturn = Reimbursement();
-              JSONCopier.copyJsonDataToReimbursement(, dbHandler, jsonObject, reimbursementReturn, false);
+              JSONCopier.copyJsonDataToReimbursement( dbHandler, jsonObject, reimbursementReturn, false);
               reimbursementReturn.isDirty = "false";
               reimbursementReturn.upSyncMessage = "SUCCESS";
               reimbursementReturn.upSyncIndex = Globals.syncIndex.toString();
@@ -3813,8 +3830,8 @@ Future<void> upSyncReimbursement(Reimbursement reimbursement) async {
 
 Future<void> upSyncReimbursementDetail(ReimbursementDetail reimbursementDetail) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/reimbursementdetail";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/reimbursementdetail";
 
       var postData = {
         "ReimbursementDetailID": !Globals.isNullOrEmpty(reimbursementDetail.reimbursementDetailID) ? reimbursementDetail.reimbursementDetailID : "-1",
@@ -3887,8 +3904,8 @@ Future<void> upSyncReimbursementDetail(ReimbursementDetail reimbursementDetail) 
 
 Future<void> upSyncAppUserLocation(AppUserLocation appUserLocation) async{
   try {
-    if ( await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/appuserlocation";
+    if ( await await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstants.API_VERSION_URL + "/appuserlocation";
 
       var postData = {
         "AppUserLocationID": !Globals.isNullOrEmpty(appUserLocation.appUserLocationID) ? appUserLocation.appUserLocationID : "-1",
@@ -3985,8 +4002,8 @@ Future<void> upSyncAppUserLocation(AppUserLocation appUserLocation) async{
 
 Future<void> upSyncActivityPermission(ActivityPermission activityPermission) async{
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/activitypermission";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstants.API_VERSION_URL + "/activitypermission";
 
       var postData = {
         "ActivityPermissionID": !Globals.isNullOrEmpty(activityPermission.activityPermissionID) ? activityPermission.activityPermissionID : "-1",
@@ -4059,8 +4076,8 @@ Future<void> upSyncActivityPermission(ActivityPermission activityPermission) asy
 
 Future<void> upSyncNotePermission(NotePermission notePermission)async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/notepermission";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstants.API_VERSION_URL + "/notepermission";
 
       var postData = {
         "NotePermissionID": !Globals.isNullOrEmpty(notePermission.notePermissionID) ? notePermission.notePermissionID : "-1",
@@ -4133,8 +4150,8 @@ Future<void> upSyncNotePermission(NotePermission notePermission)async {
 
 Future<void> upSyncOpportunityPermission(OpportunityPermission opportunityPermission)async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/opportunitypermission";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstants.API_VERSION_URL + "/opportunitypermission";
 
       var postData = {
         "OpportunityPermissionID": !Globals.isNullOrEmpty(opportunityPermission.opportunityPermissionID) ? opportunityPermission.opportunityPermissionID : "-1",
@@ -4207,7 +4224,7 @@ Future<void> upSyncOpportunityPermission(OpportunityPermission opportunityPermis
 
 Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
   try {
-    if (await  Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+    if (await  await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = AppConstants.API_VERSION_URL + "/activityteam";
       Map<String, dynamic> postData = {
         "ActivityTeamID": Globals.isNullOrEmpty(activityTeam.activityTeamID) ? "-1" : activityTeam.activityTeamID,
@@ -4281,8 +4298,8 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
 
 Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/appusermessage";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/appusermessage";
       Map<String, dynamic> postData = {
         "AppUserMessageID": Globals.isNullOrEmpty(appUserMessage.appUserMessageID) ? "-1" : appUserMessage.appUserMessageID,
         "AppUserMessageCode": Globals.isNullOrEmpty(appUserMessage.appUserMessageCode) ? "" : appUserMessage.appUserMessageCode,
@@ -4360,8 +4377,8 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
 
 Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/opportunityteam";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/opportunityteam";
       Map<String, dynamic> postData = {
         "OpportunityTeamID": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamID) ? "-1" : opportunityTeam.opportunityTeamID,
         "OpportunityTeamCode": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamCode) ? "" : opportunityTeam.opportunityTeamCode,
@@ -4435,8 +4452,8 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
 
 Future<void> upSyncActivityTravelMapping(ActivityTravelMapping activityTravelMapping) async{
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/activitytravelmapping";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstants.API_VERSION_URL + "/activitytravelmapping";
 
       var postData = {
         "ActivityTravelMappingID": !Globals.isNullOrEmpty(activityTravelMapping.activityTravelMappingID) ? activityTravelMapping.activityTravelMappingID : "-1",
@@ -4509,8 +4526,8 @@ Future<void> upSyncActivityTravelMapping(ActivityTravelMapping activityTravelMap
 
 Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/accountbusinessunit";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/accountbusinessunit";
       Map<String, dynamic> postData = {
         "AccountBusinessUnitID": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitID) ? "-1" : accountBusinessUnit.accountBusinessUnitID,
         "AccountBusinessUnitCode": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitCode) ? "" : accountBusinessUnit.accountBusinessUnitCode,
@@ -4584,8 +4601,8 @@ Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)a
 
 void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/activitybusinessunit";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/activitybusinessunit";
       Map<String, dynamic> postData = {
         "ActivityBusinessUnitID": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitID) ? "-1" : activityBusinessUnit.activityBusinessUnitID,
         "ActivityBusinessUnitCode": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitCode) ? "" : activityBusinessUnit.activityBusinessUnitCode,
@@ -4659,8 +4676,8 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
 
 void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUnit) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/opportunitybusinessunit";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/opportunitybusinessunit";
       Map<String, dynamic> postData = {
         "OpportunityBusinessUnitID": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitID) ? "-1" : opportunityBusinessUnit.opportunityBusinessUnitID,
         "OpportunityBusinessUnitCode": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitCode) ? "" : opportunityBusinessUnit.opportunityBusinessUnitCode,
@@ -4734,8 +4751,8 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
 
 Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/activityapproval";
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/activityapproval";
       Map<String, dynamic> postData = {
         "ActivityApprovalID": Globals.isNullOrEmpty(activityApproval.activityApprovalID) ? "-1" : activityApproval.activityApprovalID,
         "ActivityApprovalCode": Globals.isNullOrEmpty(activityApproval.activityApprovalCode) ? "" : activityApproval.activityApprovalCode,
@@ -4818,8 +4835,8 @@ Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
 
 Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)async {
   try {
-    if ( await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/opportunityapproval";
+    if ( await await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/opportunityapproval";
       Map<String, dynamic> postData = {
         "OpportunityApprovalID": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalID) ? opportunityApproval.opportunityApprovalID : "-1",
         "OpportunityApprovalCode": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalCode) ? opportunityApproval.opportunityApprovalCode : "",
@@ -4908,8 +4925,8 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
 
 void upSyncAppLog(AppLog appLog) {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
-      String url = AppConstant.API_VERSION_URL + "/applog";
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
+      String url = AppConstants.API_VERSION_URL + "/applog";
       Map<String, dynamic> postData = {
         "AppLogID": !Globals.isNullOrEmpty(appLog.appLogID) ? appLog.appLogID : "-1",
         "AppLogCode": !Globals.isNullOrEmpty(appLog.appLogCode) ? appLog.appLogCode : "",
@@ -4984,8 +5001,8 @@ void upSyncAppLog(AppLog appLog) {
 
 Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
   try {
-    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = '${AppConstant.API_VERSION_URL}/hssupportticket';
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = '${AppConstants.API_VERSION_URL}/hssupportticket';
 
       Map<String, dynamic> postData = {
         'HSSupportTicketID': Globals.isNullOrEmpty(hSSupportTicket.HSSupportTicketID) ? '-1' : hSSupportTicket.HSSupportTicketID,
@@ -5063,8 +5080,8 @@ Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
 
 void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async {
   try {
-    if (Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = '${AppConstant.API_VERSION_URL}/hssupportticketmedia';
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = '${AppConstants.API_VERSION_URL}/hssupportticketmedia';
 
       Map<String, dynamic> postData = {
         'HSSupportTicketMediaID': Globals.isNullOrEmpty(hSSupportTicketMedia.HSSupportTicketMediaID) ? '-1' : hSSupportTicketMedia.HSSupportTicketMediaID,
@@ -5146,8 +5163,8 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
 
 Future<void> upSyncReminder(Reminder reminder) async {
   try {
-    if (await Utility.isNetworkConnected() && !Globals.USER_TOKEN.isEmpty) {
-      String url = '${AppConstant.API_VERSION_URL}/reminder';
+    if (await await Utility.isNetworkConnected() && !Globals.USER_TOKEN.isEmpty) {
+      String url = '${AppConstants.API_VERSION_URL}/reminder';
 
       Map<String, dynamic> postData = {
         'ReminderID': Globals.isNullOrEmpty(reminder.ReminderID) ? '-1' : reminder.ReminderID,
@@ -5237,6 +5254,3895 @@ Future<void> upSyncReminder(Reminder reminder) async {
 
 
 
+  Future<void> downSyncMaxDates() async {
+    try {
+      if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+        final url =
+            AppConstants.API_VERSION_URL + '/DownSyncManager/GetMaxServerDate';
 
+        final dbHandler = DatabaseHandler();
+        final syncItems = SyncDataHandler.GetAppSyncItemRecordsMin(
+          dbHandler,
+        );
+        final userdata = json.encode(syncItems);
+
+        final postData = {'UserData': userdata};
+
+        final headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+          'Content-Type': 'application/json',
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: headers, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonResponse = json.decode(response.body);
+
+          if (jsonResponse != null) {
+            final dataString = jsonResponse['DataObject'];
+
+            if (Globals.isJSONArray(dataString)) {
+              final jsonArray = json.decode(dataString) as List<dynamic>;
+
+              for (final jsonObject in jsonArray) {
+                if (jsonObject != null) {
+                  final tableName = jsonObject['TableName'];
+                  final serverMaxDate = jsonObject['SMaxDate'];
+                  final recordCount = jsonObject['Records'];
+                  final lastSyncTime = jsonObject['SCreatedOn'];
+
+                  if (tableName != null && tableName != '') {
+                    final appSyncItem = SyncDataHandler.GetAppSyncItemRecord(
+                        dbHandler, tableName);
+                    if (appSyncItem != null) {
+                      appSyncItem.setSMaxDate(serverMaxDate);
+                      appSyncItem.setRecords(recordCount);
+                      appSyncItem.setSyncTime(lastSyncTime);
+                      final rid = SyncDataHandler.UpdateAppSyncItemRecord(
+                          dbHandler, appSyncItem.getId(), appSyncItem);
+                    }
+                  }
+                }
+              }
+              LogMessage('DownSyncMaxDates - Completed.');
+            }
+          }
+        } else {
+          final error = response.body;
+          // Handle the error accordingly
+          LogError('HTTP Error: $error');
+        }
+      }
+    } catch (e) {
+      // Handle any exceptions that occur
+      LogError('Error: SyncService:DownSyncMaxDates() -> $e');
+    } finally {
+      ResetPageIndexes();
+      currentDownload = '';
+    }
+  }
+
+  Future<void> downSyncAccounts(String typeOfData) async {
+    try {
+      if (await await Utility.isNetworkConnected() &&
+          Globals.USER_TOKEN != '') {
+        String url =
+            AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountPaged';
+
+        final dataItem = SyncDataHandler.GetAppSyncItemRecord(
+            dbHandler,  typeOfData);
+        if (dataItem != null && dataItem.records != '0') {
+          int records = Globals.tryParseInt(dataItem.records);
+          int pageSize = Globals.tryParseInt(dataItem.pgSize);
+          int totalPages = (records / pageSize).ceil();
+
+          int pageNow = Globals.tryParseInt(dataItem.page);
+          AccountsPageCurrent = pageNow + 1;
+
+          var postData = {
+            'pageindex': AccountsPageCurrent,
+            'pagesize': pageSize,
+            'objectdate1': dataItem.lMaxDate,
+            'objectdate2': dataItem.sMaxDate,
+          };
+
+          var headers = {
+            'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+          };
+
+          var response = await http.post(Uri.parse(url),
+              headers: headers, body: jsonEncode(postData));
+          if (response.statusCode == 200) {
+            var jsonArray = jsonDecode(response.body) as List<dynamic>;
+            for (var jsonObject in jsonArray) {
+              var id = jsonObject['AccountID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              var account = AccountDataHandler.GetMasterAccountRecord(
+                  dbHandler,  id);
+              if (account == null && doDoubleCheck && uid != '') {
+                account = AccountDataHandler.GetAccountRecordByUid(
+                    dbHandler,  uid);
+              }
+
+              if (account == null) {
+                account = Account();
+                account = JSONCopier.CopyJsonDataToAccount(
+                     dbHandler, jsonObject, account, true);
+                var rid = AccountDataHandlerBase.AddAccountRecord(
+                    dbHandler, account);
+              } else {
+                var isUploaded = Globals.getStringValue(account.isUploaded);
+                account = JSONCopier.CopyJsonDataToAccount(
+                    dbHandler, jsonObject, account, false);
+                account.isUploaded = isUploaded;
+                var rid = AccountDataHandlerBase.UpdateAccountRecord(
+                    dbHandler, account.id, account);
+              }
+            }
+
+            bool isAllPagesDone = await updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) AccountsPageCurrent = 0;
+          } else if (response.statusCode == 401) {
+            // Handle authentication failure
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500 && response.statusCode < 600) {
+            try {
+              String errorResponse = utf8.decode(response.bodyBytes);
+              LogError('Server Error: ${response.statusCode}\n$errorResponse');
+            } catch (e) {
+              LogError('Error decoding server error response: $e');
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    } catch (e) {
+      LogError('Error: SyncService:DownSyncAccount() 3-> $e');
+    }
+  }
+
+Future<void> downSyncAccountAddresses(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountAddressPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountAddressesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountAddressesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountAddress accountAddress;
+              var id = jsonObject['AccountAddressID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountAddress = AccountAddressDataHandler.GetMasterAccountAddressRecord(dbHandler,  id);
+              }
+              if (accountAddress == null && doDoubleCheck && uid.isNotEmpty) {
+                accountAddress = AccountAddressDataHandler.GetAccountAddressRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountAddress == null) {
+                accountAddress = AccountAddress();
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress( dbHandler, jsonObject, accountAddress, true);
+                var rid = AccountAddressDataHandlerB.AddAccountAddressRecord(dbHandler,  accountAddress);
+              } else {
+                accountAddress = JSONCopier.CopyJsonDataToAccountAddress( dbHandler, jsonObject, accountAddress, false);
+                var rid = AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler,  accountAddress.id, accountAddress);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountAddressesPageCurrent = 0;
+        } 
+        
+        else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } 
+        
+        else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountAddress() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessPlanPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountBusinessPlansPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBusinessPlansPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBusinessPlan accountBusinessPlan;
+              var id = jsonObject['AccountBusinessPlanID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetMasterAccountBusinessPlanRecord(dbHandler,  id);
+              }
+              if (accountBusinessPlan == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBusinessPlan = AccountBusinessPlanDataHandler.GetAccountBusinessPlanRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountBusinessPlan == null) {
+                accountBusinessPlan = AccountBusinessPlan();
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan( dbHandler, jsonObject, accountBusinessPlan, true);
+                var rid = AccountBusinessPlanDataHandler.AddAccountBusinessPlanRecord(dbHandler,  accountBusinessPlan);
+              } else {
+                accountBusinessPlan = JSONCopier.CopyJsonDataToAccountBusinessPlan( dbHandler, jsonObject, accountBusinessPlan, false);
+                var rid = AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler,  accountBusinessPlan.id, accountBusinessPlan);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBusinessPlansPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBusinessPlan() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessUnitPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountBusinessUnitsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBusinessUnitsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+
+
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBusinessUnit accountBusinessUnit;
+              var id = jsonObject['AccountBusinessUnitID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetMasterAccountBusinessUnitRecord(dbHandler,  id);
+              }
+              if (accountBusinessUnit == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBusinessUnit = AccountBusinessUnitDataHandler.GetAccountBusinessUnitRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountBusinessUnit == null) {
+                accountBusinessUnit = AccountBusinessUnit();
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit( dbHandler, jsonObject, accountBusinessUnit, true);
+                var rid = AccountBusinessUnitDataHandlerBase.AddAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit);
+              } else {
+                accountBusinessUnit = JSONCopier.CopyJsonDataToAccountBusinessUnit( dbHandler, jsonObject, accountBusinessUnit, false);
+                var rid = AccountBusinessUnitDataHandlerBase.UpdateAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit.id, accountBusinessUnit);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBusinessUnitsPageCurrent = 0;
+        } 
+        else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } 
+        
+        else if (response.statusCode >= 500 && response.statusCode < 600) {
+          
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } 
+          
+          catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+
+
+        } 
+
+        else {
+          resetRecordCount(dataItem);
+        }
+
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBusinessUnit() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBuyingProcessPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountBuyingProcessesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountBuyingProcessesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountBuyingProcess accountBuyingProcess;
+              var id = jsonObject['AccountBuyingProcessID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetMasterAccountBuyingProcessRecord(dbHandler,  id);
+              }
+              if (accountBuyingProcess == null && doDoubleCheck && uid.isNotEmpty) {
+                accountBuyingProcess = AccountBuyingProcessDataHandler.GetAccountBuyingProcessRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountBuyingProcess == null) {
+                accountBuyingProcess = AccountBuyingProcess();
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess( dbHandler, jsonObject, accountBuyingProcess, true);
+                var rid = AccountBuyingProcessDataHandler.AddAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess);
+              } else {
+                accountBuyingProcess = JSONCopier.CopyJsonDataToAccountBuyingProcess( dbHandler, jsonObject, accountBuyingProcess, false);
+                var rid = AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess.id, accountBuyingProcess);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountBuyingProcessesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountBuyingProcess() 3-> $e');
+  }
+}
+
+Future<void> downSyncAccountCategories(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountCategoriesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountCategoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountCategory accountCategory;
+              var id = jsonObject['AccountCategoryID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountCategory = AccountCategoryDataHandler.GetMasterAccountCategoryRecord(dbHandler,  id);
+              }
+              if (accountCategory == null && doDoubleCheck && uid.isNotEmpty) {
+                accountCategory = AccountCategoryDataHandler.GetAccountCategoryRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountCategory == null) {
+                accountCategory = AccountCategory();
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory( dbHandler, jsonObject, accountCategory, true);
+                var rid = AccountCategoryDataHandler.AddAccountCategoryRecord(dbHandler,  accountCategory);
+              } else {
+                accountCategory = JSONCopier.CopyJsonDataToAccountCategory( dbHandler, jsonObject, accountCategory, false);
+                var rid = AccountCategoryDataHandler.UpdateAccountCategoryRecord(dbHandler,  accountCategory.id, accountCategory);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountCategoriesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountCategory() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
+  try {
+    if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryMappingPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountCategoryMappingsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountCategoryMappingsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountCategoryMapping accountCategoryMapping;
+              var id = jsonObject['AccountCategoryMappingID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetMasterAccountCategoryMappingRecord(dbHandler,  id);
+              }
+              if (accountCategoryMapping == null && doDoubleCheck && uid.isNotEmpty) {
+                accountCategoryMapping = AccountCategoryMappingDataHandler.GetAccountCategoryMappingRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountCategoryMapping == null) {
+                accountCategoryMapping = AccountCategoryMapping();
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping( dbHandler, jsonObject, accountCategoryMapping, true);
+                var rid = AccountCategoryMappingDataHandler.AddAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping);
+              } else {
+                accountCategoryMapping = JSONCopier.CopyJsonDataToAccountCategoryMapping( dbHandler, jsonObject, accountCategoryMapping, false);
+                var rid = AccountCategoryMappingDataHandler.UpdateAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping.getId(), accountCategoryMapping);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountCategoryMappingsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountCategoryMapping() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountCompetitionActivities(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCompetitionActivityPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountCompetitionActivitiesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountCompetitionActivitiesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountCompetitionActivity accountCompetitionActivity;
+              var id = jsonObject['AccountCompetitionActivityID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountCompetitionActivity = AccountCompetitionActivityDataHandler.GetMasterAccountCompetitionActivityRecord(dbHandler,  id);
+              }
+              if (accountCompetitionActivity == null && doDoubleCheck && uid.isNotEmpty) {
+                accountCompetitionActivity = AccountCompetitionActivityDataHandler.GetAccountCompetitionActivityRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountCompetitionActivity == null) {
+                accountCompetitionActivity = AccountCompetitionActivity();
+                accountCompetitionActivity = JSONCopier.copyJsonDataToAccountCompetitionActivity( dbHandler, jsonObject, accountCompetitionActivity, true);
+                var rid = AccountCompetitionActivityDataHandler.AddAccountCompetitionActivityRecord(dbHandler,  accountCompetitionActivity);
+              } else {
+                accountCompetitionActivity = JSONCopier.copyJsonDataToAccountCompetitionActivity( dbHandler, jsonObject, accountCompetitionActivity, false);
+                var rid = AccountCompetitionActivityDataHandler.UpdateAccountCompetitionActivityRecord(dbHandler,  accountCompetitionActivity.getId(), accountCompetitionActivity);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountCompetitionActivitiesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountCompetitionActivity() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAccountForms(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountFormPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountFormsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountFormsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountForm accountForm;
+              var id = jsonObject['AccountFormID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountForm = AccountFormDataHandler.GetMasterAccountFormRecord(dbHandler,  id);
+              }
+              if (accountForm == null && doDoubleCheck && uid.isNotEmpty) {
+                accountForm = AccountFormDataHandler.GetAccountFormRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountForm == null) {
+                accountForm = AccountForm();
+                accountForm = JSONCopier.CopyJsonDataToAccountForm( dbHandler, jsonObject, accountForm, true);
+                var rid = AccountFormDataHandler.AddAccountFormRecord(dbHandler,  accountForm);
+              } else {
+                accountForm = JSONCopier.CopyJsonDataToAccountForm( dbHandler, jsonObject, accountForm, false);
+                var rid = AccountFormDataHandler.UpdateAccountFormRecord(dbHandler,  accountForm.getId(), accountForm);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountFormsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountForm() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountFormValues(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountFormValuePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountFormValuesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountFormValuesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountFormValue accountFormValue;
+              var id = jsonObject['AccountFormValueID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountFormValue = AccountFormValueDataHandler.GetMasterAccountFormValueRecord(dbHandler,  id);
+              }
+              if (accountFormValue == null && doDoubleCheck && uid.isNotEmpty) {
+                accountFormValue = AccountFormValueDataHandler.GetAccountFormValueRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountFormValue == null) {
+                accountFormValue = AccountFormValue();
+                accountFormValue = JSONCopier.CopyJsonDataToAccountFormValue( dbHandler, jsonObject, accountFormValue, true);
+                var rid = AccountFormValueDataHandler.AddAccountFormValueRecord(dbHandler,  accountFormValue);
+              } else {
+                accountFormValue = JSONCopier.CopyJsonDataToAccountFormValue( dbHandler, jsonObject, accountFormValue, false);
+                var rid = AccountFormValueDataHandler.UpdateAccountFormValueRecord(dbHandler,  accountFormValue.getId(), accountFormValue);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountFormValuesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountFormValue() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAccountMedia(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountMediaPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountMediaPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountMediaPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountMedia accountMedia;
+              var id = jsonObject['AccountMediaID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountMedia = AccountMediaDataHandler.GetMasterAccountMediaRecord(dbHandler,  id);
+              }
+              if (accountMedia == null && doDoubleCheck && uid.isNotEmpty) {
+                accountMedia = AccountMediaDataHandler.GetAccountMediaRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountMedia == null) {
+                accountMedia = AccountMedia();
+                accountMedia = JSONCopier.CopyJsonDataToAccountMedia( dbHandler, jsonObject, accountMedia, true);
+                accountMedia.isUploaded = true;
+                var rid = AccountMediaDataHandler.AddAccountMediaRecord(dbHandler,  accountMedia);
+              } else {
+                accountMedia = JSONCopier.CopyJsonDataToAccountMedia( dbHandler, jsonObject, accountMedia, false);
+                var rid = AccountMediaDataHandler.UpdateAccountMediaRecord(dbHandler,  accountMedia.getId(), accountMedia);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountMediaPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountMedia() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAccountPhones(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountPhonePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountPhonesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountPhonesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountPhone accountPhone;
+              var id = jsonObject['AccountPhoneID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountPhone = AccountPhoneDataHandler.GetMasterAccountPhoneRecord(dbHandler,  id);
+              }
+              if (accountPhone == null && doDoubleCheck && uid.isNotEmpty) {
+                accountPhone = AccountPhoneDataHandler.GetAccountPhoneRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountPhone == null) {
+                accountPhone = AccountPhone();
+                accountPhone = JSONCopier.CopyJsonDataToAccountPhone( dbHandler, jsonObject, accountPhone, true);
+                var rid = AccountPhoneDataHandler.AddAccountPhoneRecord(dbHandler,  accountPhone);
+              } else {
+                accountPhone = JSONCopier.CopyJsonDataToAccountPhone( dbHandler, jsonObject, accountPhone, false);
+                var rid = AccountPhoneDataHandler.UpdateAccountPhoneRecord(dbHandler,  accountPhone.getId(), accountPhone);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountPhonesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountPhone() 3-> $e');
+  }
+}
+
+
+
+
+Future<void> downSyncAccountSegments(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountSegmentPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountSegmentsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountSegmentsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountSegment accountSegment;
+              var id = jsonObject['AccountSegmentID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountSegment = AccountSegmentDataHandler.GetMasterAccountSegmentRecord(dbHandler,  id);
+              }
+              if (accountSegment == null && doDoubleCheck && uid.isNotEmpty) {
+                accountSegment = AccountSegmentDataHandler.GetAccountSegmentRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountSegment == null) {
+                accountSegment = AccountSegment();
+                accountSegment = JSONCopier.CopyJsonDataToAccountSegment( dbHandler, jsonObject, accountSegment, true);
+                var rid = AccountSegmentDataHandler.AddAccountSegmentRecord(dbHandler,  accountSegment);
+              } else {
+                accountSegment = JSONCopier.CopyJsonDataToAccountSegment( dbHandler, jsonObject, accountSegment, false);
+                var rid = AccountSegmentDataHandler.UpdateAccountSegmentRecord(dbHandler,  accountSegment.getId(), accountSegment);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountSegmentsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountSegment() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAccountStatuses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountStatusPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountStatusesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountStatusesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountStatus accountStatus;
+              var id = jsonObject['AccountStatusID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountStatus = AccountStatusDataHandler.GetMasterAccountStatusRecord(dbHandler,  id);
+              }
+              if (accountStatus == null && doDoubleCheck && uid.isNotEmpty) {
+                accountStatus = AccountStatusDataHandler.GetAccountStatusRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountStatus == null) {
+                accountStatus = AccountStatus();
+                accountStatus = JSONCopier.CopyJsonDataToAccountStatus( dbHandler, jsonObject, accountStatus, true);
+                var rid = AccountStatusDataHandler.AddAccountStatusRecord(dbHandler,  accountStatus);
+              } else {
+                accountStatus = JSONCopier.CopyJsonDataToAccountStatus( dbHandler, jsonObject, accountStatus, false);
+                var rid = AccountStatusDataHandler.UpdateAccountStatusRecord(dbHandler,  accountStatus.getId(), accountStatus);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountStatusesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountStatus() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAccountTerritories(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountTerritoryPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountTerritoriesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountTerritoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountTerritory accountTerritory;
+              var id = jsonObject['AccountTerritoryID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountTerritory = AccountTerritoryDataHandler.GetMasterAccountTerritoryRecord(dbHandler,  id);
+              }
+              if (accountTerritory == null && doDoubleCheck && uid.isNotEmpty) {
+                accountTerritory = AccountTerritoryDataHandler.GetAccountTerritoryRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountTerritory == null) {
+                accountTerritory = AccountTerritory();
+                accountTerritory = JSONCopier.CopyJsonDataToAccountTerritory( dbHandler, jsonObject, accountTerritory, true);
+                var rid = AccountTerritoryDataHandler.AddAccountTerritoryRecord(dbHandler,  accountTerritory);
+              } else {
+                accountTerritory = JSONCopier.CopyJsonDataToAccountTerritory( dbHandler, jsonObject, accountTerritory, false);
+                var rid = AccountTerritoryDataHandler.UpdateAccountTerritoryRecord(dbHandler,  accountTerritory.getId(), accountTerritory);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountTerritoriesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountTerritory() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAccountTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountTypePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AccountTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AccountTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AccountType accountType;
+              var id = jsonObject['AccountTypeID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                accountType = AccountTypeDataHandler.GetMasterAccountTypeRecord(dbHandler,  id);
+              }
+              if (accountType == null && doDoubleCheck && uid.isNotEmpty) {
+                accountType = AccountTypeDataHandler.GetAccountTypeRecordByUid(dbHandler,  uid);
+              }
+
+              if (accountType == null) {
+                accountType = AccountType();
+                accountType = JSONCopier.CopyJsonDataToAccountType( dbHandler, jsonObject, accountType, true);
+                var rid = AccountTypeDataHandler.AddAccountTypeRecord(dbHandler,  accountType);
+              } else {
+                accountType = JSONCopier.CopyJsonDataToAccountType( dbHandler, jsonObject, accountType, false);
+                var rid = AccountTypeDataHandler.UpdateAccountTypeRecord(dbHandler,  accountType.getId(), accountType);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AccountTypesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAccountType() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncActivities(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivitiesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivitiesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          bool allAccountsPresent = chekPresenceOfAccountIDLocally(jsonArray);
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              Activity activity;
+              var id = jsonObject['ActivityID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activity = ActivityDataHandler.GetMasterActivityRecord(dbHandler,  id);
+              }
+              if (activity == null && doDoubleCheck && uid.isNotEmpty) {
+                activity = ActivityDataHandler.GetActivityRecordByUid(dbHandler,  uid);
+              }
+
+              if (activity == null) {
+                activity = Activity();
+                activity = JSONCopier.CopyJsonDataToActivity( dbHandler, jsonObject, activity, true);
+                var rid = ActivityDataHandler.AddActivityRecord(dbHandler,  activity);
+
+                if (activity.createdBy != Globals.AppUserLoginName &&
+                    (isForCurrentDate(activity.createdOn) || isForCurrentDate(activity.modifiedOn))) {
+                  //Create a reminder with 'New acivity assigned: ' + activity title. Time = current datetime + 2;
+                  HSReminder().saveReminderData(
+                    rid.toString(),
+                    '',
+                    'New activity assigned',
+                    activity.activityTitle,
+                    
+                  );
+                }
+              } else {
+                activity = JSONCopier.CopyJsonDataToActivity( dbHandler, jsonObject, activity, false);
+                var rid = ActivityDataHandler.UpdateActivityRecord(dbHandler,  activity.getId(), activity);
+              }
+            }
+          }
+
+          if (allAccountsPresent) {
+            bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) ActivitiesPageCurrent = 0;
+          }
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivity() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityApprovals(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityApprovalPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityApprovalsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityApprovalsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response =  await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityApproval activityApproval;
+              var id = jsonObject['ActivityApprovalID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityApproval = ActivityApprovalDataHandler.GetMasterActivityApprovalRecord(dbHandler,  id);
+              }
+              if (activityApproval == null && doDoubleCheck && uid.isNotEmpty) {
+                activityApproval = ActivityApprovalDataHandler.GetActivityApprovalRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityApproval == null) {
+                activityApproval = ActivityApproval();
+                activityApproval = JSONCopier.CopyJsonDataToActivityApproval( dbHandler, jsonObject, activityApproval, true);
+                var rid = ActivityApprovalDataHandler.AddActivityApprovalRecord(dbHandler,  activityApproval);
+              } else {
+                activityApproval = JSONCopier.CopyJsonDataToActivityApproval( dbHandler, jsonObject, activityApproval, false);
+                var rid = ActivityApprovalDataHandler.UpdateActivityApprovalRecord(dbHandler,  activityApproval.getId(), activityApproval);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityApprovalsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityApproval() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityApprovalTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityApprovalTypePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityApprovalTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityApprovalTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityApprovalType activityApprovalType;
+              var id = jsonObject['ActivityApprovalTypeID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityApprovalType = ActivityApprovalTypeDataHandler.GetMasterActivityApprovalTypeRecord(dbHandler,  id);
+              }
+              if (activityApprovalType == null && doDoubleCheck && uid.isNotEmpty) {
+                activityApprovalType = ActivityApprovalTypeDataHandler.GetActivityApprovalTypeRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityApprovalType == null) {
+                activityApprovalType = ActivityApprovalType();
+                activityApprovalType = JSONCopier.CopyJsonDataToActivityApprovalType( dbHandler, jsonObject, activityApprovalType, true);
+                var rid = ActivityApprovalTypeDataHandler.AddActivityApprovalTypeRecord(dbHandler,  activityApprovalType);
+              } else {
+                activityApprovalType = JSONCopier.CopyJsonDataToActivityApprovalType( dbHandler, jsonObject, activityApprovalType, false);
+                var rid = ActivityApprovalTypeDataHandler.UpdateActivityApprovalTypeRecord(dbHandler,  activityApprovalType.id, activityApprovalType);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityApprovalTypesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityApprovalType() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncActivityMeasures(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityMeasurePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityMeasuresPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityMeasuresPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityMeasure activityMeasure;
+              var id = jsonObject['ActivityMeasureID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityMeasure = ActivityMeasureDataHandler.GetMasterActivityMeasureRecord(dbHandler,  id);
+              }
+              if (activityMeasure == null && doDoubleCheck && uid.isNotEmpty) {
+                activityMeasure = ActivityMeasureDataHandler.GetActivityMeasureRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityMeasure == null) {
+                activityMeasure = ActivityMeasure();
+                activityMeasure = JSONCopier.CopyJsonDataToActivityMeasure( dbHandler, jsonObject, activityMeasure, true);
+                var rid = ActivityMeasureDataHandler.AddActivityMeasureRecord(dbHandler,  activityMeasure);
+              } else {
+                activityMeasure = JSONCopier.CopyJsonDataToActivityMeasure( dbHandler, jsonObject, activityMeasure, false);
+                var rid = ActivityMeasureDataHandler.UpdateActivityMeasureRecord(dbHandler,  activityMeasure.getId(), activityMeasure);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityMeasuresPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityMeasure() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityBusinessUnits(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityBusinessUnitPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityBusinessUnitsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityBusinessUnitsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityBusinessunit activityBusinessUnit;
+              var id = jsonObject['ActivityBusinessUnitID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityBusinessUnit = ActivityBusinessUnitDataHandler.GetMasterActivityBusinessUnitRecord(dbHandler,  id);
+              }
+              if (activityBusinessUnit == null && doDoubleCheck && uid.isNotEmpty) {
+                activityBusinessUnit = ActivityBusinessUnitDataHandler.GetActivityBusinessUnitRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityBusinessUnit == null) {
+                activityBusinessUnit = ActivityBusinessUnit();
+                activityBusinessUnit = JSONCopier.CopyJsonDataToActivityBusinessUnit( dbHandler, jsonObject, activityBusinessUnit, true);
+                var rid = ActivityBusinessUnitDataHandler.AddActivityBusinessUnitRecord(dbHandler,  activityBusinessUnit);
+              } else {
+                activityBusinessUnit = JSONCopier.CopyJsonDataToActivityBusinessUnit( dbHandler, jsonObject, activityBusinessUnit, false);
+                var rid = ActivityBusinessUnitDataHandler.UpdateActivityBusinessUnitRecord(dbHandler,  activityBusinessUnit.getId(), activityBusinessUnit);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityBusinessUnitsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityBusinessUnit() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityMedia(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityMediaPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityMediaPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityMediaPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityMedia activityMedia;
+              var id = jsonObject['ActivityMediaID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityMedia = ActivityMediaDataHandler.GetMasterActivityMediaRecord(dbHandler,  id);
+              }
+              if (activityMedia == null && doDoubleCheck && uid.isNotEmpty) {
+                activityMedia = ActivityMediaDataHandler.GetActivityMediaRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityMedia == null) {
+                activityMedia = ActivityMedia();
+                activityMedia = JSONCopier.CopyJsonDataToActivityMedia( dbHandler, jsonObject, activityMedia, true);
+                activityMedia.setIsUploaded('true');
+                var rid = ActivityMediaDataHandler.AddActivityMediaRecord(dbHandler,  activityMedia);
+              } else {
+                // String isUploaded = Globals.GetStringValue(activityMedia.getIsUploaded()); //Save the uploaded status
+                // Log.d("AMEDIA-UPLD", isUploaded);
+                activityMedia = JSONCopier.CopyJsonDataToActivityMedia( dbHandler, jsonObject, activityMedia, false);
+                //activityMedia.setIsUploaded(isUploaded);
+                var rid = ActivityMediaDataHandler.UpdateActivityMediaRecord(dbHandler,  activityMedia.getId(), activityMedia);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityMediaPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityMedia() 3-> $e');
+  }
+}
+
+
+
+
+Future<void> downSyncActivityPermissions(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPermissionPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityPermissionsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityPermissionsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityPermission activityPermission;
+              var id = jsonObject['ActivityPermissionID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityPermission = ActivityPermissionDataHandler.GetMasterActivityPermissionRecord(dbHandler,  id);
+              }
+              if (activityPermission == null && doDoubleCheck && uid.isNotEmpty) {
+                activityPermission = ActivityPermissionDataHandler.GetActivityPermissionRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityPermission == null) {
+                activityPermission = ActivityPermission();
+                activityPermission = JSONCopier.CopyJsonDataToActivityPermission( dbHandler, jsonObject, activityPermission, true);
+                var rid = ActivityPermissionDataHandler.AddActivityPermissionRecord(dbHandler,  activityPermission);
+              } else {
+                activityPermission = JSONCopier.CopyJsonDataToActivityPermission( dbHandler, jsonObject, activityPermission, false);
+                var rid = ActivityPermissionDataHandler.UpdateActivityPermissionRecord(dbHandler,  activityPermission.getId(), activityPermission);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityPermissionsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityPermission() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityPriorities(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPriorityPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityPrioritiesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityPrioritiesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityPriority activityPriority;
+              var id = jsonObject['ActivityPriorityID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityPriority = ActivityPriorityDataHandler.GetMasterActivityPriorityRecord(dbHandler,  id);
+              }
+              if (activityPriority == null && doDoubleCheck && uid.isNotEmpty) {
+                activityPriority = ActivityPriorityDataHandler.GetActivityPriorityRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityPriority == null) {
+                activityPriority = ActivityPriority();
+                activityPriority = JSONCopier.CopyJsonDataToActivityPriority( dbHandler, jsonObject, activityPriority, true);
+                var rid = ActivityPriorityDataHandler.AddActivityPriorityRecord(dbHandler,  activityPriority);
+              } else {
+                activityPriority = JSONCopier.CopyJsonDataToActivityPriority( dbHandler, jsonObject, activityPriority, false);
+                var rid = ActivityPriorityDataHandler.UpdateActivityPriorityRecord(dbHandler,  activityPriority.getId(), activityPriority);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityPrioritiesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityPriority() 3-> $e');
+  }
+}
+
+
+
+
+Future<void> downSyncActivityProducts(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityProductPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityProductsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityProductsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityProduct activityProduct;
+              var id = jsonObject['ActivityProductID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityProduct = ActivityProductDataHandler.GetMasterActivityProductRecord(dbHandler,  id);
+              }
+              if (activityProduct == null && doDoubleCheck && uid.isNotEmpty) {
+                activityProduct = ActivityProductDataHandler.GetActivityProductRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityProduct == null) {
+                activityProduct = ActivityProduct();
+                activityProduct = JSONCopier.CopyJsonDataToActivityProduct( dbHandler, jsonObject, activityProduct, true);
+                var rid = ActivityProductDataHandler.AddActivityProductRecord(dbHandler,  activityProduct);
+              } else {
+                activityProduct = JSONCopier.CopyJsonDataToActivityProduct( dbHandler, jsonObject, activityProduct, false);
+                var rid = ActivityProductDataHandler.UpdateActivityProductRecord(dbHandler,  activityProduct.getId(), activityProduct);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityProductsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityProduct() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityProductDetails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityProductDetailPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityProductDetailsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityProductDetailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityProductDetail activityProductDetail;
+              var id = jsonObject['ActivityProductDetailID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityProductDetail = ActivityProductDetailDataHandler.GetMasterActivityProductDetailRecord(dbHandler,  id);
+              }
+              if (activityProductDetail == null && doDoubleCheck && uid.isNotEmpty) {
+                activityProductDetail = ActivityProductDetailDataHandler.GetActivityProductDetailRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityProductDetail == null) {
+                activityProductDetail = ActivityProductDetail();
+                activityProductDetail = JSONCopier.CopyJsonDataToActivityProductDetail( dbHandler, jsonObject, activityProductDetail, true);
+                var rid = ActivityProductDetailDataHandler.AddActivityProductDetailRecord(dbHandler,  activityProductDetail);
+              } else {
+                activityProductDetail = JSONCopier.CopyJsonDataToActivityProductDetail( dbHandler, jsonObject, activityProductDetail, false);
+                var rid = ActivityProductDetailDataHandler.UpdateActivityProductDetailRecord(dbHandler,  activityProductDetail.getId(), activityProductDetail);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityProductDetailsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityProductDetail() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityStatuses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityStatusPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityStatusesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityStatusesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityStatus activityStatus;
+              var id = jsonObject['ActivityStatusID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityStatus = ActivityStatusDataHandler.GetMasterActivityStatusRecord(dbHandler,  id);
+              }
+              if (activityStatus == null && doDoubleCheck && uid.isNotEmpty) {
+                activityStatus = ActivityStatusDataHandler.GetActivityStatusRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityStatus == null) {
+                activityStatus = ActivityStatus();
+                activityStatus = JSONCopier.CopyJsonDataToActivityStatus( dbHandler, jsonObject, activityStatus, true);
+                var rid = ActivityStatusDataHandler.AddActivityStatusRecord(dbHandler,  activityStatus);
+              } else {
+                activityStatus = JSONCopier.CopyJsonDataToActivityStatus( dbHandler, jsonObject, activityStatus, false);
+                var rid = ActivityStatusDataHandler.UpdateActivityStatusRecord(dbHandler,  activityStatus.getId(), activityStatus);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityStatusesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityStatus() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityTeams(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTeamPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTeamsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTeamsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityTeam activityTeam;
+              var id = jsonObject['ActivityTeamID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityTeam = ActivityTeamDataHandler.GetMasterActivityTeamRecord(dbHandler,  id);
+              }
+              if (activityTeam == null && doDoubleCheck && uid.isNotEmpty) {
+                activityTeam = ActivityTeamDataHandler.GetActivityTeamRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityTeam == null) {
+                activityTeam = ActivityTeam();
+                activityTeam = JSONCopier.CopyJsonDataToActivityTeam( dbHandler, jsonObject, activityTeam, true);
+                var rid = ActivityTeamDataHandler.AddActivityTeamRecord(dbHandler,  activityTeam);
+              } else {
+                activityTeam = JSONCopier.CopyJsonDataToActivityTeam( dbHandler, jsonObject, activityTeam, false);
+                var rid = ActivityTeamDataHandler.UpdateActivityTeamRecord(dbHandler,  activityTeam.getId(), activityTeam);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTeamsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityTeam() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityTravels(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTravelsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTravelsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityTravel activityTravel;
+              var id = jsonObject['ActivityTravelID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityTravel = ActivityTravelDataHandler.GetMasterActivityTravelRecord(dbHandler,  id);
+              }
+              if (activityTravel == null && doDoubleCheck && uid.isNotEmpty) {
+                activityTravel = ActivityTravelDataHandler.GetActivityTravelRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityTravel == null) {
+                activityTravel = ActivityTravel();
+                activityTravel = JSONCopier.CopyJsonDataToActivityTravel( dbHandler, jsonObject, activityTravel, true);
+                var rid = ActivityTravelDataHandler.AddActivityTravelRecord(dbHandler,  activityTravel);
+              } else {
+                activityTravel = JSONCopier.CopyJsonDataToActivityTravel( dbHandler, jsonObject, activityTravel, false);
+                var rid = ActivityTravelDataHandler.UpdateActivityTravelRecord(dbHandler,  activityTravel.getId(), activityTravel);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTravelsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityTravel() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelExpensePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTravelExpensesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTravelExpensesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityTravelExpense activityTravelExpense;
+              var id = jsonObject['ActivityTravelExpenseID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityTravelExpense = ActivityTravelExpenseDataHandler.GetMasterActivityTravelExpenseRecord(dbHandler,  id);
+              }
+              if (activityTravelExpense == null && doDoubleCheck && uid.isNotEmpty) {
+                activityTravelExpense = ActivityTravelExpenseDataHandler.GetActivityTravelExpenseRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityTravelExpense == null) {
+                activityTravelExpense = ActivityTravelExpense();
+                activityTravelExpense = JSONCopier.CopyJsonDataToActivityTravelExpense( dbHandler, jsonObject, activityTravelExpense, true);
+                var rid = ActivityTravelExpenseDataHandler.AddActivityTravelExpenseRecord(dbHandler,  activityTravelExpense);
+              } else {
+                activityTravelExpense = JSONCopier.CopyJsonDataToActivityTravelExpense( dbHandler, jsonObject, activityTravelExpense, false);
+                var rid = ActivityTravelExpenseDataHandler.UpdateActivityTravelExpenseRecord(dbHandler,  activityTravelExpense.getId(), activityTravelExpense);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTravelExpensesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityTravelExpense() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityTravelMappings(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelMappingPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTravelMappingsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTravelMappingsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityTravelMapping activityTravelMapping;
+              var id = jsonObject['ActivityTravelMappingID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityTravelMapping = ActivityTravelMappingDataHandler.GetMasterActivityTravelMappingRecord(dbHandler,  id);
+              }
+              if (activityTravelMapping == null && doDoubleCheck && uid.isNotEmpty) {
+                activityTravelMapping = ActivityTravelMappingDataHandler.GetActivityTravelMappingRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityTravelMapping == null) {
+                activityTravelMapping = ActivityTravelMapping();
+                activityTravelMapping = JSONCopier.CopyJsonDataToActivityTravelMapping( dbHandler, jsonObject, activityTravelMapping, true);
+                var rid = ActivityTravelMappingDataHandler.AddActivityTravelMappingRecord(dbHandler,  activityTravelMapping);
+              } else {
+                activityTravelMapping = JSONCopier.CopyJsonDataToActivityTravelMapping( dbHandler, jsonObject, activityTravelMapping, false);
+                var rid = ActivityTravelMappingDataHandler.UpdateActivityTravelMappingRecord(dbHandler,  activityTravelMapping.getId(), activityTravelMapping);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTravelMappingsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityTravelMapping() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncActivityTravelMedia(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelMediaPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTravelMediaPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTravelMediaPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityTravelMedia activityTravelMedia;
+              var id = jsonObject['ActivityTravelMediaID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityTravelMedia = ActivityTravelMediaDataHandler.GetMasterActivityTravelMediaRecord(dbHandler,  id);
+              }
+              if (activityTravelMedia == null && doDoubleCheck && uid.isNotEmpty) {
+                activityTravelMedia = ActivityTravelMediaDataHandler.GetActivityTravelMediaRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityTravelMedia == null) {
+                activityTravelMedia = ActivityTravelMedia();
+                activityTravelMedia = JSONCopier.CopyJsonDataToActivityTravelMedia( dbHandler, jsonObject, activityTravelMedia, true);
+                activityTravelMedia.isUploaded = true;
+                var rid = ActivityTravelMediaDataHandler.AddActivityTravelMediaRecord(dbHandler,  activityTravelMedia);
+              } else {
+                activityTravelMedia = JSONCopier.CopyJsonDataToActivityTravelMedia( dbHandler, jsonObject, activityTravelMedia, false);
+                var rid = ActivityTravelMediaDataHandler.UpdateActivityTravelMediaRecord(dbHandler,  activityTravelMedia.getId(), activityTravelMedia);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTravelMediaPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityTravelMedia() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncActivityTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTypePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ActivityTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ActivityTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          Globals.DisplayData('ACTTYPES', jsonArray);
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              ActivityType activityType;
+              var id = jsonObject['ActivityTypeID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                activityType = ActivityTypeDataHandler.GetMasterActivityTypeRecord(dbHandler,  id);
+              }
+              if (activityType == null && doDoubleCheck && uid.isNotEmpty) {
+                activityType = ActivityTypeDataHandler.GetActivityTypeRecordByUid(dbHandler,  uid);
+              }
+
+              if (activityType == null) {
+                activityType = ActivityType();
+                activityType = JSONCopier.CopyJsonDataToActivityType( dbHandler, jsonObject, activityType, true);
+                var rid = ActivityTypeDataHandler.AddActivityTypeRecord(dbHandler,  activityType);
+              } else {
+                activityType = JSONCopier.CopyJsonDataToActivityType( dbHandler, jsonObject, activityType, false);
+                var rid = ActivityTypeDataHandler.UpdateActivityTypeRecord(dbHandler,  activityType.getId(), activityType);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) ActivityTypesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          resetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncActivityType() 3-> $e');
+  }
+}
+
+Future<void> downSyncAddressTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAddressTypePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AddressTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AddressTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AddressType addressType;
+              var id = jsonObject['AddressTypeID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                addressType = AddressTypeDataHandler.GetMasterAddressTypeRecord(dbHandler,  id);
+              }
+              if (addressType == null && doDoubleCheck && uid.isNotEmpty) {
+                addressType = AddressTypeDataHandler.GetAddressTypeRecordByUid(dbHandler,  uid);
+              }
+
+              if (addressType == null) {
+                addressType = AddressType();
+                addressType = JSONCopier.CopyJsonDataToAddressType( dbHandler, jsonObject, addressType, true);
+                var rid = AddressTypeDataHandler.AddAddressTypeRecord(dbHandler,  addressType);
+              } else {
+                addressType = JSONCopier.CopyJsonDataToAddressType( dbHandler, jsonObject, addressType, false);
+                var rid = AddressTypeDataHandler.UpdateAddressTypeRecord(dbHandler,  addressType.getId(), addressType);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AddressTypesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAddressType() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppFeatures(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAppFeaturePaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppFeaturesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppFeaturesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppFeature appFeature;
+              var id = jsonObject['AppFeatureID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appFeature = AppFeatureDataHandler.GetMasterAppFeatureRecord(dbHandler,  id);
+              }
+              if (appFeature == null && doDoubleCheck && uid.isNotEmpty) {
+                appFeature = AppFeatureDataHandler.GetAppFeatureRecordByUid(dbHandler,  uid);
+              }
+
+              if (appFeature == null) {
+                appFeature = AppFeature();
+                appFeature = JSONCopier.CopyJsonDataToAppFeature( dbHandler, jsonObject, appFeature, true);
+                var rid = AppFeatureDataHandler.AddAppFeatureRecord(dbHandler,  appFeature);
+              } else {
+                appFeature = JSONCopier.CopyJsonDataToAppFeature( dbHandler, jsonObject, appFeature, false);
+                var rid = AppFeatureDataHandler.UpdateAppFeatureRecord(dbHandler,  appFeature.getId(), appFeature);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppFeaturesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAppFeature() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppFeatureFields(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAppFeatureFieldPaged';
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppFeatureFieldsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppFeatureFieldsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppFeatureField appFeatureField;
+              var id = jsonObject['AppFeatureFieldID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appFeatureField = AppFeatureFieldDataHandler.GetMasterAppFeatureFieldRecord(dbHandler,  id);
+              }
+              if (appFeatureField == null && doDoubleCheck && uid.isNotEmpty) {
+                appFeatureField = AppFeatureFieldDataHandler.GetAppFeatureFieldRecordByUid(dbHandler,  uid);
+              }
+
+              if (appFeatureField == null) {
+                appFeatureField = AppFeatureField();
+                appFeatureField = JSONCopier.CopyJsonDataToAppFeatureField( dbHandler, jsonObject, appFeatureField, true);
+                var rid = AppFeatureFieldDataHandler.AddAppFeatureFieldRecord(dbHandler,  appFeatureField);
+              } else {
+                appFeatureField = JSONCopier.CopyJsonDataToAppFeatureField( dbHandler, jsonObject, appFeatureField, false);
+                var rid = AppFeatureFieldDataHandler.UpdateAppFeatureFieldRecord(dbHandler,  appFeatureField.getId(), appFeatureField);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppFeatureFieldsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncAppFeatureField() 3-> $e');
+  }
+}
+
+Future<void> downSyncAppFeatureGroups(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppFeatureGroupPaged";
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppFeatureGroupsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppFeatureGroupsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppFeatureGroup appFeatureGroup;
+              var id = jsonObject['AppFeatureGroupID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appFeatureGroup = AppFeatureGroupDataHandler.GetMasterAppFeatureGroupRecord(dbHandler,  id);
+              }
+              if (appFeatureGroup == null && doDoubleCheck && uid.isNotEmpty) {
+                appFeatureGroup = AppFeatureGroupDataHandler.GetAppFeatureGroupRecordByUid(dbHandler,  uid);
+              }
+
+              if (appFeatureGroup == null) {
+                appFeatureGroup = AppFeatureGroup();
+                appFeatureGroup = JSONCopier.CopyJsonDataToAppFeatureGroup( dbHandler, jsonObject, appFeatureGroup, true);
+                var rid = AppFeatureGroupDataHandler.AddAppFeatureGroupRecord(dbHandler,  appFeatureGroup);
+              } else {
+                appFeatureGroup = JSONCopier.CopyJsonDataToAppFeatureGroup( dbHandler, jsonObject, appFeatureGroup, false);
+                var rid = AppFeatureGroupDataHandler.UpdateAppFeatureGroupRecord(dbHandler,  appFeatureGroup.getId(), appFeatureGroup);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppFeatureGroupsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:downSyncAppFeatureGroups() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppReports(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppReportPaged";
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppReportsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppReportsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppReport appReport;
+              var id = jsonObject['AppReportID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appReport = AppReportDataHandler.GetMasterAppReportRecord(dbHandler,  id);
+              }
+              if (appReport == null && doDoubleCheck && uid.isNotEmpty) {
+                appReport = AppReportDataHandler.GetAppReportRecordByUid(dbHandler,  uid);
+              }
+
+              if (appReport == null) {
+                appReport = AppReport();
+                appReport = JSONCopier.CopyJsonDataToAppReport( dbHandler, jsonObject, appReport, true);
+                var rid = AppReportDataHandler.AddAppReportRecord(dbHandler,  appReport);
+              } else {
+                appReport = JSONCopier.CopyJsonDataToAppReport( dbHandler, jsonObject, appReport, false);
+                var rid = AppReportDataHandler.UpdateAppReportRecord(dbHandler,  appReport.getId(), appReport);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppReportsPageCurrent = 0;
+          
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:downSyncAppReports() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUsers(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserPaged";
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppUsersPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppUsersPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppUser appUser;
+              var id = jsonObject['AppUserID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appUser = AppUserDataHandler.GetMasterAppUserRecord(dbHandler,  id);
+              }
+              if (appUser == null && doDoubleCheck && uid.isNotEmpty) {
+                appUser = AppUserDataHandler.GetAppUserRecordByUid(dbHandler,  uid);
+              }
+
+              if (appUser == null) {
+                appUser = AppUser();
+                appUser = JSONCopier.CopyJsonDataToAppUser( dbHandler, jsonObject, appUser, true);
+                var rid = AppUserDataHandler.AddAppUserRecord(dbHandler,  appUser);
+              } else {
+                appUser = JSONCopier.CopyJsonDataToAppUser( dbHandler, jsonObject, appUser, false);
+                var rid = AppUserDataHandler.UpdateAppUserRecord(dbHandler,  appUser.getId(), appUser);
+
+                //Remove user data, if REMOVE WIPE enabled
+                if (Globals.GetStringValue(appUser.getIsWor()).toLowerCase() == 'true') {
+                  try {
+                    var appUserList = AppUserDataHandler.GetAppUserRecords(dbHandler,  '');
+                    if (appUserList.length > 1) {
+                      dbHandler.RemoveUserData(appUser.getAppUserID(), appUser.getAppUserGroupID());
+                    } else {
+                      dbHandler.RemoveTables();
+                    }
+                    Globals.ClearUserSession();
+                    Globals.USER_TOKEN = '';
+                  } catch (e1) {}
+                }
+
+                //To force user to re-login
+                if (Globals.GetStringValue(appUser.getIsActive()).toLowerCase() == 'false' ||
+                    Globals.GetStringValue(appUser.getAppLastLoginOn()).contains('2000')) {
+                  Globals.ClearUserSession();
+                }
+              }
+
+              Globals.AppUserObjectChanged = true;
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppUsersPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:downSyncAppUser() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserLocations(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserLocationPaged";
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserLocationsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppUserLocationsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppUserLocation appUserLocation;
+              var id = jsonObject['AppUserLocationID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appUserLocation = AppUserLocationDataHandler.GetMasterAppUserLocationRecord(dbHandler,  id);
+              }
+              if (appUserLocation == null && doDoubleCheck && uid.isNotEmpty) {
+                appUserLocation = AppUserLocationDataHandler.GetAppUserLocationRecordByUid(dbHandler,  uid);
+              }
+
+              if (appUserLocation == null) {
+                appUserLocation = AppUserLocation();
+                appUserLocation = JSONCopier.CopyJsonDataToAppUserLocation( dbHandler, jsonObject, appUserLocation, true);
+                var rid = AppUserLocationDataHandler.AddAppUserLocationRecord(dbHandler,  appUserLocation);
+              }
+              /*else {
+                appUserLocation = JSONCopier.CopyJsonDataToAppUserLocation( dbHandler, jsonObject, appUserLocation, false);
+                var rid = AppUserLocationDataHandler.UpdateAppUserLocationRecord(dbHandler,  appUserLocation.getId(), appUserLocation);
+              }*/
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppUserLocationsPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:downSyncAppUserLocation() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserMessages(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserMessagePaged";
+
+      final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserMessagesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': AppUserMessagesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        var headers = {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        };
+
+        var response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(postData));
+        if (response.statusCode == 200) {
+          var jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+          for (var jsonObject in jsonArray) {
+            if (jsonObject != null) {
+              AppUserMessage appUserMessage;
+              var id = jsonObject['AppUserMessageID'].toString();
+              var uid = jsonObject['Uid'].toString();
+              if (id.isNotEmpty) {
+                appUserMessage = AppUserMessageDataHandler.GetMasterAppUserMessageRecord(dbHandler,  id);
+              }
+              if (appUserMessage == null && doDoubleCheck && uid.isNotEmpty) {
+                appUserMessage = AppUserMessageDataHandler.GetAppUserMessageRecordByUid(dbHandler,  uid);
+              }
+
+              if (appUserMessage == null) {
+                appUserMessage = AppUserMessage();
+                appUserMessage = JSONCopier.CopyJsonDataToAppUserMessage( dbHandler, jsonObject, appUserMessage, true);
+                var rid = AppUserMessageDataHandler.AddAppUserMessageRecord(dbHandler,  appUserMessage);
+              } else {
+                appUserMessage = JSONCopier.CopyJsonDataToAppUserMessage( dbHandler, jsonObject, appUserMessage, false);
+                var rid = AppUserMessageDataHandler.UpdateAppUserMessageRecord(dbHandler,  appUserMessage.getId(), appUserMessage);
+              }
+            }
+          }
+
+          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          if (isAllPagesDone) AppUserMessagesPageCurrent = 0;
+        } else if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500 && response.statusCode < 600) {
+          try {
+            String errorResponse = utf8.decode(response.bodyBytes);
+            LogError('Server Error: ${response.statusCode}\n$errorResponse');
+          } catch (e) {
+            LogError('Error decoding server error response: $e');
+          }
+        } else {
+          ResetRecordCount(dataItem);
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:downSyncAppUserMessage() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserLocations(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserLocationPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserLocationsPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserLocationsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AppUserLocation? appUserLocation;
+                final id = jsonObject['AppUserLocationID'];
+                final uid = jsonObject['Uid'];
+                if (id != null && id.isNotEmpty) {
+                  appUserLocation = AppUserLocationDataHandler.getMasterAppUserLocationRecord(dbHandler,  id);
+                }
+                if (appUserLocation == null && doDoubleCheck && uid != null && uid.isNotEmpty) {
+                  appUserLocation = AppUserLocationDataHandler.getAppUserLocationRecordByUid(dbHandler,  uid);
+                }
+                if (appUserLocation == null) {
+                  appUserLocation = AppUserLocation();
+                  appUserLocation = JSONCopier.copyJsonDataToAppUserLocation( dbHandler, jsonObject, appUserLocation, true);
+                  final rid = AppUserLocationDataHandler.addAppUserLocationRecord(dbHandler,  appUserLocation);
+                } else {
+                  appUserLocation = JSONCopier.copyJsonDataToAppUserLocation( dbHandler, jsonObject, appUserLocation, false);
+                  final rid = AppUserLocationDataHandler.updateAppUserLocationRecord(dbHandler,  appUserLocation.id, appUserLocation);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserLocationsPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserLocations() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserRemarks(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserRemarkPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserRemarksPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserRemarksPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                final id = jsonObject['AppUserRemarkID'];
+                if (id != null && id.isNotEmpty) {
+                  AppUserRemark? appUserRemark =
+                      AppUserRemarkDataHandler.getMasterAppUserRemarkRecord(dbHandler,  id);
+                  if (appUserRemark == null) {
+                    appUserRemark = AppUserRemark();
+                    appUserRemark = JSONCopier.copyJsonDataToAppUserRemark( dbHandler, jsonObject, appUserRemark, true);
+                    final rid = AppUserRemarkDataHandler.addAppUserRemarkRecord(dbHandler,  appUserRemark);
+                  } else {
+                    appUserRemark = JSONCopier.copyJsonDataToAppUserRemark( dbHandler, jsonObject, appUserRemark, false);
+                    final rid = AppUserRemarkDataHandler.updateAppUserRemarkRecord(dbHandler,  appUserRemark.id, appUserRemark);
+                  }
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserRemarksPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserRemark() 3-> $e');
+  }
+}
+
+
+
+Future<void> downSyncAppUserTeams(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTeamPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserTeamsPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserTeamsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AppUserTeam? appUserTeam;
+                final id = jsonObject['AppUserTeamID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  appUserTeam = AppUserTeamDataHandler.getMasterAppUserTeamRecord(dbHandler,  id);
+                }
+                if (appUserTeam == null && doDoubleCheck && uid.isNotEmpty) {
+                  appUserTeam = AppUserTeamDataHandler.getAppUserTeamRecordByUid(dbHandler,  uid);
+                }
+                if (appUserTeam == null) {
+                  appUserTeam = AppUserTeam();
+                  appUserTeam = JSONCopier.copyJsonDataToAppUserTeam( dbHandler, jsonObject, appUserTeam, true);
+                  final rid = AppUserTeamDataHandler.addAppUserTeamRecord(dbHandler,  appUserTeam);
+                } else {
+                  appUserTeam = JSONCopier.copyJsonDataToAppUserTeam( dbHandler, jsonObject, appUserTeam, false);
+                  final rid = AppUserTeamDataHandler.updateAppUserTeamRecord(dbHandler,  appUserTeam.id, appUserTeam);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserTeamsPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserTeam() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserTeamMembers(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTeamMemberPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserTeamMembersPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserTeamMembersPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AppUserTeamMember? appUserTeamMember;
+                final id = jsonObject['AppUserTeamMemberID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  appUserTeamMember = AppUserTeamMemberDataHandler.getMasterAppUserTeamMemberRecord(dbHandler,  id);
+                }
+                if (appUserTeamMember == null && doDoubleCheck && uid.isNotEmpty) {
+                  appUserTeamMember = AppUserTeamMemberDataHandler.getAppUserTeamMemberRecordByUid(dbHandler,  uid);
+                }
+                if (appUserTeamMember == null) {
+                  appUserTeamMember = AppUserTeamMember();
+                  appUserTeamMember = JSONCopier.copyJsonDataToAppUserTeamMember( dbHandler, jsonObject, appUserTeamMember, true);
+                  final rid = AppUserTeamMemberDataHandler.addAppUserTeamMemberRecord(dbHandler,  appUserTeamMember);
+                } else {
+                  appUserTeamMember = JSONCopier.copyJsonDataToAppUserTeamMember( dbHandler, jsonObject, appUserTeamMember, false);
+                  final rid = AppUserTeamMemberDataHandler.updateAppUserTeamMemberRecord(dbHandler,  appUserTeamMember.id, appUserTeamMember);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserTeamMembersPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserTeamMember() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserTerritories(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTerritoryPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserTerritoriesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserTerritoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AppUserTerritory? appUserTerritory;
+                final id = jsonObject['AppUserTerritoryID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  appUserTerritory = AppUserTerritoryDataHandler.getMasterAppUserTerritoryRecord(dbHandler,  id);
+                }
+                if (appUserTerritory == null && doDoubleCheck && uid.isNotEmpty) {
+                  appUserTerritory = AppUserTerritoryDataHandler.getAppUserTerritoryRecordByUid(dbHandler,  uid);
+                }
+                if (appUserTerritory == null) {
+                  appUserTerritory = AppUserTerritory();
+                  appUserTerritory = JSONCopier.copyJsonDataToAppUserTerritory( dbHandler, jsonObject, appUserTerritory, true);
+                  final rid = AppUserTerritoryDataHandler.addAppUserTerritoryRecord(dbHandler,  appUserTerritory);
+                } else {
+                  appUserTerritory = JSONCopier.copyJsonDataToAppUserTerritory( dbHandler, jsonObject, appUserTerritory, false);
+                  final rid = AppUserTerritoryDataHandler.updateAppUserTerritoryRecord(dbHandler,  appUserTerritory.id, appUserTerritory);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserTerritoriesPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserTerritory() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAppUserTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTypePaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AppUserTypesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AppUserTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AppUserType? appUserType;
+                final id = jsonObject['AppUserTypeID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  appUserType = AppUserTypeDataHandler.getMasterAppUserTypeRecord(dbHandler,  id);
+                }
+                if (appUserType == null && doDoubleCheck && uid.isNotEmpty) {
+                  appUserType = AppUserTypeDataHandler.getAppUserTypeRecordByUid(dbHandler,  uid);
+                }
+                if (appUserType == null) {
+                  appUserType = AppUserType();
+                  appUserType = JSONCopier.copyJsonDataToAppUserType( dbHandler, jsonObject, appUserType, true);
+                  final rid = AppUserTypeDataHandler.addAppUserTypeRecord(dbHandler,  appUserType);
+                } else {
+                  appUserType = JSONCopier.copyJsonDataToAppUserType( dbHandler, jsonObject, appUserType, false);
+                  final rid = AppUserTypeDataHandler.updateAppUserTypeRecord(dbHandler,  appUserType.id, appUserType);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AppUserTypesPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAppUserType() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAttributes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAttributePaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AttributesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AttributesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                Attribute? attribute;
+                final id = jsonObject['AttributeID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  attribute = AttributeDataHandler.getMasterAttributeRecord(dbHandler,  id);
+                }
+                if (attribute == null && doDoubleCheck && uid.isNotEmpty) {
+                  attribute = AttributeDataHandler.getAttributeRecordByUid(dbHandler,  uid);
+                }
+                if (attribute == null) {
+                  attribute = Attribute();
+                  attribute = JSONCopier.copyJsonDataToAttribute( dbHandler, jsonObject, attribute, true);
+                  final rid = AttributeDataHandler.addAttributeRecord(dbHandler,  attribute);
+                } else {
+                  attribute = JSONCopier.copyJsonDataToAttribute( dbHandler, jsonObject, attribute, false);
+                  final rid = AttributeDataHandler.updateAttributeRecord(dbHandler,  attribute.id, attribute);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AttributesPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAttribute() 3-> $e');
+  }
+}
+
+
+Future<void> downSyncAttributeValues(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAttributeValuePaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        AttributeValuesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': AttributeValuesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                AttributeValue? attributeValue;
+                final id = jsonObject['AttributeValueID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  attributeValue = AttributeValueDataHandler.getMasterAttributeValueRecord(dbHandler,  id);
+                }
+                if (attributeValue == null && doDoubleCheck && uid.isNotEmpty) {
+                  attributeValue = AttributeValueDataHandler.getAttributeValueRecordByUid(dbHandler,  uid);
+                }
+                if (attributeValue == null) {
+                  attributeValue = AttributeValue();
+                  attributeValue = JSONCopier.copyJsonDataToAttributeValue( dbHandler, jsonObject, attributeValue, true);
+                  final rid = AttributeValueDataHandler.addAttributeValueRecord(dbHandler,  attributeValue);
+                } else {
+                  attributeValue = JSONCopier.copyJsonDataToAttributeValue( dbHandler, jsonObject, attributeValue, false);
+                  final rid = AttributeValueDataHandler.updateAttributeValueRecord(dbHandler,  attributeValue.id, attributeValue);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              AttributeValuesPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncAttributeValue() 3-> $e');
+  }
+}
+
+Future<void> downSyncBusinessEmails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessEmailPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        BusinessEmailsPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': BusinessEmailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                BusinessEmail? businessEmail;
+                final id = jsonObject['BusinessEmailID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  businessEmail = BusinessEmailDataHandler.getMasterBusinessEmailRecord(dbHandler,  id);
+                }
+                if (businessEmail == null && doDoubleCheck && uid.isNotEmpty) {
+                  businessEmail = BusinessEmailDataHandler.getBusinessEmailRecordByUid(dbHandler,  uid);
+                }
+                if (businessEmail == null) {
+                  businessEmail = BusinessEmail();
+                  businessEmail = JSONCopier.copyJsonDataToBusinessEmail( dbHandler, jsonObject, businessEmail, true);
+                  final rid = BusinessEmailDataHandler.addBusinessEmailRecord(dbHandler,  businessEmail);
+                } else {
+                  businessEmail = JSONCopier.copyJsonDataToBusinessEmail( dbHandler, jsonObject, businessEmail, false);
+                  final rid = BusinessEmailDataHandler.updateBusinessEmailRecord(dbHandler,  businessEmail.id, businessEmail);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              BusinessEmailsPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncBusinessEmail() 3-> $e');
+  }
+}
+
+Future<void> downSyncBusinessFeatures(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessFeaturePaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        BusinessFeaturesPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': BusinessFeaturesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                BusinessFeature? businessFeature;
+                final id = jsonObject['BusinessFeatureID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  businessFeature = BusinessFeatureDataHandler.getMasterBusinessFeatureRecord(dbHandler,  id);
+                }
+                if (businessFeature == null && doDoubleCheck && uid.isNotEmpty) {
+                  businessFeature = BusinessFeatureDataHandler.getBusinessFeatureRecordByUid(dbHandler,  uid);
+                }
+                if (businessFeature == null) {
+                  businessFeature = BusinessFeature();
+                  businessFeature = JSONCopier.copyJsonDataToBusinessFeature( dbHandler, jsonObject, businessFeature, true);
+                  final rid = BusinessFeatureDataHandler.addBusinessFeatureRecord(dbHandler,  businessFeature);
+                } else {
+                  businessFeature = JSONCopier.copyJsonDataToBusinessFeature( dbHandler, jsonObject, businessFeature, false);
+                  final rid = BusinessFeatureDataHandler.updateBusinessFeatureRecord(dbHandler,  businessFeature.id, businessFeature);
+                }
+              }
+            }
+
+            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              BusinessFeaturesPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncBusinessFeature() 3-> $e');
+  }
+}
+
+Future<void> downSyncBusinessUnits(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
+      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessUnitPaged';
+
+      final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        final records = Globals.tryParseInt(dataItem.records);
+        final pageSize = Globals.tryParseInt(dataItem.pgSize);
+        final totalPages = (records / pageSize).ceil();
+
+        final pageNow = Globals.tryParseInt(dataItem.page);
+        BusinessUnitsPageCurrent = pageNow + 1;
+
+        final postData = {
+          'pageindex': BusinessUnitsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.lMaxDate,
+          'objectdate2': dataItem.sMaxDate,
+        };
+
+        final response = await http.post(Uri.parse(url),
+            headers: {'Authorization': 'Bearer ${Globals.USER_TOKEN}'}, body: json.encode(postData));
+
+        if (response.statusCode == 200) {
+          final jsonArray = json.decode(response.body);
+          if (jsonArray != null) {
+            for (final jsonObject in jsonArray) {
+              if (jsonObject != null) {
+                BusinessUnit? businessUnit;
+                final id = jsonObject['BusinessUnitID'] ?? '';
+                final uid = jsonObject['Uid'] ?? '';
+                if (id.isNotEmpty) {
+                  businessUnit = BusinessUnitDataHandler.getMasterBusinessUnitRecord(dbHandler,  id);
+                }
+                if (businessUnit == null && doDoubleCheck && uid.isNotEmpty) {
+                  businessUnit = BusinessUnitDataHandler.getBusinessUnitRecordByUid(dbHandler,  uid);
+                }
+                if (businessUnit == null) {
+                  businessUnit = BusinessUnit();
+                  businessUnit = JSONCopier.copyJsonDataToBusinessUnit( dbHandler, jsonObject, businessUnit, true);
+                  final rid = BusinessUnitDataHandler.addBusinessUnitRecord(dbHandler,  businessUnit);
+                } else {
+                  businessUnit = JSONCopier.copyJsonDataToBusinessUnit( dbHandler, jsonObject, businessUnit, false);
+                  final rid = BusinessUnitDataHandler.updateBusinessUnitRecord(dbHandler,  businessUnit.id, businessUnit);
+                }
+              }
+            }
+
+            bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+            if (isAllPagesDone) {
+              BusinessUnitsPageCurrent = 0;
+            }
+          } else {
+            resetRecordCount(dataItem);
+          }
+
+          
+        }
+      }
+    }
+  } catch (e) {
+    logError('Error: SyncService:downSyncBusinessUnit() 3-> $e');
+  }
+
+
+}
 
 }
