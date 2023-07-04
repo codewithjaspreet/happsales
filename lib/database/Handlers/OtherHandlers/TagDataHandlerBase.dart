@@ -23,7 +23,7 @@ import '../DataBaseHandler.dart';
 			selectQuery += " AND A.${ColumnsBase.KEY_TAG_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
             selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_TAG_ISDELETED},'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_TAG_ISACTIVE},'true')) = 'true' ";
-            if (searchString.trim().length > 0)
+            if (searchString.trim().isNotEmpty)
                 selectQuery += " AND A.${ColumnsBase.KEY_TAG_TAGNAME} LIKE '%$searchString%'";
 
             /* FILTER */
