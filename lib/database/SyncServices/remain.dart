@@ -3,6 +3,7 @@ import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactTitleDataHandlerBase.dart';
 
 import '../AppConstants.dart';
 import '../Globals.dart';
@@ -13,6 +14,8 @@ import 'Utility.dart';
 import 'package:http/http.dart' as http;
 
 class Remain {
+
+  static DatabaseHandler dbHandler = DatabaseHandler();
   Future<bool> updateDownSyncPageStatus(AppSyncItem dataItem) async {
     bool isAllPagesDone = false;
     try {
@@ -687,5 +690,97 @@ Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
 }
 
 
+void downSyncContactTitles(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactTitlePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      if (dataItem != null && dataItem.getRecords() != '0') {
+        int records = Globals.TryParseInt(dataItem.getRecords());
+        int pageSize = Globals.TryParseInt(dataItem.getPgSize());
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.TryParseInt(dataItem.getPage());
+        ContactTitlesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ContactTitlesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ContactTitle contactTitle;
+                  var id = jsonObject['ContactTitleID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    contactTitle = ContactTitleDataHandler.GetMasterContactTitleRecord(dbHandler, context, id);
+                  }
+
+                  if (contactTitle == null && doDoubleCheck && uid != null && uid != '') {
+                    contactTitle = ContactTitleDataHandler.GetContactTitleRecordByUid(dbHandler, context, uid);
+                  }
+
+                  if (contactTitle == null) {
+                    contactTitle = ContactTitle();
+                    contactTitle = JSONCopier.CopyJsonDataToContactTitle(context, dbHandler, jsonObject, contactTitle, true);
+                    var rid = await ContactTitleDataHandlerBase.addContactTitleRecord(dbHandler, contactTitle);
+                  } else {
+                    contactTitle = JSONCopier.CopyJsonDataToContactTitle(context, dbHandler, jsonObject, contactTitle, false);
+                    var rid = ContactTitleDataHandler.UpdateContactTitleRecord(dbHandler, context, contactTitle.getId(), contactTitle);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ContactTitlesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch (Exception ex) {
+            LogError('Error: SyncService:DownSyncContactTitle() 1-> ' + ex.getMessage());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        }
+
+        if (response.statusCode == 500) {
+          try {
+            var responseBody = utf8.decode(response.bodyBytes);
+            posterror += responseBody;
+          } catch (e) {
+            print(e.toString());
+          }
+        }
+
+        LogError('VolleyError: SyncService:DownSyncContactTitle() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (Exception e) {
+    LogError('Error: SyncService:DownSyncContactTitle() 3-> ' + e.getMessage());
+  }
+}
 
 }

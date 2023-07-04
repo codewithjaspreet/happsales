@@ -29,6 +29,7 @@ import '../Handlers/AccountHandlers/AccountDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountFormDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountSegmentDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountTypeHandlerBase.dart';
+import '../Handlers/ActivityHandlers/ActivityDataHandler.dart';
 import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/DatabaseHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandler.dart';
@@ -2887,7 +2888,7 @@ Future<ActivityPermission> copyJsonDataToActivityPermission(
       activityId = activityId != null && activityId.isNotEmpty
           ? activityId
           : '-1';
-      Activity activity = ActivityDataHandler.GetMasterActivityRecord(
+      Activity ?activity =await  ActivityDataHandlerBase.GetMasterActivityRecord(
         dbHandler,
         
         activityId,

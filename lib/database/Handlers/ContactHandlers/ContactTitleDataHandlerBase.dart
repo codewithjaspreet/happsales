@@ -278,7 +278,7 @@ class ContactTitleDataHandlerBase {
     return dataItem;
   }
 
-  Future<int> addContactTitleRecord(
+  static Future<int> addContactTitleRecord(
       DatabaseHandler databaseHandler, ContactTitle dataItem) async {
     int id = 0;
     try {

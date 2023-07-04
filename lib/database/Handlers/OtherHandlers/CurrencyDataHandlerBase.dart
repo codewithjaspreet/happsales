@@ -263,7 +263,7 @@ CurrencyDataHandlerBase();
 
             for(var element in list){
 
-                    Currency dataItem = new Currency();
+                     dataItem = new Currency();
 
                     dataItem.currencyID = element[ColumnsBase.KEY_CURRENCY_CURRENCYID];
                     dataItem.currencyCode = element[ColumnsBase.KEY_CURRENCY_CURRENCYCODE];

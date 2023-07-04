@@ -4,16 +4,17 @@ import '../../AppTables/Columns.dart';
 import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/TablesBase.dart';
 import '../../Globals.dart';
+import '../../models/OtherModels/AppSyncItem.dart';
 import '../DataBaseHandler.dart';
 
  class SyncDataHandler {
 
 
-     static List<AppSyncItem> GetAppSyncItemRecords(DatabaseHandler databaseHandler, ) {
+     static Future<List<AppSyncItem>> GetAppSyncItemRecords(DatabaseHandler databaseHandler, )async {
         List<AppSyncItem> dataList = [];
         try {
-            String selectQuery = "SELECT A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString() + " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            String selectQuery = "SELECT A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID.toString()}";
             selectQuery += " ORDER BY A.ID";
 
             final db =  await databaseHandler.database;
@@ -44,12 +45,12 @@ import '../DataBaseHandler.dart';
         return dataList;
     }
 
-     static List<AppSyncItem> GetAppSyncItemRecordsMin(DatabaseHandler databaseHandler, ) {
-        List<AppSyncItem> dataList = new ArrayList<AppSyncItem>();
+     static Future<List<AppSyncItem>> GetAppSyncItemRecordsMin(DatabaseHandler databaseHandler, )async {
+        List<AppSyncItem> dataList = [];
         try {
-            String selectQuery = "SELECT A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_TABLENAME + " NOT LIKE 'Chat%'";
+            String selectQuery = "SELECT A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_TABLENAME} NOT LIKE 'Chat%'";
 
           
             final db =  await databaseHandler.database;
@@ -78,12 +79,12 @@ import '../DataBaseHandler.dart';
         return dataList;
     }
 
-     static List<AppSyncItem> GetAppSyncItemRecordsMin_Chat(DatabaseHandler databaseHandler, ) {
-        List<AppSyncItem> dataList = new ArrayList<AppSyncItem>();
+     static Future<List<AppSyncItem>> GetAppSyncItemRecordsMin_Chat(DatabaseHandler databaseHandler, ) async{
+        List<AppSyncItem> dataList = [];
         try {
-            String selectQuery = "SELECT A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_TABLENAME + " LIKE 'Chat%'";
+            String selectQuery = "SELECT A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_TABLENAME} LIKE 'Chat%'";
 
             final db =  await databaseHandler.database;
             List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
@@ -112,12 +113,12 @@ import '../DataBaseHandler.dart';
     }
 
 
-     static Future<AppSyncItem?> GetAppSyncItemRecord(DatabaseHandler databaseHandler, , String tableName)async {
+     static Future<AppSyncItem?> GetAppSyncItemRecord(DatabaseHandler databaseHandler, String tableName)async {
         AppSyncItem? dataItem ;
         try {
-            String selectQuery = "SELECT A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_TABLENAME + " = '" + tableName + "'";
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            String selectQuery = "SELECT A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_TABLENAME} = '$tableName'";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
             final db =  await databaseHandler.database;
             List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
@@ -145,7 +146,7 @@ import '../DataBaseHandler.dart';
         return dataItem;
     }
 
-     static Future<int> UpdateAppSyncItemRecord(DatabaseHandler databaseHandler, , String id1, AppSyncItem dataItem) async{
+     static Future<int> UpdateAppSyncItemRecord(DatabaseHandler databaseHandler, String id1, AppSyncItem dataItem) async{
         int id = 0;
         try {
             final db = await databaseHandler.database;
@@ -187,13 +188,13 @@ id = await db.update(
         return id;
     }
 
-     static AppSyncItem GetNextSyncRecord(DatabaseHandler databaseHandler, ) {
-        AppSyncItem dataItem = null;
+     static Future<AppSyncItem?> GetNextSyncRecord(DatabaseHandler databaseHandler, ) async{
+        AppSyncItem? dataItem ;
         try {
-            String selectQuery = "SELECT  A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_TABLENAME + " NOT LIKE 'Chat%'";
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_RECORDS + " <> 0 ORDER BY CAST(A." + Columns.KEY_APPSYNC_SEQUENTIALORDER  + " AS INTEGER) LIMIT 1";
+            String selectQuery = "SELECT  A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID.toString()}";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_TABLENAME} NOT LIKE 'Chat%'";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_RECORDS} <> 0 ORDER BY CAST(A.${Columns.KEY_APPSYNC_SEQUENTIALORDER} AS INTEGER) LIMIT 1";
             //selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_RECORDS + " <> 0 ORDER BY ID LIMIT 1";
 final db =  await databaseHandler.database;
             List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
@@ -211,7 +212,6 @@ final db =  await databaseHandler.database;
                     dataItem.page = element[ColumnsBase.KEY_APPSYNC_PAGE];
                     dataItem.syncTime = element[ColumnsBase.KEY_APPSYNC_SYNCTIME];
 
-                    dataList.add(dataItem);
 
             }
         } catch ( ex) {
@@ -221,13 +221,13 @@ final db =  await databaseHandler.database;
         return dataItem;
     }
 
-     static AppSyncItem GetNextSyncRecord_Chat(DatabaseHandler databaseHandler, ) {
-        AppSyncItem dataItem = null;
+     static Future<AppSyncItem?> GetNextSyncRecord_Chat(DatabaseHandler databaseHandler, ) async{
+        AppSyncItem? dataItem ;
         try {
-            String selectQuery = "SELECT  A.* " + " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_TABLENAME + " LIKE 'Chat%'";
-            selectQuery += " AND A." + ColumnsBase.KEY_APPSYNC_RECORDS + " <> 0 ORDER BY ID LIMIT 1";
+            String selectQuery = "SELECT  A.*  FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_TABLENAME} LIKE 'Chat%'";
+            selectQuery += " AND A.${ColumnsBase.KEY_APPSYNC_RECORDS} <> 0 ORDER BY ID LIMIT 1";
 
             final db =  await databaseHandler.database;
             List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
@@ -245,7 +245,6 @@ final db =  await databaseHandler.database;
                     dataItem.page = element[ColumnsBase.KEY_APPSYNC_PAGE];
                     dataItem.syncTime = element[ColumnsBase.KEY_APPSYNC_SYNCTIME];
 
-                    dataList.add(dataItem);
 
             }
         } catch ( ex) {
@@ -255,23 +254,24 @@ final db =  await databaseHandler.database;
         return dataItem;
     }
 
-     static int GetAppSyncItemCount(DatabaseHandler databaseHandler, ) {
+     static Future<int> GetAppSyncItemCount(DatabaseHandler databaseHandler, ) async{
         int itemCount = 0;
         try {
 
             String selectQuery = "SELECT SUM(Records) " ;
-            selectQuery += " FROM " + TablesBase.TABLE_APPSYNC + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_APPSYNC_APPUSERID + " = " + Globals.AppUserID.toString()+ " AND A."  + ColumnsBase.KEY_APPSYNC_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " FROM ${TablesBase.TABLE_APPSYNC} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_APPSYNC_APPUSERID} = ${Globals.AppUserID} AND A.${ColumnsBase.KEY_APPSYNC_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
             selectQuery += " ORDER BY A.ID";
 
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                itemCount = cursor.getInt(0);
+            final db = await databaseHandler.database;
+
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+                itemCount = element[0];
             }
-            cursor.close();
-            //db.close();
+            
         } catch ( ex) {
             Globals.handleException( "SyncDataHandler:GetAppSyncItemCount()", ex);
             throw ex;
