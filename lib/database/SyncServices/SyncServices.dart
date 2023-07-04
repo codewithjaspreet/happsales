@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
@@ -7,6 +8,7 @@ import 'package:happsales_crm/database/AppTables/TablesBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountBusinessUnitHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountCategoryDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountFormValueDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountPhoneDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityProductDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ActivityHandlers/ActivityTravelMappingDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactAlignmentDataHandlerBase.dart';
@@ -16,14 +18,19 @@ import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityP
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStageDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStatusDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityTypeDataHandlerBase.dart';
+import 'package:happsales_crm/database/Handlers/OtherHandlers/CustomerMeetingDataHandlerBase.dart';
 import 'package:happsales_crm/database/models/ActivityModels/ActivityBusinessUnit.dart';
 import 'package:logger/logger.dart';
 
+import '../Handlers/AccountHandlers/AccountAddressDataHandlerBase.dart';
+import '../Handlers/AccountHandlers/AccountBuyingProcessDataHandlerBase.dart';
 import '../Handlers/AccountHandlers/AccountMappingDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountMappingDataHandlerBase.dart';
 import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/ContactHandlers/ContactDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityContactDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ProductDataHandlerBase.dart';
 import '../models/AccountModels/AccountCategory.dart';
 import '../models/AccountModels/AccountSegment.dart';
 import '../models/AccountModels/AccountStatus.dart';
@@ -101,7 +108,6 @@ import '../models/OtherModels/Reimbursement.dart';
 import '../models/OtherModels/ReimbursementDetail.dart';
 import 'JsonCopier.dart';
 import 'Utility.dart';
-import 'await Utility.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -109,7 +115,7 @@ class SyncService{
 
     // Handler handler;
 
-     static Long DEFAULT_SYNC_INTERVAL = (5 * 1000) as Long;
+     static int DEFAULT_SYNC_INTERVAL = (5 * 1000) ;
      static final String LOG_TAG = "HS_SYNC";
      static  DatabaseHandler dbHandler = DatabaseHandler();
 
@@ -118,10 +124,10 @@ class SyncService{
     //  static Context ;
      bool isRunning = false;
      bool doDoubleCheck = true;
-     static String currentDownload = "";
+     static String currentdownload = "";
      static List upSyncList = [];
-     static List UpSyncListApplog = [];
-     static int totalRecordsToUpsync = 0;
+     static List upSyncListApplog = [];
+     static int totalRecordsToupSync = 0;
 
      static int AccountsPageCurrent = 0;
      static int AccountAddressesPageCurrent = 0;
@@ -251,32 +257,54 @@ class SyncService{
      static int TravelPurposesPageCurrent = 0;
      static int UnitsPageCurrent = 0;
 
-     static bool isFirstDownloadCompleted = false;
+     static bool isFirstdownloadCompleted = false;
      static int syncCount = 0;
 
      static final int MY_DEFAULT_TIMEOUT = 15000;
 
 
-      Future<void> RunUpSync() async {
+      void runSyncOperations() {
+        const syncInterval = Duration(milliseconds: DEFAULT_SYNC_INTERVAL); // Adjust the sync interval as needed
+
+        Timer.periodic(syncInterval, (timer) async{
+          if (await Utility.isNetworkConnected() &&
+              !isRunning &&
+              Globals.USER_TOKEN.isNotEmpty &&
+              Globals.AppUserID > 0 &&
+              Globals.AppUserGroupID > 0) {
+            isRunning = true;
+
+            runUpSync();
+
+            runDownSync();
+
+            // runAppLogUpSync();
+
+            isRunning = false;
+          }
+        });
+      }
+
+      Future<void> runUpSync() async {
         try {
 
-            totalRecordsToUpsync = 0;
+            totalRecordsToupSync = 0;
 
             //Account
-  List<Account> newOrModifiedAccountList = await AccountDataHandlerBase.GetAccountUpSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+  List<Account> newOrModifiedAccountList = await AccountDataHandlerBase.GetAccountupSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
 if (newOrModifiedAccountList.length > 0) {
 
   logger.d("New Or Modified Accounts - ${newOrModifiedAccountList.length}");
   
   // Logger.d("New Or Modified Accounts - ${newOrModifiedAccountList.length}");
-  totalRecordsToUpsync += newOrModifiedAccountList.length;
+  totalRecordsToupSync += newOrModifiedAccountList.length;
 }
 
 for (Account account in newOrModifiedAccountList) {
   try {
     if (!upSyncList.contains("Account-${account.id}")) {
       upSyncList.add("Account-${account.id}");
-      UpSyncAccount(account);
+      upSyncAccount(account);
     }
   } catch (e) {
     //  handling code goes here
@@ -286,17 +314,17 @@ for (Account account in newOrModifiedAccountList) {
 
 
             //AccountCategoryMapping
-           List<AccountCategoryMapping> newOrModifiedAccountCategoryMappingList = await AccountCategoryMappingDataHandlerBase.GetAccountCategoryMappingUpSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+           List<AccountCategoryMapping> newOrModifiedAccountCategoryMappingList = await AccountCategoryMappingDataHandlerBase.GetAccountCategoryMappingupSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
 if (newOrModifiedAccountCategoryMappingList.length > 0) {
   logger.d(LOG_TAG, "New Or Modified AccountCategoryMappings - ${newOrModifiedAccountCategoryMappingList.length}");
-  totalRecordsToUpsync += newOrModifiedAccountCategoryMappingList.length;
+  totalRecordsToupSync += newOrModifiedAccountCategoryMappingList.length;
 }
 
 for (AccountCategoryMapping accountCategoryMapping in newOrModifiedAccountCategoryMappingList) {
   try {
     if (!upSyncList.contains("AccountCategoryMapping-${accountCategoryMapping.id}")) {
       upSyncList.add("AccountCategoryMapping-${accountCategoryMapping.id}");
-      UpSyncAccountCategoryMapping(accountCategoryMapping);
+      upSyncAccountCategoryMapping(accountCategoryMapping);
     }
   } catch (e) {
   }
@@ -305,17 +333,17 @@ for (AccountCategoryMapping accountCategoryMapping in newOrModifiedAccountCatego
 
 
             //Contact
-          List<Contact> newOrModifiedContactList = await await ContactHandlerDataBase.GetContactUpSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+          List<Contact> newOrModifiedContactList = await await ContactHandlerDataBase.GetContactupSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
 if (newOrModifiedContactList.length > 0) {
   logger.d("New Or Modified Contacts - ${newOrModifiedContactList.length}");
-  totalRecordsToUpsync += newOrModifiedContactList.length;
+  totalRecordsToupSync += newOrModifiedContactList.length;
 }
 
 for (Contact contact in newOrModifiedContactList) {
   try {
     if (!upSyncList.contains("Contact-${contact.id}")) {
       upSyncList.add("Contact-${contact.id}");
-      UpSyncContact(contact);
+      upSyncContact(contact);
     }
   } catch (e) {
   }
@@ -323,17 +351,17 @@ for (Contact contact in newOrModifiedContactList) {
 }
 
 // Activity
-List<Activity> newOrModifiedActivityList = await  ActivityDataHandlerBase.GetActivityUpSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+List<Activity> newOrModifiedActivityList = await  ActivityDataHandlerBase.GetActivityupSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
 if (newOrModifiedActivityList.length > 0) {
   logger.d("New Or Modified Activities - ${newOrModifiedActivityList.length}");
-  totalRecordsToUpsync += newOrModifiedActivityList.length;
+  totalRecordsToupSync += newOrModifiedActivityList.length;
 }
 
 for (Activity activity in newOrModifiedActivityList) {
   try {
     if (!upSyncList.contains("Activity-${activity.id}")) {
       upSyncList.add("Activity-${activity.id}");
-      UpSyncActivity(activity);
+      upSyncActivity(activity);
     }
   } catch (e) {
   }
@@ -341,17 +369,17 @@ for (Activity activity in newOrModifiedActivityList) {
 }
 
 // Opportunity
-List<Opportunity> newOrModifiedOpportunityList = await OpportunityDataHandlerBase.GetOpportunityUpSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+List<Opportunity> newOrModifiedOpportunityList = await OpportunityDataHandlerBase.GetOpportunityupSyncRecords(dbHandler, AppConstants.DB_RECORD_NEW_OR_MODIFIED);
 if (newOrModifiedOpportunityList.length > 0) {
   Logger.d("New Or Modified Opportunities - ${newOrModifiedOpportunityList.length}");
-  totalRecordsToUpsync += newOrModifiedOpportunityList.length;
+  totalRecordsToupSync += newOrModifiedOpportunityList.length;
 }
 
 for (Opportunity opportunity in newOrModifiedOpportunityList) {
   try {
     if (!upSyncList.contains("Opportunity-${opportunity.id}")) {
       upSyncList.add("Opportunity-${opportunity.id}");
-      UpSyncOpportunity(opportunity);
+      upSyncOpportunity(opportunity);
     }
   } catch (e) {
   }
@@ -361,10 +389,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 
             //ActivityProduct
-            List<String> newOrModifiedActivityIdList = await ActivityProductDataHandler.GetActivityProductUpSyncRecordsActivityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<String> newOrModifiedActivityIdList = await ActivityProductDataHandler.GetActivityProductupSyncRecordsActivityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityIdList.length > 0) {
                   Logger.d("New Or Modified ActivityProducts - ${newOrModifiedActivityIdList.length}");
-                totalRecordsToUpsync += newOrModifiedActivityIdList.length;
+                totalRecordsToupSync += newOrModifiedActivityIdList.length;
             }
             for (String activityId in  newOrModifiedActivityIdList) {
                 try {
@@ -373,17 +401,17 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
                     if (masterActivityId != ("") && !upSyncList.contains("ActivityProduct-" + masterActivityId)) {
 
-                        List<ActivityProduct> activityProductListOriginal = await ActivityProductDataHandler.GetActivityProductUpSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
-                        List<ActivityProductDetail> activityProductDetailListOriginal = await ActivityProductDetailDataHandler.GetActivityProductDetailUpSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
+                        List<ActivityProduct> activityProductListOriginal = await ActivityProductDataHandler.GetActivityProductupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
+                        List<ActivityProductDetail> activityProductDetailListOriginal = await ActivityProductDetailDataHandler.GetActivityProductDetailupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
 
-                        List<ActivityProduct> activityProductList = await  ActivityProductDataHandler.GetActivityProductUpSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
-                        List<ActivityProductDetail> activityProductDetailList = await ActivityProductDetailDataHandler.GetActivityProductDetailUpSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
+                        List<ActivityProduct> activityProductList = await  ActivityProductDataHandler.GetActivityProductupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
+                        List<ActivityProductDetail> activityProductDetailList = await ActivityProductDetailDataHandler.GetActivityProductDetailupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
 
-                        //String serverActivityId = ActivityDataHandler.GetServerId(dbHandler,  activityId);
+                        //String serverActivityId = ActivityDataHandler.getServerId(dbHandler,  activityId);
 
                         for (ActivityProduct activityProduct in activityProductList) {
                             activityProduct.activityID = (masterActivityId);
-                            activityProduct.productID = await (ProductDataHandler.GetServerId(dbHandler,  activityProduct.productID ));
+                            activityProduct.productID = await (ProductDataHandlerBase.GetServerId(dbHandler,  activityProduct.productID! ));
                         }
 
                         for (ActivityProductDetail activityProductDetail in activityProductDetailList) {
@@ -392,7 +420,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         }
 
                         upSyncList.add("ActivityProduct-" + masterActivityId);
-                        UpSyncActivityProduct(masterActivityId, activityProductListOriginal, activityProductDetailListOriginal, activityProductList, activityProductDetailList);
+                        upSyncActivityProduct(masterActivityId, activityProductListOriginal, activityProductDetailListOriginal, activityProductList, activityProductDetailList);
                     }
 
                 } catch ( e) {
@@ -401,10 +429,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityProduct
-            List<String> newOrModifiedOpportunityIdList =await  OpportunityProductDataHandler.GetOpportunityProductUpSyncRecordsOpportunityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<String> newOrModifiedOpportunityIdList =await  OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsOpportunityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityIdList.length > 0) {
-                Logger.d("New Or Modified OpportunityProducts - " + String.valueOf(newOrModifiedOpportunityIdList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityIdList.length;
+                Logger.d("New Or Modified OpportunityProducts - " + newOrModifiedOpportunityIdList.length.toString());
+                totalRecordsToupSync += newOrModifiedOpportunityIdList.length;
             }
             for (String opportunityId in  newOrModifiedOpportunityIdList) {
                 try {
@@ -413,17 +441,17 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
                     if (masterOpportunityId !=("") && !upSyncList.contains("OpportunityProduct-" + masterOpportunityId)) {
 
-                        List<OpportunityProduct> opportunityProductListOriginal = await OpportunityProductDataHandler.GetOpportunityProductUpSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
-                        List<OpportunityProductDetail> opportunityProductDetailListOriginal = await OpportunityProductDetailDataHandler.GetOpportunityProductDetailUpSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProduct> opportunityProductListOriginal = await OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProductDetail> opportunityProductDetailListOriginal = await OpportunityProductDetailDataHandler.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
 
-                        List<OpportunityProduct> opportunityProductList = await OpportunityProductDataHandler.GetOpportunityProductUpSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
-                        List<OpportunityProductDetail> opportunityProductDetailList =await  OpportunityProductDetailDataHandler.GetOpportunityProductDetailUpSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProduct> opportunityProductList = await OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProductDetail> opportunityProductDetailList =await  OpportunityProductDetailDataHandler.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
 
-                        //String serverOpportunityId = OpportunityDataHandler.GetServerId(dbHandler,  opportunityId);
+                        //String serverOpportunityId = OpportunityDataHandler.getServerId(dbHandler,  opportunityId);
 
                         for (OpportunityProduct opportunityProduct in  opportunityProductList) {
                             opportunityProduct.opportunityID = (masterOpportunityId);
-                            opportunityProduct.productID = (ProductDataHandler.GetServerId(dbHandler,  opportunityProduct.getProductID));
+                            opportunityProduct.productID = await (ProductDataHandlerBase.GetServerId(dbHandler,  opportunityProduct.getProductID!));
                         }
 
                         for (OpportunityProductDetail opportunityProductDetail in opportunityProductDetailList) {
@@ -432,7 +460,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         }
 
                         upSyncList.add("OpportunityProduct-" + masterOpportunityId);
-                        UpSyncOpportunityProduct(masterOpportunityId, opportunityProductListOriginal, opportunityProductDetailListOriginal, opportunityProductList, opportunityProductDetailList);
+                        upSyncOpportunityProduct(masterOpportunityId, opportunityProductListOriginal, opportunityProductDetailListOriginal, opportunityProductList, opportunityProductDetailList);
                     }
                 } catch ( e) {
                 }
@@ -440,13 +468,13 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
            /* //OpportunityProductDetailAttribute
-            List<OpportunityProductDetailAttribute> newOrModifiedOpportunityProductDetailAttributeList = OpportunityProductDetailAttributeDataHandler.GetOpportunityProductDetailAttributeUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityProductDetailAttribute> newOrModifiedOpportunityProductDetailAttributeList = OpportunityProductDetailAttributeDataHandler.GetOpportunityProductDetailAttributeupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             Log.d(LOG_TAG, "New Or Modified OpportunityProductDetailAttributes - " + String.valueOf(newOrModifiedOpportunityProductDetailAttributeList.length));
             for (OpportunityProductDetailAttribute opportunityProductDetailAttribute in newOrModifiedOpportunityProductDetailAttributeList) {
                 try {
                     if(!upSyncList.contains("OpportunityProductDetailAttribute-" + opportunityProductDetailAttribute.id)) {
                         upSyncList.add("OpportunityProductDetailAttribute-" + opportunityProductDetailAttribute.id);
-                        UpSyncOpportunityProductDetailAttribute(opportunityProductDetailAttribute);
+                        upSyncOpportunityProductDetailAttribute(opportunityProductDetailAttribute);
                     }
                 } catch ( e) {
                 }
@@ -454,16 +482,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }*/
 
             //CustomerMeeting
-            List<CustomerMeeting> newOrModifiedCustomerMeetingList = CustomerMeetingDataHandler.GetCustomerMeetingUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<CustomerMeeting> newOrModifiedCustomerMeetingList =await CustomerMeetingDataHandlerBase.GetCustomerMeetingupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedCustomerMeetingList.length > 0) {
-                Logger.d("New Or Modified CustomerMeetings - " + String.valueOf(newOrModifiedCustomerMeetingList.length));
-                totalRecordsToUpsync += newOrModifiedCustomerMeetingList.length;
+                Logger.d("New Or Modified CustomerMeetings - " + newOrModifiedCustomerMeetingList.length.toString());
+                totalRecordsToupSync += newOrModifiedCustomerMeetingList.length;
             }
             for (CustomerMeeting customerMeeting in newOrModifiedCustomerMeetingList) {
                 try {
-                    if (!upSyncList.contains("CustomerMeeting-" + customerMeeting.id)) {
-                        upSyncList.add("CustomerMeeting-" + customerMeeting.id);
-                        UpSyncCustomerMeeting(customerMeeting);
+                    if (!upSyncList.contains("CustomerMeeting-" + customerMeeting.id!)) {
+                        upSyncList.add("CustomerMeeting-" + customerMeeting.id!);
+                        upSyncCustomerMeeting(customerMeeting);
                     }
                 } catch ( e) {
                 }
@@ -471,16 +499,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityContact
-            List<OpportunityContact> newOrModifiedOpportunityContactList = OpportunityContactDataHandler.GetOpportunityContactUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityContact> newOrModifiedOpportunityContactList = await OpportunityContactDataHandlerBase.GetOpportunityContactupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityContactList.length > 0) {
-                Log.d(LOG_TAG, "New Or Modified OpportunityContacts - " + String.valueOf(newOrModifiedOpportunityContactList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityContactList.length;
+                logger.d(LOG_TAG, "New Or Modified OpportunityContacts - " +  newOrModifiedOpportunityContactList.length.toString());
+                totalRecordsToupSync += newOrModifiedOpportunityContactList.length;
             }
             for (OpportunityContact opportunityContact in newOrModifiedOpportunityContactList) {
                 try {
-                    if (!upSyncList.contains("OpportunityContact-" + opportunityContact.id)) {
-                        upSyncList.add("OpportunityContact-" + opportunityContact.id);
-                        UpSyncOpportunityContact(opportunityContact);
+                    if (!upSyncList.contains("OpportunityContact-" + opportunityContact.id!)) {
+                        upSyncList.add("OpportunityContact-" + opportunityContact.id!);
+                        upSyncOpportunityContact(opportunityContact);
                     }
                 } catch ( e) {
                 }
@@ -488,16 +516,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountAddress
-            List<AccountAddress> newOrModifiedAccountAddressList = AccountAddressDataHandler.GetAccountAddressUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountAddress> newOrModifiedAccountAddressList = await  AccountAddressDataHandlerBase.GetAccountAddressupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountAddressList.length > 0) {
-                Logger.d("New Or Modified AccountAddresses - " + String.valueOf(newOrModifiedAccountAddressList.length));
-                totalRecordsToUpsync += newOrModifiedAccountAddressList.length;
+                Logger.d("New Or Modified AccountAddresses - " + newOrModifiedAccountAddressList.length.toString());
+                totalRecordsToupSync += newOrModifiedAccountAddressList.length;
             }
             for (AccountAddress accountAddress in newOrModifiedAccountAddressList) {
                 try {
-                    if (!upSyncList.contains("AccountAddress-" + accountAddress.id)) {
-                        upSyncList.add("AccountAddress-" + accountAddress.id);
-                        UpSyncAccountAddress(accountAddress);
+                    if (!upSyncList.contains("AccountAddress-" + accountAddress.id!)) {
+                        upSyncList.add("AccountAddress-" + accountAddress.id!);
+                        upSyncAccountAddress(accountAddress);
                     }
                 } catch ( e) {
                 }
@@ -505,16 +533,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountPhone
-            List<AccountPhone> newOrModifiedAccountPhoneList = AccountPhoneDataHandler.GetAccountPhoneUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountPhone> newOrModifiedAccountPhoneList = await  AccountPhoneDataHandlerBase.GetAccountPhoneupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountPhoneList.length > 0) {
-                Logger.d("New Or Modified AccountPhones - " + String.valueOf(newOrModifiedAccountPhoneList.length));
-                totalRecordsToUpsync += newOrModifiedAccountPhoneList.length;
+                Logger.d("New Or Modified AccountPhones - " + newOrModifiedAccountPhoneList.length.toString());
+                totalRecordsToupSync += newOrModifiedAccountPhoneList.length;
             }
             for (AccountPhone accountPhone in newOrModifiedAccountPhoneList) {
                 try {
-                    if (!upSyncList.contains("AccountPhone-" + accountPhone.id)) {
-                        upSyncList.add("AccountPhone-" + accountPhone.id);
-                        UpSyncAccountPhone(accountPhone);
+                    if (!upSyncList.contains("AccountPhone-" + accountPhone.id!)) {
+                        upSyncList.add("AccountPhone-" + accountPhone.id!);
+                        upSyncAccountPhone(accountPhone);
                     }
                 } catch ( e) {
                 }
@@ -522,16 +550,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountBuyingProcess
-            List<AccountBuyingProcess> newOrModifiedAccountBuyingProcessList = AccountBuyingProcessDataHandler.GetAccountBuyingProcessUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountBuyingProcess> newOrModifiedAccountBuyingProcessList =  AccountBuyingProcessDataHandlerBase.GetAccountBuyingProcessRecord(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountBuyingProcessList.length > 0) {
                 Logger.d("New Or Modified AccountBuyingProcesses - " + String.valueOf(newOrModifiedAccountBuyingProcessList.length));
-                totalRecordsToUpsync += newOrModifiedAccountBuyingProcessList.length;
+                totalRecordsToupSync += newOrModifiedAccountBuyingProcessList.length;
             }
             for (AccountBuyingProcess accountBuyingProcess in newOrModifiedAccountBuyingProcessList) {
                 try {
-                    if (!upSyncList.contains("AccountBuyingProcess-" + accountBuyingProcess.id)) {
-                        upSyncList.add("AccountBuyingProcess-" + accountBuyingProcess.id);
-                        UpSyncAccountBuyingProcess(accountBuyingProcess);
+                    if (!upSyncList.contains("AccountBuyingProcess-" + accountBuyingProcess.id!)) {
+                        upSyncList.add("AccountBuyingProcess-" + accountBuyingProcess.id!);
+                        upSyncAccountBuyingProcess(accountBuyingProcess);
                     }
                 } catch ( e) {
                 }
@@ -539,16 +567,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountBusinessPlan
-            List<AccountBusinessPlan> newOrModifiedAccountBusinessPlanList = AccountBusinessPlanDataHandler.GetAccountBusinessPlanUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountBusinessPlan> newOrModifiedAccountBusinessPlanList = AccountBusinessPlanDataHandler.GetAccountBusinessPlanupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountBusinessPlanList.length > 0) {
                 Logger.d("New Or Modified AccountBusinessPlans - " + String.valueOf(newOrModifiedAccountBusinessPlanList.length));
-                totalRecordsToUpsync += newOrModifiedAccountBusinessPlanList.length;
+                totalRecordsToupSync += newOrModifiedAccountBusinessPlanList.length;
             }
             for (AccountBusinessPlan accountBusinessPlan in newOrModifiedAccountBusinessPlanList) {
                 try {
                     if (!upSyncList.contains("AccountBusinessPlan-" + accountBusinessPlan.id)) {
                         upSyncList.add("AccountBusinessPlan-" + accountBusinessPlan.id);
-                        UpSyncAccountBusinessPlan(accountBusinessPlan);
+                        upSyncAccountBusinessPlan(accountBusinessPlan);
                     }
                 } catch ( e) {
                 }
@@ -556,16 +584,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountCompetitionActivity
-            List<AccountCompetitionActivity> newOrModifiedAccountCompetitionActivityList = AccountCompetitionActivityDataHandler.GetAccountCompetitionActivityUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountCompetitionActivity> newOrModifiedAccountCompetitionActivityList = AccountCompetitionActivityDataHandler.GetAccountCompetitionActivityupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountCompetitionActivityList.length > 0) {
                 Logger.d("New Or Modified AccountCompetitionActivities - " + String.valueOf(newOrModifiedAccountCompetitionActivityList.length));
-                totalRecordsToUpsync += newOrModifiedAccountCompetitionActivityList.length;
+                totalRecordsToupSync += newOrModifiedAccountCompetitionActivityList.length;
             }
             for (AccountCompetitionActivity accountCompetitionActivity in newOrModifiedAccountCompetitionActivityList) {
                 try {
                     if (!upSyncList.contains("AccountCompetitionActivity-" + accountCompetitionActivity.id)) {
                         upSyncList.add("AccountCompetitionActivity-" + accountCompetitionActivity.id);
-                        UpSyncAccountCompetitionActivity(accountCompetitionActivity);
+                        upSyncAccountCompetitionActivity(accountCompetitionActivity);
                     }
                 } catch ( e) {
                 }
@@ -573,16 +601,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //Note
-            List<Note> newOrModifiedNoteList = NoteDataHandler.GetNoteUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<Note> newOrModifiedNoteList = NoteDataHandler.GetNoteupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedNoteList.length > 0) {
                 Logger.d("New Or Modified Notes - " + String.valueOf(newOrModifiedNoteList.length));
-                totalRecordsToUpsync += newOrModifiedNoteList.length;
+                totalRecordsToupSync += newOrModifiedNoteList.length;
             }
             for (Note note in newOrModifiedNoteList) {
                 try {
                     if (!upSyncList.contains("Note-" + note.id)) {
                         upSyncList.add("Note-" + note.id);
-                        UpSyncNote(note);
+                        upSyncNote(note);
                     }
                 } catch ( e) {
                 }
@@ -590,16 +618,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityTravel
-            List<ActivityTravel> newOrModifiedActivityTravelList = ActivityTravelDataHandler.GetActivityTravelUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityTravel> newOrModifiedActivityTravelList = ActivityTravelDataHandler.GetActivityTravelupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTravelList.length > 0) {
                 Logger.d("New Or Modified ActivityTravels - " + String.valueOf(newOrModifiedActivityTravelList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTravelList.length;
+                totalRecordsToupSync += newOrModifiedActivityTravelList.length;
             }
             for (ActivityTravel activityTravel in newOrModifiedActivityTravelList) {
                 try {
                     if (!upSyncList.contains("ActivityTravel-" + activityTravel.id)) {
                         upSyncList.add("ActivityTravel-" + activityTravel.id);
-                        UpSyncActivityTravel(activityTravel);
+                        upSyncActivityTravel(activityTravel);
                     }
                 } catch ( e) {
                 }
@@ -607,16 +635,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountMedia
-            List<AccountMedia> newOrModifiedAccountMediaList = AccountMediaDataHandler.GetAccountMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountMedia> newOrModifiedAccountMediaList = AccountMediaDataHandler.GetAccountMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountMediaList.length > 0) {
                 Logger.d("New Or Modified AccountMedia - " + String.valueOf(newOrModifiedAccountMediaList.length));
-                totalRecordsToUpsync += newOrModifiedAccountMediaList.length;
+                totalRecordsToupSync += newOrModifiedAccountMediaList.length;
             }
             for (AccountMedia accountMedia in newOrModifiedAccountMediaList) {
                 try {
                     if (!upSyncList.contains("AccountMedia-" + accountMedia.id)) {
                         upSyncList.add("AccountMedia-" + accountMedia.id);
-                        UpSyncAccountMedia(accountMedia);
+                        upSyncAccountMedia(accountMedia);
                     }
                 } catch ( e) {
                 }
@@ -625,16 +653,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 
             //ContactMedia
-            List<ContactMedia> newOrModifiedContactMediaList = ContactMediaDataHandler.GetContactMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ContactMedia> newOrModifiedContactMediaList = ContactMediaDataHandler.GetContactMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedContactMediaList.length > 0) {
                 Logger.d("New Or Modified ContactMedia - " + String.valueOf(newOrModifiedContactMediaList.length));
-                totalRecordsToUpsync += newOrModifiedContactMediaList.length;
+                totalRecordsToupSync += newOrModifiedContactMediaList.length;
             }
             for (ContactMedia contactMedia in newOrModifiedContactMediaList) {
                 try {
                     if (!upSyncList.contains("ContactMedia-" + contactMedia.id)) {
                         upSyncList.add("ContactMedia-" + contactMedia.id);
-                        UpSyncContactMedia(contactMedia);
+                        upSyncContactMedia(contactMedia);
                     }
                 } catch ( e) {
                 }
@@ -642,16 +670,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityMedia
-            List<OpportunityMedia> newOrModifiedOpportunityMediaList = OpportunityMediaDataHandler.GetOpportunityMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityMedia> newOrModifiedOpportunityMediaList = OpportunityMediaDataHandler.GetOpportunityMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityMediaList.length > 0) {
                 Logger.d("New Or Modified OpportunityMedia - " + String.valueOf(newOrModifiedOpportunityMediaList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityMediaList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityMediaList.length;
             }
             for (OpportunityMedia opportunityMedia in newOrModifiedOpportunityMediaList) {
                 try {
                     if (!upSyncList.contains("OpportunityMedia-" + opportunityMedia.id)) {
                         upSyncList.add("OpportunityMedia-" + opportunityMedia.id);
-                        UpSyncOpportunityMedia(opportunityMedia);
+                        upSyncOpportunityMedia(opportunityMedia);
                     }
                 } catch ( e) {
                 }
@@ -659,16 +687,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityMedia
-            List<ActivityMedia> newOrModifiedActivityMediaList = ActivityMediaDataHandler.GetActivityMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityMedia> newOrModifiedActivityMediaList = ActivityMediaDataHandler.GetActivityMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityMediaList.length > 0) {
                 Logger.d("New Or Modified ActivityMedia - " + String.valueOf(newOrModifiedActivityMediaList.length));
-                totalRecordsToUpsync += newOrModifiedActivityMediaList.length;
+                totalRecordsToupSync += newOrModifiedActivityMediaList.length;
             }
             for (ActivityMedia activityMedia in newOrModifiedActivityMediaList) {
                 try {
                     if (!upSyncList.contains("ActivityMedia-" + activityMedia.id)) {
                         upSyncList.add("ActivityMedia-" + activityMedia.id);
-                        UpSyncActivityMedia(activityMedia);
+                        upSyncActivityMedia(activityMedia);
                     }
                 } catch ( e) {
                 }
@@ -676,16 +704,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //NoteMedia
-            List<NoteMedia> newOrModifiedNoteMediaList = NoteMediaDataHandler.GetNoteMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<NoteMedia> newOrModifiedNoteMediaList = NoteMediaDataHandler.GetNoteMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedNoteMediaList.length > 0) {
                 Logger.d("New Or Modified NoteMedia - " + String.valueOf(newOrModifiedNoteMediaList.length));
-                totalRecordsToUpsync += newOrModifiedNoteMediaList.length;
+                totalRecordsToupSync += newOrModifiedNoteMediaList.length;
             }
             for (NoteMedia noteMedia in newOrModifiedNoteMediaList) {
                 try {
                     if (!upSyncList.contains("NoteMedia-" + noteMedia.id)) {
                         upSyncList.add("NoteMedia-" + noteMedia.id);
-                        UpSyncNoteMedia(noteMedia);
+                        upSyncNoteMedia(noteMedia);
                     }
                 } catch ( e) {
                 }
@@ -693,16 +721,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityTravelMedia
-            List<ActivityTravelMedia> newOrModifiedActivityTravelMediaList = ActivityTravelMediaDataHandler.GetActivityTravelMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityTravelMedia> newOrModifiedActivityTravelMediaList = ActivityTravelMediaDataHandler.GetActivityTravelMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTravelMediaList.length > 0) {
                 Logger.d("New Or Modified ActivityTravelMedia - " + String.valueOf(newOrModifiedActivityTravelMediaList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTravelMediaList.length;
+                totalRecordsToupSync += newOrModifiedActivityTravelMediaList.length;
             }
             for (ActivityTravelMedia activityMedia in newOrModifiedActivityTravelMediaList) {
                 try {
                     if (!upSyncList.contains("ActivityTravelMedia-" + activityMedia.id)) {
                         upSyncList.add("ActivityTravelMedia-" + activityMedia.id);
-                        UpSyncActivityTravelMedia(activityMedia);
+                        upSyncActivityTravelMedia(activityMedia);
                     }
                 } catch ( e) {
                 }
@@ -710,16 +738,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityTravelExpense
-            List<ActivityTravelExpense> newOrModifiedActivityTravelExpenseList = ActivityTravelExpenseDataHandler.GetActivityTravelExpenseUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityTravelExpense> newOrModifiedActivityTravelExpenseList = ActivityTravelExpenseDataHandler.GetActivityTravelExpenseupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTravelExpenseList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified ActivityTravelExpenses - " + String.valueOf(newOrModifiedActivityTravelExpenseList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTravelExpenseList.length;
+                totalRecordsToupSync += newOrModifiedActivityTravelExpenseList.length;
             }
             for (ActivityTravelExpense activityTravelExpense in newOrModifiedActivityTravelExpenseList) {
                 try {
                     if (!upSyncList.contains("ActivityTravelExpense-" + activityTravelExpense.id)) {
                         upSyncList.add("ActivityTravelExpense-" + activityTravelExpense.id);
-                        UpSyncActivityTravelExpense(activityTravelExpense);
+                        upSyncActivityTravelExpense(activityTravelExpense);
                     }
                 } catch ( e) {
                 }
@@ -727,10 +755,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //FieldAttendance
-            List<FieldAttendance> newOrModifiedFieldAttendanceList = FieldAttendanceDataHandler.GetFieldAttendanceUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<FieldAttendance> newOrModifiedFieldAttendanceList = FieldAttendanceDataHandler.GetFieldAttendanceupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedFieldAttendanceList.length > 0) {
                 Logger.d("New Or Modified FieldAttendances - " + String.valueOf(newOrModifiedFieldAttendanceList.length));
-                totalRecordsToUpsync += newOrModifiedFieldAttendanceList.length;
+                totalRecordsToupSync += newOrModifiedFieldAttendanceList.length;
             }
             for (FieldAttendance fieldAttendance in newOrModifiedFieldAttendanceList) {
                 try {
@@ -771,7 +799,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                             }
                         }
 
-                        UpSyncFieldAttendance(fieldAttendance);
+                        upSyncFieldAttendance(fieldAttendance);
                     }
                 } catch ( e) {
                 }
@@ -779,16 +807,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AppUserRemark
-            List<AppUserRemark> newOrModifiedAppUserRemarkList = AppUserRemarkDataHandler.GetAppUserRemarkUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AppUserRemark> newOrModifiedAppUserRemarkList = AppUserRemarkDataHandler.GetAppUserRemarkupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAppUserRemarkList.length > 0) {
                 Logger.d("New Or Modified AppUserRemarks - " + String.valueOf(newOrModifiedAppUserRemarkList.length));
-                totalRecordsToUpsync += newOrModifiedAppUserRemarkList.length;
+                totalRecordsToupSync += newOrModifiedAppUserRemarkList.length;
             }
             for (AppUserRemark appUserRemark in newOrModifiedAppUserRemarkList) {
                 try {
                     if (!upSyncList.contains("AppUserRemark-" + appUserRemark.id)) {
                         upSyncList.add("AppUserRemark-" + appUserRemark.id);
-                        UpSyncAppUserRemark(appUserRemark);
+                        upSyncAppUserRemark(appUserRemark);
                     }
                 } catch ( e) {
                 }
@@ -796,16 +824,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AccountForm
-            List<AccountForm> newOrModifiedAccountFormList = AccountFormDataHandler.GetAccountFormUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountForm> newOrModifiedAccountFormList = AccountFormDataHandler.GetAccountFormupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountFormList.length > 0) {
                 Logger.d("New Or Modified AccountForms - " + String.valueOf(newOrModifiedAccountFormList.length));
-                totalRecordsToUpsync += newOrModifiedAccountFormList.length;
+                totalRecordsToupSync += newOrModifiedAccountFormList.length;
             }
             for (AccountForm accountForm in newOrModifiedAccountFormList) {
                 try {
                     if (!upSyncList.contains("AccountForm-" + accountForm.id)) {
                         upSyncList.add("AccountForm-" + accountForm.id);
-                        UpSyncAccountForm(accountForm);
+                        upSyncAccountForm(accountForm);
                     }
                 } catch ( e) {
                 }
@@ -814,22 +842,22 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 
             //AccountFormValue
-            List<AccountForm> newOrModifiedAccountFormListForValuesUpSync = AccountFormDataHandler.GetMasterAccountFormRecordsForValuesUpSync(dbHandler, );
-            if (newOrModifiedAccountFormListForValuesUpSync.length > 0) {
-                Logger.d("New Or Modified AccountFormValues - " + String.valueOf(newOrModifiedAccountFormListForValuesUpSync.length));
-                totalRecordsToUpsync += newOrModifiedAccountFormListForValuesUpSync.length;
+            List<AccountForm> newOrModifiedAccountFormListForValuesupSync = AccountFormDataHandler.GetMasterAccountFormRecordsForValuesupSync(dbHandler, );
+            if (newOrModifiedAccountFormListForValuesupSync.length > 0) {
+                Logger.d("New Or Modified AccountFormValues - " + String.valueOf(newOrModifiedAccountFormListForValuesupSync.length));
+                totalRecordsToupSync += newOrModifiedAccountFormListForValuesupSync.length;
             }
-            for (AccountForm accountForm in newOrModifiedAccountFormListForValuesUpSync) {
+            for (AccountForm accountForm in newOrModifiedAccountFormListForValuesupSync) {
                 try {
                     if (!upSyncList.contains("AccountFormValue-" + accountForm.id)) {
                         upSyncList.add("AccountFormValue-" + accountForm.id);
-                        List<AccountFormValue> accountFormValuesOriginal = AccountFormValueDataHandler.GetAccountFormValueUpSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
-                        List<AccountFormValue> accountFormValues = AccountFormValueDataHandler.GetAccountFormValueUpSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
+                        List<AccountFormValue> accountFormValuesOriginal = AccountFormValueDataHandler.GetAccountFormValueupSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
+                        List<AccountFormValue> accountFormValues = AccountFormValueDataHandler.GetAccountFormValueupSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
                         for (AccountFormValue accountFormValue in accountFormValues) {
-                            accountFormValue.setAccountFormID(AccountFormDataHandler.GetServerId(dbHandler,  accountFormValue.getAccountFormID()));
-                            accountFormValue.setFormCellElementID(FormCellElementDataHandler.GetServerId(dbHandler,  accountFormValue.getFormCellElementID()));
+                            accountFormValue.setAccountFormID(AccountFormDataHandler.getServerId(dbHandler,  accountFormValue.getAccountFormID()));
+                            accountFormValue.setFormCellElementID(FormCellElementDataHandler.getServerId(dbHandler,  accountFormValue.getFormCellElementID()));
                         }
-                        UpSyncAccountFormValue(accountForm.id, accountFormValuesOriginal, accountFormValues);
+                        upSyncAccountFormValue(accountForm.id, accountFormValuesOriginal, accountFormValues);
                     }
                 } catch ( e) {
                 }
@@ -837,16 +865,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //Reimbursement
-            List<Reimbursement> newOrModifiedReimbursementList = ReimbursementDataHandler.GetReimbursementUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<Reimbursement> newOrModifiedReimbursementList = ReimbursementDataHandler.GetReimbursementupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedReimbursementList.length > 0) {
                 Logger.d("New Or Modified Reimbursements - " + String.valueOf(newOrModifiedReimbursementList.length));
-                totalRecordsToUpsync += newOrModifiedReimbursementList.length;
+                totalRecordsToupSync += newOrModifiedReimbursementList.length;
             }
             for (Reimbursement reimbursement in newOrModifiedReimbursementList) {
                 try {
                     if (!upSyncList.contains("Reimbursement-" + reimbursement.id)) {
                         upSyncList.add("Reimbursement-" + reimbursement.id);
-                        UpSyncReimbursement(reimbursement);
+                        upSyncReimbursement(reimbursement);
                     }
                 } catch ( e) {
                 }
@@ -854,16 +882,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ReimbursementDetail
-            List<ReimbursementDetail> newOrModifiedReimbursementDetailList = ReimbursementDetailDataHandler.GetReimbursementDetailUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ReimbursementDetail> newOrModifiedReimbursementDetailList = ReimbursementDetailDataHandler.GetReimbursementDetailupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedReimbursementDetailList.length > 0) {
                 Logger.d("New Or Modified ReimbursementDetails - " + String.valueOf(newOrModifiedReimbursementDetailList.length));
-                totalRecordsToUpsync += newOrModifiedReimbursementDetailList.length;
+                totalRecordsToupSync += newOrModifiedReimbursementDetailList.length;
             }
             for (ReimbursementDetail reimbursementDetail in newOrModifiedReimbursementDetailList) {
                 try {
                     if (!upSyncList.contains("ReimbursementDetail-" + reimbursementDetail.id)) {
                         upSyncList.add("ReimbursementDetail-" + reimbursementDetail.id);
-                        UpSyncReimbursementDetail(reimbursementDetail);
+                        upSyncReimbursementDetail(reimbursementDetail);
                     }
                 } catch ( e) {
                 }
@@ -871,16 +899,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityPermission
-            List<ActivityPermission> newOrModifiedActivityPermissionList = ActivityPermissionDataHandler.GetActivityPermissionUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityPermission> newOrModifiedActivityPermissionList = ActivityPermissionDataHandler.GetActivityPermissionupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityPermissionList.length > 0) {
                 Logger.d("New Or Modified ActivityPermissions - " + String.valueOf(newOrModifiedActivityPermissionList.length));
-                totalRecordsToUpsync += newOrModifiedActivityPermissionList.length;
+                totalRecordsToupSync += newOrModifiedActivityPermissionList.length;
             }
             for (ActivityPermission activityPermission in newOrModifiedActivityPermissionList) {
                 try {
                     if (!upSyncList.contains("ActivityPermission-" + activityPermission.id)) {
                         upSyncList.add("ActivityPermission-" + activityPermission.id);
-                        UpSyncActivityPermission(activityPermission);
+                        upSyncActivityPermission(activityPermission);
                     }
                 } catch ( e) {
                 }
@@ -888,16 +916,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //NotePermission
-            List<NotePermission> newOrModifiedNotePermissionList = NotePermissionDataHandler.GetNotePermissionUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<NotePermission> newOrModifiedNotePermissionList = NotePermissionDataHandler.GetNotePermissionupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedNotePermissionList.length > 0) {
                 Logger.d("New Or Modified NotePermissions - " + String.valueOf(newOrModifiedNotePermissionList.length));
-                totalRecordsToUpsync += newOrModifiedNotePermissionList.length;
+                totalRecordsToupSync += newOrModifiedNotePermissionList.length;
             }
             for (NotePermission notePermission in newOrModifiedNotePermissionList) {
                 try {
                     if (!upSyncList.contains("NotePermission-" + notePermission.id)) {
                         upSyncList.add("NotePermission-" + notePermission.id);
-                        UpSyncNotePermission(notePermission);
+                        upSyncNotePermission(notePermission);
                     }
                 } catch ( e) {
                 }
@@ -905,16 +933,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityPermission
-            List<OpportunityPermission> newOrModifiedOpportunityPermissionList = OpportunityPermissionDataHandler.GetOpportunityPermissionUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityPermission> newOrModifiedOpportunityPermissionList = OpportunityPermissionDataHandler.GetOpportunityPermissionupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityPermissionList.length > 0) {
                 Logger.d("New Or Modified OpportunityPermissions - " + String.valueOf(newOrModifiedOpportunityPermissionList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityPermissionList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityPermissionList.length;
             }
             for (OpportunityPermission opportunityPermission in newOrModifiedOpportunityPermissionList) {
                 try {
                     if (!upSyncList.contains("OpportunityPermission-" + opportunityPermission.id)) {
                         upSyncList.add("OpportunityPermission-" + opportunityPermission.id);
-                        UpSyncOpportunityPermission(opportunityPermission);
+                        upSyncOpportunityPermission(opportunityPermission);
                     }
                 } catch ( e) {
                 }
@@ -922,16 +950,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityTeam
-            List<ActivityTeam> newOrModifiedActivityTeamList = ActivityTeamDataHandler.GetActivityTeamUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityTeam> newOrModifiedActivityTeamList = ActivityTeamDataHandler.GetActivityTeamupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTeamList.length > 0) {
                 Logger.d("New Or Modified ActivityTeams - " + String.valueOf(newOrModifiedActivityTeamList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTeamList.length;
+                totalRecordsToupSync += newOrModifiedActivityTeamList.length;
             }
             for (ActivityTeam activityTeam in newOrModifiedActivityTeamList) {
                 try {
                     if (!upSyncList.contains("ActivityTeam-" + activityTeam.id)) {
                         upSyncList.add("ActivityTeam-" + activityTeam.id);
-                        UpSyncActivityTeam(activityTeam);
+                        upSyncActivityTeam(activityTeam);
                     }
                 } catch ( e) {
                 }
@@ -939,16 +967,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AppUserMessage
-            List<AppUserMessage> newOrModifiedAppUserMessageList = AppUserMessageDataHandler.GetAppUserMessageUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AppUserMessage> newOrModifiedAppUserMessageList = AppUserMessageDataHandler.GetAppUserMessageupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAppUserMessageList.length > 0) {
                 Logger.d("New Or Modified AppUserMessages - " + String.valueOf(newOrModifiedAppUserMessageList.length));
-                totalRecordsToUpsync += newOrModifiedAppUserMessageList.length;
+                totalRecordsToupSync += newOrModifiedAppUserMessageList.length;
             }
             for (AppUserMessage appUserMessage in newOrModifiedAppUserMessageList) {
                 try {
                     if (!upSyncList.contains("AppUserMessage-" + appUserMessage.id)) {
                         upSyncList.add("AppUserMessage-" + appUserMessage.id);
-                        UpSyncAppUserMessage(appUserMessage);
+                        upSyncAppUserMessage(appUserMessage);
                     }
                 } catch ( e) {
                 }
@@ -957,16 +985,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 
             //OpportunityTeam
-            List<OpportunityTeam> newOrModifiedOpportunityTeamList = OpportunityTeamDataHandler.GetOpportunityTeamUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityTeam> newOrModifiedOpportunityTeamList = OpportunityTeamDataHandler.GetOpportunityTeamupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityTeamList.length > 0) {
                 Logger.d("New Or Modified OpportunityTeams - " + String.valueOf(newOrModifiedOpportunityTeamList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityTeamList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityTeamList.length;
             }
             for (OpportunityTeam opportunityTeam in newOrModifiedOpportunityTeamList) {
                 try {
                     if (!upSyncList.contains("OpportunityTeam-" + opportunityTeam.id)) {
                         upSyncList.add("OpportunityTeam-" + opportunityTeam.id);
-                        UpSyncOpportunityTeam(opportunityTeam);
+                        upSyncOpportunityTeam(opportunityTeam);
                     }
                 } catch ( e) {
                 }
@@ -974,16 +1002,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityTravelMapping
-            List<ActivityTravelMapping> newOrModifiedActivityTravelMappingList = ActivityTravelMappingDataHandler.GetActivityTravelMappingUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityTravelMapping> newOrModifiedActivityTravelMappingList = ActivityTravelMappingDataHandler.GetActivityTravelMappingupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTravelMappingList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified ActivityTravelMappings - " + String.valueOf(newOrModifiedActivityTravelMappingList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTravelMappingList.length;
+                totalRecordsToupSync += newOrModifiedActivityTravelMappingList.length;
             }
             for (ActivityTravelMapping activityTravelMapping in newOrModifiedActivityTravelMappingList) {
                 try {
                     if (!upSyncList.contains("ActivityTravelMapping-" + activityTravelMapping.id)) {
                         upSyncList.add("ActivityTravelMapping-" + activityTravelMapping.id);
-                        UpSyncActivityTravelMapping(activityTravelMapping);
+                        upSyncActivityTravelMapping(activityTravelMapping);
                     }
                 } catch ( e) {
                 }
@@ -992,16 +1020,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
 
             //AccountBusinessUnit
-            List<AccountBusinessUnit> newOrModifiedAccountBusinessUnitList = AccountBusinessUnitDataHandler.GetAccountBusinessUnitUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AccountBusinessUnit> newOrModifiedAccountBusinessUnitList = AccountBusinessUnitDataHandler.GetAccountBusinessUnitupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountBusinessUnitList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified AccountBusinessUnits - " + String.valueOf(newOrModifiedAccountBusinessUnitList.length));
-                totalRecordsToUpsync += newOrModifiedAccountBusinessUnitList.length;
+                totalRecordsToupSync += newOrModifiedAccountBusinessUnitList.length;
             }
             for (AccountBusinessUnit accountBusinessUnit in newOrModifiedAccountBusinessUnitList) {
                 try {
                     if (!upSyncList.contains("AccountBusinessUnit-" + accountBusinessUnit.id)) {
                         upSyncList.add("AccountBusinessUnit-" + accountBusinessUnit.id);
-                        UpSyncAccountBusinessUnit(accountBusinessUnit);
+                        upSyncAccountBusinessUnit(accountBusinessUnit);
                     }
                 } catch ( e) {
                 }
@@ -1009,10 +1037,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityBusinessUnit
-            List<ActivityBusinessunit> newOrModifiedActivityBusinessUnitList = ActivityBusinessUnitDataHandler.GetActivityBusinessUnitUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityBusinessunit> newOrModifiedActivityBusinessUnitList = ActivityBusinessUnitDataHandler.GetActivityBusinessUnitupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityBusinessUnitList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified ActivityBusinessUnits - " + String.valueOf(newOrModifiedActivityBusinessUnitList.length));
-                totalRecordsToUpsync += newOrModifiedActivityBusinessUnitList.length;
+                totalRecordsToupSync += newOrModifiedActivityBusinessUnitList.length;
             }
             for (ActivityBusinessunit activityBusinessUnit in newOrModifiedActivityBusinessUnitList) {
                 try {
@@ -1026,10 +1054,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityBusinessUnit
-            List<OpportunityBusinessUnit> newOrModifiedOpportunityBusinessUnitList = OpportunityBusinessUnitDataHandler.GetOpportunityBusinessUnitUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityBusinessUnit> newOrModifiedOpportunityBusinessUnitList = OpportunityBusinessUnitDataHandler.GetOpportunityBusinessUnitupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityBusinessUnitList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified OpportunityBusinessUnits - " + String.valueOf(newOrModifiedOpportunityBusinessUnitList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityBusinessUnitList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityBusinessUnitList.length;
             }
             for (OpportunityBusinessUnit opportunityBusinessUnit in newOrModifiedOpportunityBusinessUnitList) {
                 try {
@@ -1043,10 +1071,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ActivityApproval
-            List<ActivityApproval> newOrModifiedActivityApprovalList = ActivityApprovalDataHandler.GetActivityApprovalUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ActivityApproval> newOrModifiedActivityApprovalList = ActivityApprovalDataHandler.GetActivityApprovalupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityApprovalList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified ActivityApprovals - " + String.valueOf(newOrModifiedActivityApprovalList.length));
-                totalRecordsToUpsync += newOrModifiedActivityApprovalList.length;
+                totalRecordsToupSync += newOrModifiedActivityApprovalList.length;
             }
             for (ActivityApproval activityApproval in newOrModifiedActivityApprovalList) {
                 try {
@@ -1060,16 +1088,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityApproval
-            List<OpportunityApproval> newOrModifiedOpportunityApprovalList = OpportunityApprovalDataHandler.GetOpportunityApprovalUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityApproval> newOrModifiedOpportunityApprovalList = OpportunityApprovalDataHandler.GetOpportunityApprovalupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityApprovalList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified OpportunityApprovals - " + String.valueOf(newOrModifiedOpportunityApprovalList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityApprovalList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityApprovalList.length;
             }
             for (OpportunityApproval opportunityApproval in newOrModifiedOpportunityApprovalList) {
                 try {
                     if (!upSyncList.contains("OpportunityApproval-" + opportunityApproval.id)) {
                         upSyncList.add("OpportunityApproval-" + opportunityApproval.id);
-                        UpSyncOpportunityApproval(opportunityApproval);
+                        upSyncOpportunityApproval(opportunityApproval);
                     }
                 } catch ( e) {
                 }
@@ -1080,11 +1108,11 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<AccountMedia> newOrModifiedAccountMediaFilesList = AccountMediaDataHandler.GetAccountMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountMediaFilesList.length > 0) {
                 Logger.d("New Or Modified AccountMedia Files - " + String.valueOf(newOrModifiedAccountMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedAccountMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedAccountMediaFilesList.length;
             }
             for (AccountMedia accountMedia in newOrModifiedAccountMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("AccountMedia-" + accountMedia.id)) {
+                    if (!Globals.upSyncList.contains("AccountMedia-" + accountMedia.id)) {
                         boolean isQueued = false;
                         String mediaPath = accountMedia.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
@@ -1092,7 +1120,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                             if (localFile.isFile()) {
                                 byte bytes[] = GetFileAsBytes(localFile.getAbsolutePath());
                                 if (bytes.length > 0) {
-                                    Globals.UpSyncList.add("AccountMedia-" + accountMedia.id);
+                                    Globals.upSyncList.add("AccountMedia-" + accountMedia.id);
                                     String fileName = accountMedia.getAccountMediaCode().replaceAll("[^a-zA-Z0-9]", "") + "_" + localFile.getName();
                                     new FileUploadManager().UploadAccountFile( fileName, bytes, accountMedia.id);
                                     isQueued = true;
@@ -1114,15 +1142,15 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<Account> newOrModifiedAccountLogoList = AccountDataHandlerBase.GetAccountLogoUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAccountLogoList.length > 0) {
                 Logger.d("New Or Modified Account Logo Files - " + String.valueOf(newOrModifiedAccountLogoList.length));
-                totalRecordsToUpsync += newOrModifiedAccountLogoList.length;
+                totalRecordsToupSync += newOrModifiedAccountLogoList.length;
             }
             for (Account account in newOrModifiedAccountLogoList) {
                 try {
-                    if (!Globals.UpSyncList.contains("AccountLogo-" + account.id)) {
+                    if (!Globals.upSyncList.contains("AccountLogo-" + account.id)) {
                         boolean isQueued = false;
                         String mediaPath = account.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
-                            Globals.UpSyncList.add("AccountLogo-" + account.id);
+                            Globals.upSyncList.add("AccountLogo-" + account.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 String fileName = account.getAccountName().replaceAll("[^a-zA-Z0-9]", "") + "_Logo" + mediaPath.substring(mediaPath.lastIndexOf("."));
@@ -1145,16 +1173,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<ContactMedia> newOrModifiedContactMediaFilesList = ContactMediaDataHandler.GetContactMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedContactMediaFilesList.length > 0) {
                 Logger.d("New Or Modified ContactMedia Files - " + String.valueOf(newOrModifiedContactMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedContactMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedContactMediaFilesList.length;
             }
             for (ContactMedia contactMedia in newOrModifiedContactMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("ContactMedia-" + contactMedia.id)) {
+                    if (!Globals.upSyncList.contains("ContactMedia-" + contactMedia.id)) {
                         boolean isQueued = false;
                         String mediaPath = contactMedia.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
                             String originalFileName = Globals.GetFileName(mediaPath);
-                            Globals.UpSyncList.add("ContactMedia-" + contactMedia.id);
+                            Globals.upSyncList.add("ContactMedia-" + contactMedia.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 isQueued = true;
@@ -1177,16 +1205,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<ActivityMedia> newOrModifiedActivityMediaFilesList = ActivityMediaDataHandler.GetActivityMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityMediaFilesList.length > 0) {
                 Logger.d("New Or Modified ActivityMedia Files - " + String.valueOf(newOrModifiedActivityMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedActivityMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedActivityMediaFilesList.length;
             }
             for (ActivityMedia activityMedia in newOrModifiedActivityMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("ActivityMedia-" + activityMedia.id)) {
+                    if (!Globals.upSyncList.contains("ActivityMedia-" + activityMedia.id)) {
                         String mediaPath = activityMedia.getLocalMediaPath();
                         boolean isQueued = false;
                         if (!Globals.isNullOrEmpty(mediaPath)) {
                             String originalFileName = Globals.GetFileName(mediaPath);
-                            Globals.UpSyncList.add("ActivityMedia-" + activityMedia.id);
+                            Globals.upSyncList.add("ActivityMedia-" + activityMedia.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 String fileName = activityMedia.getActivityMediaCode().replaceAll("[^a-zA-Z0-9]", "") + "_" + originalFileName;
@@ -1210,16 +1238,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<OpportunityMedia> newOrModifiedOpportunityMediaFilesList = OpportunityMediaDataHandler.GetOpportunityMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityMediaFilesList.length > 0) {
                 Logger.d("New Or Modified OpportunityMedia Files - " + String.valueOf(newOrModifiedOpportunityMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedOpportunityMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedOpportunityMediaFilesList.length;
             }
             for (OpportunityMedia opportunityMedia in newOrModifiedOpportunityMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("OpportunityMedia-" + opportunityMedia.id)) {
+                    if (!Globals.upSyncList.contains("OpportunityMedia-" + opportunityMedia.id)) {
                         boolean isQueued = false;
                         String mediaPath = opportunityMedia.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
                             String originalFileName = Globals.GetFileName(mediaPath);
-                            Globals.UpSyncList.add("OpportunityMedia-" + opportunityMedia.id);
+                            Globals.upSyncList.add("OpportunityMedia-" + opportunityMedia.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 isQueued = true;
@@ -1243,16 +1271,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<NoteMedia> newOrModifiedNoteMediaFilesList = NoteMediaDataHandler.GetNoteMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedNoteMediaFilesList.length > 0) {
                 Logger.d("New Or Modified NoteMedia Files - " + String.valueOf(newOrModifiedNoteMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedNoteMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedNoteMediaFilesList.length;
             }
             for (NoteMedia noteMedia in newOrModifiedNoteMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("NoteMedia-" + noteMedia.id)) {
+                    if (!Globals.upSyncList.contains("NoteMedia-" + noteMedia.id)) {
                         boolean isQueued = false;
                         String mediaPath = noteMedia.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
                             String originalFileName = Globals.GetFileName(mediaPath);
-                            Globals.UpSyncList.add("NoteMedia-" + noteMedia.id);
+                            Globals.upSyncList.add("NoteMedia-" + noteMedia.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 isQueued = true;
@@ -1275,16 +1303,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             List<ActivityTravelMedia> newOrModifiedActivityTravelMediaFilesList = ActivityTravelMediaDataHandler.GetActivityTravelMediaUploadRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedActivityTravelMediaFilesList.length > 0) {
                 Logger.d("New Or Modified ActivityTravelMedia Files - " + String.valueOf(newOrModifiedActivityTravelMediaFilesList.length));
-                totalRecordsToUpsync += newOrModifiedActivityTravelMediaFilesList.length;
+                totalRecordsToupSync += newOrModifiedActivityTravelMediaFilesList.length;
             }
             for (ActivityTravelMedia activityTravelMedia in newOrModifiedActivityTravelMediaFilesList) {
                 try {
-                    if (!Globals.UpSyncList.contains("ActivityTravelMedia-" + activityTravelMedia.id)) {
+                    if (!Globals.upSyncList.contains("ActivityTravelMedia-" + activityTravelMedia.id)) {
                         boolean isQueued = false;
                         String mediaPath = activityTravelMedia.getLocalMediaPath();
                         if (!Globals.isNullOrEmpty(mediaPath)) {
                             String originalFileName = Globals.GetFileName(mediaPath);
-                            Globals.UpSyncList.add("ActivityTravelMedia-" + activityTravelMedia.id);
+                            Globals.upSyncList.add("ActivityTravelMedia-" + activityTravelMedia.id);
                             byte bytes[] = GetFileAsBytes(mediaPath);
                             if (bytes.length > 0) {
                                 isQueued = true;
@@ -1304,16 +1332,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //ChatMessage
-            List<ChatMessage> newOrModifiedChatMessageList = ChatMessageDataHandler.GetChatMessageUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<ChatMessage> newOrModifiedChatMessageList = ChatMessageDataHandler.GetChatMessageupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedChatMessageList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified ChatMessages - " + String.valueOf(newOrModifiedChatMessageList.length));
-                totalRecordsToUpsync += newOrModifiedChatMessageList.length;
+                totalRecordsToupSync += newOrModifiedChatMessageList.length;
             }
             for (ChatMessage chatMessage in newOrModifiedChatMessageList) {
                 try {
                     if (!upSyncList.contains("ChatMessage-" + chatMessage.id)) {
                         upSyncList.add("ChatMessage-" + chatMessage.id);
-                        UpSyncChatMessage(chatMessage);
+                        upSyncChatMessage(chatMessage);
                     }
                 } catch ( e) {
                 }
@@ -1321,17 +1349,17 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //AppUserLocation
-            List<AppUserLocation> newOrModifiedAppUserLocationList = AppUserLocationDataHandler.GetAppUserLocationUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<AppUserLocation> newOrModifiedAppUserLocationList = AppUserLocationDataHandler.GetAppUserLocationupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedAppUserLocationList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified AppUserLocations - " + String.valueOf(newOrModifiedAppUserLocationList.length));
-                totalRecordsToUpsync += newOrModifiedAppUserLocationList.length;
+                totalRecordsToupSync += newOrModifiedAppUserLocationList.length;
             }
             for (AppUserLocation appUserLocation in newOrModifiedAppUserLocationList) {
                 try {
                     if (!upSyncList.contains("AppUserLocation-" + appUserLocation.id)) {
                         upSyncList.add("AppUserLocation-" + appUserLocation.id);
 
-                        UpSyncAppUserLocation(appUserLocation);
+                        upSyncAppUserLocation(appUserLocation);
                     }
                 } catch ( e) {
                 }
@@ -1339,16 +1367,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //HSSupportTicket
-            List<HSSupportTicket> newOrModifiedHSSupportTicketList = HSSupportTicketDataHandler.GetHSSupportTicketUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<HSSupportTicket> newOrModifiedHSSupportTicketList = HSSupportTicketDataHandler.GetHSSupportTicketupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedHSSupportTicketList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified HSSupportTickets - " + String.valueOf(newOrModifiedHSSupportTicketList.length));
-                totalRecordsToUpsync += newOrModifiedHSSupportTicketList.length;
+                totalRecordsToupSync += newOrModifiedHSSupportTicketList.length;
             }
             for (HSSupportTicket hSSupportTicket in newOrModifiedHSSupportTicketList) {
                 try {
                     if (!upSyncList.contains("HSSupportTicket-" + hSSupportTicket.id)) {
                         upSyncList.add("HSSupportTicket-" + hSSupportTicket.id);
-                        UpSyncHSSupportTicket(hSSupportTicket);
+                        upSyncHSSupportTicket(hSSupportTicket);
                     }
                 } catch ( e) {
                 }
@@ -1356,16 +1384,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //HSSupportTicketMedia
-            List<HSSupportTicketMedia> newOrModifiedHSSupportTicketMediaList = HSSupportTicketMediaDataHandler.GetHSSupportTicketMediaUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<HSSupportTicketMedia> newOrModifiedHSSupportTicketMediaList = HSSupportTicketMediaDataHandler.GetHSSupportTicketMediaupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedHSSupportTicketMediaList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified HSSupportTicketMedia - " + String.valueOf(newOrModifiedHSSupportTicketMediaList.length));
-                totalRecordsToUpsync += newOrModifiedHSSupportTicketMediaList.length;
+                totalRecordsToupSync += newOrModifiedHSSupportTicketMediaList.length;
             }
             for (HSSupportTicketMedia hSSupportTicketMedia in newOrModifiedHSSupportTicketMediaList) {
                 try {
                     if (!upSyncList.contains("HSSupportTicketMedia-" + hSSupportTicketMedia.id)) {
                         upSyncList.add("HSSupportTicketMedia-" + hSSupportTicketMedia.id);
-                        UpSyncHSSupportTicketMedia(hSSupportTicketMedia);
+                        upSyncHSSupportTicketMedia(hSSupportTicketMedia);
                     }
                 } catch ( e) {
                 }
@@ -1373,16 +1401,16 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //Reminder
-            List<Reminder> newOrModifiedReminderList = ReminderDataHandler.GetReminderUpSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<Reminder> newOrModifiedReminderList = ReminderDataHandler.GetReminderupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedReminderList.length > 0) {
                 Log.d(LOG_TAG, "New Or Modified Reminders - " + String.valueOf(newOrModifiedReminderList.length));
-                totalRecordsToUpsync += newOrModifiedReminderList.length;
+                totalRecordsToupSync += newOrModifiedReminderList.length;
             }
             for (Reminder reminder in newOrModifiedReminderList) {
                 try {
                     if (!upSyncList.contains("Reminder-" + reminder.id)) {
                         upSyncList.add("Reminder-" + reminder.id);
-                        UpSyncReminder(reminder);
+                        upSyncReminder(reminder);
                     }
                 } catch ( e) {
                 }
@@ -1391,21 +1419,320 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
             Globals.SyncIndex++;
 
-            if (Globals.SyncIndex > Globals.MAX_UPSYNC_INDEX) {
+            if (Globals.SyncIndex > Globals.MAX_upSync_INDEX) {
                 Globals.SyncIndex = 0;
             }
 
-            if (totalRecordsToUpsync == 0) {
-                LogMessage("Reseting failed upsyncindexesin ");
-                DatabaseHandler.getInstance().ResetPendingUpSyncIndexes();
+            if (totalRecordsToupSync == 0) {
+                LogMessage("Reseting failed upSyncindexesin ");
+                DatabaseHandler.getInstance().ResetPendingupSyncIndexes();
             }
 
-            logger.d("UPSYNC - Completed");
+            logger.d("upSync - Completed");
 
         } catch ( ex) {
-            Globals.handleException( "SyncServiceinRunUpSync()", ex);
+            Globals.handleException( "SyncServiceinRunupSync()", ex);
         }
 
+    }
+
+
+   void runDownSync() {
+        try {
+            LogMessage("Current download: " + currentdownload);
+
+            if (currentdownload == "") {
+
+                AppSyncItem amiSync = SyncDataHandler.GetNextSyncRecord(dbHandler);
+
+                if (amiSync != null) {
+
+                    currentdownload = amiSync.getTableName();
+
+                    if (currentdownload==("Account")) {
+                        downSyncAccounts(currentdownload);
+                    } else if (currentdownload==("AccountAddress")) {
+                         downSyncAccountAddresses(currentdownload);
+                    } else if (currentdownload==("AccountBusinessPlan")) {
+                         downSyncAccountBusinessPlans(currentdownload);
+                    } else if (currentdownload==("AccountBusinessUnit")) {
+                         downSyncAccountBusinessUnits(currentdownload);
+                    } else if (currentdownload==("AccountBuyingProcess")) {
+                         downSyncAccountBuyingProcesses(currentdownload);
+                    } else if (currentdownload==("AccountCategory")) {
+                         downSyncAccountCategories(currentdownload);
+                    } else if (currentdownload==("AccountCategoryMapping")) {
+                         downSyncAccountCategoryMappings(currentdownload);
+                    } else if (currentdownload==("AccountCompetitionActivity")) {
+                         downSyncAccountCompetitionActivities(currentdownload);
+                    } else if (currentdownload==("AccountForm")) {
+                         downSyncAccountForms(currentdownload);
+                    } else if (currentdownload==("AccountFormValue")) {
+                         downSyncAccountFormValues(currentdownload);
+                    } else if (currentdownload==("AccountMedia")) {
+                         downSyncAccountMedia(currentdownload);
+                    } else if (currentdownload==("AccountPhone")) {
+                         downSyncAccountPhones(currentdownload);
+                    } else if (currentdownload==("AccountSegment")) {
+                         downSyncAccountSegments(currentdownload);
+                    } else if (currentdownload==("AccountStatus")) {
+                         downSyncAccountStatuses(currentdownload);
+                    } else if (currentdownload==("AccountTerritory")) {
+                         downSyncAccountTerritories(currentdownload);
+                    } else if (currentdownload==("AccountType")) {
+                         downSyncAccountTypes(currentdownload);
+                    } else if (currentdownload==("Activity")) {
+                         downSyncActivities(currentdownload);
+                    } else if (currentdownload==("ActivityApproval")) {
+                         downSyncActivityApprovals(currentdownload);
+                    } else if (currentdownload==("ActivityApprovalType")) {
+                         downSyncActivityApprovalTypes(currentdownload);
+                    } else if (currentdownload==("ActivityBusinessUnit")) {
+                         downSyncActivityBusinessUnits(currentdownload);
+                    } else if (currentdownload==("ActivityMeasure")) {
+                         downSyncActivityMeasures(currentdownload);
+                    } else if (currentdownload==("ActivityMedia")) {
+                         downSyncActivityMedia(currentdownload);
+                    } else if (currentdownload==("ActivityPermission")) {
+                         downSyncActivityPermissions(currentdownload);
+                    } else if (currentdownload==("ActivityPriority")) {
+                         downSyncActivityPriorities(currentdownload);
+                    } else if (currentdownload==("ActivityProduct")) {
+                         downSyncActivityProducts(currentdownload);
+                    } else if (currentdownload==("ActivityProductDetail")) {
+                         downSyncActivityProductDetails(currentdownload);
+                    } else if (currentdownload==("ActivityStatus")) {
+                         downSyncActivityStatuses(currentdownload);
+                    } else if (currentdownload==("ActivityTeam")) {
+                         downSyncActivityTeams(currentdownload);
+                    } else if (currentdownload==("ActivityTravel")) {
+                         downSyncActivityTravels(currentdownload);
+                    } else if (currentdownload==("ActivityTravelMapping")) {
+                         downSyncActivityTravelMappings(currentdownload);
+                    } else if (currentdownload==("ActivityTravelExpense")) {
+                         downSyncActivityTravelExpenses(currentdownload);
+                    } else if (currentdownload==("ActivityTravelMedia")) {
+                         downSyncActivityTravelMedia(currentdownload);
+                    } else if (currentdownload==("ActivityType")) {
+                         downSyncActivityTypes(currentdownload);
+                    } else if (currentdownload==("AddressType")) {
+                         downSyncAddressTypes(currentdownload);
+                    } else if (currentdownload==("AppFeature")) {
+                         downSyncAppFeatures(currentdownload);
+                    } else if (currentdownload==("AppFeatureField")) {
+                         downSyncAppFeatureFields(currentdownload);
+                    } else if (currentdownload==("AppFeatureGroup")) {
+                         downSyncAppFeatureGroups(currentdownload);
+                    } else if (currentdownload==("AppReport")) {
+                         downSyncAppReports(currentdownload);
+                    } else if (currentdownload==("AppUser")) {
+                         downSyncAppUsers(currentdownload);
+                    } else if (currentdownload==("AppUserLocation")) {
+                         downSyncAppUserLocations(currentdownload);
+                    } else if (currentdownload==("AppUserMessage")) {
+                         downSyncAppUserMessages(currentdownload);
+                    } else if (currentdownload==("AppUserProduct")) {
+                         downSyncAppUserProducts(currentdownload);
+                    } else if (currentdownload==("AppUserRemark")) {
+                         downSyncAppUserRemarks(currentdownload);
+                    } else if (currentdownload==("AppUserTeam")) {
+                         downSyncAppUserTeams(currentdownload);
+                    } else if (currentdownload==("AppUserTeamMember")) {
+                         downSyncAppUserTeamMembers(currentdownload);
+                    } else if (currentdownload==("AppUserTerritory")) {
+                         downSyncAppUserTerritories(currentdownload);
+                    } else if (currentdownload==("AppUserType")) {
+                         downSyncAppUserTypes(currentdownload);
+                    } else if (currentdownload==("Attribute")) {
+                         downSyncAttributes(currentdownload);
+                    } else if (currentdownload==("AttributeValue")) {
+                         downSyncAttributeValues(currentdownload);
+                    } else if (currentdownload==("BusinessEmail")) {
+                         downSyncBusinessEmails(currentdownload);
+                    } else if (currentdownload==("BusinessFeature")) {
+                         downSyncBusinessFeatures(currentdownload);
+                    } else if (currentdownload==("BusinessUnit")) {
+                         downSyncBusinessUnits(currentdownload);
+                    } else if (currentdownload==("ChatMessage")) {
+                         downSyncChatMessages(currentdownload);
+                    } else if (currentdownload==("ChatUserAndGroup")) {
+                         downSyncChatUserAndGroups(currentdownload);
+                    } else if (currentdownload==("ChatUserGroupMember")) {
+                         downSyncChatUserGroupMembers(currentdownload);
+                    } else if (currentdownload==("Competitor")) {
+                         downSyncCompetitors(currentdownload);
+                    } else if (currentdownload==("Contact")) {
+                         downSyncContacts(currentdownload);
+                    } else if (currentdownload==("ContactAlignment")) {
+                         downSyncContactAlignments(currentdownload);
+                    } else if (currentdownload==("ContactCategory")) {
+                         downSyncContactCategories(currentdownload);
+                    } else if (currentdownload==("ContactMedia")) {
+                         downSyncContactMedia(currentdownload);
+                    } else if (currentdownload==("ContactTitle")) {
+                         downSyncContactTitles(currentdownload);
+                    } else if (currentdownload==("ContentType")) {
+                         downSyncContentTypes(currentdownload);
+                    } else if (currentdownload==("Country")) {
+                         downSyncCountries(currentdownload);
+                    } else if (currentdownload==("CreditRating")) {
+                         downSyncCreditRatings(currentdownload);
+                    } else if (currentdownload==("Currency")) {
+                         downSyncCurrencies(currentdownload);
+                    } else if (currentdownload==("CustomerMeeting")) {
+                         downSyncCustomerMeetings(currentdownload);
+                    } else if (currentdownload==("Department")) {
+                         downSyncDepartments(currentdownload);
+                    } else if (currentdownload==("Designation")) {
+                         downSyncDesignations(currentdownload);
+                    } else if (currentdownload==("EmailManualTemplate")) {
+                         downSyncEmailManualTemplates(currentdownload);
+                    } else if (currentdownload==("ExpenseType")) {
+                         downSyncExpenseTypes(currentdownload);
+                    } else if (currentdownload==("FieldAttendance")) {
+                         downSyncFieldAttendances(currentdownload);
+                    } else if (currentdownload==("FinancialInstitution")) {
+                         downSyncFinancialInstitutions(currentdownload);
+                    } else if (currentdownload==("FinancialYear")) {
+                         downSyncFinancialYears(currentdownload);
+                    } else if (currentdownload==("Form")) {
+                         downSyncForms(currentdownload);
+                    } else if (currentdownload==("FormCell")) {
+                         downSyncFormCells(currentdownload);
+                    } else if (currentdownload==("FormCellElement")) {
+                         downSyncFormCellElements(currentdownload);
+                    } else if (currentdownload==("FormSection")) {
+                         downSyncFormSections(currentdownload);
+                    } else if (currentdownload==("Industry")) {
+                         downSyncIndustries(currentdownload);
+                    } else if (currentdownload==("LeadSource")) {
+                         downSyncLeadSources(currentdownload);
+                    } else if (currentdownload==("ModeOfTravel")) {
+                         downSyncModeOfTravels(currentdownload);
+                    } else if (currentdownload==("Note")) {
+                         downSyncNotes(currentdownload);
+                    } else if (currentdownload==("NoteMedia")) {
+                         downSyncNoteMedia(currentdownload);
+                    } else if (currentdownload==("NotePermission")) {
+                         downSyncNotePermissions(currentdownload);
+                    } else if (currentdownload==("Notification")) {
+                         downSyncNotifications(currentdownload);
+                    } else if (currentdownload==("NotificationAssignment")) {
+                         downSyncNotificationAssignments(currentdownload);
+                    } else if (currentdownload==("Opportunity")) {
+                         downSyncOpportunities(currentdownload);
+                    } else if (currentdownload==("OpportunityApproval")) {
+                         downSyncOpportunityApprovals(currentdownload);
+                    } else if (currentdownload==("OpportunityApprovalType")) {
+                         downSyncOpportunityApprovalTypes(currentdownload);
+                    } else if (currentdownload==("OpportunityBusinessUnit")) {
+                         downSyncOpportunityBusinessUnits(currentdownload);
+                    } else if (currentdownload==("OpportunityContact")) {
+                         downSyncOpportunityContacts(currentdownload);
+                    } else if (currentdownload==("OpportunityMeasure")) {
+                         downSyncOpportunityMeasures(currentdownload);
+                    } else if (currentdownload==("OpportunityFulfillmentStatus")) {
+                         downSyncOpportunityFulfillmentStatuses(currentdownload);
+                    } else if (currentdownload==("OpportunityMedia")) {
+                         downSyncOpportunityMedia(currentdownload);
+                    } else if (currentdownload==("OpportunityName")) {
+                         downSyncOpportunityNames(currentdownload);
+                    } else if (currentdownload==("OpportunityPermission")) {
+                         downSyncOpportunityPermissions(currentdownload);
+                    } else if (currentdownload==("OpportunityPriority")) {
+                         downSyncOpportunityPriorities(currentdownload);
+                    } else if (currentdownload==("OpportunityProduct")) {
+                         downSyncOpportunityProducts(currentdownload);
+                    } else if (currentdownload==("OpportunityProductDetail")) {
+                         downSyncOpportunityProductDetails(currentdownload);
+                    } else if (currentdownload==("OpportunityProductDetailAttribute")) {
+                         downSyncOpportunityProductDetailAttributes(currentdownload);
+                    } else if (currentdownload==("OpportunityStage")) {
+                         downSyncOpportunityStages(currentdownload);
+                    } else if (currentdownload==("OpportunityStageType")) {
+                         downSyncOpportunityStageTypes(currentdownload);
+                    } else if (currentdownload==("OpportunityStatus")) {
+                         downSyncOpportunityStatuses(currentdownload);
+                    } else if (currentdownload==("OpportunityTeam")) {
+                         downSyncOpportunityTeams(currentdownload);
+                    } else if (currentdownload==("OpportunityType")) {
+                         downSyncOpportunityTypes(currentdownload);
+                    } else if (currentdownload==("PerformanceSummary")) {
+                         downSyncPerformanceSummaries(currentdownload);
+                    } else if (currentdownload==("PhoneType")) {
+                         downSyncPhoneTypes(currentdownload);
+                    } else if (currentdownload==("Product")) {
+                         downSyncProducts(currentdownload);
+                    } else if (currentdownload==("ProductAuxiliary")) {
+                         downSyncProductAuxiliaries(currentdownload);
+                    } else if (currentdownload==("ProductCategory")) {
+                         downSyncProductCategories(currentdownload);
+                    } else if (currentdownload==("ProductInstallation")) {
+                         downSyncProductInstallations(currentdownload);
+                    } else if (currentdownload==("ProductInstallationDetail")) {
+                         downSyncProductInstallationDetails(currentdownload);
+                    } else if (currentdownload==("ProductMedia")) {
+                         downSyncProductMedia(currentdownload);
+                    } else if (currentdownload==("Reimbursement")) {
+                         downSyncReimbursements(currentdownload);
+                    } else if (currentdownload==("ReimbursementDetail")) {
+                         downSyncReimbursementDetails(currentdownload);
+                    } else if (currentdownload==("ReimbursementType")) {
+                         downSyncReimbursementTypes(currentdownload);
+                    } else if (currentdownload==("Reminder")) {
+                         downSyncReminders(currentdownload);
+                    } else if (currentdownload==("Resource")) {
+                         downSyncResources(currentdownload);
+                    } else if (currentdownload==("ServiceInvoice")) {
+                         downSyncServiceInvoices(currentdownload);
+                    } else if (currentdownload==("ServiceInvoiceDetail")) {
+                         downSyncServiceInvoiceDetails(currentdownload);
+                    } else if (currentdownload==("Tag")) {
+                         downSyncTags(currentdownload);
+                    } else if (currentdownload==("TagGroup")) {
+                         downSyncTagGroups(currentdownload);
+                    } else if (currentdownload==("Territory")) {
+                         downSyncTerritories(currentdownload);
+                    } else if (currentdownload==("TimeZone")) {
+                         downSyncTimeZones(currentdownload);
+                    } else if (currentdownload==("TravelPurpose")) {
+                         downSyncTravelPurposes(currentdownload);
+                    } else if (currentdownload==("Unit")) {
+                         downSyncUnits(currentdownload);
+                    } else if (currentdownload==("HSSupportTicket")) {
+                         downSyncHSSupportTickets(currentdownload);
+                    } else if (currentdownload==("HSSupportTicketMedia")) {
+                         downSyncHSSupportTicketMedia(currentdownload);
+                    }
+
+                    LogMessage("SYNC Current download: " + currentdownload);
+
+
+                } else {
+                    currentdownload = "MaxDates";
+                     downSyncMaxDates();
+                    if (isFirst downloadCompleted) {
+                        if (syncCount == 5)
+                             downSyncIDs("Account");
+                        if (syncCount == 10)
+                             downSyncIDs("Contact");
+                        if (syncCount == 15)
+                             downSyncIDs("Activity");
+                        if (syncCount == 20)
+                             downSyncIDs("Opportunity");
+                        if (syncCount == 25) {
+                            // downSyncIDs("Product");
+                            syncCount = 0;
+                        }
+                        syncCount++;
+                    }
+                    isFirst downloadCompleted = true;
+                }
+
+            }
+        } catch (Exception ex) {
+            Globals.HandleException(context, "SyncService:Run downSync()", ex);
+        }
     }
 
 
@@ -1417,7 +1744,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
       Map<String, dynamic> postData = {
         'AccountCategoryMappingID': Globals.isNullOrEmpty(accountCategoryMapping.accountCategoryMappingID!) ? '-1' : accountCategoryMapping.accountCategoryMappingID,
         'AccountCategoryMappingCode': Globals.isNullOrEmpty(accountCategoryMapping.accountCategoryMappingCode!) ? '' : accountCategoryMapping.accountCategoryMappingCode,
-        'AccountID': AccountDataHandlerBase.getServerId(dbHandler,  accountCategoryMapping.accountID!),
+        'AccountID':   AccountDataHandlerBase.getServerId(dbHandler,  accountCategoryMapping.accountID!),
         'AccountCategoryID': AccountCategoryDataHandlerBase.GetServerId(dbHandler,  accountCategoryMapping.accountCategoryID!),
         'CreatedBy': accountCategoryMapping.createdBy,
         'CreatedOn': accountCategoryMapping.createdOn,
@@ -1453,10 +1780,10 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             logger.d('AccountCategoryMapping - Saved successfully.');
 
           } catch (ex) {
-            logger.e('Error: SyncService:UpSyncAccountCategoryMapping() 1-> ${ex.toString()}');
+            logger.e('Error: SyncService:upSyncAccountCategoryMapping() 1-> ${ex.toString()}');
           }
         } else {
-          logger.e('VolleyError: SyncService:UpSyncAccountCategoryMapping() 2-> ${accountCategoryMapping.id} : Object not returned.');
+          logger.e('VolleyError: SyncService:upSyncAccountCategoryMapping() 2-> ${accountCategoryMapping.id} : Object not returned.');
           accountCategoryMapping.upSyncMessage = 'FAIL: Object not returned';
           accountCategoryMapping.upSyncIndex = '${Globals.SyncIndex}';
           AccountCategoryMappingDataHandlerBase.UpdateAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping.id!, accountCategoryMapping);
@@ -1472,11 +1799,11 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
           AccountCategoryMappingDataHandlerBase.UpdateAccountCategoryMappingRecord(dbHandler,  accountCategoryMapping.id!, accountCategoryMapping);
         }
         upSyncList.remove('AccountCategoryMapping-${accountCategoryMapping.id}');
-        logger.e('VolleyError: SyncService:UpSyncAccountCategoryMapping() 3-> $postError');
+        logger.e('VolleyError: SyncService:upSyncAccountCategoryMapping() 3-> $postError');
       }
     }
   } catch (e) {
-    logger.e('Error: SyncService:UpSyncAccountCategoryMapping() 4-> ${e.toString()}');
+    logger.e('Error: SyncService:upSyncAccountCategoryMapping() 4-> ${e.toString()}');
   }
 }
 
@@ -1495,7 +1822,7 @@ void upSyncContact(Contact contact) async {
   "ContactName": contact.contactName,
   "ContactIdentifier": contact.contactIdentifier,
   "AccountID": AccountDataHandlerBase.getServerId(dbHandler, contact.accountID!),
-  "ContactCategoryID": ContactCategoryDataHandlerBase.GetServerId(dbHandler, contact.contactCategoryID!),
+  "ContactCategoryID": ContactCategoryDataHandlerBase.getServerId(dbHandler, contact.contactCategoryID!),
   "DepartmentName": contact.departmentName,
   "Designation": contact.designation,
   "RolesAndResponsibilities": contact.rolesAndResponsibilities,
@@ -1520,7 +1847,7 @@ void upSyncContact(Contact contact) async {
   "PastDesignations": contact.pastDesignations,
   "DateOfBirth": contact.dateOfBirth,
   "RemindBirthday": Globals.tryParseBoolean(contact.remindBirthday),
-  "ContactAlignmentID": ContactAlignmentDataHandlerBase.GetServerId(dbHandler, contact.contactAlignmentID!),
+  "ContactAlignmentID": ContactAlignmentDataHandlerBase.getServerId(dbHandler, contact.contactAlignmentID!),
   "Remarks": contact.remarks,
   "ReferenceHistory": contact.referenceHistory,
   "IsPrimaryContact": Globals.tryParseBoolean(contact.isPrimaryContact),
@@ -1529,7 +1856,7 @@ void upSyncContact(Contact contact) async {
   "FreeTextField1": contact.freeTextField1,
   "FreeTextField2": contact.freeTextField2,
   "FreeTextField3": contact.freeTextField3,
-  // "MarketingContactID": MarketingContactDataHandler.GetServerId(dbHandler,  contact.marketingContactID),
+  // "MarketingContactID": MarketingContactDataHandler.getServerId(dbHandler,  contact.marketingContactID),
   "CreatedBy": contact.createdBy,
   "CreatedOn": contact.createdOn,
   "ModifiedBy": contact.modifiedBy,
@@ -1569,10 +1896,10 @@ void upSyncContact(Contact contact) async {
             ContactHandlerDataBase.UpdateContactRecord(dbHandler, contact.id!, contactReturn);
             logger.d("Contact - Saved successfully.");
           } catch ( ex) {
-            logger.e("Error: SyncService:UpSyncContact() 1-> ${ex.toString()}");
+            logger.e("Error: SyncService:upSyncContact() 1-> ${ex.toString()}");
           }
         } else {
-          logger.e("VolleyError: SyncService:UpSyncContact() 2-> ${contact.id} : Object not returned.");
+          logger.e("VolleyError: SyncService:upSyncContact() 2-> ${contact.id} : Object not returned.");
           contact.upSyncMessage = "FAIL: Object not returned";
           contact.upSyncIndex = Globals.SyncIndex.toString();
           ContactHandlerDataBase.UpdateContactRecord(dbHandler, contact.id!, contact);
@@ -1583,7 +1910,7 @@ void upSyncContact(Contact contact) async {
           Globals.USER_TOKEN_ALT = "";
         } else {
           String posterror = response.body;
-          logger.e("VolleyError: SyncService:UpSyncContact() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncContact() 3-> $posterror");
           contact.upSyncMessage = "FAIL: $posterror";
           contact.upSyncIndex = Globals.SyncIndex.toString();
           ContactDataHandler.UpdateContactRecord(dbHandler,  contact.id, contact);
@@ -1592,7 +1919,7 @@ void upSyncContact(Contact contact) async {
       }
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncContact() 4-> ${e.toString()}");
+    logger.e("Error: SyncService:upSyncContact() 4-> ${e.toString()}");
   }
 }
 
@@ -1604,25 +1931,25 @@ void upSyncActivity(Activity activity) {
       "ActivityID": !Globals.isNullOrEmpty(activity.activityID) ? activity.activityID : "-1",
       "ActivityCode": !Globals.isNullOrEmpty(activity.activityCode) ? activity.activityCode : "",
       "ActivityTitle": activity.activityTitle,
-      "ActivityTypeID": ActivityTypeDataHandler.GetServerId(dbHandler,  activity.activityTypeID),
+      "ActivityTypeID": ActivityTypeDataHandler.getServerId(dbHandler,  activity.activityTypeID),
       "LeadSource": activity.leadSource,
-      "AccountID": AccountDataHandler.GetServerId(dbHandler,  activity.accountID),
-      "ContactID": ContactDataHandler.GetServerId(dbHandler,  activity.contactID),
-      "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  activity.opportunityID),
+      "AccountID": AccountDataHandler.getServerId(dbHandler,  activity.accountID),
+      "ContactID": ContactDataHandler.getServerId(dbHandler,  activity.contactID),
+      "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  activity.opportunityID),
       "ActivityMeasure": activity.activityMeasure,
       "ActivityDate": activity.activityDate,
       "ActivityEndDate": activity.activityEndDate,
       "ActivityDetails": activity.activityDetails,
-      "ActivityPriorityID": ActivityPriorityDataHandler.GetServerId(dbHandler,  activity.activityPriorityID),
+      "ActivityPriorityID": ActivityPriorityDataHandlerBase.getServerId(dbHandler,  activity.activityPriorityID),
       "TotalAmount": activity.totalAmount,
       "AmountCollected": activity.amountCollected,
-      "CurrencyID": CurrencyDataHandler.GetServerId(dbHandler,  activity.currencyID),
+      "CurrencyID": CurrencyDataHandler.getServerId(dbHandler,  activity.currencyID),
       "CollectionDetails": activity.collectionDetails,
       "IsTravelled": Globals.tryParseBoolean(activity.isTravelled),
       "TravelPurposeName": activity.travelPurposeName,
-      "ActivityStatusID": ActivityStatusDataHandler.GetServerId(dbHandler,  activity.activityStatusID),
+      "ActivityStatusID": ActivityStatusDataHandler.getServerId(dbHandler,  activity.activityStatusID),
       "NeedFollowUpActivity": Globals.tryParseBoolean(activity.needFollowUpActivity),
-      "ParentActivityID": ActivityDataHandler.GetServerId(dbHandler,  activity.parentActivityID),
+      "ParentActivityID": ActivityDataHandler.getServerId(dbHandler,  activity.parentActivityID),
       "ExpectedCompletionDate": activity.expectedCompletionDate,
       "ActivityCodeInternal": activity.activityCodeInternal,
       "Tags": activity.tags,
@@ -1671,10 +1998,10 @@ void upSyncActivity(Activity activity) {
             ActivityDataHandler.UpdateActivityRecord(dbHandler,  activity.id, activityReturn);
             logger.d("Activity - Saved successfully.");
           } catch (ex) {
-            logger.e("Error: SyncService:UpSyncActivity() 1-> $ex");
+            logger.e("Error: SyncService:upSyncActivity() 1-> $ex");
           }
         } else {
-          logger.e("VolleyError: SyncService:UpSyncActivity() 2-> ${activity.id} : Object not returned.");
+          logger.e("VolleyError: SyncService:upSyncActivity() 2-> ${activity.id} : Object not returned.");
           activity.upSyncMessage = "FAIL: Object not returned";
           activity.upSyncIndex = Globals.SyncIndex.toString();
           ActivityDataHandler.UpdateActivityRecord(dbHandler,  activity.id, activity);
@@ -1684,7 +2011,7 @@ void upSyncActivity(Activity activity) {
       
       else {
         String postError = response.body;
-        logger.e("VolleyError: SyncService:UpSyncActivity() 3-> $postError");
+        logger.e("VolleyError: SyncService:upSyncActivity() 3-> $postError");
         activity.upSyncMessage = "FAIL: $postError";
         activity.upSyncIndex = Globals.SyncIndex.toString();
         ActivityDataHandler.UpdateActivityRecord(dbHandler,  activity.id, activity);
@@ -1695,7 +2022,7 @@ void upSyncActivity(Activity activity) {
         Globals.USER_TOKEN_ALT = "";
       } else {
         String postError = error.toString();
-        logger.e("VolleyError: SyncService:UpSyncActivity() 4-> $postError");
+        logger.e("VolleyError: SyncService:upSyncActivity() 4-> $postError");
         activity.upSyncMessage = "FAIL: $postError";
         activity.upSyncIndex = Globals.SyncIndex.toString();
         ActivityDataHandler.UpdateActivityRecord(dbHandler,  activity.id, activity);
@@ -1718,18 +2045,18 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
         "OpportunityDetail": opportunity.opportunityDetail,
         "LeadSource": opportunity.leadSource,
         "OpportunityTypeID": OpportunityTypeDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityTypeID),
-        "AccountID": AccountDataHandler.GetServerId(dbHandler,  opportunity.accountID),
-        "ContactID": ContactDataHandlerBase.GetServerId(dbHandler,  opportunity.contactID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler,  opportunity.accountID),
+        "ContactID": ContactDataHandlerBase.getServerId(dbHandler,  opportunity.contactID),
         "OpportunityMeasure": opportunity.opportunityMeasure,
         "OpportunityValue": opportunity.opportunityValue,
-        "CurrencyID": CurrencyDataHandler.GetServerId(dbHandler,  opportunity.currencyID),
+        "CurrencyID": CurrencyDataHandler.getServerId(dbHandler,  opportunity.currencyID),
         "GrossProfit": opportunity.grossProfit,
         "DealRegistrationNumber": opportunity.dealRegistrationNumber,
         "ClosureDate": opportunity.closureDate,
         "Probability": opportunity.probability,
-        "OpportunityPriorityID": OpportunityPriorityDataHandler.GetServerId(dbHandler,  opportunity.opportunityPriorityID),
-        "OpportunityStageID": OpportunityStageDataHandlerBase.GetServerId(dbHandler,  opportunity.opportunityStageID!),
-        "OpportunityStatusID": OpportunityStatusDataHandlerBase.GetServerId(dbHandler,  opportunity.opportunityStatusID),
+        "OpportunityPriorityID": OpportunityPriorityDataHandler.getServerId(dbHandler,  opportunity.opportunityPriorityID),
+        "OpportunityStageID": OpportunityStageDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityStageID!),
+        "OpportunityStatusID": OpportunityStatusDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityStatusID),
         "ActualOpportunityValue": opportunity.actualOpportunityValue,
         "LostToCompetitor": opportunity.lostToCompetitor,
         "ReasonForOpportunityStatus": opportunity.reasonForOpportunityStatus,
@@ -1740,16 +2067,16 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
         "FinanceBy": opportunity.financeBy,
         "FinanceRemarks": opportunity.financeRemarks,
         "IsApprovalRequired": Globals.tryParseBoolean(opportunity.isApprovalRequired),
-        "ParentOpportunityID": OpportunityDataHandlerBase.GetServerId(dbHandler,  opportunity.parentOpportunityID!),
+        "ParentOpportunityID": OpportunityDataHandlerBase.getServerId(dbHandler,  opportunity.parentOpportunityID!),
         "IsRecurringOpportunity": Globals.tryParseBoolean(opportunity.isRecurringOpportunity),
         "RecurrenceIntervalInDays": opportunity.recurrenceIntervalInDays,
         "RecurrenceCount": opportunity.recurrenceCount,
-        "RecurringOpportunityID": OpportunityDataHandlerBase.GetServerId(dbHandler,  opportunity.recurringOpportunityID!),
+        "RecurringOpportunityID": OpportunityDataHandlerBase.getServerId(dbHandler,  opportunity.recurringOpportunityID!),
         "DateGeneratedForRecurring": opportunity.dateGeneratedForRecurring,
         "RequestedDeliveryDate": opportunity.requestedDeliveryDate,
         "PlannedDeliveryDate": opportunity.plannedDeliveryDate,
         "ActualDeliveryDate": opportunity.actualDeliveryDate,
-        "SupplierAccountID": AccountDataHandler.GetServerId(dbHandler,  opportunity.supplierAccountID),
+        "SupplierAccountID": AccountDataHandler.getServerId(dbHandler,  opportunity.supplierAccountID),
         "Tags": opportunity.tags,
         "OpportunityCodeInternal": opportunity.opportunityCodeInternal,
         "FreeTextField1": opportunity.freeTextField1,
@@ -1792,12 +2119,12 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
               opportunityReturn.upSyncMessage = "SUCCESS";
               opportunityReturn.upSyncIndex = Globals.SyncIndex.toString();
               OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler,  opportunity.id!, opportunityReturn);
-              LogUpSyncItemMessage("Opportunity - Saved successfully.");
+              LogupSyncItemMessage("Opportunity - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncOpportunity() 1-> $ex");
+              logger.e("Error: SyncService:upSyncOpportunity() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncOpportunity() 2-> ${opportunity.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncOpportunity() 2-> ${opportunity.id} : Object not returned.");
             opportunity.upSyncMessage = "FAIL: Object not returned";
             opportunity.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler,  opportunity.id!, opportunity);
@@ -1805,7 +2132,7 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
           upSyncList.remove("Opportunity-${opportunity.id}");
         } else {
           String postError = response.body;
-          logger.e("VolleyError: SyncService:UpSyncOpportunity() 3-> $postError");
+          logger.e("VolleyError: SyncService:upSyncOpportunity() 3-> $postError");
           opportunity.upSyncMessage = "FAIL: $postError";
           opportunity.upSyncIndex = Globals.SyncIndex.toString();
           OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler,  opportunity.id!, opportunity);
@@ -1816,7 +2143,7 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
           Globals.USER_TOKEN_ALT = "";
         } else {
           String postError = error.toString();
-          logger.e("VolleyError: SyncService:UpSyncOpportunity() 4-> $postError");
+          logger.e("VolleyError: SyncService:upSyncOpportunity() 4-> $postError");
           opportunity.upSyncMessage = "FAIL: $postError";
           opportunity.upSyncIndex = Globals.SyncIndex.toString();
           OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler,  opportunity.id!, opportunity);
@@ -1825,7 +2152,7 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncOpportunity() 4-> $e");
+    logger.e("Error: SyncService:upSyncOpportunity() 4-> $e");
   }
 }
 
@@ -1839,9 +2166,9 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
         'CustomerMeetingID': customerMeeting.customerMeetingID != null && customerMeeting.customerMeetingID.isNotEmpty ? customerMeeting.customerMeetingID : '-1',
         'CustomerMeetingCode': customerMeeting.customerMeetingCode != null && customerMeeting.customerMeetingCode.isNotEmpty ? customerMeeting.customerMeetingCode : '',
         'CustomerMeetingTitle': customerMeeting.customerMeetingTitle,
-        'ActivityID': ActivityDataHandler.GetServerId(dbHandler,  customerMeeting.activityID),
-        'AccountID': AccountDataHandler.GetServerId(dbHandler,  customerMeeting.accountID),
-        'ContactID': ContactDataHandler.GetServerId(dbHandler,  customerMeeting.contactID),
+        'ActivityID': ActivityDataHandler.getServerId(dbHandler,  customerMeeting.activityID),
+        'AccountID': AccountDataHandler.getServerId(dbHandler,  customerMeeting.accountID),
+        'ContactID': ContactDataHandler.getServerId(dbHandler,  customerMeeting.contactID),
         'CustomerMeetingDate': customerMeeting.customerMeetingDate,
         'PunchInTime': customerMeeting.punchInTime,
         'PunchOutTime': customerMeeting.punchOutTime,
@@ -1880,12 +2207,12 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
             customerMeetingReturn.upSyncMessage = 'SUCCESS';
             customerMeetingReturn.upSyncIndex = Globals.SyncIndex.toString();
             CustomerMeetingDataHandler.UpdateCustomerMeetingRecord(dbHandler,  customerMeeting.id, customerMeetingReturn);
-            LogUpSyncItemMessage('CustomerMeeting - Saved successfully.');
+            LogupSyncItemMessage('CustomerMeeting - Saved successfully.');
           } catch ( ex) {
-            logger.e('Error: SyncService:UpSyncCustomerMeeting() 1-> ${ex.toString()}');
+            logger.e('Error: SyncService:upSyncCustomerMeeting() 1-> ${ex.toString()}');
           }
         } else {
-          logger.e('VolleyError: SyncService:UpSyncCustomerMeeting() 2-> ${customerMeeting.id}: Object not returned.');
+          logger.e('VolleyError: SyncService:upSyncCustomerMeeting() 2-> ${customerMeeting.id}: Object not returned.');
           customerMeeting.upSyncMessage = 'FAIL: Object not returned';
           customerMeeting.upSyncIndex = Globals.SyncIndex.toString();
           CustomerMeetingDataHandler.UpdateCustomerMeetingRecord(dbHandler,  customerMeeting.id, customerMeeting);
@@ -1895,7 +2222,7 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
           Globals.USER_TOKEN_ALT = '';
         } else {
           String postError = response.body;
-          logger.e('VolleyError: SyncService:UpSyncCustomerMeeting() 3-> $postError');
+          logger.e('VolleyError: SyncService:upSyncCustomerMeeting() 3-> $postError');
           customerMeeting.upSyncMessage = 'FAIL: $postError';
           customerMeeting.upSyncIndex = Globals.SyncIndex.toString();
           CustomerMeetingDataHandler.UpdateCustomerMeetingRecord(dbHandler,  customerMeeting.id, customerMeeting);
@@ -1904,7 +2231,7 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
       upSyncList.remove('CustomerMeeting-${customerMeeting.id}');
     }
   } catch (e) {
-    logger.e('Error: SyncService:UpSyncCustomerMeeting() 4-> ${e.toString()}');
+    logger.e('Error: SyncService:upSyncCustomerMeeting() 4-> ${e.toString()}');
   }
 }
 
@@ -1942,10 +2269,10 @@ var userdata2 = jsonEncode(activityProductDetailList);
             if (Globals.TryParseAsIntString(cid) != '' && Globals.TryParseAsIntString(sid) != '') {
               var activityProduct = ActivityProductDataHandler.GetActivityProductRecord(dbHandler,  cid);
               if (activityProduct != null) {
-                activityProduct.setUpSyncIndex(Globals.SyncIndex.toString());
+                activityProduct.setupSyncIndex(Globals.SyncIndex.toString());
                 activityProduct.setActivityProductID(sid);
                 activityProduct.setIsDirty('false');
-                activityProduct.setUpSyncMessage('SUCCESS');
+                activityProduct.setupSyncMessage('SUCCESS');
                 var rid = ActivityProductDataHandler.UpdateActivityProductRecord(dbHandler,  activityProduct.getId(), activityProduct);
               }
             }
@@ -1960,28 +2287,28 @@ var userdata2 = jsonEncode(activityProductDetailList);
             if (Globals.TryParseAsIntString(cid) != '' && Globals.TryParseAsIntString(sid) != '') {
               var activityProductDetail = ActivityProductDetailDataHandler.GetActivityProductDetailRecord(dbHandler,  cid);
               if (activityProductDetail != null) {
-                activityProductDetail.setUpSyncIndex(Globals.SyncIndex.toString());
+                activityProductDetail.setupSyncIndex(Globals.SyncIndex.toString());
                 activityProductDetail.setActivityProductDetailID(sid);
                 activityProductDetail.setIsDirty('false');
-                activityProductDetail.setUpSyncMessage('SUCCESS');
+                activityProductDetail.setupSyncMessage('SUCCESS');
                 var rid = ActivityProductDetailDataHandler.UpdateActivityProductDetailRecord(dbHandler,  activityProductDetail.getId(), activityProductDetail);
               }
             }
           }
 
-          LogUpSyncItemMessage('ActivityProduct - Saved successfully.');
+          LogupSyncItemMessage('ActivityProduct - Saved successfully.');
         } else {
-          logger.e('VolleyError: SyncService:UpSyncActivityProduct() 1-> $activityId : Object not returned.');
+          logger.e('VolleyError: SyncService:upSyncActivityProduct() 1-> $activityId : Object not returned.');
 
           for (var activityProduct in activityProductListOriginal) {
-            activityProduct.setUpSyncMessage('FAIL: Object not returned');
-            activityProduct.setUpSyncIndex(Globals.SyncIndex.toString());
+            activityProduct.setupSyncMessage('FAIL: Object not returned');
+            activityProduct.setupSyncIndex(Globals.SyncIndex.toString());
             ActivityProductDataHandler.UpdateActivityProductRecord(dbHandler,  activityProduct.getId(), activityProduct);
           }
 
           for (var activityProductDetail in activityProductDetailListOriginal) {
-            activityProductDetail.setUpSyncMessage('FAIL: Object not returned');
-            activityProductDetail.setUpSyncIndex(Globals.SyncIndex.toString());
+            activityProductDetail.setupSyncMessage('FAIL: Object not returned');
+            activityProductDetail.setupSyncIndex(Globals.SyncIndex.toString());
             ActivityProductDetailDataHandler.UpdateActivityProductDetailRecord(dbHandler,  activityProductDetail.getId(), activityProductDetail);
           }
         }
@@ -1998,17 +2325,17 @@ var userdata2 = jsonEncode(activityProductDetailList);
           }
         }
 
-        logger.e('Error: SyncService:UpSyncActivityProduct() 3-> $postError');
+        logger.e('Error: SyncService:upSyncActivityProduct() 3-> $postError');
 
         for (var activityProduct in activityProductListOriginal) {
-          activityProduct.setUpSyncMessage('FAIL: $postError');
-          activityProduct.setUpSyncIndex(Globals.SyncIndex.toString());
+          activityProduct.setupSyncMessage('FAIL: $postError');
+          activityProduct.setupSyncIndex(Globals.SyncIndex.toString());
           ActivityProductDataHandlerBase.UpdateActivityProductRecord(dbHandler,  activityProduct.id, activityProduct);
         }
 
         for (var activityProductDetail in activityProductDetailListOriginal) {
-          activityProductDetail.setUpSyncMessage('FAIL: $postError');
-          activityProductDetail.setUpSyncIndex(Globals.SyncIndex.toString());
+          activityProductDetail.setupSyncMessage('FAIL: $postError');
+          activityProductDetail.setupSyncIndex(Globals.SyncIndex.toString());
           ActivityProductDetailDataHandler.UpdateActivityProductDetailRecord(dbHandler,  activityProductDetail.id, activityProductDetail);
         }
 
@@ -2016,7 +2343,7 @@ var userdata2 = jsonEncode(activityProductDetailList);
       }
     }
   } catch (e) {
-    logger.e('Error: SyncService:UpSyncActivityProduct() 4-> ${e.toString()}');
+    logger.e('Error: SyncService:upSyncActivityProduct() 4-> ${e.toString()}');
   }
 }
 
@@ -2080,9 +2407,9 @@ var userdata2 = jsonEncode(activityProductDetailList);
             }
           }
 
-          logUpSyncItemMessage("OpportunityProduct - Saved successfully.");
+          logupSyncItemMessage("OpportunityProduct - Saved successfully.");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncOpportunityProduct() 1-> $opportunityId : Object not returned.");
+          logger.e("VolleyError: SyncService:upSyncOpportunityProduct() 1-> $opportunityId : Object not returned.");
 
           for (var opportunityProduct in opportunityProductListOriginal) {
             opportunityProduct.upSyncMessage = "FAIL: Object not returned";
@@ -2098,16 +2425,16 @@ var userdata2 = jsonEncode(activityProductDetailList);
         }
         upSyncList.remove("OpportunityProduct-$opportunityId");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncOpportunityProduct() 2-> $error");
+        logger.e("Error: SyncService:upSyncOpportunityProduct() 2-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncOpportunityProduct() 4-> $e");
+    logger.e("Error: SyncService:upSyncOpportunityProduct() 4-> $e");
   }
 }
 
 
-void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute opportunityProductDetailAttribute) {
+Future<void> upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute opportunityProductDetailAttribute) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunityproductdetailattribute";
@@ -2115,9 +2442,9 @@ void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute o
       var postData = {
         "OpportunityProductDetailAttributeID": Globals.isNullOrEmpty(opportunityProductDetailAttribute.opportunityProductDetailAttributeID) ? "-1" : opportunityProductDetailAttribute.opportunityProductDetailAttributeID,
         "OpportunityProductDetailAttributeCode": Globals.isNullOrEmpty(opportunityProductDetailAttribute.opportunityProductDetailAttributeCode) ? "" : opportunityProductDetailAttribute.opportunityProductDetailAttributeCode,
-        "OpportunityProductDetailID": OpportunityProductDetailDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.opportunityProductDetailID),
-        "AttributeID": AttributeDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.attributeID),
-        "AttributeValueID": AttributeValueDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.attributeValueID),
+        "OpportunityProductDetailID": OpportunityProductDetailDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.opportunityProductDetailID),
+        "AttributeID": AttributeDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.attributeID),
+        "AttributeValueID": AttributeValueDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.attributeValueID),
         "AttributeValue": opportunityProductDetailAttribute.attributeValue,
         "CreatedBy": opportunityProductDetailAttribute.createdBy,
         "CreatedOn": opportunityProductDetailAttribute.createdOn,
@@ -2155,10 +2482,10 @@ void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute o
               OpportunityProductDetailAttributeDataHandler.UpdateOpportunityProductDetailAttributeRecord(dbHandler,  opportunityProductDetailAttribute.id, opportunityProductDetailAttributeReturn);
               logMessage("OpportunityProductDetailAttribute - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncOpportunityProductDetailAttribute() 1-> $ex");
+              logger.e("Error: SyncService:upSyncOpportunityProductDetailAttribute() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncOpportunityProductDetailAttribute() 2-> ${opportunityProductDetailAttribute.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncOpportunityProductDetailAttribute() 2-> ${opportunityProductDetailAttribute.id} : Object not returned.");
             opportunityProductDetailAttribute.upSyncMessage = "FAIL: Object not returned";
             opportunityProductDetailAttribute.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityProductDetailAttributeDataHandler.UpdateOpportunityProductDetailAttributeRecord(dbHandler,  opportunityProductDetailAttribute.id, opportunityProductDetailAttribute);
@@ -2174,22 +2501,22 @@ void upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAttribute o
           opportunityProductDetailAttribute.upSyncMessage = "FAIL: $posterror";
           opportunityProductDetailAttribute.upSyncIndex = Globals.SyncIndex.toString();
           OpportunityProductDetailAttributeDataHandler.UpdateOpportunityProductDetailAttributeRecord(dbHandler,  opportunityProductDetailAttribute.id, opportunityProductDetailAttribute);
-          logger.e("VolleyError: SyncService:UpSyncOpportunityProductDetailAttribute() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncOpportunityProductDetailAttribute() 3-> $posterror");
         }
 
         upSyncList.remove("OpportunityProductDetailAttribute-${opportunityProductDetailAttribute.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncOpportunityProductDetailAttribute() 4-> $error");
+        logger.e("Error: SyncService:upSyncOpportunityProductDetailAttribute() 4-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncOpportunityProductDetailAttribute() 4-> $e");
+    logger.e("Error: SyncService:upSyncOpportunityProductDetailAttribute() 4-> $e");
   }
 }
 
 
 
-void upSyncAccountAddress(AccountAddress accountAddress) {
+Future<void> upSyncAccountAddress(AccountAddress accountAddress) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountaddress";
@@ -2205,8 +2532,8 @@ void upSyncAccountAddress(AccountAddress accountAddress) {
         "State": accountAddress.state,
         "Country": accountAddress.country,
         "PIN": accountAddress.pin,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountAddress.accountID),
-        "ContactID": ContactDataHandler.GetServerId(dbHandler,  accountAddress.contactID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountAddress.accountID),
+        "ContactID": ContactDataHandler.getServerId(dbHandler,  accountAddress.contactID),
         "GPSCoordinates": accountAddress.gpsCoordinates,
         "CreatedBy": accountAddress.createdBy,
         "CreatedOn": accountAddress.createdOn,
@@ -2243,12 +2570,12 @@ void upSyncAccountAddress(AccountAddress accountAddress) {
               accountAddressReturn.upSyncMessage = "SUCCESS";
               accountAddressReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler,  accountAddress.id, accountAddressReturn);
-              logUpSyncItemMessage("AccountAddress - Saved successfully.");
+              logupSyncItemMessage("AccountAddress - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountAddress() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountAddress() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountAddress() 2-> ${accountAddress.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountAddress() 2-> ${accountAddress.id} : Object not returned.");
             accountAddress.upSyncMessage = "FAIL: Object not returned";
             accountAddress.upSyncIndex = Globals.SyncIndex.toString();
             AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler,  accountAddress.id, accountAddress);
@@ -2261,7 +2588,7 @@ void upSyncAccountAddress(AccountAddress accountAddress) {
             posterror += response.statusCode.toString() + " - " + response.reasonPhrase.toString();
           }
 
-          logger.e("VolleyError: SyncService:UpSyncAccountAddress() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncAccountAddress() 3-> $posterror");
           accountAddress.upSyncMessage = "FAIL: $posterror";
           accountAddress.upSyncIndex = Globals.SyncIndex.toString();
           AccountAddressDataHandler.UpdateAccountAddressRecord(dbHandler,  accountAddress.id, accountAddress);
@@ -2269,16 +2596,16 @@ void upSyncAccountAddress(AccountAddress accountAddress) {
 
         upSyncList.remove("AccountAddress-${accountAddress.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncAccountAddress() 4-> $error");
+        logger.e("Error: SyncService:upSyncAccountAddress() 4-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountAddress() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountAddress() 4-> $e");
   }
 }
 
 
-void upSyncOpportunityContact(OpportunityContact opportunityContact) {
+Future<void> upSyncOpportunityContact(OpportunityContact opportunityContact) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunitycontact";
@@ -2286,8 +2613,8 @@ void upSyncOpportunityContact(OpportunityContact opportunityContact) {
       var postData = {
         "OpportunityContactID": Globals.isNullOrEmpty(opportunityContact.opportunityContactID) ? "-1" : opportunityContact.opportunityContactID,
         "OpportunityContactCode": Globals.isNullOrEmpty(opportunityContact.opportunityContactCode) ? "" : opportunityContact.opportunityContactCode,
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityContact.opportunityID),
-        "ContactID": ContactDataHandler.GetServerId(dbHandler,  opportunityContact.contactID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityContact.opportunityID),
+        "ContactID": ContactDataHandler.getServerId(dbHandler,  opportunityContact.contactID),
         "Description": opportunityContact.description,
         "CreatedBy": opportunityContact.createdBy,
         "CreatedOn": opportunityContact.createdOn,
@@ -2325,10 +2652,10 @@ void upSyncOpportunityContact(OpportunityContact opportunityContact) {
               OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContactReturn);
               logMessage("OpportunityContact - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncOpportunityContact() 1-> $ex");
+              logger.e("Error: SyncService:upSyncOpportunityContact() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncOpportunityContact() 2-> ${opportunityContact.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncOpportunityContact() 2-> ${opportunityContact.id} : Object not returned.");
             opportunityContact.upSyncMessage = "FAIL: Object not returned";
             opportunityContact.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
@@ -2344,21 +2671,21 @@ void upSyncOpportunityContact(OpportunityContact opportunityContact) {
           opportunityContact.upSyncMessage = "FAIL: $posterror";
           opportunityContact.upSyncIndex = Globals.SyncIndex.toString();
           OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
-          logger.e("VolleyError: SyncService:UpSyncOpportunityContact() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncOpportunityContact() 3-> $posterror");
         }
 
         upSyncList.remove("OpportunityContact-${opportunityContact.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncOpportunityContact() 4-> $error");
+        logger.e("Error: SyncService:upSyncOpportunityContact() 4-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncOpportunityContact() 4-> $e");
+    logger.e("Error: SyncService:upSyncOpportunityContact() 4-> $e");
   }
 }
 
 
-void upSyncAccountPhone(AccountPhone accountPhone) {
+Future<void> upSyncAccountPhone(AccountPhone accountPhone) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountphone";
@@ -2368,8 +2695,8 @@ void upSyncAccountPhone(AccountPhone accountPhone) {
         "AccountPhoneCode": Globals.isNullOrEmpty(accountPhone.accountPhoneCode) ? "" : accountPhone.accountPhoneCode,
         "Phone": accountPhone.phone,
         "PhoneTypeName": accountPhone.phoneTypeName,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountPhone.accountID),
-        "AccountAddressID": AccountAddressDataHandler.GetServerId(dbHandler,  accountPhone.accountAddressID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountPhone.accountID),
+        "AccountAddressID": AccountAddressDataHandler.getServerId(dbHandler,  accountPhone.accountAddressID),
         "CreatedBy": accountPhone.createdBy,
         "CreatedOn": accountPhone.createdOn,
         "ModifiedBy": accountPhone.modifiedBy,
@@ -2405,12 +2732,12 @@ void upSyncAccountPhone(AccountPhone accountPhone) {
               accountPhoneReturn.upSyncMessage = "SUCCESS";
               accountPhoneReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountPhoneDataHandler.UpdateAccountPhoneRecord(dbHandler,  accountPhone.id, accountPhoneReturn);
-              logUpSyncItemMessage("AccountPhone - Saved successfully.");
+              logupSyncItemMessage("AccountPhone - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountPhone() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountPhone() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountPhone() 2-> ${accountPhone.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountPhone() 2-> ${accountPhone.id} : Object not returned.");
             accountPhone.upSyncMessage = "FAIL: Object not returned";
             accountPhone.upSyncIndex = Globals.SyncIndex.toString();
             AccountPhoneDataHandler.UpdateAccountPhoneRecord(dbHandler,  accountPhone.id, accountPhone);
@@ -2421,7 +2748,7 @@ void upSyncAccountPhone(AccountPhone accountPhone) {
           }
 
           String posterror = response.body != null ? response.body.toString() : "";
-          logger.e("VolleyError: SyncService:UpSyncAccountPhone() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncAccountPhone() 3-> $posterror");
           accountPhone.upSyncMessage = "FAIL: $posterror";
           accountPhone.upSyncIndex = Globals.SyncIndex.toString();
           AccountPhoneDataHandler.UpdateAccountPhoneRecord(dbHandler,  accountPhone.id, accountPhone);
@@ -2429,16 +2756,16 @@ void upSyncAccountPhone(AccountPhone accountPhone) {
 
         upSyncList.remove("AccountPhone-${accountPhone.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncAccountPhone() 4-> $error");
+        logger.e("Error: SyncService:upSyncAccountPhone() 4-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountPhone() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountPhone() 4-> $e");
   }
 }
 
 
-void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
+Future<void> upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountbuyingprocess";
@@ -2447,7 +2774,7 @@ void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
         "AccountBuyingProcessID": Globals.isNullOrEmpty(accountBuyingProcess.accountBuyingProcessID) ? "-1" : accountBuyingProcess.accountBuyingProcessID,
         "AccountBuyingProcessCode": Globals.isNullOrEmpty(accountBuyingProcess.accountBuyingProcessCode) ? "" : accountBuyingProcess.accountBuyingProcessCode,
         "BuyingProcess": accountBuyingProcess.buyingProcess,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountBuyingProcess.accountID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountBuyingProcess.accountID),
         "CreatedBy": accountBuyingProcess.createdBy,
         "CreatedOn": accountBuyingProcess.createdOn,
         "ModifiedBy": accountBuyingProcess.modifiedBy,
@@ -2483,12 +2810,12 @@ void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
               accountBuyingProcessReturn.upSyncMessage = "SUCCESS";
               accountBuyingProcessReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess.id, accountBuyingProcessReturn);
-              logUpSyncItemMessage("AccountBuyingProcess - Saved successfully.");
+              logupSyncItemMessage("AccountBuyingProcess - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountBuyingProcess() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountBuyingProcess() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountBuyingProcess() 2-> ${accountBuyingProcess.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountBuyingProcess() 2-> ${accountBuyingProcess.id} : Object not returned.");
             accountBuyingProcess.upSyncMessage = "FAIL: Object not returned";
             accountBuyingProcess.upSyncIndex = Globals.SyncIndex.toString();
             AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess.id, accountBuyingProcess);
@@ -2499,7 +2826,7 @@ void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
           }
 
           String posterror = response.body != null ? response.body.toString() : "";
-          logger.e("VolleyError: SyncService:UpSyncAccountBuyingProcess() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncAccountBuyingProcess() 3-> $posterror");
           accountBuyingProcess.upSyncMessage = "FAIL: $posterror";
           accountBuyingProcess.upSyncIndex = Globals.SyncIndex.toString();
           AccountBuyingProcessDataHandler.UpdateAccountBuyingProcessRecord(dbHandler,  accountBuyingProcess.id, accountBuyingProcess);
@@ -2507,16 +2834,16 @@ void upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProcess) {
 
         upSyncList.remove("AccountBuyingProcess-${accountBuyingProcess.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncAccountBuyingProcess() 4-> $error");
+        logger.e("Error: SyncService:upSyncAccountBuyingProcess() 4-> $error");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountBuyingProcess() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountBuyingProcess() 4-> $e");
   }
 }
 
 
-void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
+Future<void> upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountbusinessplan";
@@ -2525,7 +2852,7 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
         "AccountBusinessPlanID": Globals.isNullOrEmpty(accountBusinessPlan.accountBusinessPlanID) ? "-1" : accountBusinessPlan.accountBusinessPlanID,
         "AccountBusinessPlanCode": Globals.isNullOrEmpty(accountBusinessPlan.accountBusinessPlanCode) ? "" : accountBusinessPlan.accountBusinessPlanCode,
         "BusinessPlans": accountBusinessPlan.businessPlans,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler, accountBusinessPlan.accountID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler, accountBusinessPlan.accountID),
         "CustomerTargetDate": accountBusinessPlan.customerTargetDate,
         "CreatedBy": accountBusinessPlan.createdBy,
         "CreatedOn": accountBusinessPlan.createdOn,
@@ -2562,12 +2889,12 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
               accountBusinessPlanReturn.upSyncMessage = "SUCCESS";
               accountBusinessPlanReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler, accountBusinessPlan.id, accountBusinessPlanReturn);
-              logUpSyncItemMessage("AccountBusinessPlan - Saved successfully.");
+              logupSyncItemMessage("AccountBusinessPlan - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountBusinessPlan() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountBusinessPlan() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountBusinessPlan() 2-> ${accountBusinessPlan.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountBusinessPlan() 2-> ${accountBusinessPlan.id} : Object not returned.");
             accountBusinessPlan.upSyncMessage = "FAIL: Object not returned";
             accountBusinessPlan.upSyncIndex = Globals.SyncIndex.toString();
             AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler, accountBusinessPlan.id, accountBusinessPlan);
@@ -2578,7 +2905,7 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
           }
 
           String posterror = response.body != null ? response.body.toString() : "";
-          logger.e("VolleyError: SyncService:UpSyncAccountBusinessPlan() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncAccountBusinessPlan() 3-> $posterror");
           accountBusinessPlan.upSyncMessage = "FAIL: $posterror";
           accountBusinessPlan.upSyncIndex = Globals.SyncIndex.toString();
           AccountBusinessPlanDataHandler.UpdateAccountBusinessPlanRecord(dbHandler, accountBusinessPlan.id, accountBusinessPlan);
@@ -2586,17 +2913,17 @@ void upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) {
 
         upSyncList.remove("AccountBusinessPlan-${accountBusinessPlan.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncAccountBusinessPlan() 4-> $error");
+        logger.e("Error: SyncService:upSyncAccountBusinessPlan() 4-> $error");
         upSyncList.remove("AccountBusinessPlan-${accountBusinessPlan.id}");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountBusinessPlan() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountBusinessPlan() 4-> $e");
   }
 }
 
 
-void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetitionActivity) {
+Future<void> upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetitionActivity) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountcompetitionactivity";
@@ -2605,8 +2932,8 @@ void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetit
         "AccountCompetitionActivityID": Globals.isNullOrEmpty(accountCompetitionActivity.accountCompetitionActivityID) ? "-1" : accountCompetitionActivity.accountCompetitionActivityID,
         "AccountCompetitionActivityCode": Globals.isNullOrEmpty(accountCompetitionActivity.accountCompetitionActivityCode) ? "" : accountCompetitionActivity.accountCompetitionActivityCode,
         "CompetitionActivity": accountCompetitionActivity.competitionActivity,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler, accountCompetitionActivity.accountID),
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, accountCompetitionActivity.opportunityID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler, accountCompetitionActivity.accountID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, accountCompetitionActivity.opportunityID),
         "CompetitorName": accountCompetitionActivity.competitorName,
         "CreatedBy": accountCompetitionActivity.createdBy,
         "CreatedOn": accountCompetitionActivity.createdOn,
@@ -2643,12 +2970,12 @@ void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetit
               accountCompetitionActivityReturn.upSyncMessage = "SUCCESS";
               accountCompetitionActivityReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountCompetitionActivityDataHandler.UpdateAccountCompetitionActivityRecord(dbHandler, accountCompetitionActivity.id, accountCompetitionActivityReturn);
-              logUpSyncItemMessage("AccountCompetitionActivity - Saved successfully.");
+              logupSyncItemMessage("AccountCompetitionActivity - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountCompetitionActivity() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountCompetitionActivity() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountCompetitionActivity() 2-> ${accountCompetitionActivity.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountCompetitionActivity() 2-> ${accountCompetitionActivity.id} : Object not returned.");
             accountCompetitionActivity.upSyncMessage = "FAIL: Object not returned";
             accountCompetitionActivity.upSyncIndex = Globals.SyncIndex.toString();
             AccountCompetitionActivityDataHandler.UpdateAccountCompetitionActivityRecord(dbHandler, accountCompetitionActivity.id, accountCompetitionActivity);
@@ -2659,24 +2986,24 @@ void upSyncAccountCompetitionActivity(AccountCompetitionActivity accountCompetit
           }
 
           String posterror = response.body != null ? response.body.toString() : "";
-          logger.e("VolleyError: SyncService:UpSyncAccountCompetitionActivity() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncAccountCompetitionActivity() 3-> $posterror");
           accountCompetitionActivity.upSyncMessage = "FAIL: $posterror";
           accountCompetitionActivity.upSyncIndex = Globals.SyncIndex.toString();
           AccountCompetitionActivityDataHandler.UpdateAccountCompetitionActivityRecord(dbHandler, accountCompetitionActivity.id, accountCompetitionActivity);
         }
         upSyncList.remove("AccountCompetitionActivity-${accountCompetitionActivity.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncAccountCompetitionActivity() 4-> $error");
+        logger.e("Error: SyncService:upSyncAccountCompetitionActivity() 4-> $error");
         upSyncList.remove("AccountCompetitionActivity-${accountCompetitionActivity.id}");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountCompetitionActivity() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountCompetitionActivity() 4-> $e");
   }
 }
 
 
-void upSyncNote(Note note) {
+Future<void> upSyncNote(Note note) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/note";
@@ -2684,10 +3011,10 @@ void upSyncNote(Note note) {
       var postData = {
         "NoteID": Globals.isNullOrEmpty(note.noteID) ? "-1" : note.noteID,
         "NoteCode": Globals.isNullOrEmpty(note.noteCode) ? "" : note.noteCode,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler, note.accountID),
-        "ContactID": ContactDataHandler.GetServerId(dbHandler, note.contactID),
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, note.opportunityID),
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, note.activityID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler, note.accountID),
+        "ContactID": ContactDataHandler.getServerId(dbHandler, note.contactID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, note.opportunityID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler, note.activityID),
         "IsPersonal": Globals.tryParseBoolean(note.isPersonal),
         "NoteDate": note.noteDate,
         "NoteContent": note.noteContent,
@@ -2730,12 +3057,12 @@ void upSyncNote(Note note) {
               noteReturn.upSyncMessage = "SUCCESS";
               noteReturn.upSyncIndex = Globals.SyncIndex.toString();
               NoteDataHandler.UpdateNoteRecord(dbHandler, note.id, noteReturn);
-              logUpSyncItemMessage("Note - Saved successfully.");
+              logupSyncItemMessage("Note - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncNote() 1-> $ex");
+              logger.e("Error: SyncService:upSyncNote() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncNote() 2-> ${note.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncNote() 2-> ${note.id} : Object not returned.");
             note.upSyncMessage = "FAIL: Object not returned";
             note.upSyncIndex = Globals.SyncIndex.toString();
             NoteDataHandler.UpdateNoteRecord(dbHandler, note.id, note);
@@ -2746,23 +3073,23 @@ void upSyncNote(Note note) {
           }
 
           String posterror = response.body != null ? response.body.toString() : "";
-          logger.e("VolleyError: SyncService:UpSyncNote() 3-> $posterror");
+          logger.e("VolleyError: SyncService:upSyncNote() 3-> $posterror");
           note.upSyncMessage = "FAIL: $posterror";
           note.upSyncIndex = Globals.SyncIndex.toString();
           NoteDataHandler.UpdateNoteRecord(dbHandler, note.id, note);
         }
         upSyncList.remove("Note-${note.id}");
       }).catchError((error) {
-        logger.e("Error: SyncService:UpSyncNote() 4-> $error");
+        logger.e("Error: SyncService:upSyncNote() 4-> $error");
         upSyncList.remove("Note-${note.id}");
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncNote() 4-> $e");
+    logger.e("Error: SyncService:upSyncNote() 4-> $e");
   }
 }
 
-void upSyncActivityTravel(ActivityTravel activityTravel) {
+Future<void> upSyncActivityTravel(ActivityTravel activityTravel) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitytravel";
@@ -2771,7 +3098,7 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
         "ActivityTravelID": Globals.isNullOrEmpty(activityTravel.activityTravelID) ? "-1" : activityTravel.activityTravelID,
         "ActivityTravelCode": Globals.isNullOrEmpty(activityTravel.activityTravelCode) ? "" : activityTravel.activityTravelCode,
         "ActivityTravelTitle": activityTravel.activityTravelTitle,
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityTravel.activityID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityTravel.activityID),
         "ActivityTravelDate": activityTravel.activityTravelDate,
         "ActivityTravelEndDate": activityTravel.activityTravelEndDate,
         "TravelPurposeName": activityTravel.travelPurposeName,
@@ -2781,7 +3108,7 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
         "EndLocationCoordinate": activityTravel.endLocationCoordinate,
         "ActualDistance": activityTravel.actualDistance,
         "DistanceTravelled": activityTravel.distanceTravelled,
-        "ModeOfTravelID": ModeOfTravelDataHandler.GetServerId(dbHandler, activityTravel.modeOfTravelID),
+        "ModeOfTravelID": ModeOfTravelDataHandler.getServerId(dbHandler, activityTravel.modeOfTravelID),
         "TravelExpense": activityTravel.travelExpense,
         "ReasonForDeviation": activityTravel.reasonForDeviation,
         "OtherExpense": activityTravel.otherExpense,
@@ -2824,19 +3151,19 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
               activityTravelReturn.upSyncMessage = "SUCCESS";
               activityTravelReturn.upSyncIndex = Globals.SyncIndex.toString();
               ActivityTravelDataHandler.UpdateActivityTravelRecord(dbHandler, activityTravel.id, activityTravelReturn);
-              logUpSyncItemMessage("ActivityTravel - Saved successfully.");
+              logupSyncItemMessage("ActivityTravel - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncActivityTravel() 1-> $ex");
+              logger.e("Error: SyncService:upSyncActivityTravel() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncActivityTravel() 2-> ${activityTravel.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncActivityTravel() 2-> ${activityTravel.id} : Object not returned.");
             activityTravel.upSyncMessage = "FAIL: Object not returned";
             activityTravel.upSyncIndex = Globals.SyncIndex.toString();
             ActivityTravelDataHandler.UpdateActivityTravelRecord(dbHandler, activityTravel.id, activityTravel);
           }
           upSyncList.remove("ActivityTravel-${activityTravel.id}");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncActivityTravel() 3-> ${response.body}");
+          logger.e("VolleyError: SyncService:upSyncActivityTravel() 3-> ${response.body}");
           activityTravel.upSyncMessage = "FAIL: ${response.body}";
           activityTravel.upSyncIndex = Globals.SyncIndex.toString();
           ActivityTravelDataHandler.UpdateActivityTravelRecord(dbHandler, activityTravel.id, activityTravel);
@@ -2844,9 +3171,9 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logger.e("VolleyError: SyncService:UpSyncActivityTravel() 3-> ${error.toString()}");
+          logger.e("VolleyError: SyncService:upSyncActivityTravel() 3-> ${error.toString()}");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncActivityTravel() 3-> $error");
+          logger.e("VolleyError: SyncService:upSyncActivityTravel() 3-> $error");
         }
         activityTravel.upSyncMessage = "FAIL: $error";
         activityTravel.upSyncIndex = Globals.SyncIndex.toString();
@@ -2855,11 +3182,11 @@ void upSyncActivityTravel(ActivityTravel activityTravel) {
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncActivityTravel() 4-> $e");
+    logger.e("Error: SyncService:upSyncActivityTravel() 4-> $e");
   }
 }
 
-void upSyncAccountMedia(AccountMedia accountMedia) {
+Future<void> upSyncAccountMedia(AccountMedia accountMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/accountmedia";
@@ -2869,7 +3196,7 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
         "AccountMediaCode": Globals.isNullOrEmpty(accountMedia.accountMediaCode) ? "" : accountMedia.accountMediaCode,
         "AccountMediaName": accountMedia.accountMediaName,
         "AccountID": AccountDataHandlerBase.getServerId(dbHandler, accountMedia.accountID!),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler,  accountMedia.contentTypeID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler,  accountMedia.contentTypeID),
         "MediaPath": accountMedia.mediaPath,
         "MediaContent": accountMedia.mediaContent,
         "Description": accountMedia.description,
@@ -2909,12 +3236,12 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
               accountMediaReturn.upSyncMessage = "SUCCESS";
               accountMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
               AccountMediaDataHandler.UpdateAccountMediaRecord(dbHandler,  accountMedia.id, accountMediaReturn);
-              logUpSyncItemMessage("AccountMedia - Saved successfully.");
+              logupSyncItemMessage("AccountMedia - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncAccountMedia() 1-> $ex");
+              logger.e("Error: SyncService:upSyncAccountMedia() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncAccountMedia() 2-> ${accountMedia.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncAccountMedia() 2-> ${accountMedia.id} : Object not returned.");
             accountMedia.upSyncMessage = "FAIL: Object not returned";
             accountMedia.upSyncIndex = Globals.SyncIndex.toString();
             AccountMediaDataHandler.UpdateAccountMediaRecord(dbHandler,  accountMedia.id, accountMedia);
@@ -2923,7 +3250,7 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
         } 
         
         else {
-          logger.e("VolleyError: SyncService:UpSyncAccountMedia() 3-> ${response.body}");
+          logger.e("VolleyError: SyncService:upSyncAccountMedia() 3-> ${response.body}");
           accountMedia.upSyncMessage = "FAIL: ${response.body}";
           accountMedia.upSyncIndex = Globals.SyncIndex.toString();
           AccountMediaDataHandler.UpdateAccountMediaRecord(dbHandler,  accountMedia.id, accountMedia);
@@ -2931,9 +3258,9 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logger.e("VolleyError: SyncService:UpSyncAccountMedia() 3-> ${error.toString()}");
+          logger.e("VolleyError: SyncService:upSyncAccountMedia() 3-> ${error.toString()}");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncAccountMedia() 3-> $error");
+          logger.e("VolleyError: SyncService:upSyncAccountMedia() 3-> $error");
         }
         accountMedia.upSyncMessage = "FAIL: $error";
         accountMedia.upSyncIndex = Globals.SyncIndex.toString();
@@ -2942,12 +3269,12 @@ void upSyncAccountMedia(AccountMedia accountMedia) {
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncAccountMedia() 4-> $e");
+    logger.e("Error: SyncService:upSyncAccountMedia() 4-> $e");
   }
 }
 
 
-void upSyncContactMedia(ContactMedia contactMedia) {
+Future<void> upSyncContactMedia(ContactMedia contactMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/contactmedia";
@@ -2956,8 +3283,8 @@ void upSyncContactMedia(ContactMedia contactMedia) {
         "ContactMediaID": Globals.isNullOrEmpty(contactMedia.contactMediaID) ? "-1" : contactMedia.contactMediaID,
         "ContactMediaCode": Globals.isNullOrEmpty(contactMedia.contactMediaCode) ? "" : contactMedia.contactMediaCode,
         "ContactMediaName": contactMedia.contactMediaName,
-        "ContactID": ContactDataHandler.GetServerId(dbHandler, contactMedia.contactID),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, contactMedia.contentTypeID),
+        "ContactID": ContactDataHandler.getServerId(dbHandler, contactMedia.contactID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, contactMedia.contentTypeID),
         "MediaPath": contactMedia.mediaPath,
         "MediaContent": contactMedia.mediaContent,
         "Description": contactMedia.description,
@@ -2997,19 +3324,19 @@ void upSyncContactMedia(ContactMedia contactMedia) {
               contactMediaReturn.upSyncMessage = "SUCCESS";
               contactMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
               ContactMediaDataHandler.UpdateContactMediaRecord(dbHandler, contactMedia.id, contactMediaReturn);
-              logUpSyncItemMessage("ContactMedia - Saved successfully.");
+              logupSyncItemMessage("ContactMedia - Saved successfully.");
             } catch (ex) {
-              logger.e("Error: SyncService:UpSyncContactMedia() 1-> $ex");
+              logger.e("Error: SyncService:upSyncContactMedia() 1-> $ex");
             }
           } else {
-            logger.e("VolleyError: SyncService:UpSyncContactMedia() 2-> ${contactMedia.id} : Object not returned.");
+            logger.e("VolleyError: SyncService:upSyncContactMedia() 2-> ${contactMedia.id} : Object not returned.");
             contactMedia.upSyncMessage = "FAIL: Object not returned";
             contactMedia.upSyncIndex = Globals.SyncIndex.toString();
             ContactMediaDataHandler.UpdateContactMediaRecord(dbHandler, contactMedia.id, contactMedia);
           }
           upSyncList.remove("ContactMedia-${contactMedia.id}");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncContactMedia() 3-> ${response.body}");
+          logger.e("VolleyError: SyncService:upSyncContactMedia() 3-> ${response.body}");
           contactMedia.upSyncMessage = "FAIL: ${response.body}";
           contactMedia.upSyncIndex = Globals.SyncIndex.toString();
           ContactMediaDataHandler.UpdateContactMediaRecord(dbHandler, contactMedia.id, contactMedia);
@@ -3017,9 +3344,9 @@ void upSyncContactMedia(ContactMedia contactMedia) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logger.e("VolleyError: SyncService:UpSyncContactMedia() 3-> ${error.toString()}");
+          logger.e("VolleyError: SyncService:upSyncContactMedia() 3-> ${error.toString()}");
         } else {
-          logger.e("VolleyError: SyncService:UpSyncContactMedia() 3-> $error");
+          logger.e("VolleyError: SyncService:upSyncContactMedia() 3-> $error");
         }
         contactMedia.upSyncMessage = "FAIL: $error";
         contactMedia.upSyncIndex = Globals.SyncIndex.toString();
@@ -3028,11 +3355,11 @@ void upSyncContactMedia(ContactMedia contactMedia) {
       });
     }
   } catch (e) {
-    logger.e("Error: SyncService:UpSyncContactMedia() 4-> $e");
+    logger.e("Error: SyncService:upSyncContactMedia() 4-> $e");
   }
 }
 
-void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
+Future<void> upSyncOpportunityMedia(OpportunityMedia opportunityMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/opportunitymedia";
@@ -3041,8 +3368,8 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
         "OpportunityMediaID": Globals.isNullOrEmpty(opportunityMedia.opportunityMediaID) ? "-1" : opportunityMedia.opportunityMediaID,
         "OpportunityMediaCode": Globals.isNullOrEmpty(opportunityMedia.opportunityMediaCode) ? "" : opportunityMedia.opportunityMediaCode,
         "OpportunityMediaName": opportunityMedia.opportunityMediaName,
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, opportunityMedia.opportunityID),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, opportunityMedia.contentTypeID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, opportunityMedia.opportunityID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, opportunityMedia.contentTypeID),
         "MediaPath": opportunityMedia.mediaPath,
         "MediaContent": opportunityMedia.mediaContent,
         "Description": opportunityMedia.description,
@@ -3080,19 +3407,19 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
               opportunityMediaReturn.upSyncMessage = "SUCCESS";
               opportunityMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
               OpportunityMediaDataHandler.UpdateOpportunityMediaRecord(dbHandler, opportunityMedia.id, opportunityMediaReturn);
-              logUpSyncItemMessage("OpportunityMedia - Saved successfully.");
+              logupSyncItemMessage("OpportunityMedia - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncOpportunityMedia() 1-> $ex");
+              logError("Error: SyncService:upSyncOpportunityMedia() 1-> $ex");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncOpportunityMedia() 2-> ${opportunityMedia.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncOpportunityMedia() 2-> ${opportunityMedia.id} : Object not returned.");
             opportunityMedia.upSyncMessage = "FAIL: Object not returned";
             opportunityMedia.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityMediaDataHandler.UpdateOpportunityMediaRecord(dbHandler, opportunityMedia.id, opportunityMedia);
           }
           upSyncList.remove("OpportunityMedia-${opportunityMedia.id}");
         } else {
-          logError("VolleyError: SyncService:UpSyncOpportunityMedia() 3-> ${response.body}");
+          logError("VolleyError: SyncService:upSyncOpportunityMedia() 3-> ${response.body}");
           opportunityMedia.upSyncMessage = "FAIL: ${response.body}";
           opportunityMedia.upSyncIndex = Globals.SyncIndex.toString();
           OpportunityMediaDataHandler.UpdateOpportunityMediaRecord(dbHandler, opportunityMedia.id, opportunityMedia);
@@ -3100,9 +3427,9 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logError("VolleyError: SyncService:UpSyncOpportunityMedia() 3-> $error");
+          logError("VolleyError: SyncService:upSyncOpportunityMedia() 3-> $error");
         } else {
-          logError("Error: SyncService:UpSyncOpportunityMedia() 4-> $error");
+          logError("Error: SyncService:upSyncOpportunityMedia() 4-> $error");
         }
         opportunityMedia.upSyncMessage = "FAIL: $error";
         opportunityMedia.upSyncIndex = Globals.SyncIndex.toString();
@@ -3111,11 +3438,11 @@ void upSyncOpportunityMedia(OpportunityMedia opportunityMedia) {
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncOpportunityMedia() 4-> $e");
+    logError("Error: SyncService:upSyncOpportunityMedia() 4-> $e");
   }
 }
 
-void upSyncActivityMedia(ActivityMedia activityMedia) {
+Future<void> upSyncActivityMedia(ActivityMedia activityMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitymedia";
@@ -3124,8 +3451,8 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
         "ActivityMediaID": Globals.isNullOrEmpty(activityMedia.activityMediaID) ? "-1" : activityMedia.activityMediaID,
         "ActivityMediaCode": Globals.isNullOrEmpty(activityMedia.activityMediaCode) ? "" : activityMedia.activityMediaCode,
         "ActivityMediaName": activityMedia.activityMediaName,
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityMedia.activityID),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, activityMedia.contentTypeID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityMedia.activityID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, activityMedia.contentTypeID),
         "MediaPath": activityMedia.mediaPath,
         "MediaContent": activityMedia.mediaContent,
         "Description": activityMedia.description,
@@ -3166,19 +3493,19 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
               activityMediaReturn.upSyncMessage = "SUCCESS";
               activityMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
               ActivityMediaDataHandler.UpdateActivityMediaRecord(dbHandler, activityMedia.id, activityMediaReturn);
-              logUpSyncItemMessage("ActivityMedia - Saved successfully.");
+              logupSyncItemMessage("ActivityMedia - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityMedia() 1-> $ex");
+              logError("Error: SyncService:upSyncActivityMedia() 1-> $ex");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityMedia() 2-> ${activityMedia.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityMedia() 2-> ${activityMedia.id} : Object not returned.");
             activityMedia.upSyncMessage = "FAIL: Object not returned";
             activityMedia.upSyncIndex = Globals.SyncIndex.toString();
             ActivityMediaDataHandler.UpdateActivityMediaRecord(dbHandler, activityMedia.id, activityMedia);
           }
           upSyncList.remove("ActivityMedia-${activityMedia.id}");
         } else {
-          logError("VolleyError: SyncService:UpSyncActivityMedia() 3-> ${response.body}");
+          logError("VolleyError: SyncService:upSyncActivityMedia() 3-> ${response.body}");
           activityMedia.upSyncMessage = "FAIL: ${response.body}";
           activityMedia.upSyncIndex = Globals.SyncIndex.toString();
           ActivityMediaDataHandler.UpdateActivityMediaRecord(dbHandler, activityMedia.id, activityMedia);
@@ -3186,9 +3513,9 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logError("VolleyError: SyncService:UpSyncActivityMedia() 3-> ${error.message}");
+          logError("VolleyError: SyncService:upSyncActivityMedia() 3-> ${error.message}");
         } else {
-          logError("Error: SyncService:UpSyncActivityMedia() 4-> $error");
+          logError("Error: SyncService:upSyncActivityMedia() 4-> $error");
         }
         activityMedia.upSyncMessage = "FAIL: $error";
         activityMedia.upSyncIndex = Globals.SyncIndex.toString();
@@ -3197,12 +3524,12 @@ void upSyncActivityMedia(ActivityMedia activityMedia) {
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityMedia() 4-> $e");
+    logError("Error: SyncService:upSyncActivityMedia() 4-> $e");
   }
 }
 
 
-void upSyncNoteMedia(NoteMedia noteMedia) {
+Future<void> upSyncNoteMedia(NoteMedia noteMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/notemedia";
@@ -3211,8 +3538,8 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
         "NoteMediaID": Globals.isNullOrEmpty(noteMedia.noteMediaID) ? "-1" : noteMedia.noteMediaID,
         "NoteMediaCode": Globals.isNullOrEmpty(noteMedia.noteMediaCode) ? "" : noteMedia.noteMediaCode,
         "NoteMediaName": noteMedia.noteMediaName,
-        "NoteID": NoteDataHandler.GetServerId(dbHandler, noteMedia.noteID),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, noteMedia.contentTypeID),
+        "NoteID": NoteDataHandler.getServerId(dbHandler, noteMedia.noteID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, noteMedia.contentTypeID),
         "MediaPath": noteMedia.mediaPath,
         "MediaContent": noteMedia.mediaContent,
         "Description": noteMedia.description,
@@ -3252,19 +3579,19 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
               noteMediaReturn.upSyncMessage = "SUCCESS";
               noteMediaReturn.upSyncIndex = Globals.SyncIndex.toString();
               NoteMediaDataHandler.UpdateNoteMediaRecord(dbHandler, noteMedia.id, noteMediaReturn);
-              logUpSyncItemMessage("NoteMedia - Saved successfully.");
+              logupSyncItemMessage("NoteMedia - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncNoteMedia() 1-> $ex");
+              logError("Error: SyncService:upSyncNoteMedia() 1-> $ex");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncNoteMedia() 2-> ${noteMedia.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncNoteMedia() 2-> ${noteMedia.id} : Object not returned.");
             noteMedia.upSyncMessage = "FAIL: Object not returned";
             noteMedia.upSyncIndex = Globals.SyncIndex.toString();
             NoteMediaDataHandler.UpdateNoteMediaRecord(dbHandler, noteMedia.id, noteMedia);
           }
           upSyncList.remove("NoteMedia-${noteMedia.id}");
         } else {
-          logError("VolleyError: SyncService:UpSyncNoteMedia() 3-> ${response.body}");
+          logError("VolleyError: SyncService:upSyncNoteMedia() 3-> ${response.body}");
           noteMedia.upSyncMessage = "FAIL: ${response.body}";
           noteMedia.upSyncIndex = Globals.SyncIndex.toString();
           NoteMediaDataHandler.UpdateNoteMediaRecord(dbHandler, noteMedia.id, noteMedia);
@@ -3272,9 +3599,9 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
         }
       }).catchError((error) {
         if (error is http.ClientException) {
-          logError("VolleyError: SyncService:UpSyncNoteMedia() 3-> ${error.message}");
+          logError("VolleyError: SyncService:upSyncNoteMedia() 3-> ${error.message}");
         } else {
-          logError("Error: SyncService:UpSyncNoteMedia() 4-> $error");
+          logError("Error: SyncService:upSyncNoteMedia() 4-> $error");
         }
         noteMedia.upSyncMessage = "FAIL: $error";
         noteMedia.upSyncIndex = Globals.SyncIndex.toString();
@@ -3283,12 +3610,12 @@ void upSyncNoteMedia(NoteMedia noteMedia) {
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncNoteMedia() 4-> $e");
+    logError("Error: SyncService:upSyncNoteMedia() 4-> $e");
   }
 }
 
 
-void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
+Future<void> upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
       String url = "${AppConstants.API_VERSION_URL}/activitytravelmedia";
@@ -3297,8 +3624,8 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
         "ActivityTravelMediaID": Globals.isNullOrEmpty(activityTravelMedia.activityTravelMediaID) ? "-1" : activityTravelMedia.activityTravelMediaID,
         "ActivityTravelMediaCode": Globals.isNullOrEmpty(activityTravelMedia.activityTravelMediaCode) ? "" : activityTravelMedia.activityTravelMediaCode,
         "ActivityTravelMediaName": activityTravelMedia.activityTravelMediaName,
-        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler, activityTravelMedia.activityTravelID),
-        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, activityTravelMedia.contentTypeID),
+        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler, activityTravelMedia.activityTravelID),
+        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, activityTravelMedia.contentTypeID),
         "MediaPath": activityTravelMedia.mediaPath,
         "MediaContent": activityTravelMedia.mediaContent,
         "Description": activityTravelMedia.description,
@@ -3340,10 +3667,10 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
               ActivityTravelMediaDataHandler.UpdateActivityTravelMediaRecord(dbHandler, activityTravelMedia.id, activityTravelMediaReturn);
               logMessage("ActivityTravelMedia - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityTravelMedia() 1-> $ex");
+              logError("Error: SyncService:upSyncActivityTravelMedia() 1-> $ex");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityTravelMedia() 2-> ${activityTravelMedia.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityTravelMedia() 2-> ${activityTravelMedia.id} : Object not returned.");
             activityTravelMedia.upSyncMessage = "FAIL: Object not returned";
             activityTravelMedia.upSyncIndex = Globals.SyncIndex.toString();
             ActivityTravelMediaDataHandler.UpdateActivityTravelMediaRecord(dbHandler, activityTravelMedia.id, activityTravelMedia);
@@ -3365,7 +3692,7 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
           activityTravelMedia.upSyncIndex = Globals.SyncIndex.toString();
           ActivityTravelMediaDataHandler.UpdateActivityTravelMediaRecord(dbHandler, activityTravelMedia.id, activityTravelMedia);
           upSyncList.remove("ActivityTravelMedia-${activityTravelMedia.id}");
-          logError("VolleyError: SyncService:UpSyncActivityTravelMedia() 3-> $posterror");
+          logError("VolleyError: SyncService:upSyncActivityTravelMedia() 3-> $posterror");
         }
       }).catchError((error) {
         var posterror = error.toString();
@@ -3373,11 +3700,11 @@ void upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) {
         activityTravelMedia.upSyncIndex = Globals.SyncIndex.toString();
         ActivityTravelMediaDataHandler.UpdateActivityTravelMediaRecord(dbHandler, activityTravelMedia.id, activityTravelMedia);
         upSyncList.remove("ActivityTravelMedia-${activityTravelMedia.id}");
-        logError("VolleyError: SyncService:UpSyncActivityTravelMedia() 3-> $posterror");
+        logError("VolleyError: SyncService:upSyncActivityTravelMedia() 3-> $posterror");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityTravelMedia() 4-> $e");
+    logError("Error: SyncService:upSyncActivityTravelMedia() 4-> $e");
   }
 }
 
@@ -3391,10 +3718,10 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
         "ActivityTravelExpenseID": Globals.isNullOrEmpty(activityTravelExpense.activityTravelExpenseID) ? "-1" : activityTravelExpense.activityTravelExpenseID,
         "ActivityTravelExpenseCode": Globals.isNullOrEmpty(activityTravelExpense.activityTravelExpenseCode) ? "" : activityTravelExpense.activityTravelExpenseCode,
         "ActivityTravelExpenseTitle": activityTravelExpense.activityTravelExpenseTitle,
-        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler, activityTravelExpense.activityTravelID),
-        "ExpenseTypeID": ExpenseTypeDataHandler.GetServerId(dbHandler, activityTravelExpense.expenseTypeID),
+        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler, activityTravelExpense.activityTravelID),
+        "ExpenseTypeID": ExpenseTypeDataHandler.getServerId(dbHandler, activityTravelExpense.expenseTypeID),
         "DistanceTravelled": activityTravelExpense.distanceTravelled,
-        "ModeOfTravelID": ModeOfTravelDataHandler.GetServerId(dbHandler, activityTravelExpense.modeOfTravelID),
+        "ModeOfTravelID": ModeOfTravelDataHandler.getServerId(dbHandler, activityTravelExpense.modeOfTravelID),
         "Amount": activityTravelExpense.amount,
         "Remarks": activityTravelExpense.remarks,
         "CreatedBy": activityTravelExpense.createdBy,
@@ -3435,10 +3762,10 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
               ActivityTravelExpenseDataHandler.UpdateActivityTravelExpenseRecord(dbHandler, activityTravelExpense.id, activityTravelExpenseReturn);
               logMessage("ActivityTravelExpense - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityTravelExpense() 1-> $ex");
+              logError("Error: SyncService:upSyncActivityTravelExpense() 1-> $ex");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityTravelExpense() 2-> ${activityTravelExpense.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityTravelExpense() 2-> ${activityTravelExpense.id} : Object not returned.");
             activityTravelExpense.upSyncMessage = "FAIL: Object not returned";
             activityTravelExpense.upSyncIndex = Globals.SyncIndex.toString();
             ActivityTravelExpenseDataHandler.UpdateActivityTravelExpenseRecord(dbHandler, activityTravelExpense.id, activityTravelExpense);
@@ -3460,7 +3787,7 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
           activityTravelExpense.upSyncIndex = Globals.SyncIndex.toString();
           ActivityTravelExpenseDataHandler.UpdateActivityTravelExpenseRecord(dbHandler, activityTravelExpense.id, activityTravelExpense);
           upSyncList.remove("ActivityTravelExpense-${activityTravelExpense.id}");
-          logError("VolleyError: SyncService:UpSyncActivityTravelExpense() 3-> $posterror");
+          logError("VolleyError: SyncService:upSyncActivityTravelExpense() 3-> $posterror");
         }
       }).catchError((error) {
         var posterror = error.toString();
@@ -3468,11 +3795,11 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
         activityTravelExpense.upSyncIndex = Globals.SyncIndex.toString();
         ActivityTravelExpenseDataHandler.UpdateActivityTravelExpenseRecord(dbHandler, activityTravelExpense.id, activityTravelExpense);
         upSyncList.remove("ActivityTravelExpense-${activityTravelExpense.id}");
-        logError("VolleyError: SyncService:UpSyncActivityTravelExpense() 3-> $posterror");
+        logError("VolleyError: SyncService:upSyncActivityTravelExpense() 3-> $posterror");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityTravelExpense() 4-> $e");
+    logError("Error: SyncService:upSyncActivityTravelExpense() 4-> $e");
   }
 }
 
@@ -3530,7 +3857,7 @@ Future<void> upSyncFieldAttendance(FieldAttendance fieldAttendance) async {
                 fieldAttendance1.upSyncMessage = "SUCCESS";
                 fieldAttendance1.upSyncIndex = Globals.syncIndex.toString();
                 FieldAttendanceDataHandler.updateFieldAttendanceRecord(dbHandler, fieldAttendance.id, fieldAttendance1);
-                logUpSyncItemMessage("FieldAttendance - Saved successfully.");
+                logupSyncItemMessage("FieldAttendance - Saved successfully.");
               }
             } catch (ex) {
               logError("Error: SyncService:upSyncFieldAttendance() 1-> $ex");
@@ -3600,7 +3927,7 @@ Future<void> upSyncAppUserRemark(AppUserRemark appUserRemark) async {
               appUserRemarkReturn.upSyncMessage = "SUCCESS";
               appUserRemarkReturn.upSyncIndex = Globals.syncIndex.toString();
               AppUserRemarkDataHandler.updateAppUserRemarkRecord(dbHandler, appUserRemark.id, appUserRemarkReturn);
-              logUpSyncItemMessage("AppUserRemark - Saved successfully.");
+              logupSyncItemMessage("AppUserRemark - Saved successfully.");
             } catch (ex) {
               logError("Error: SyncService:upSyncAppUserRemark() 1-> $ex");
             }
@@ -3670,7 +3997,7 @@ Future<void> upSyncAccountForm(AccountForm accountForm) async {
               accountFormReturn.upSyncMessage = "SUCCESS";
               accountFormReturn.upSyncIndex = Globals.syncIndex.toString();
               AccountFormDataHandler.updateAccountFormRecord(dbHandler, accountForm.id, accountFormReturn);
-              logUpSyncItemMessage("AccountForm - Saved successfully.");
+              logupSyncItemMessage("AccountForm - Saved successfully.");
             } catch (ex) {
               logError("Error: SyncService:upSyncAccountForm() 1-> $ex");
             }
@@ -3728,7 +4055,7 @@ Future<void> upSyncAccountFormValue(String accountFormId, List<AccountFormValue>
                     accountFormValue.upSyncMessage = "SUCCESS";
                     accountFormValue.upSyncIndex = Globals.syncIndex.toString();
                     AccountFormValueDataHandler.updateAccountFormValueRecord(dbHandler, accountFormValue.id, accountFormValue);
-                    logUpSyncItemMessage("AccountFormValues - Saved successfully of form $accountFormId.");
+                    logupSyncItemMessage("AccountFormValues - Saved successfully of form $accountFormId.");
                   }
                 }
               }
@@ -3802,7 +4129,7 @@ Future<void> upSyncReimbursement(Reimbursement reimbursement) async {
               reimbursementReturn.upSyncMessage = "SUCCESS";
               reimbursementReturn.upSyncIndex = Globals.syncIndex.toString();
               ReimbursementDataHandler.updateReimbursementRecord(dbHandler, reimbursement.id, reimbursementReturn);
-              logUpSyncItemMessage("Reimbursement - Saved successfully.");
+              logupSyncItemMessage("Reimbursement - Saved successfully.");
             } catch (error) {
               logError("Error: SyncService:upSyncReimbursement() 1-> $error");
             }
@@ -3876,7 +4203,7 @@ Future<void> upSyncReimbursementDetail(ReimbursementDetail reimbursementDetail) 
               reimbursementDetailReturn.upSyncMessage = "SUCCESS";
               reimbursementDetailReturn.upSyncIndex = Globals.syncIndex.toString();
               ReimbursementDetailDataHandler.updateReimbursementDetailRecord(dbHandler, reimbursementDetail.id, reimbursementDetailReturn);
-              logUpSyncItemMessage("ReimbursementDetail - Saved successfully.");
+              logupSyncItemMessage("ReimbursementDetail - Saved successfully.");
             } catch (error) {
               logError("Error: SyncService:upSyncReimbursementDetail() 1-> $error");
             }
@@ -3953,8 +4280,8 @@ Future<void> upSyncAppUserLocation(AppUserLocation appUserLocation) async{
                 sql1 += Columns.KEY_APPUSERLOCATION_APPUSERLOCATIONCODE + " = '${appUserLocationReturn.appUserLocationCode}'";
                 sql1 += "," + Columns.KEY_APPUSERLOCATION_APPUSERLOCATIONID + " = '${appUserLocationReturn.appUserLocationID}'";
                 sql1 += "," + Columns.KEY_ISDIRTY + " = 'false'";
-                sql1 += "," + Columns.KEY_UPSYNCMESSAGE + " = 'SUCCESS'";
-                sql1 += "," + Columns.KEY_UPSYNCINDEX + " = '${Globals.SyncIndex.toString()}'";
+                sql1 += "," + Columns.KEY_upSyncMESSAGE + " = 'SUCCESS'";
+                sql1 += "," + Columns.KEY_upSyncINDEX + " = '${Globals.SyncIndex.toString()}'";
                 sql1 += " WHERE " + Columns.KEY_ID + " = ${appUserLocation.id.toString()}";
                 db.execute(sql1);
               }
@@ -3967,8 +4294,8 @@ Future<void> upSyncAppUserLocation(AppUserLocation appUserLocation) async{
 
           var db = await dbHandler.database;
             var sql1 = "UPDATE " + TablesBase.TABLE_APPUSERLOCATION + " SET ";
-            sql1 += " " + ColumnsBase.KEY_UPSYNCMESSAGE + " = 'FAIL: Object not returned'";
-            sql1 += "," + ColumnsBase.KEY_UPSYNCINDEX + " = '${Globals.SyncIndex.toString()}'";
+            sql1 += " " + ColumnsBase.KEY_upSyncMESSAGE + " = 'FAIL: Object not returned'";
+            sql1 += "," + ColumnsBase.KEY_upSyncINDEX + " = '${Globals.SyncIndex.toString()}'";
             sql1 += " WHERE " + Columns.KEY_ID + " = ${appUserLocation.id.toString()}";
             db.execute(sql1);
           }
@@ -3983,8 +4310,8 @@ Future<void> upSyncAppUserLocation(AppUserLocation appUserLocation) async{
 
           var db = await dbHandler.database;
           var sql1 = "UPDATE " + Tables.TABLE_APPUSERLOCATION + " SET ";
-          sql1 += " " + Columns.KEY_UPSYNCMESSAGE + " = 'FAIL: ${postError.replaceAll("'", "''")}'";
-          sql1 += "," + Columns.KEY_UPSYNCINDEX + " = '${Globals.SyncIndex.toString()}'";
+          sql1 += " " + Columns.KEY_upSyncMESSAGE + " = 'FAIL: ${postError.replaceAll("'", "''")}'";
+          sql1 += "," + Columns.KEY_upSyncINDEX + " = '${Globals.SyncIndex.toString()}'";
           sql1 += " WHERE " + Columns.KEY_ID + " = ${appUserLocation.id.toString()}";
           db.execute(sql1);
 
@@ -4039,7 +4366,7 @@ Future<void> upSyncActivityPermission(ActivityPermission activityPermission) asy
               activityPermissionReturn.upSyncMessage = "SUCCESS";
               activityPermissionReturn.upSyncIndex = Globals.syncIndex.toString();
               ActivityPermissionDataHandler.updateActivityPermissionRecord(dbHandler, activityPermission.id, activityPermissionReturn);
-              logUpSyncItemMessage("ActivityPermission - Saved successfully.");
+              logupSyncItemMessage("ActivityPermission - Saved successfully.");
             } catch (error) {
               logError("Error: SyncService:upSyncActivityPermission() 1-> $error");
             }
@@ -4113,7 +4440,7 @@ Future<void> upSyncNotePermission(NotePermission notePermission)async {
               notePermissionReturn.upSyncMessage = "SUCCESS";
               notePermissionReturn.upSyncIndex = Globals.syncIndex.toString();
               NotePermissionDataHandler.updateNotePermissionRecord(dbHandler,  notePermission.id, notePermissionReturn);
-              logUpSyncItemMessage("NotePermission - Saved successfully.");
+              logupSyncItemMessage("NotePermission - Saved successfully.");
             } catch (error) {
               logError("Error: SyncService:upSyncNotePermission() 1-> $error");
             }
@@ -4187,7 +4514,7 @@ Future<void> upSyncOpportunityPermission(OpportunityPermission opportunityPermis
               opportunityPermissionReturn.upSyncMessage = "SUCCESS";
               opportunityPermissionReturn.upSyncIndex = Globals.syncIndex.toString();
               OpportunityPermissionDataHandler.updateOpportunityPermissionRecord(dbHandler, opportunityPermission.id, opportunityPermissionReturn);
-              logUpSyncItemMessage("OpportunityPermission - Saved successfully.");
+              logupSyncItemMessage("OpportunityPermission - Saved successfully.");
             } catch (error) {
               logError("Error: SyncService:upSyncOpportunityPermission() 1-> $error");
             }
@@ -4229,7 +4556,7 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
       Map<String, dynamic> postData = {
         "ActivityTeamID": Globals.isNullOrEmpty(activityTeam.activityTeamID) ? "-1" : activityTeam.activityTeamID,
         "ActivityTeamCode": Globals.isNullOrEmpty(activityTeam.activityTeamCode) ? "" : activityTeam.activityTeamCode,
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityTeam.activityID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityTeam.activityID),
         "ActivityTeamAppUserID": activityTeam.activityTeamAppUserID,
         "Description": activityTeam.description,
         "CreatedBy": activityTeam.createdBy,
@@ -4261,12 +4588,12 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
               activityTeamReturn.upSyncMessage = "SUCCESS";
               activityTeamReturn.upSyncIndex = Globals.SyncIndex.toString();
               ActivityTeamDataHandler.UpdateActivityTeamRecord(dbHandler, activityTeam.id, activityTeamReturn);
-              logUpSyncItemMessage("ActivityTeam - Saved successfully.");
+              logupSyncItemMessage("ActivityTeam - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityTeam() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncActivityTeam() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityTeam() 2-> ${activityTeam.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityTeam() 2-> ${activityTeam.id} : Object not returned.");
             activityTeam.upSyncMessage = "FAIL: Object not returned";
             activityTeam.upSyncIndex = Globals.SyncIndex.toString();
             ActivityTeamDataHandler.UpdateActivityTeamRecord(dbHandler, activityTeam.id, activityTeam);
@@ -4280,7 +4607,7 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
             if (response.body != null) {
               posterror = utf8.decode(response.bodyBytes);
             }
-            logError("VolleyError: SyncService:UpSyncActivityTeam() 3-> $posterror");
+            logError("VolleyError: SyncService:upSyncActivityTeam() 3-> $posterror");
             activityTeam.upSyncMessage = "FAIL: $posterror";
             activityTeam.upSyncIndex = Globals.SyncIndex.toString();
             ActivityTeamDataHandler.UpdateActivityTeamRecord(dbHandler, activityTeam.id, activityTeam);
@@ -4288,11 +4615,11 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
           upSyncList.remove("ActivityTeam-${activityTeam.id}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncActivityTeam() 4-> ${error.toString()}");
+        logError("Error: SyncService:upSyncActivityTeam() 4-> ${error.toString()}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityTeam() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncActivityTeam() 4-> ${e.toString()}");
   }
 }
 
@@ -4307,7 +4634,7 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
         "ObjectType": appUserMessage.objectType,
         "ObjectID": appUserMessage.objectID,
         "IsAttachment": Globals.tryParseBoolean(appUserMessage.isAttachment),
-        "ParentAppUserMessageID": AppUserMessageDataHandler.GetServerId(dbHandler, appUserMessage.parentAppUserMessageID),
+        "ParentAppUserMessageID": AppUserMessageDataHandler.getServerId(dbHandler, appUserMessage.parentAppUserMessageID),
         "AppUserMessageTo": appUserMessage.appUserMessageTo,
         "AppUserMessageReadBy": appUserMessage.appUserMessageReadBy,
         "CreatedBy": appUserMessage.createdBy,
@@ -4339,12 +4666,12 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
               appUserMessageReturn.upSyncMessage = "SUCCESS";
               appUserMessageReturn.upSyncIndex = Globals.SyncIndex.toString();
               AppUserMessageDataHandler.UpdateAppUserMessageRecord(dbHandler, appUserMessage.id, appUserMessageReturn);
-              logUpSyncItemMessage("AppUserMessage - Saved successfully.");
+              logupSyncItemMessage("AppUserMessage - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncAppUserMessage() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncAppUserMessage() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncAppUserMessage() 2-> ${appUserMessage.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncAppUserMessage() 2-> ${appUserMessage.id} : Object not returned.");
             appUserMessage.upSyncMessage = "FAIL: Object not returned";
             appUserMessage.upSyncIndex = Globals.SyncIndex.toString();
             AppUserMessageDataHandler.UpdateAppUserMessageRecord(dbHandler, appUserMessage.id, appUserMessage);
@@ -4358,7 +4685,7 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
             if (response.body != null) {
               posterror = utf8.decode(response.bodyBytes);
             }
-            logError("VolleyError: SyncService:UpSyncAppUserMessage() 3-> $posterror");
+            logError("VolleyError: SyncService:upSyncAppUserMessage() 3-> $posterror");
             appUserMessage.upSyncMessage = "FAIL: $posterror";
             appUserMessage.upSyncIndex = Globals.SyncIndex.toString();
             AppUserMessageDataHandler.UpdateAppUserMessageRecord(dbHandler, appUserMessage.id, appUserMessage);
@@ -4366,12 +4693,12 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
           upSyncList.remove("AppUserMessage-${appUserMessage.id}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncAppUserMessage() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncAppUserMessage() 3-> ${error.toString()}");
         upSyncList.remove("AppUserMessage-${appUserMessage.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncAppUserMessage() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncAppUserMessage() 4-> ${e.toString()}");
   }
 }
 
@@ -4382,7 +4709,7 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
       Map<String, dynamic> postData = {
         "OpportunityTeamID": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamID) ? "-1" : opportunityTeam.opportunityTeamID,
         "OpportunityTeamCode": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamCode) ? "" : opportunityTeam.opportunityTeamCode,
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityTeam.opportunityID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityTeam.opportunityID),
         "OpportunityTeamAppUserID": opportunityTeam.opportunityTeamAppUserID,
         "Description": opportunityTeam.description,
         "CreatedBy": opportunityTeam.createdBy,
@@ -4414,12 +4741,12 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
               opportunityTeamReturn.upSyncMessage = "SUCCESS";
               opportunityTeamReturn.upSyncIndex = Globals.SyncIndex.toString();
               OpportunityTeamDataHandler.UpdateOpportunityTeamRecord(dbHandler,  opportunityTeam.id, opportunityTeamReturn);
-              logUpSyncItemMessage("OpportunityTeam - Saved successfully.");
+              logupSyncItemMessage("OpportunityTeam - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncOpportunityTeam() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncOpportunityTeam() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncOpportunityTeam() 2-> ${opportunityTeam.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncOpportunityTeam() 2-> ${opportunityTeam.id} : Object not returned.");
             opportunityTeam.upSyncMessage = "FAIL: Object not returned";
             opportunityTeam.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityTeamDataHandler.UpdateOpportunityTeamRecord(dbHandler,  opportunityTeam.id, opportunityTeam);
@@ -4433,7 +4760,7 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
             if (response.body != null) {
               posterror = utf8.decode(response.bodyBytes);
             }
-            logError("VolleyError: SyncService:UpSyncOpportunityTeam() 3-> $posterror");
+            logError("VolleyError: SyncService:upSyncOpportunityTeam() 3-> $posterror");
             opportunityTeam.upSyncMessage = "FAIL: $posterror";
             opportunityTeam.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityTeamDataHandler.UpdateOpportunityTeamRecord(dbHandler,  opportunityTeam.id, opportunityTeam);
@@ -4441,12 +4768,12 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
           upSyncList.remove("OpportunityTeam-${opportunityTeam.id}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncOpportunityTeam() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncOpportunityTeam() 3-> ${error.toString()}");
         upSyncList.remove("OpportunityTeam-${opportunityTeam.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncOpportunityTeam() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncOpportunityTeam() 4-> ${e.toString()}");
   }
 }
 
@@ -4531,8 +4858,8 @@ Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)a
       Map<String, dynamic> postData = {
         "AccountBusinessUnitID": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitID) ? "-1" : accountBusinessUnit.accountBusinessUnitID,
         "AccountBusinessUnitCode": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitCode) ? "" : accountBusinessUnit.accountBusinessUnitCode,
-        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountBusinessUnit.accountID),
-        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  accountBusinessUnit.businessUnitID),
+        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountBusinessUnit.accountID),
+        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  accountBusinessUnit.businessUnitID),
         "CreatedBy": accountBusinessUnit.createdBy,
         "CreatedOn": accountBusinessUnit.createdOn,
         "ModifiedBy": accountBusinessUnit.modifiedBy,
@@ -4565,10 +4892,10 @@ Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)a
               AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit.id, accountBusinessUnitReturn);
               logMessage("AccountBusinessUnit - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncAccountBusinessUnit() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncAccountBusinessUnit() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncAccountBusinessUnit() 2-> ${accountBusinessUnit.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncAccountBusinessUnit() 2-> ${accountBusinessUnit.id} : Object not returned.");
             accountBusinessUnit.upSyncMessage = "FAIL: Object not returned";
             accountBusinessUnit.upSyncIndex = Globals.SyncIndex.toString();
             AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit.id, accountBusinessUnit);
@@ -4587,15 +4914,15 @@ Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)a
             AccountBusinessUnitDataHandler.UpdateAccountBusinessUnitRecord(dbHandler,  accountBusinessUnit.id, accountBusinessUnit);
           }
           upSyncList.remove("AccountBusinessUnit-${accountBusinessUnit.id}");
-          logError("VolleyError: SyncService:UpSyncAccountBusinessUnit() 3-> ${response.statusCode}: $posterror");
+          logError("VolleyError: SyncService:upSyncAccountBusinessUnit() 3-> ${response.statusCode}: $posterror");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncAccountBusinessUnit() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncAccountBusinessUnit() 3-> ${error.toString()}");
         upSyncList.remove("AccountBusinessUnit-${accountBusinessUnit.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncAccountBusinessUnit() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncAccountBusinessUnit() 4-> ${e.toString()}");
   }
 }
 
@@ -4606,8 +4933,8 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
       Map<String, dynamic> postData = {
         "ActivityBusinessUnitID": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitID) ? "-1" : activityBusinessUnit.activityBusinessUnitID,
         "ActivityBusinessUnitCode": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitCode) ? "" : activityBusinessUnit.activityBusinessUnitCode,
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler,  activityBusinessUnit.activityID),
-        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  activityBusinessUnit.businessUnitID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler,  activityBusinessUnit.activityID),
+        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  activityBusinessUnit.businessUnitID),
         "CreatedBy": activityBusinessUnit.createdBy,
         "CreatedOn": activityBusinessUnit.createdOn,
         "ModifiedBy": activityBusinessUnit.modifiedBy,
@@ -4640,10 +4967,10 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
               ActivityBusinessUnitDataHandler.UpdateActivityBusinessUnitRecord(dbHandler,  activityBusinessUnit.id, activityBusinessUnitReturn);
               logMessage("ActivityBusinessUnit - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityBusinessUnit() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncActivityBusinessUnit() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityBusinessUnit() 2-> ${activityBusinessUnit.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityBusinessUnit() 2-> ${activityBusinessUnit.id} : Object not returned.");
             activityBusinessUnit.upSyncMessage = "FAIL: Object not returned";
             activityBusinessUnit.upSyncIndex = Globals.SyncIndex.toString();
             ActivityBusinessUnitDataHandler.UpdateActivityBusinessUnitRecord(dbHandler,  activityBusinessUnit.id, activityBusinessUnit);
@@ -4662,15 +4989,15 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
             ActivityBusinessUnitDataHandler.UpdateActivityBusinessUnitRecord(dbHandler,  activityBusinessUnit.id, activityBusinessUnit);
           }
           upSyncList.remove("ActivityBusinessUnit-${activityBusinessUnit.id}");
-          logError("VolleyError: SyncService:UpSyncActivityBusinessUnit() 3-> ${response.statusCode}: $posterror");
+          logError("VolleyError: SyncService:upSyncActivityBusinessUnit() 3-> ${response.statusCode}: $posterror");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncActivityBusinessUnit() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncActivityBusinessUnit() 3-> ${error.toString()}");
         upSyncList.remove("ActivityBusinessUnit-${activityBusinessUnit.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityBusinessUnit() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncActivityBusinessUnit() 4-> ${e.toString()}");
   }
 }
 
@@ -4681,8 +5008,8 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
       Map<String, dynamic> postData = {
         "OpportunityBusinessUnitID": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitID) ? "-1" : opportunityBusinessUnit.opportunityBusinessUnitID,
         "OpportunityBusinessUnitCode": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitCode) ? "" : opportunityBusinessUnit.opportunityBusinessUnitCode,
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityBusinessUnit.opportunityID),
-        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  opportunityBusinessUnit.businessUnitID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityBusinessUnit.opportunityID),
+        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  opportunityBusinessUnit.businessUnitID),
         "CreatedBy": opportunityBusinessUnit.createdBy,
         "CreatedOn": opportunityBusinessUnit.createdOn,
         "ModifiedBy": opportunityBusinessUnit.modifiedBy,
@@ -4715,10 +5042,10 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
               OpportunityBusinessUnitDataHandler.UpdateOpportunityBusinessUnitRecord(dbHandler,  opportunityBusinessUnit.id, opportunityBusinessUnitReturn);
               logMessage("OpportunityBusinessUnit - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncOpportunityBusinessUnit() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncOpportunityBusinessUnit() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncOpportunityBusinessUnit() 2-> ${opportunityBusinessUnit.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncOpportunityBusinessUnit() 2-> ${opportunityBusinessUnit.id} : Object not returned.");
             opportunityBusinessUnit.upSyncMessage = "FAIL: Object not returned";
             opportunityBusinessUnit.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityBusinessUnitDataHandler.UpdateOpportunityBusinessUnitRecord(dbHandler,  opportunityBusinessUnit.id, opportunityBusinessUnit);
@@ -4737,15 +5064,15 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
             OpportunityBusinessUnitDataHandler.UpdateOpportunityBusinessUnitRecord(dbHandler,  opportunityBusinessUnit.id, opportunityBusinessUnit);
           }
           upSyncList.remove("OpportunityBusinessUnit-${opportunityBusinessUnit.id}");
-          logError("VolleyError: SyncService:UpSyncOpportunityBusinessUnit() 3-> ${response.statusCode}: ${response.body}");
+          logError("VolleyError: SyncService:upSyncOpportunityBusinessUnit() 3-> ${response.statusCode}: ${response.body}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncOpportunityBusinessUnit() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncOpportunityBusinessUnit() 3-> ${error.toString()}");
         upSyncList.remove("OpportunityBusinessUnit-${opportunityBusinessUnit.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncOpportunityBusinessUnit() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncOpportunityBusinessUnit() 4-> ${e.toString()}");
   }
 }
 
@@ -4757,12 +5084,12 @@ Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
         "ActivityApprovalID": Globals.isNullOrEmpty(activityApproval.activityApprovalID) ? "-1" : activityApproval.activityApprovalID,
         "ActivityApprovalCode": Globals.isNullOrEmpty(activityApproval.activityApprovalCode) ? "" : activityApproval.activityApprovalCode,
         "ActivityApprovalTitle": activityApproval.activityApprovalTitle,
-        "ActivityApprovalTypeID": ActivityApprovalTypeDataHandler.GetServerId(dbHandler,  activityApproval.activityApprovalTypeID),
-        "ActivityID": ActivityDataHandler.GetServerId(dbHandler,  activityApproval.activityID),
+        "ActivityApprovalTypeID": ActivityApprovalTypeDataHandler.getServerId(dbHandler,  activityApproval.activityApprovalTypeID),
+        "ActivityID": ActivityDataHandler.getServerId(dbHandler,  activityApproval.activityID),
         "RequestDate": activityApproval.requestDate,
         "RequestDetail": activityApproval.requestDetail,
         "IsSubmitted": Globals.tryParseBoolean(activityApproval.isSubmitted),
-        "ParentActivityApprovalID": ActivityApprovalDataHandler.GetServerId(dbHandler,  activityApproval.parentActivityApprovalID),
+        "ParentActivityApprovalID": ActivityApprovalDataHandler.getServerId(dbHandler,  activityApproval.parentActivityApprovalID),
         "ApprovalStatus": activityApproval.approvalStatus,
         "ApprovalByAppUserID": activityApproval.approvalByAppUserID,
         "ApprovalTime": activityApproval.approvalTime,
@@ -4802,10 +5129,10 @@ Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
               ActivityApprovalDataHandler.UpdateActivityApprovalRecord(dbHandler,  activityApproval.id, activityApprovalReturn);
               logMessage("ActivityApproval - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncActivityApproval() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncActivityApproval() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncActivityApproval() 2-> ${activityApproval.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncActivityApproval() 2-> ${activityApproval.id} : Object not returned.");
             activityApproval.upSyncMessage = "FAIL: Object not returned";
             activityApproval.upSyncIndex = Globals.SyncIndex.toString();
             ActivityApprovalDataHandler.UpdateActivityApprovalRecord(dbHandler,  activityApproval.id, activityApproval);
@@ -4821,15 +5148,15 @@ Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
             ActivityApprovalDataHandler.UpdateActivityApprovalRecord(dbHandler,  activityApproval.id, activityApproval);
           }
           upSyncList.remove("ActivityApproval-${activityApproval.id}");
-          logError("VolleyError: SyncService:UpSyncActivityApproval() 3-> ${response.statusCode}: ${response.body}");
+          logError("VolleyError: SyncService:upSyncActivityApproval() 3-> ${response.statusCode}: ${response.body}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncActivityApproval() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncActivityApproval() 3-> ${error.toString()}");
         upSyncList.remove("ActivityApproval-${activityApproval.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncActivityApproval() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncActivityApproval() 4-> ${e.toString()}");
   }
 }
 
@@ -4841,12 +5168,12 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
         "OpportunityApprovalID": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalID) ? opportunityApproval.opportunityApprovalID : "-1",
         "OpportunityApprovalCode": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalCode) ? opportunityApproval.opportunityApprovalCode : "",
         "OpportunityApprovalTitle": opportunityApproval.opportunityApprovalTitle,
-        "OpportunityApprovalTypeID": OpportunityApprovalTypeDataHandler.GetServerId(dbHandler,  opportunityApproval.opportunityApprovalTypeID),
-        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityApproval.opportunityID),
+        "OpportunityApprovalTypeID": OpportunityApprovalTypeDataHandler.getServerId(dbHandler,  opportunityApproval.opportunityApprovalTypeID),
+        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityApproval.opportunityID),
         "RequestDate": opportunityApproval.requestDate,
         "RequestDetail": opportunityApproval.requestDetail,
         "IsSubmitted": Globals.tryParseBoolean(opportunityApproval.isSubmitted),
-        "ParentOpportunityApprovalID": OpportunityApprovalDataHandler.GetServerId(dbHandler,  opportunityApproval.parentOpportunityApprovalID),
+        "ParentOpportunityApprovalID": OpportunityApprovalDataHandler.getServerId(dbHandler,  opportunityApproval.parentOpportunityApprovalID),
         "ApprovalStatus": opportunityApproval.approvalStatus,
         "ApprovalByAppUserID": opportunityApproval.approvalByAppUserID,
         "ApprovalTime": opportunityApproval.approvalTime,
@@ -4886,10 +5213,10 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
               OpportunityApprovalDataHandler.UpdateOpportunityApprovalRecord(dbHandler,  opportunityApproval.id, opportunityApprovalReturn);
               logMessage("OpportunityApproval - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncOpportunityApproval() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncOpportunityApproval() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncOpportunityApproval() 2-> ${opportunityApproval.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncOpportunityApproval() 2-> ${opportunityApproval.id} : Object not returned.");
             opportunityApproval.upSyncMessage = "FAIL: Object not returned";
             opportunityApproval.upSyncIndex = Globals.SyncIndex.toString();
             OpportunityApprovalDataHandler.UpdateOpportunityApprovalRecord(dbHandler,  opportunityApproval.id, opportunityApproval);
@@ -4911,15 +5238,15 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
             OpportunityApprovalDataHandler.UpdateOpportunityApprovalRecord(dbHandler,  opportunityApproval.id, opportunityApproval);
           }
           upSyncList.remove("OpportunityApproval-${opportunityApproval.id}");
-          logError("VolleyError: SyncService:UpSyncOpportunityApproval() 3-> ${response.statusCode}: ${response.body}");
+          logError("VolleyError: SyncService:upSyncOpportunityApproval() 3-> ${response.statusCode}: ${response.body}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncOpportunityApproval() 3-> ${error.toString()}");
+        logError("Error: SyncService:upSyncOpportunityApproval() 3-> ${error.toString()}");
         upSyncList.remove("OpportunityApproval-${opportunityApproval.id}");
       });
     }
   } catch (e) {
-    logError("Error: SyncService:UpSyncOpportunityApproval() 4-> ${e.toString()}");
+    logError("Error: SyncService:upSyncOpportunityApproval() 4-> ${e.toString()}");
   }
 }
 
@@ -4962,15 +5289,15 @@ void upSyncAppLog(AppLog appLog) {
               AppLogDataHandler.UpdateAppLogRecord(dbHandler,  appLog.id, appLogReturn);
               logMessage("AppLog - Saved successfully.");
             } catch (ex) {
-              logError("Error: SyncService:UpSyncAppLog() 1-> ${ex.toString()}");
+              logError("Error: SyncService:upSyncAppLog() 1-> ${ex.toString()}");
             }
           } else {
-            logError("VolleyError: SyncService:UpSyncAppLog() 2-> ${appLog.id} : Object not returned.");
+            logError("VolleyError: SyncService:upSyncAppLog() 2-> ${appLog.id} : Object not returned.");
             appLog.upSyncMessage = "FAIL: Object not returned";
             appLog.upSyncIndex = Globals.SyncIndexApplog.toString();
             AppLogDataHandler.UpdateAppLogRecord(dbHandler,  appLog.id, appLog);
           }
-          UpSyncListApplog.remove("AppLog-${appLog.id}");
+          upSyncListApplog.remove("AppLog-${appLog.id}");
         } else {
           if (response.statusCode == 401) {
             Globals.USER_TOKEN_ALT = "";
@@ -4986,16 +5313,16 @@ void upSyncAppLog(AppLog appLog) {
             appLog.upSyncIndex = Globals.SyncIndexApplog.toString();
             AppLogDataHandler.UpdateAppLogRecord(dbHandler,  appLog.id, appLog);
           }
-          UpSyncListApplog.remove("AppLog-${appLog.id}");
-          logError("VolleyError: SyncService:UpSyncAppLog() 3-> ${response.statusCode}: ${response.body}");
+          upSyncListApplog.remove("AppLog-${appLog.id}");
+          logError("VolleyError: SyncService:upSyncAppLog() 3-> ${response.statusCode}: ${response.body}");
         }
       }).catchError((error) {
-        logError("Error: SyncService:UpSyncAppLog() 3-> ${error.toString()}");
-        UpSyncListApplog.remove("AppLog-${appLog.id}");
+        logError("Error: SyncService:upSyncAppLog() 3-> ${error.toString()}");
+        upSyncListApplog.remove("AppLog-${appLog.id}");
       });
     }
   } catch (e) {
-    //logError("Error: SyncService:UpSyncAppLog() 4-> ${e.toString()}");
+    //logError("Error: SyncService:upSyncAppLog() 4-> ${e.toString()}");
   }
 }
 
@@ -5047,11 +5374,11 @@ Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
                 dbHandler,  hSSupportTicket.id, hSSupportTicketReturn);
             logMessage('HSSupportTicket - Saved successfully.');
           } catch (ex) {
-            logError('Error: SyncService:UpSyncHSSupportTicket() 1-> $ex');
+            logError('Error: SyncService:upSyncHSSupportTicket() 1-> $ex');
           }
         } else {
           logError(
-              'VolleyError: SyncService:UpSyncHSSupportTicket() 2-> ${hSSupportTicket.id}: Object not returned.');
+              'VolleyError: SyncService:upSyncHSSupportTicket() 2-> ${hSSupportTicket.id}: Object not returned.');
           hSSupportTicket.upSyncMessage = 'FAIL: Object not returned';
           hSSupportTicket.upSyncIndex = Globals.SyncIndex.toString();
           HSSupportTicketDataHandler.updateHSSupportTicketRecord(
@@ -5070,11 +5397,11 @@ Future<void> upSyncHSSupportTicket(HSSupportTicket hSSupportTicket) async {
               dbHandler,  hSSupportTicket.id, hSSupportTicket);
         }
         upSyncList.remove('HSSupportTicket-${hSSupportTicket.id}');
-        logError('VolleyError: SyncService:UpSyncHSSupportTicket() 3-> $posterror');
+        logError('VolleyError: SyncService:upSyncHSSupportTicket() 3-> $posterror');
       }
     }
   } catch (e) {
-    logError('Error: SyncService:UpSyncHSSupportTicket() 4-> $e');
+    logError('Error: SyncService:upSyncHSSupportTicket() 4-> $e');
   }
 }
 
@@ -5087,8 +5414,8 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
         'HSSupportTicketMediaID': Globals.isNullOrEmpty(hSSupportTicketMedia.HSSupportTicketMediaID) ? '-1' : hSSupportTicketMedia.HSSupportTicketMediaID,
         'HSSupportTicketMediaCode': Globals.isNullOrEmpty(hSSupportTicketMedia.HSSupportTicketMediaCode) ? '' : hSSupportTicketMedia.HSSupportTicketMediaCode,
         'HSSupportTicketMediaName': hSSupportTicketMedia.HSSupportTicketMediaName,
-        'HSSupportTicketID': HSSupportTicketDataHandler.GetServerId(dbHandler,  hSSupportTicketMedia.HSSupportTicketID),
-        'ContentTypeID': ContentTypeDataHandler.GetServerId(dbHandler,  hSSupportTicketMedia.ContentTypeID),
+        'HSSupportTicketID': HSSupportTicketDataHandler.getServerId(dbHandler,  hSSupportTicketMedia.HSSupportTicketID),
+        'ContentTypeID': ContentTypeDataHandler.getServerId(dbHandler,  hSSupportTicketMedia.ContentTypeID),
         'MediaPath': hSSupportTicketMedia.MediaPath,
         'MediaContent': hSSupportTicketMedia.MediaContent,
         'Description': hSSupportTicketMedia.Description,
@@ -5128,11 +5455,11 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
                 dbHandler,  hSSupportTicketMedia.id, hSSupportTicketMediaReturn);
             logMessage('HSSupportTicketMedia - Saved successfully.');
           } catch (ex) {
-            logError('Error: SyncService:UpSyncHSSupportTicketMedia() 1-> $ex');
+            logError('Error: SyncService:upSyncHSSupportTicketMedia() 1-> $ex');
           }
         } else {
           logError(
-              'VolleyError: SyncService:UpSyncHSSupportTicketMedia() 2-> ${hSSupportTicketMedia.id}: Object not returned.');
+              'VolleyError: SyncService:upSyncHSSupportTicketMedia() 2-> ${hSSupportTicketMedia.id}: Object not returned.');
           hSSupportTicketMedia.upSyncMessage = 'FAIL: Object not returned';
           hSSupportTicketMedia.upSyncIndex = Globals.SyncIndex.toString();
           HSSupportTicketMediaDataHandler.updateHSSupportTicketMediaRecord(
@@ -5153,11 +5480,11 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
               dbHandler,  hSSupportTicketMedia.id, hSSupportTicketMedia);
         }
         upSyncList.remove('HSSupportTicketMedia-${hSSupportTicketMedia.id}');
-        logError('VolleyError: SyncService:UpSyncHSSupportTicketMedia() 3-> $posterror');
+        logError('VolleyError: SyncService:upSyncHSSupportTicketMedia() 3-> $posterror');
       }
     }
   } catch (e) {
-    logError('Error: SyncService:UpSyncHSSupportTicketMedia() 4-> $e');
+    logError('Error: SyncService:upSyncHSSupportTicketMedia() 4-> $e');
   }
 }
 
@@ -5177,9 +5504,9 @@ Future<void> upSyncReminder(Reminder reminder) async {
         'RepeatNumber': reminder.RepeatNumber,
         'RepeatType': reminder.RepeatType,
         'Active': Globals.tryParseBoolean(reminder.Active),
-        'ActivityID': ActivityDataHandler.GetServerId(dbHandler,  reminder.ActivityID),
-        'OpportunityID': OpportunityDataHandler.GetServerId(dbHandler,  reminder.OpportunityID),
-        'AccountID': AccountDataHandler.GetServerId(dbHandler,  reminder.AccountID),
+        'ActivityID': ActivityDataHandler.getServerId(dbHandler,  reminder.ActivityID),
+        'OpportunityID': OpportunityDataHandler.getServerId(dbHandler,  reminder.OpportunityID),
+        'AccountID': AccountDataHandler.getServerId(dbHandler,  reminder.AccountID),
         'IsSetBySystem': Globals.tryParseBoolean(reminder.IsSetBySystem),
         'CreatedBy': reminder.CreatedBy,
         'CreatedOn': reminder.CreatedOn,
@@ -5213,11 +5540,11 @@ Future<void> upSyncReminder(Reminder reminder) async {
                 dbHandler,  reminder.id, reminderReturn);
             logMessage('Reminder - Saved successfully.');
           } catch (ex) {
-            logError('Error: SyncService:UpSyncReminder() 1-> $ex');
+            logError('Error: SyncService:upSyncReminder() 1-> $ex');
           }
         } else {
           logError(
-              'VolleyError: SyncService:UpSyncReminder() 2-> ${reminder.id}: Object not returned.');
+              'VolleyError: SyncService:upSyncReminder() 2-> ${reminder.id}: Object not returned.');
           reminder.upSyncMessage = 'FAIL: Object not returned';
           reminder.upSyncIndex = Globals.SyncIndex.toString();
           ReminderDataHandler.updateReminderRecord(
@@ -5238,11 +5565,11 @@ Future<void> upSyncReminder(Reminder reminder) async {
               dbHandler,  reminder.id, reminder);
         }
         upSyncList.remove('Reminder-${reminder.id}');
-        logError('VolleyError: SyncService:UpSyncReminder() 3-> $posterror');
+        logError('VolleyError: SyncService:upSyncReminder() 3-> $posterror');
       }
     }
   } catch (e) {
-    logError('Error: SyncService:UpSyncReminder() 4-> $e');
+    logError('Error: SyncService:upSyncReminder() 4-> $e');
   }
 }
 
@@ -5258,7 +5585,7 @@ Future<void> downSyncMaxDates() async {
     try {
       if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
         final url =
-            AppConstants.API_VERSION_URL + '/DownSyncManager/GetMaxServerDate';
+            AppConstants.API_VERSION_URL + '/ downSyncManager/GetMaxServerDate';
 
         final dbHandler = DatabaseHandler();
         final syncItems = SyncDataHandler.GetAppSyncItemRecordsMin(
@@ -5305,7 +5632,7 @@ Future<void> downSyncMaxDates() async {
                   }
                 }
               }
-              LogMessage('DownSyncMaxDates - Completed.');
+              LogMessage(' downSyncMaxDates - Completed.');
             }
           }
         } else {
@@ -5316,10 +5643,10 @@ Future<void> downSyncMaxDates() async {
       }
     } catch (e) {
       // Handle any exceptions that occur
-      LogError('Error: SyncService:DownSyncMaxDates() -> $e');
+      LogError('Error: SyncService: downSyncMaxDates() -> $e');
     } finally {
       ResetPageIndexes();
-      currentDownload = '';
+      currentdownload = '';
     }
   }
 
@@ -5328,7 +5655,7 @@ Future<void> downSyncAccounts(String typeOfData) async {
       if (await await Utility.isNetworkConnected() &&
           Globals.USER_TOKEN != '') {
         String url =
-            AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountPaged';
+            AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountPaged';
 
         final dataItem = SyncDataHandler.GetAppSyncItemRecord(
             dbHandler,  typeOfData);
@@ -5381,7 +5708,7 @@ Future<void> downSyncAccounts(String typeOfData) async {
               }
             }
 
-            bool isAllPagesDone = await updateDownSyncPageStatus(dataItem);
+            bool isAllPagesDone = await update downSyncPageStatus(dataItem);
             if (isAllPagesDone) AccountsPageCurrent = 0;
           } else if (response.statusCode == 401) {
             // Handle authentication failure
@@ -5399,14 +5726,14 @@ Future<void> downSyncAccounts(String typeOfData) async {
         }
       }
     } catch (e) {
-      LogError('Error: SyncService:DownSyncAccount() 3-> $e');
+      LogError('Error: SyncService: downSyncAccount() 3-> $e');
     }
   }
 
 Future<void> downSyncAccountAddresses(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountAddressPaged';
+      String url = AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountAddressPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5454,7 +5781,7 @@ Future<void> downSyncAccountAddresses(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountAddressesPageCurrent = 0;
         } 
         
@@ -5475,7 +5802,7 @@ Future<void> downSyncAccountAddresses(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountAddress() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountAddress() 3-> $e');
   }
 }
 
@@ -5483,7 +5810,7 @@ Future<void> downSyncAccountAddresses(String typeOfData) async {
 Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessPlanPaged';
+      String url = AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountBusinessPlanPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5531,7 +5858,7 @@ Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountBusinessPlansPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5548,7 +5875,7 @@ Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountBusinessPlan() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountBusinessPlan() 3-> $e');
   }
 }
 
@@ -5556,7 +5883,7 @@ Future<void> downSyncAccountBusinessPlans(String typeOfData) async {
 Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBusinessUnitPaged';
+      String url = AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountBusinessUnitPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5606,7 +5933,7 @@ Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountBusinessUnitsPageCurrent = 0;
         } 
         else if (response.statusCode == 401) {
@@ -5634,7 +5961,7 @@ Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountBusinessUnit() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountBusinessUnit() 3-> $e');
   }
 }
 
@@ -5642,7 +5969,7 @@ Future<void> downSyncAccountBusinessUnits(String typeOfData) async {
 Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountBuyingProcessPaged';
+      String url = AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountBuyingProcessPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5690,7 +6017,7 @@ Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountBuyingProcessesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5707,14 +6034,14 @@ Future<void> downSyncAccountBuyingProcesses(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountBuyingProcess() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountBuyingProcess() 3-> $e');
   }
 }
 
 Future<void> downSyncAccountCategories(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryPaged';
+      String url = AppConstants.API_VERSION_URL + '/ downSyncManager/GetAccountCategoryPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5762,7 +6089,7 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountCategoriesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5779,7 +6106,7 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountCategory() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountCategory() 3-> $e');
   }
 }
 
@@ -5787,7 +6114,7 @@ Future<void> downSyncAccountCategories(String typeOfData) async {
 Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
   try {
     if (await await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCategoryMappingPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountCategoryMappingPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5835,7 +6162,7 @@ Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountCategoryMappingsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5852,7 +6179,7 @@ Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountCategoryMapping() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountCategoryMapping() 3-> $e');
   }
 }
 
@@ -5860,7 +6187,7 @@ Future<void> downSyncAccountCategoryMappings(String typeOfData) async {
 Future<void> downSyncAccountCompetitionActivities(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountCompetitionActivityPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountCompetitionActivityPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5908,7 +6235,7 @@ Future<void> downSyncAccountCompetitionActivities(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountCompetitionActivitiesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5925,7 +6252,7 @@ Future<void> downSyncAccountCompetitionActivities(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountCompetitionActivity() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountCompetitionActivity() 3-> $e');
   }
 }
 
@@ -5934,7 +6261,7 @@ Future<void> downSyncAccountCompetitionActivities(String typeOfData) async {
 Future<void> downSyncAccountForms(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountFormPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountFormPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -5982,7 +6309,7 @@ Future<void> downSyncAccountForms(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountFormsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -5999,7 +6326,7 @@ Future<void> downSyncAccountForms(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountForm() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountForm() 3-> $e');
   }
 }
 
@@ -6007,7 +6334,7 @@ Future<void> downSyncAccountForms(String typeOfData) async {
 Future<void> downSyncAccountFormValues(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountFormValuePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountFormValuePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6055,7 +6382,7 @@ Future<void> downSyncAccountFormValues(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountFormValuesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6072,7 +6399,7 @@ Future<void> downSyncAccountFormValues(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountFormValue() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountFormValue() 3-> $e');
   }
 }
 
@@ -6081,7 +6408,7 @@ Future<void> downSyncAccountFormValues(String typeOfData) async {
 Future<void> downSyncAccountMedia(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountMediaPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountMediaPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6130,7 +6457,7 @@ Future<void> downSyncAccountMedia(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountMediaPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6147,7 +6474,7 @@ Future<void> downSyncAccountMedia(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountMedia() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountMedia() 3-> $e');
   }
 }
 
@@ -6155,7 +6482,7 @@ Future<void> downSyncAccountMedia(String typeOfData) async {
 Future<void> downSyncAccountPhones(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountPhonePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountPhonePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6203,7 +6530,7 @@ Future<void> downSyncAccountPhones(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountPhonesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6220,7 +6547,7 @@ Future<void> downSyncAccountPhones(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountPhone() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountPhone() 3-> $e');
   }
 }
 
@@ -6230,7 +6557,7 @@ Future<void> downSyncAccountPhones(String typeOfData) async {
 Future<void> downSyncAccountSegments(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountSegmentPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountSegmentPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6278,7 +6605,7 @@ Future<void> downSyncAccountSegments(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountSegmentsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6295,7 +6622,7 @@ Future<void> downSyncAccountSegments(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountSegment() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountSegment() 3-> $e');
   }
 }
 
@@ -6304,7 +6631,7 @@ Future<void> downSyncAccountSegments(String typeOfData) async {
 Future<void> downSyncAccountStatuses(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountStatusPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountStatusPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6352,7 +6679,7 @@ Future<void> downSyncAccountStatuses(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountStatusesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6369,7 +6696,7 @@ Future<void> downSyncAccountStatuses(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountStatus() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountStatus() 3-> $e');
   }
 }
 
@@ -6378,7 +6705,7 @@ Future<void> downSyncAccountStatuses(String typeOfData) async {
 Future<void> downSyncAccountTerritories(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountTerritoryPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountTerritoryPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6426,7 +6753,7 @@ Future<void> downSyncAccountTerritories(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountTerritoriesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6443,7 +6770,7 @@ Future<void> downSyncAccountTerritories(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountTerritory() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountTerritory() 3-> $e');
   }
 }
 
@@ -6452,7 +6779,7 @@ Future<void> downSyncAccountTerritories(String typeOfData) async {
 Future<void> downSyncAccountTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAccountTypePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAccountTypePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6500,7 +6827,7 @@ Future<void> downSyncAccountTypes(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AccountTypesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6517,7 +6844,7 @@ Future<void> downSyncAccountTypes(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAccountType() 3-> $e');
+    LogError('Error: SyncService: downSyncAccountType() 3-> $e');
   }
 }
 
@@ -6525,7 +6852,7 @@ Future<void> downSyncAccountTypes(String typeOfData) async {
 Future<void> downSyncActivities(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6589,7 +6916,7 @@ Future<void> downSyncActivities(String typeOfData) async {
           }
 
           if (allAccountsPresent) {
-            bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+            bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
             if (isAllPagesDone) ActivitiesPageCurrent = 0;
           }
         } else if (response.statusCode == 401) {
@@ -6607,7 +6934,7 @@ Future<void> downSyncActivities(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivity() 3-> $e');
+    LogError('Error: SyncService: downSyncActivity() 3-> $e');
   }
 }
 
@@ -6616,7 +6943,7 @@ Future<void> downSyncActivities(String typeOfData) async {
 Future<void> downSyncActivityApprovals(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityApprovalPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityApprovalPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6665,7 +6992,7 @@ Future<void> downSyncActivityApprovals(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityApprovalsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN = '';
@@ -6682,7 +7009,7 @@ Future<void> downSyncActivityApprovals(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityApproval() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityApproval() 3-> $e');
   }
 }
 
@@ -6691,7 +7018,7 @@ Future<void> downSyncActivityApprovals(String typeOfData) async {
 Future<void> downSyncActivityApprovalTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityApprovalTypePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityApprovalTypePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6740,7 +7067,7 @@ Future<void> downSyncActivityApprovalTypes(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityApprovalTypesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN = '';
@@ -6757,7 +7084,7 @@ Future<void> downSyncActivityApprovalTypes(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityApprovalType() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityApprovalType() 3-> $e');
   }
 }
 
@@ -6765,7 +7092,7 @@ Future<void> downSyncActivityApprovalTypes(String typeOfData) async {
 Future<void> downSyncActivityMeasures(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityMeasurePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityMeasurePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6814,7 +7141,7 @@ Future<void> downSyncActivityMeasures(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityMeasuresPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6831,7 +7158,7 @@ Future<void> downSyncActivityMeasures(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityMeasure() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityMeasure() 3-> $e');
   }
 }
 
@@ -6840,7 +7167,7 @@ Future<void> downSyncActivityMeasures(String typeOfData) async {
 Future<void> downSyncActivityBusinessUnits(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityBusinessUnitPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityBusinessUnitPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6889,7 +7216,7 @@ Future<void> downSyncActivityBusinessUnits(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityBusinessUnitsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6906,7 +7233,7 @@ Future<void> downSyncActivityBusinessUnits(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityBusinessUnit() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityBusinessUnit() 3-> $e');
   }
 }
 
@@ -6915,7 +7242,7 @@ Future<void> downSyncActivityBusinessUnits(String typeOfData) async {
 Future<void> downSyncActivityMedia(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityMediaPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityMediaPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -6968,7 +7295,7 @@ Future<void> downSyncActivityMedia(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityMediaPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -6985,7 +7312,7 @@ Future<void> downSyncActivityMedia(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityMedia() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityMedia() 3-> $e');
   }
 }
 
@@ -6993,7 +7320,7 @@ Future<void> downSyncActivityMedia(String typeOfData) async {
 Future<void> downSyncActivityPermissions(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPermissionPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityPermissionPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7042,7 +7369,7 @@ Future<void> downSyncActivityPermissions(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityPermissionsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7059,7 +7386,7 @@ Future<void> downSyncActivityPermissions(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityPermission() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityPermission() 3-> $e');
   }
 }
 
@@ -7067,7 +7394,7 @@ Future<void> downSyncActivityPermissions(String typeOfData) async {
 Future<void> downSyncActivityPriorities(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityPriorityPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityPriorityPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7099,24 +7426,24 @@ Future<void> downSyncActivityPriorities(String typeOfData) async {
               var id = jsonObject['ActivityPriorityID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                activityPriority = ActivityPriorityDataHandler.GetMasterActivityPriorityRecord(dbHandler,  id);
+                activityPriority = ActivityPriorityDataHandlerBase.getMasterActivityPriorityRecord(dbHandler,  id);
               }
               if (activityPriority == null && doDoubleCheck && uid.isNotEmpty) {
-                activityPriority = ActivityPriorityDataHandler.GetActivityPriorityRecordByUid(dbHandler,  uid);
+                activityPriority = ActivityPriorityDataHandlerBase.GetActivityPriorityRecordByUid(dbHandler,  uid);
               }
 
               if (activityPriority == null) {
                 activityPriority = ActivityPriority();
                 activityPriority = JSONCopier.CopyJsonDataToActivityPriority( dbHandler, jsonObject, activityPriority, true);
-                var rid = ActivityPriorityDataHandler.AddActivityPriorityRecord(dbHandler,  activityPriority);
+                var rid = ActivityPriorityDataHandlerBase.AddActivityPriorityRecord(dbHandler,  activityPriority);
               } else {
                 activityPriority = JSONCopier.CopyJsonDataToActivityPriority( dbHandler, jsonObject, activityPriority, false);
-                var rid = ActivityPriorityDataHandler.UpdateActivityPriorityRecord(dbHandler,  activityPriority.getId(), activityPriority);
+                var rid = ActivityPriorityDataHandlerBase.UpdateActivityPriorityRecord(dbHandler,  activityPriority.getId(), activityPriority);
               }
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityPrioritiesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7133,7 +7460,7 @@ Future<void> downSyncActivityPriorities(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityPriority() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityPriority() 3-> $e');
   }
 }
 
@@ -7141,7 +7468,7 @@ Future<void> downSyncActivityPriorities(String typeOfData) async {
 Future<void> downSyncActivityProducts(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityProductPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityProductPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7190,7 +7517,7 @@ Future<void> downSyncActivityProducts(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityProductsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7207,7 +7534,7 @@ Future<void> downSyncActivityProducts(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityProduct() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityProduct() 3-> $e');
   }
 }
 
@@ -7215,7 +7542,7 @@ Future<void> downSyncActivityProducts(String typeOfData) async {
 Future<void> downSyncActivityProductDetails(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityProductDetailPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityProductDetailPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7264,7 +7591,7 @@ Future<void> downSyncActivityProductDetails(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityProductDetailsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7281,7 +7608,7 @@ Future<void> downSyncActivityProductDetails(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityProductDetail() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityProductDetail() 3-> $e');
   }
 }
 
@@ -7289,7 +7616,7 @@ Future<void> downSyncActivityProductDetails(String typeOfData) async {
 Future<void> downSyncActivityStatuses(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityStatusPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityStatusPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7338,7 +7665,7 @@ Future<void> downSyncActivityStatuses(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityStatusesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7355,7 +7682,7 @@ Future<void> downSyncActivityStatuses(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityStatus() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityStatus() 3-> $e');
   }
 }
 
@@ -7363,7 +7690,7 @@ Future<void> downSyncActivityStatuses(String typeOfData) async {
 Future<void> downSyncActivityTeams(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTeamPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTeamPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7412,7 +7739,7 @@ Future<void> downSyncActivityTeams(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTeamsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7429,7 +7756,7 @@ Future<void> downSyncActivityTeams(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityTeam() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityTeam() 3-> $e');
   }
 }
 
@@ -7437,7 +7764,7 @@ Future<void> downSyncActivityTeams(String typeOfData) async {
 Future<void> downSyncActivityTravels(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTravelPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7486,7 +7813,7 @@ Future<void> downSyncActivityTravels(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTravelsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7503,7 +7830,7 @@ Future<void> downSyncActivityTravels(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityTravel() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityTravel() 3-> $e');
   }
 }
 
@@ -7511,7 +7838,7 @@ Future<void> downSyncActivityTravels(String typeOfData) async {
 Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelExpensePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTravelExpensePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7560,7 +7887,7 @@ Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTravelExpensesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7577,7 +7904,7 @@ Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityTravelExpense() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityTravelExpense() 3-> $e');
   }
 }
 
@@ -7585,7 +7912,7 @@ Future<void> downSyncActivityTravelExpenses(String typeOfData) async {
 Future<void> downSyncActivityTravelMappings(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelMappingPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTravelMappingPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7634,7 +7961,7 @@ Future<void> downSyncActivityTravelMappings(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTravelMappingsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7651,7 +7978,7 @@ Future<void> downSyncActivityTravelMappings(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityTravelMapping() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityTravelMapping() 3-> $e');
   }
 }
 
@@ -7659,7 +7986,7 @@ Future<void> downSyncActivityTravelMappings(String typeOfData) async {
 Future<void> downSyncActivityTravelMedia(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTravelMediaPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTravelMediaPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7709,7 +8036,7 @@ Future<void> downSyncActivityTravelMedia(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTravelMediaPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7726,7 +8053,7 @@ Future<void> downSyncActivityTravelMedia(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityTravelMedia() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityTravelMedia() 3-> $e');
   }
 }
 
@@ -7734,7 +8061,7 @@ Future<void> downSyncActivityTravelMedia(String typeOfData) async {
 Future<void> downSyncActivityTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetActivityTypePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetActivityTypePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7785,7 +8112,7 @@ Future<void> downSyncActivityTypes(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) ActivityTypesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7802,14 +8129,14 @@ Future<void> downSyncActivityTypes(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncActivityType() 3-> $e');
+    LogError('Error: SyncService: downSyncActivityType() 3-> $e');
   }
 }
 
 Future<void> downSyncAddressTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAddressTypePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAddressTypePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7858,7 +8185,7 @@ Future<void> downSyncAddressTypes(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AddressTypesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7875,7 +8202,7 @@ Future<void> downSyncAddressTypes(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAddressType() 3-> $e');
+    LogError('Error: SyncService: downSyncAddressType() 3-> $e');
   }
 }
 
@@ -7883,7 +8210,7 @@ Future<void> downSyncAddressTypes(String typeOfData) async {
 Future<void> downSyncAppFeatures(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAppFeaturePaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAppFeaturePaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -7932,7 +8259,7 @@ Future<void> downSyncAppFeatures(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppFeaturesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -7949,7 +8276,7 @@ Future<void> downSyncAppFeatures(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAppFeature() 3-> $e');
+    LogError('Error: SyncService: downSyncAppFeature() 3-> $e');
   }
 }
 
@@ -7957,7 +8284,7 @@ Future<void> downSyncAppFeatures(String typeOfData) async {
 Future<void> downSyncAppFeatureFields(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
-      String url = AppConstant.API_VERSION_URL + '/DownSyncManager/GetAppFeatureFieldPaged';
+      String url = AppConstant.API_VERSION_URL + '/ downSyncManager/GetAppFeatureFieldPaged';
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8006,7 +8333,7 @@ Future<void> downSyncAppFeatureFields(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppFeatureFieldsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -8023,14 +8350,14 @@ Future<void> downSyncAppFeatureFields(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncAppFeatureField() 3-> $e');
+    LogError('Error: SyncService: downSyncAppFeatureField() 3-> $e');
   }
 }
 
 Future<void> downSyncAppFeatureGroups(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppFeatureGroupPaged";
+      String url = AppConstant.API_VERSION_URL + "/ downSyncManager/GetAppFeatureGroupPaged";
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8079,7 +8406,7 @@ Future<void> downSyncAppFeatureGroups(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppFeatureGroupsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -8104,7 +8431,7 @@ Future<void> downSyncAppFeatureGroups(String typeOfData) async {
 Future<void> downSyncAppReports(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppReportPaged";
+      String url = AppConstant.API_VERSION_URL + "/ downSyncManager/GetAppReportPaged";
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8153,7 +8480,7 @@ Future<void> downSyncAppReports(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppReportsPageCurrent = 0;
           
         } else if (response.statusCode == 401) {
@@ -8179,7 +8506,7 @@ Future<void> downSyncAppReports(String typeOfData) async {
 Future<void> downSyncAppUsers(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserPaged";
+      String url = AppConstant.API_VERSION_URL + "/ downSyncManager/GetAppUserPaged";
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8250,7 +8577,7 @@ Future<void> downSyncAppUsers(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppUsersPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -8275,7 +8602,7 @@ Future<void> downSyncAppUsers(String typeOfData) async {
 Future<void> downSyncAppUserLocations(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserLocationPaged";
+      String url = AppConstant.API_VERSION_URL + "/ downSyncManager/GetAppUserLocationPaged";
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8325,7 +8652,7 @@ Future<void> downSyncAppUserLocations(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppUserLocationsPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -8350,7 +8677,7 @@ Future<void> downSyncAppUserLocations(String typeOfData) async {
 Future<void> downSyncAppUserMessages(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      String url = AppConstant.API_VERSION_URL + "/DownSyncManager/GetAppUserMessagePaged";
+      String url = AppConstant.API_VERSION_URL + "/ downSyncManager/GetAppUserMessagePaged";
 
       final dataItem = await SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8399,7 +8726,7 @@ Future<void> downSyncAppUserMessages(String typeOfData) async {
             }
           }
 
-          bool isAllPagesDone = await UpdateDownSyncPageStatus(dataItem);
+          bool isAllPagesDone = await Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) AppUserMessagesPageCurrent = 0;
         } else if (response.statusCode == 401) {
           Globals.USER_TOKEN_ALT = '';
@@ -8424,7 +8751,7 @@ Future<void> downSyncAppUserMessages(String typeOfData) async {
 Future<void> downSyncAppUserLocations(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserLocationPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserLocationPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8470,7 +8797,7 @@ Future<void> downSyncAppUserLocations(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserLocationsPageCurrent = 0;
             }
@@ -8489,7 +8816,7 @@ Future<void> downSyncAppUserLocations(String typeOfData) async {
 Future<void> downSyncAppUserRemarks(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserRemarkPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserRemarkPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8531,7 +8858,7 @@ Future<void> downSyncAppUserRemarks(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserRemarksPageCurrent = 0;
             }
@@ -8551,7 +8878,7 @@ Future<void> downSyncAppUserRemarks(String typeOfData) async {
 Future<void> downSyncAppUserTeams(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTeamPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserTeamPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8597,7 +8924,7 @@ Future<void> downSyncAppUserTeams(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserTeamsPageCurrent = 0;
             }
@@ -8616,7 +8943,7 @@ Future<void> downSyncAppUserTeams(String typeOfData) async {
 Future<void> downSyncAppUserTeamMembers(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTeamMemberPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserTeamMemberPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8662,7 +8989,7 @@ Future<void> downSyncAppUserTeamMembers(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserTeamMembersPageCurrent = 0;
             }
@@ -8681,7 +9008,7 @@ Future<void> downSyncAppUserTeamMembers(String typeOfData) async {
 Future<void> downSyncAppUserTerritories(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTerritoryPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserTerritoryPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8727,7 +9054,7 @@ Future<void> downSyncAppUserTerritories(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserTerritoriesPageCurrent = 0;
             }
@@ -8746,7 +9073,7 @@ Future<void> downSyncAppUserTerritories(String typeOfData) async {
 Future<void> downSyncAppUserTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAppUserTypePaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAppUserTypePaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8792,7 +9119,7 @@ Future<void> downSyncAppUserTypes(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AppUserTypesPageCurrent = 0;
             }
@@ -8811,7 +9138,7 @@ Future<void> downSyncAppUserTypes(String typeOfData) async {
 Future<void> downSyncAttributes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAttributePaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAttributePaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8857,7 +9184,7 @@ Future<void> downSyncAttributes(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AttributesPageCurrent = 0;
             }
@@ -8876,7 +9203,7 @@ Future<void> downSyncAttributes(String typeOfData) async {
 Future<void> downSyncAttributeValues(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetAttributeValuePaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetAttributeValuePaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8922,7 +9249,7 @@ Future<void> downSyncAttributeValues(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               AttributeValuesPageCurrent = 0;
             }
@@ -8940,7 +9267,7 @@ Future<void> downSyncAttributeValues(String typeOfData) async {
 Future<void> downSyncBusinessEmails(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessEmailPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetBusinessEmailPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -8986,7 +9313,7 @@ Future<void> downSyncBusinessEmails(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               BusinessEmailsPageCurrent = 0;
             }
@@ -9004,7 +9331,7 @@ Future<void> downSyncBusinessEmails(String typeOfData) async {
 Future<void> downSyncBusinessFeatures(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessFeaturePaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetBusinessFeaturePaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -9050,7 +9377,7 @@ Future<void> downSyncBusinessFeatures(String typeOfData) async {
               }
             }
 
-            final isAllPagesDone = updateDownSyncPageStatus(dataItem);
+            final isAllPagesDone = update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               BusinessFeaturesPageCurrent = 0;
             }
@@ -9068,7 +9395,7 @@ Future<void> downSyncBusinessFeatures(String typeOfData) async {
 Future<void> downSyncBusinessUnits(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetBusinessUnitPaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetBusinessUnitPaged';
 
       final dataItem = SyncDataHandler.getAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -9114,7 +9441,7 @@ Future<void> downSyncBusinessUnits(String typeOfData) async {
               }
             }
 
-            bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+            bool isAllPagesDone = Update downSyncPageStatus(dataItem);
             if (isAllPagesDone) {
               BusinessUnitsPageCurrent = 0;
             }
@@ -9136,7 +9463,7 @@ Future<void> downSyncBusinessUnits(String typeOfData) async {
 Future<void> downSyncChatMessages(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected(context) && Globals.USER_TOKEN != '') {
-      final url = '${AppConstant.API_VERSION_URL}/DownSyncManager/GetChatMessagePaged';
+      final url = '${AppConstant.API_VERSION_URL}/ downSyncManager/GetChatMessagePaged';
 
       final dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
       if (dataItem != null && dataItem.records != '0') {
@@ -9184,7 +9511,7 @@ Future<void> downSyncChatMessages(String typeOfData) async {
             }
           }
 
-          final isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+          final isAllPagesDone = Update downSyncPageStatus(dataItem);
           if (isAllPagesDone) {
             ChatMessagesPageCurrent = 0;
           }
@@ -9194,7 +9521,7 @@ Future<void> downSyncChatMessages(String typeOfData) async {
       }
     }
   } catch (e) {
-    LogError('Error: SyncService:DownSyncChatMessage() 3-> $e');
+    LogError('Error: SyncService: downSyncChatMessage() 3-> $e');
   } finally {
     // Finally block code
   }

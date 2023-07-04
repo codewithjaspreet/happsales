@@ -69,6 +69,7 @@ class LeadSourceDataHandlerBase {
         dataItem.appUserID = element[ColumnsBase.KEY_LEADSOURCE_APPUSERID];
         dataItem.appUserGroupID = element[ColumnsBase.KEY_LEADSOURCE_APPUSERGROUPID];
         dataItem.isDeleted = element[ColumnsBase.KEY_LEADSOURCE_ISDELETED];
+        
 dataItem.id = element[ColumnsBase.KEY_ID];
         dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
         dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];

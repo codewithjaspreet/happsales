@@ -1,6 +1,8 @@
 
 
- import '../../AppTables/ColumnsBase.dart';
+ import 'package:happsales_crm/database/AppConstants.dart';
+
+import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/TablesBase.dart';
 import '../../Globals.dart';
 import '../../models/OtherModels/CustomerMeeting.dart';
@@ -8,23 +10,23 @@ import '../DataBaseHandler.dart';
 
 class CustomerMeetingDataHandlerBase {
 
-     static List<CustomerMeeting> GetCustomerMeetingRecordsPaged(DatabaseHandler databaseHandler, String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) {
+     static Future<List<CustomerMeeting>> GetCustomerMeetingRecordsPaged(DatabaseHandler databaseHandler, String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) async{
         List<CustomerMeeting> dataList =[];
         try {
             int startRowIndex = ((pageIndex - 1) * pageSize);
 
-            String selectQuery = "SELECT A.* " + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",F." + ColumnsBase.KEY_CONTACT_CONTACTNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " F ON A." + ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE + ",'true')) = 'true' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED + ",'false')) = 'false' ";
+            String selectQuery = "SELECT A.* ,C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},F.${ColumnsBase.KEY_CONTACT_CONTACTNAME}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CONTACT} F ON A.${ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+			selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED},'false')) = 'false' ";
             if (searchString.trim().length > 0)
-                selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE + " LIKE '%" + searchString + "%'";
+                selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE} LIKE '%$searchString%'";
 
             /* FILTER */
 			/*String groups = "";
@@ -47,12 +49,14 @@ class CustomerMeetingDataHandlerBase {
 			if (tags.trim().length() > 0)
 				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
 
-            selectQuery += " ORDER BY A." + sortColumn + " COLLATE NOCASE " + sortDirection;
-            selectQuery += " LIMIT " + startRowIndex.toString() + "," + pageSize.toString();
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += " LIMIT $startRowIndex,$pageSize";
 
 
 
  final db =  await databaseHandler.database;
+
+
             List<Map<String, dynamic>> result =  await db.rawQuery(selectQuery, null);
 
             for(var element in result){
@@ -116,22 +120,22 @@ class CustomerMeetingDataHandlerBase {
         return dataList;
     }
 
-     static List<CustomerMeeting> GetCustomerMeetingRecords(DatabaseHandler databaseHandler, String searchString) {
-        List<CustomerMeeting> dataList = new ArrayList<CustomerMeeting>();
+     static Future<List<CustomerMeeting>> GetCustomerMeetingRecords(DatabaseHandler databaseHandler, String searchString) async {
+        List<CustomerMeeting> dataList =[];
         try {
-            String selectQuery = "SELECT A.* " + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",F." + ColumnsBase.KEY_CONTACT_CONTACTNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " F ON A." + ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE + ",'true')) = 'true' ";
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED + ",'false')) = 'false' ";
-            if (searchString.trim().length() > 0)
-                selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE + " LIKE '" + searchString + "%'";
-            selectQuery += " ORDER BY A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE + " COLLATE NOCASE ASC ";
+            String selectQuery = "SELECT A.* ,C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},F.${ColumnsBase.KEY_CONTACT_CONTACTNAME}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CONTACT} F ON A.${ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+			selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED},'false')) = 'false' ";
+            if (searchString.trim().length > 0)
+                selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE} LIKE '$searchString%'";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE} COLLATE NOCASE ASC ";
 
 
  final db =  await databaseHandler.database;
@@ -196,19 +200,19 @@ class CustomerMeetingDataHandlerBase {
         return dataList;
     }
 
-     static CustomerMeeting GetCustomerMeetingRecord(DatabaseHandler databaseHandler, String id) {
-        CustomerMeeting dataItem = null;
+     static Future<CustomerMeeting?> GetCustomerMeetingRecord(DatabaseHandler databaseHandler, String id)async {
+        CustomerMeeting? dataItem;
         try {
             id = Globals.tryParseLongForDBId(id);
 
-            String selectQuery = "SELECT A.* " + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",F." + ColumnsBase.KEY_CONTACT_CONTACTNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " F ON A." + ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " = " + id;
-			selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            String selectQuery = "SELECT A.* ,C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},F.${ColumnsBase.KEY_CONTACT_CONTACTNAME}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CONTACT} F ON A.${ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+			selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+			selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
 
  final db =  await databaseHandler.database;
@@ -261,7 +265,6 @@ class CustomerMeetingDataHandlerBase {
         dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-        dataList.add(dataItem);
                     
 
 
@@ -273,19 +276,19 @@ class CustomerMeetingDataHandlerBase {
         return dataItem;
     }
 
-     static CustomerMeeting GetMasterCustomerMeetingRecord(DatabaseHandler databaseHandler, String id) {
-        CustomerMeeting dataItem = null;
+     static Future<CustomerMeeting?> GetMasterCustomerMeetingRecord(DatabaseHandler databaseHandler, String id) async{
+        CustomerMeeting? dataItem ;
         try {
             id = Globals.tryParseLongForDBId(id);
 
-            String selectQuery = "SELECT A.* " + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",F." + ColumnsBase.KEY_CONTACT_CONTACTNAME;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " F ON A." + ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID + " = F." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID + " = " + id;
-			selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            String selectQuery = "SELECT A.* ,C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},F.${ColumnsBase.KEY_CONTACT_CONTACTNAME}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_CONTACT} F ON A.${ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID} = F.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID} = $id";
+			selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+			selectQuery += " AND A.${ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
           
 
@@ -339,7 +342,6 @@ class CustomerMeetingDataHandlerBase {
         dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-        dataList.add(dataItem);
                     
 
 
@@ -351,84 +353,121 @@ class CustomerMeetingDataHandlerBase {
         return dataItem;
     }
 
-     static long AddCustomerMeetingRecord(DatabaseHandler databaseHandler, CustomerMeeting dataItem) {
-        long id = 0;
+     static Future<int> AddCustomerMeetingRecord(DatabaseHandler databaseHandler, CustomerMeeting dataItem)async {
+        int id = 0;
         try {
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            if (dataItem.getCustomerMeetingID() != null && !dataItem.getCustomerMeetingID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID, dataItem.getCustomerMeetingID());
-            if (dataItem.getCustomerMeetingCode() != null && !dataItem.getCustomerMeetingCode().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGCODE, dataItem.getCustomerMeetingCode());
-            if (dataItem.getCustomerMeetingTitle() != null && !dataItem.getCustomerMeetingTitle().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE, dataItem.getCustomerMeetingTitle());
-            if (dataItem.getActivityID() != null && !dataItem.getActivityID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID, dataItem.getActivityID());
-            if (dataItem.getAccountID() != null && !dataItem.getAccountID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID, dataItem.getAccountID());
-            if (dataItem.getContactID() != null && !dataItem.getContactID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID, dataItem.getContactID());
-            if (dataItem.getCustomerMeetingDate() != null && !dataItem.getCustomerMeetingDate().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGDATE, dataItem.getCustomerMeetingDate());
-            if (dataItem.getPunchInTime() != null && !dataItem.getPunchInTime().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINTIME, dataItem.getPunchInTime());
-            if (dataItem.getPunchOutTime() != null && !dataItem.getPunchOutTime().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTTIME, dataItem.getPunchOutTime());
-            if (dataItem.getPunchInLocation() != null && !dataItem.getPunchInLocation().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINLOCATION, dataItem.getPunchInLocation());
-            if (dataItem.getPunchOutLocation() != null && !dataItem.getPunchOutLocation().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTLOCATION, dataItem.getPunchOutLocation());
-            if (dataItem.getRemarks() != null && !dataItem.getRemarks().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_REMARKS, dataItem.getRemarks());
-            if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CREATEDBY, dataItem.getCreatedBy());
-            if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CREATEDON, dataItem.getCreatedOn());
-            if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDBY, dataItem.getModifiedBy());
-            if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDON, dataItem.getModifiedOn());
-            if (dataItem.getDeviceIdentifier() != null && !dataItem.getDeviceIdentifier().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_DEVICEIDENTIFIER, dataItem.getDeviceIdentifier());
-            if (dataItem.getReferenceIdentifier() != null && !dataItem.getReferenceIdentifier().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_REFERENCEIDENTIFIER, dataItem.getReferenceIdentifier());
-            if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE, dataItem.getIsActive());
-            if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_UID, dataItem.getUid());
-            if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_APPUSERID, dataItem.getAppUserID());
-            if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID, dataItem.getAppUserGroupID());
-            if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED, dataItem.getIsArchived());
-            if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED, dataItem.getIsDeleted());
-            if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-                values.put(ColumnsBase.KEY_ID, dataItem.getId());
-            if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-                values.put(ColumnsBase.KEY_ISDIRTY, dataItem.getIsDirty());
-            if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-                values.put(ColumnsBase.KEY_ISDELETED, dataItem.getIsDeleted1());
-            if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-                values.put(ColumnsBase.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-            if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-                values.put(ColumnsBase.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-            if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-                values.put(ColumnsBase.KEY_SCREATEDON, dataItem.getSCreatedOn());
-            if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-                values.put(ColumnsBase.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-            if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-                values.put(ColumnsBase.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-            if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-                values.put(ColumnsBase.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-            if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-                values.put(ColumnsBase.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-            values.put(ColumnsBase.KEY_UPSYNCINDEX, 0);
-            values.put(ColumnsBase.KEY_ISACTIVE, "true");
-            values.put(ColumnsBase.KEY_ISDELETED, "false");
+            final  db = await databaseHandler.database;
+final Map<String, dynamic> values = {};
 
-            id = db.insert(TablesBase.TABLE_CUSTOMERMEETING, null, values);
+if (dataItem.customerMeetingID != null && dataItem.customerMeetingID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID] = dataItem.customerMeetingID;
+}
+if (dataItem.customerMeetingCode != null && dataItem.customerMeetingCode != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGCODE] = dataItem.customerMeetingCode;
+}
+if (dataItem.customerMeetingTitle != null && dataItem.customerMeetingTitle != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE] = dataItem.customerMeetingTitle;
+}
+if (dataItem.activityID != null && dataItem.activityID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID] = dataItem.activityID;
+}
+if (dataItem.accountID != null && dataItem.accountID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID] = dataItem.accountID;
+}
+if (dataItem.contactID != null && dataItem.contactID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID] = dataItem.contactID;
+}
+if (dataItem.customerMeetingDate != null && dataItem.customerMeetingDate != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGDATE] = dataItem.customerMeetingDate;
+}
+if (dataItem.punchInTime != null && dataItem.punchInTime != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINTIME] = dataItem.punchInTime;
+}
+if (dataItem.punchOutTime != null && dataItem.punchOutTime != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTTIME] = dataItem.punchOutTime;
+}
+if (dataItem.punchInLocation != null && dataItem.punchInLocation != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINLOCATION] = dataItem.punchInLocation;
+}
+if (dataItem.punchOutLocation != null && dataItem.punchOutLocation != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTLOCATION] = dataItem.punchOutLocation;
+}
+if (dataItem.remarks != null && dataItem.remarks != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_REMARKS] = dataItem.remarks;
+}
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CREATEDBY] = dataItem.createdBy;
+}
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CREATEDON] = dataItem.createdOn;
+}
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDBY] = dataItem.modifiedBy;
+}
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDON] = dataItem.modifiedOn;
+}
+if (dataItem.deviceIdentifier != null && dataItem.deviceIdentifier != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_DEVICEIDENTIFIER] = dataItem.deviceIdentifier;
+}
+if (dataItem.referenceIdentifier != null && dataItem.referenceIdentifier != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_REFERENCEIDENTIFIER] = dataItem.referenceIdentifier;
+}
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE] = dataItem.isActive;
+}
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_UID] = dataItem.uid;
+}
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_APPUSERID] = dataItem.appUserID;
+}
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED] = dataItem.isArchived;
+}
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED] = dataItem.isDeleted;
+}
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+values[ColumnsBase.KEY_UPSYNCINDEX] = 0;
+values[ColumnsBase.KEY_ISACTIVE] = "true";
+values[ColumnsBase.KEY_ISDELETED] = "false";
+
+final id = await db.insert(TablesBase.TABLE_CUSTOMERMEETING, values);
+
             //db.close();
         } catch ( ex) {
             Globals.handleException( "DatabaseHandler:AddCustomerMeetingRecord()", ex);
@@ -437,83 +476,127 @@ class CustomerMeetingDataHandlerBase {
         return id;
     }
 
-     static long UpdateCustomerMeetingRecord(DatabaseHandler databaseHandler, String id1, CustomerMeeting dataItem) {
-        long id = 0;
+     static Future<int> UpdateCustomerMeetingRecord(DatabaseHandler databaseHandler, String id1, CustomerMeeting dataItem) async{
+        int id = 0;
         try {
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            if (dataItem.getCustomerMeetingID() != null && !dataItem.getCustomerMeetingID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID, dataItem.getCustomerMeetingID());
-            if (dataItem.getCustomerMeetingCode() != null && !dataItem.getCustomerMeetingCode().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGCODE, dataItem.getCustomerMeetingCode());
-            if (dataItem.getCustomerMeetingTitle() != null && !dataItem.getCustomerMeetingTitle().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE, dataItem.getCustomerMeetingTitle());
-            if (dataItem.getActivityID() != null && !dataItem.getActivityID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID, dataItem.getActivityID());
-            if (dataItem.getAccountID() != null && !dataItem.getAccountID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID, dataItem.getAccountID());
-            if (dataItem.getContactID() != null && !dataItem.getContactID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID, dataItem.getContactID());
-            if (dataItem.getCustomerMeetingDate() != null && !dataItem.getCustomerMeetingDate().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGDATE, dataItem.getCustomerMeetingDate());
-            if (dataItem.getPunchInTime() != null && !dataItem.getPunchInTime().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINTIME, dataItem.getPunchInTime());
-            if (dataItem.getPunchOutTime() != null && !dataItem.getPunchOutTime().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTTIME, dataItem.getPunchOutTime());
-            if (dataItem.getPunchInLocation() != null && !dataItem.getPunchInLocation().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINLOCATION, dataItem.getPunchInLocation());
-            if (dataItem.getPunchOutLocation() != null && !dataItem.getPunchOutLocation().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTLOCATION, dataItem.getPunchOutLocation());
-            if (dataItem.getRemarks() != null && !dataItem.getRemarks().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_REMARKS, dataItem.getRemarks());
-            if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CREATEDBY, dataItem.getCreatedBy());
-            if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_CREATEDON, dataItem.getCreatedOn());
-            if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDBY, dataItem.getModifiedBy());
-            if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDON, dataItem.getModifiedOn());
-            if (dataItem.getDeviceIdentifier() != null && !dataItem.getDeviceIdentifier().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_DEVICEIDENTIFIER, dataItem.getDeviceIdentifier());
-            if (dataItem.getReferenceIdentifier() != null && !dataItem.getReferenceIdentifier().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_REFERENCEIDENTIFIER, dataItem.getReferenceIdentifier());
-            if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE, dataItem.getIsActive());
-            if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_UID, dataItem.getUid());
-            if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_APPUSERID, dataItem.getAppUserID());
-            if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID, dataItem.getAppUserGroupID());
-            if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED, dataItem.getIsArchived());
-            if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-                values.put(ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED, dataItem.getIsDeleted());
-            if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-                values.put(ColumnsBase.KEY_ID, dataItem.getId());
-            if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-                values.put(ColumnsBase.KEY_ISDIRTY, dataItem.getIsDirty());
-            if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-                values.put(ColumnsBase.KEY_ISDELETED, dataItem.getIsDeleted1());
-            if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-                values.put(ColumnsBase.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-            if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-                values.put(ColumnsBase.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-            if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-                values.put(ColumnsBase.KEY_SCREATEDON, dataItem.getSCreatedOn());
-            if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-                values.put(ColumnsBase.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-            if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-                values.put(ColumnsBase.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-            if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-                values.put(ColumnsBase.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-            if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-                values.put(ColumnsBase.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-            if (dataItem.getUpSyncIndex() != null && !dataItem.getUpSyncIndex().equals("null"))
-                values.put(ColumnsBase.KEY_UPSYNCINDEX, dataItem.getUpSyncIndex());
+            
+            final  db = await databaseHandler.database;
+final Map<String, dynamic> values = {};
 
-            id = db.update(TablesBase.TABLE_CUSTOMERMEETING, values, ColumnsBase.KEY_ID + " = " + id1, null);
+if (dataItem.customerMeetingID != null && dataItem.customerMeetingID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID] = dataItem.customerMeetingID;
+}
+if (dataItem.customerMeetingCode != null && dataItem.customerMeetingCode != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGCODE] = dataItem.customerMeetingCode;
+}
+if (dataItem.customerMeetingTitle != null && dataItem.customerMeetingTitle != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGTITLE] = dataItem.customerMeetingTitle;
+}
+if (dataItem.activityID != null && dataItem.activityID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID] = dataItem.activityID;
+}
+if (dataItem.accountID != null && dataItem.accountID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID] = dataItem.accountID;
+}
+if (dataItem.contactID != null && dataItem.contactID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID] = dataItem.contactID;
+}
+if (dataItem.customerMeetingDate != null && dataItem.customerMeetingDate != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGDATE] = dataItem.customerMeetingDate;
+}
+if (dataItem.punchInTime != null && dataItem.punchInTime != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINTIME] = dataItem.punchInTime;
+}
+if (dataItem.punchOutTime != null && dataItem.punchOutTime != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTTIME] = dataItem.punchOutTime;
+}
+if (dataItem.punchInLocation != null && dataItem.punchInLocation != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHINLOCATION] = dataItem.punchInLocation;
+}
+if (dataItem.punchOutLocation != null && dataItem.punchOutLocation != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_PUNCHOUTLOCATION] = dataItem.punchOutLocation;
+}
+if (dataItem.remarks != null && dataItem.remarks != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_REMARKS] = dataItem.remarks;
+}
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CREATEDBY] = dataItem.createdBy;
+}
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_CREATEDON] = dataItem.createdOn;
+}
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDBY] = dataItem.modifiedBy;
+}
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_MODIFIEDON] = dataItem.modifiedOn;
+}
+if (dataItem.deviceIdentifier != null && dataItem.deviceIdentifier != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_DEVICEIDENTIFIER] = dataItem.deviceIdentifier;
+}
+if (dataItem.referenceIdentifier != null && dataItem.referenceIdentifier != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_REFERENCEIDENTIFIER] = dataItem.referenceIdentifier;
+}
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISACTIVE] = dataItem.isActive;
+}
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_UID] = dataItem.uid;
+}
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_APPUSERID] = dataItem.appUserID;
+}
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISARCHIVED] = dataItem.isArchived;
+}
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_CUSTOMERMEETING_ISDELETED] = dataItem.isDeleted;
+}
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+
+if(dataItem.upSyncIndex != null && dataItem.upSyncIndex != "null"){
+
+  values[ColumnsBase.KEY_UPSYNCINDEX] = dataItem.upSyncIndex;
+
+}
+
+
+
+           
+            id = await db.update(TablesBase.TABLE_CUSTOMERMEETING, values,  where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
             //db.close();
         } catch ( ex) {
             Globals.handleException( "DatabaseHandler:UpdateCustomerMeetingRecord()", ex);
@@ -522,11 +605,11 @@ class CustomerMeetingDataHandlerBase {
         return id;
     }
 
-     static long DeleteCustomerMeetingRecord(DatabaseHandler databaseHandler, String id1) {
-        long id = 0;
+     static Future<int> DeleteCustomerMeetingRecord(DatabaseHandler databaseHandler, String id1)async {
+        int id = 0;
         try {
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            id = db.delete(TablesBase.TABLE_CUSTOMERMEETING, ColumnsBase.KEY_ID + " = " + id1, null);
+            final db = await databaseHandler.database;
+            id = await  db.delete(TablesBase.TABLE_CUSTOMERMEETING,  where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
             //db.close();
         } catch ( ex) {
             Globals.handleException( "DatabaseHandler:DeleteCustomerMeetingRecord()", ex);
@@ -535,21 +618,22 @@ class CustomerMeetingDataHandlerBase {
         return id;
     }
 
-     static String GetServerId(DatabaseHandler databaseHandler, String id) {
+     static Future<String> GetServerId(DatabaseHandler databaseHandler, String id) async{
         String serverId = "-1";
         try {
             id = Globals.tryParseLongForDBId(id);
 
-            String selectQuery = "SELECT A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " = " + id;
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                serverId = cursor.getString(0);
+            final db = await databaseHandler.database;
+            List<Map> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                serverId = result[0][ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID].toString();
             }
-            cursor.close();
+            
             //db.close();
         } catch ( ex) {
             Globals.handleException( "CustomerMeetingDataHandlerBase:GetServerId()", ex);
@@ -558,23 +642,22 @@ class CustomerMeetingDataHandlerBase {
         return serverId;
     }
 
-     static String GetLocalId(DatabaseHandler databaseHandler, String id) {
+     static Future<String> GetLocalId(DatabaseHandler databaseHandler, String id)async {
         String localId = "";
         try {
 
             id = Globals.tryParseLongForDBId(id);
 
-            String selectQuery = "SELECT A." + ColumnsBase.KEY_ID;
-            selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A ";
-            selectQuery += " WHERE A." + ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID + " = " + id;
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_ID}";
+            selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID} = $id";
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                localId = cursor.getString(0);
+           final db = await databaseHandler.database;
+            List<Map> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                localId = result[0][ColumnsBase.KEY_CUSTOMERMEETING_CUSTOMERMEETINGID].toString();
             }
-            cursor.close();
-            //db.close();
         } catch ( ex) {
             Globals.handleException( "CustomerMeetingDataHandlerBase:GetLocalId()", ex);
             throw ex;
@@ -582,17 +665,17 @@ class CustomerMeetingDataHandlerBase {
         return localId;
     }
 
-     static List<CustomerMeeting> GetCustomerMeetingUpSyncRecords(DatabaseHandler databaseHandler, String changeType) {
-        List<CustomerMeeting> dataList = new ArrayList<CustomerMeeting>();
+     static Future<List<CustomerMeeting>> GetCustomerMeetingUpSyncRecords(DatabaseHandler databaseHandler, String changeType)async {
+        List<CustomerMeeting> dataList = [];
         try {
-            String selectQuery = "SELECT * FROM " + TablesBase.TABLE_CUSTOMERMEETING + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-            if (changeType.equals(AppConstant.DB_RECORD_NEW_OR_MODIFIED)) {
-                selectQuery = "SELECT * FROM " + TablesBase.TABLE_CUSTOMERMEETING + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'false' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-            } else if (changeType.equals(AppConstant.DB_RECORD_DELETED)) {
-                selectQuery = "SELECT * FROM " + TablesBase.TABLE_CUSTOMERMEETING + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'true' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
+            String selectQuery = "SELECT * FROM ${TablesBase.TABLE_CUSTOMERMEETING} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < " + Globals.SyncIndex.toString();
+            if (changeType == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_CUSTOMERMEETING} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'false'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < " + Globals.SyncIndex.toString();
+            } else if (changeType == (AppConstants.DB_RECORD_DELETED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_CUSTOMERMEETING} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'true'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < " + Globals.SyncIndex.toString();
             }
-			selectQuery += " AND " + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			selectQuery += " AND " + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+			selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+			selectQuery += " AND ${ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
          
 
@@ -659,19 +742,19 @@ class CustomerMeetingDataHandlerBase {
     }
 
 
-	  static CustomerMeeting GetCustomerMeetingRecordByUid(DatabaseHandler databaseHandler, String uid) {
-        CustomerMeeting dataItem = null;
+	  static Future<CustomerMeeting?> GetCustomerMeetingRecordByUid(DatabaseHandler databaseHandler, String uid)async {
+        CustomerMeeting? dataItem ;
         try
         {
 
-			String selectQuery = 	"SELECT A.* "  + ",C." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",F." + ColumnsBase.KEY_CONTACT_CONTACTNAME;
-		selectQuery += " FROM " + TablesBase.TABLE_CUSTOMERMEETING + " A "; 
-		selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-		selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " C ON A." + ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID + " = C." + ColumnsBase.KEY_ID;
-		selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " F ON A." + ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID + " = F." + ColumnsBase.KEY_ID;
-			selectQuery += " WHERE A."  + ColumnsBase.KEY_CUSTOMERMEETING_UID + " = '" + uid + "'";
-			//selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-			//selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+			String selectQuery = 	"SELECT A.* ,C.${ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE},B.${ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME},F.${ColumnsBase.KEY_CONTACT_CONTACTNAME}";
+		selectQuery += " FROM ${TablesBase.TABLE_CUSTOMERMEETING} A "; 
+		selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACCOUNT} B ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACCOUNTID} = B.${ColumnsBase.KEY_ID}";
+		selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} C ON A.${ColumnsBase.KEY_CUSTOMERMEETING_ACTIVITYID} = C.${ColumnsBase.KEY_ID}";
+		selectQuery += " LEFT JOIN ${TablesBase.TABLE_CONTACT} F ON A.${ColumnsBase.KEY_CUSTOMERMEETING_CONTACTID} = F.${ColumnsBase.KEY_ID}";
+			selectQuery += " WHERE A.${ColumnsBase.KEY_CUSTOMERMEETING_UID} = '$uid'";
+			//selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+			//selectQuery += " AND A." + ColumnsBase.KEY_CUSTOMERMEETING_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
 
           
 
@@ -725,7 +808,6 @@ class CustomerMeetingDataHandlerBase {
         dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
         dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-        dataList.add(dataItem);
                     
 
 
