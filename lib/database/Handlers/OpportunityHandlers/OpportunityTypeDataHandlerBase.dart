@@ -1,578 +1,694 @@
 
 
- class OpportunityTypeDataHandlerBase {
+ import 'package:happsales_crm/database/AppConstants.dart';
 
-  //   public static List<OpportunityType> GetOpportunityTypeRecordsPaged(DatabaseHandler databaseHandler, Context context, String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) {
-  //       List<OpportunityType> dataList = new ArrayList<OpportunityType>();
-  //       try {
-  //           int startRowIndex = ((pageIndex - 1) * pageSize);
+import '../../AppTables/ColumnsBase.dart';
+import '../../AppTables/TablesBase.dart';
+import '../../Globals.dart';
+import '../../models/OpportunityModels/OpportunityType.dart';
+import '../DataBaseHandler.dart';
 
-  //           String selectQuery = "SELECT A.* ";
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-  //           selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-  //           selectQuery += " AND LOWER(IFNULL(A." + Columns.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + Columns.KEY_OPPORTUNITYTYPE_ISDELETED + ",'false')) = 'false' ";
-  //           selectQuery += " AND LOWER(IFNULL(A." + Columns.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + Columns.KEY_OPPORTUNITYTYPE_ISACTIVE + ",'true')) = 'true' ";
-  //           if (searchString.trim().length() > 0)
-  //               selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME + " LIKE '%" + searchString.replace("'","''") + "%'";
+class OpportunityTypeDataHandlerBase {
 
-  //           /* FILTER */
-	// 		/*String groups = "";
-	// 		String tags = "";
-	// 		String groupitem = "";
-	// 		for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
-	// 			String key1 = entry.getKey();
-	// 			String value1 = entry.getValue();
-	// 			if (entry.getKey().equals("XXXXX")) {
-	// 				groupitem = value1;
-	// 			} else {
-	// 				groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
-	// 				tags += (tags.equals("") ? value1 : "," + value1);
-	// 			}
-	// 		}
-	// 		if (groupitem.trim().length() > 0)
-	// 			selectQuery += " AND A." + Columns.KEY_OpportunityType_Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME + " IN(" + groupitem.trim() + ")";
-	// 		if (groups.trim().length() > 0)
-	// 			selectQuery += " AND TG." + Columns.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
-	// 		if (tags.trim().length() > 0)
-	// 			selectQuery += " AND T." + Columns.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
+     static Future<List<OpportunityType>> GetOpportunityTypeRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) async {
+        List<OpportunityType> dataList =[];
+        try {
+            int startRowIndex = ((pageIndex - 1) * pageSize);
 
-  //           selectQuery += " ORDER BY A." + sortColumn + " COLLATE NOCASE " + sortDirection;
-  //           selectQuery += " LIMIT " + startRowIndex + "," + pageSize;
+            String selectQuery = "SELECT A.* ";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE},'true')) = 'true' ";
+            if (searchString.trim().length> 0)
+                selectQuery += "${" AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME} LIKE '%${searchString.replaceAll("'","''")}"}%'";
 
+            /* FILTER */
+			/*String groups = "";
+			String tags = "";
+			String groupitem = "";
+			for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
+				String key1 = entry.getKey();
+				String value1 = entry.getValue();
+				if (entry.getKey().equals("XXXXX")) {
+					groupitem = value1;
+				} else {
+					groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
+					tags += (tags.equals("") ? value1 : "," + value1);
+				}
+			}
+			if (groupitem.trim().length() > 0)
+				selectQuery += " AND A." + ColumnsBase.KEY_OpportunityType_ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME + " IN(" + groupitem.trim() + ")";
+			if (groups.trim().length() > 0)
+				selectQuery += " AND TG." + ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
+			if (tags.trim().length() > 0)
+				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
 
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   OpportunityType dataItem = new OpportunityType();
-  //                   dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-  //                   dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-  //                   dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-  //                   dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-  //                   dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-  //                   dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-  //                   dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-  //                   dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-  //                   dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-  //                   dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-  //                   dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-  //                   dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-  //                   dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-  //                   dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-  //                   dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-  //                   dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += "${" LIMIT " + startRowIndex.toString()},$pageSize";
 
 
-  //                   dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-  //                   dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-  //                   dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-  //                   dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));
-  //                   dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-  //                   dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-  //                   dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-  //                   dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-  //                   dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-  //                   dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-  //                   dataList.add(dataItem);
-  //               } while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecordsPaged()", ex);
-  //           throw ex;
-  //       }
-  //       return dataList;
-  //   }
+            for(var element in result){
 
-  //   public static List<OpportunityType> GetOpportunityTypeRecords(DatabaseHandler databaseHandler, Context context, String searchString) {
-  //       List<OpportunityType> dataList = new ArrayList<OpportunityType>();
-  //       try {
-  //           String selectQuery = "SELECT A.* ";
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-  //           selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-  //           selectQuery += " AND LOWER(IFNULL(A." + Columns.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + Columns.KEY_OPPORTUNITYTYPE_ISDELETED + ",'false')) = 'false' ";
-  //           selectQuery += " AND LOWER(IFNULL(A." + Columns.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + Columns.KEY_OPPORTUNITYTYPE_ISACTIVE + ",'true')) = 'true' ";
-  //           if (searchString.trim().length() > 0)
-  //               selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME + " LIKE '" + searchString.replace("'","''") + "%'";
-  //           selectQuery += " ORDER BY A." + Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER;
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
 
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   OpportunityType dataItem = new OpportunityType();
-  //                   dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-  //                   dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-  //                   dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-  //                   dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-  //                   dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-  //                   dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-  //                   dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-  //                   dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-  //                   dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-  //                   dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-  //                   dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-  //                   dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-  //                   dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-  //                   dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-  //                   dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-  //                   dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
 
-  //                   dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-  //                   dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-  //                   dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-  //                   dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));
-  //                   dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-  //                   dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-  //                   dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-  //                   dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-  //                   dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-  //                   dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
+dataList.add(dataItem);
 
-  //                   dataList.add(dataItem);
-  //               } while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecords()", ex);
-  //           throw ex;
-  //       }
-  //       return dataList;
-  //   }
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecordsPaged()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
 
-  //   public static OpportunityType GetOpportunityTypeRecord(DatabaseHandler databaseHandler, Context context, String id) {
-  //       OpportunityType dataItem = null;
-  //       try {
-  //           id = Globals.TryParseLongForDBId(id);
+     static Future<List<OpportunityType>> GetOpportunityTypeRecords(DatabaseHandler databaseHandler,  String searchString) async {
+        List<OpportunityType> dataList =[];
+        try {
+            String selectQuery = "SELECT A.* ";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE},'true')) = 'true' ";
+            if (searchString.trim().length > 0)
+                selectQuery += "${" AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME} LIKE '${searchString.replaceAll("'","''")}"}%'";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER}";
 
-  //           String selectQuery = "SELECT A.* ";
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_ID + " = " + id;
-  //           selectQuery += " AND A." + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-  //           selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   dataItem = new OpportunityType();
-  //                   dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-  //                   dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-  //                   dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-  //                   dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-  //                   dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-  //                   dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-  //                   dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-  //                   dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-  //                   dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-  //                   dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-  //                   dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-  //                   dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-  //                   dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-  //                   dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-  //                   dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-  //                   dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
+            for(var element in result){
 
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
 
-  //                   dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-  //                   dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-  //                   dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-  //                   dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));
-  //                   dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-  //                   dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-  //                   dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-  //                   dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-  //                   dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-  //                   dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
-
-  //               } while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecord()", ex);
-  //           throw ex;
-  //       }
-  //       return dataItem;
-  //   }
-
-  //   public static OpportunityType GetMasterOpportunityTypeRecord(DatabaseHandler databaseHandler, Context context, String id) {
-  //       OpportunityType dataItem = null;
-  //       try {
-  //           id = Globals.TryParseLongForDBId(id);
-
-  //           String selectQuery = "SELECT A.* ";
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID + " = " + id;
-  //           selectQuery += " AND A." + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-  //           selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   dataItem = new OpportunityType();
-  //                   dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-  //                   dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-  //                   dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-  //                   dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-  //                   dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-  //                   dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-  //                   dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-  //                   dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-  //                   dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-  //                   dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-  //                   dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-  //                   dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-  //                   dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-  //                   dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-  //                   dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-  //                   dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
 
-  //                   dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-  //                   dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-  //                   dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-  //                   dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));
-  //                   dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-  //                   dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-  //                   dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-  //                   dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-  //                   dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-  //                   dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
+dataList.add(dataItem);
 
-  //               } while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetMasterOpportunityTypeRecord()", ex);
-  //           throw ex;
-  //       }
-  //       return dataItem;
-  //   }
+            }
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
 
-  //   public static long AddOpportunityTypeRecord(DatabaseHandler databaseHandler, Context context, OpportunityType dataItem) {
-  //       long id = 0;
-  //       try {
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           ContentValues values = new ContentValues();
-  //           if (dataItem.getOpportunityTypeID() != null && !dataItem.getOpportunityTypeID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID, dataItem.getOpportunityTypeID());
-  //           if (dataItem.getOpportunityTypeCode() != null && !dataItem.getOpportunityTypeCode().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE, dataItem.getOpportunityTypeCode());
-  //           if (dataItem.getOpportunityTypeName() != null && !dataItem.getOpportunityTypeName().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME, dataItem.getOpportunityTypeName());
-  //           if (dataItem.getInternalCode() != null && !dataItem.getInternalCode().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE, dataItem.getInternalCode());
-  //           if (dataItem.getIsDefault() != null && !dataItem.getIsDefault().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT, dataItem.getIsDefault());
-  //           if (dataItem.getSequentialOrder() != null && !dataItem.getSequentialOrder().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER, dataItem.getSequentialOrder());
-  //           if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_CREATEDON, dataItem.getCreatedOn());
-  //           if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY, dataItem.getCreatedBy());
-  //           if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON, dataItem.getModifiedOn());
-  //           if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY, dataItem.getModifiedBy());
-  //           if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_UID, dataItem.getUid());
-  //           if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_APPUSERID, dataItem.getAppUserID());
-  //           if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID, dataItem.getAppUserGroupID());
-  //           if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED, dataItem.getIsArchived());
-  //           if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE, dataItem.getIsActive());
-  //           if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISDELETED, dataItem.getIsDeleted());
-  //           if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-  //               values.put(Columns.KEY_ID, dataItem.getId());
-  //           if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-  //               values.put(Columns.KEY_ISDIRTY, dataItem.getIsDirty());
-  //           if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-  //               values.put(Columns.KEY_ISDELETED, dataItem.getIsDeleted1());
-  //           if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-  //               values.put(Columns.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-  //           if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-  //               values.put(Columns.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-  //           if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-  //               values.put(Columns.KEY_SCREATEDON, dataItem.getSCreatedOn());
-  //           if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-  //               values.put(Columns.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-  //           if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-  //               values.put(Columns.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-  //           if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-  //               values.put(Columns.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-  //           if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-  //               values.put(Columns.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-  //           values.put(Columns.KEY_UPSYNCINDEX, 0);
-  //           values.put(Columns.KEY_ISACTIVE, "true");
-  //           values.put(Columns.KEY_ISDELETED, "false");
+     static Future<OpportunityType?> GetOpportunityTypeRecord(DatabaseHandler databaseHandler,  String id) async {
+        OpportunityType? dataItem ;
+        try {
+            id = Globals.tryParseLongForDBId(id);
 
-  //           id = db.insert(Tables.TABLE_OPPORTUNITYTYPE, null, values);
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "DatabaseHandler:AddOpportunityTypeRecord()", ex);
-  //           throw ex;
-  //       }
-  //       return id;
-  //   }
+            String selectQuery = "SELECT A.* ";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
-  //   public static long UpdateOpportunityTypeRecord(DatabaseHandler databaseHandler, Context context, String id1, OpportunityType dataItem) {
-  //       long id = 0;
-  //       try {
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           ContentValues values = new ContentValues();
-  //           if (dataItem.getOpportunityTypeID() != null && !dataItem.getOpportunityTypeID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID, dataItem.getOpportunityTypeID());
-  //           if (dataItem.getOpportunityTypeCode() != null && !dataItem.getOpportunityTypeCode().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE, dataItem.getOpportunityTypeCode());
-  //           if (dataItem.getOpportunityTypeName() != null && !dataItem.getOpportunityTypeName().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME, dataItem.getOpportunityTypeName());
-  //           if (dataItem.getInternalCode() != null && !dataItem.getInternalCode().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE, dataItem.getInternalCode());
-  //           if (dataItem.getIsDefault() != null && !dataItem.getIsDefault().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT, dataItem.getIsDefault());
-  //           if (dataItem.getSequentialOrder() != null && !dataItem.getSequentialOrder().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER, dataItem.getSequentialOrder());
-  //           if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_CREATEDON, dataItem.getCreatedOn());
-  //           if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY, dataItem.getCreatedBy());
-  //           if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON, dataItem.getModifiedOn());
-  //           if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY, dataItem.getModifiedBy());
-  //           if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_UID, dataItem.getUid());
-  //           if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_APPUSERID, dataItem.getAppUserID());
-  //           if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID, dataItem.getAppUserGroupID());
-  //           if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED, dataItem.getIsArchived());
-  //           if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE, dataItem.getIsActive());
-  //           if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-  //               values.put(Columns.KEY_OPPORTUNITYTYPE_ISDELETED, dataItem.getIsDeleted());
-  //           if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-  //               values.put(Columns.KEY_ID, dataItem.getId());
-  //           if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-  //               values.put(Columns.KEY_ISDIRTY, dataItem.getIsDirty());
-  //           if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-  //               values.put(Columns.KEY_ISDELETED, dataItem.getIsDeleted1());
-  //           if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-  //               values.put(Columns.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-  //           if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-  //               values.put(Columns.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-  //           if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-  //               values.put(Columns.KEY_SCREATEDON, dataItem.getSCreatedOn());
-  //           if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-  //               values.put(Columns.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-  //           if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-  //               values.put(Columns.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-  //           if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-  //               values.put(Columns.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-  //           if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-  //               values.put(Columns.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-  //           if (dataItem.getUpSyncIndex() != null && !dataItem.getUpSyncIndex().equals("null"))
-  //               values.put(Columns.KEY_UPSYNCINDEX, dataItem.getUpSyncIndex());
+          
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-  //           id = db.update(Tables.TABLE_OPPORTUNITYTYPE, values, Columns.KEY_ID + " = " + id1, null);
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "DatabaseHandler:UpdateOpportunityTypeRecord()", ex);
-  //           throw ex;
-  //       }
-  //       return id;
-  //   }
+            for(var element in result){
 
-  //   public static long DeleteOpportunityTypeRecord(DatabaseHandler databaseHandler, Context context, String id1) {
-  //       long id = 0;
-  //       try {
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           id = db.delete(Tables.TABLE_OPPORTUNITYTYPE, Columns.KEY_ID + " = " + id1, null);
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "DatabaseHandler:DeleteOpportunityTypeRecord()", ex);
-  //           throw ex;
-  //       }
-  //       return id;
-  //   }
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
 
-  //   public static String GetServerId(DatabaseHandler databaseHandler, Context context, String id) {
-  //       String serverId = "-1";
-  //       try {
-  //           id = Globals.TryParseLongForDBId(id);
-
-  //           String selectQuery = "SELECT A." + Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID;
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_ID + " = " + id;
-
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               serverId = cursor.getString(0);
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetServerId()", ex);
-  //           throw ex;
-  //       }
-  //       return serverId;
-  //   }
-
-  //   public static String GetLocalId(DatabaseHandler databaseHandler, Context context, String id) {
-  //       String localId = "";
-  //       try {
-
-  //           id = Globals.TryParseLongForDBId(id);
-
-  //           String selectQuery = "SELECT A." + Columns.KEY_ID;
-  //           selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A ";
-  //           selectQuery += " WHERE A." + Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID + " = " + id;
-
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               localId = cursor.getString(0);
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetLocalId()", ex);
-  //           throw ex;
-  //       }
-  //       return localId;
-  //   }
-
-  //   public static List<OpportunityType> GetOpportunityTypeUpSyncRecords(DatabaseHandler databaseHandler, Context context, String changeType) {
-  //       List<OpportunityType> dataList = new ArrayList<OpportunityType>();
-  //       try {
-  //           String selectQuery = "SELECT * FROM " + Tables.TABLE_OPPORTUNITYTYPE + " WHERE " + Columns.KEY_ISDIRTY + " = 'true' AND " + Columns.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-  //           if (changeType.equals(AppConstant.DB_RECORD_NEW_OR_MODIFIED)) {
-  //               selectQuery = "SELECT * FROM " + Tables.TABLE_OPPORTUNITYTYPE + " WHERE " + Columns.KEY_ISDIRTY + " = 'true' AND " + Columns.KEY_ISDELETED + " = 'false' " + " AND " + Columns.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-  //           } else if (changeType.equals(AppConstant.DB_RECORD_DELETED)) {
-  //               selectQuery = "SELECT * FROM " + Tables.TABLE_OPPORTUNITYTYPE + " WHERE " + Columns.KEY_ISDIRTY + " = 'true' AND " + Columns.KEY_ISDELETED + " = 'true' " + " AND " + Columns.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-  //           }
-  //           selectQuery += " AND " + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-  //           selectQuery += " AND " + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   OpportunityType dataItem = new OpportunityType();
-  //                   dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-  //                   dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-  //                   dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-  //                   dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-  //                   dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-  //                   dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-  //                   dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-  //                   dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-  //                   dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-  //                   dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-  //                   dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-  //                   dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-  //                   dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-  //                   dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-  //                   dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-  //                   dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
-
-  //                   dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-  //                   dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-  //                   dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-  //                   dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));
-  //                   dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-  //                   dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-  //                   dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-  //                   dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-  //                   dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-  //                   dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
-
-  //                   dataList.add(dataItem);
-  //               } while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       } catch (Exception ex) {
-  //           Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetOpportunityTypeUpSyncRecords()", ex);
-  //           throw ex;
-  //       }
-  //       return dataList;
-  //   }
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
 
-	//  public static OpportunityType GetOpportunityTypeRecordByUid(DatabaseHandler databaseHandler, Context context, String uid) {
-  //       OpportunityType dataItem = null;
-  //       try
-  //       {
 
-	// 		String selectQuery = 	"SELECT A.* " ;
-	// 	selectQuery += " FROM " + Tables.TABLE_OPPORTUNITYTYPE + " A "; 
-	// 		selectQuery += " WHERE A."  + Columns.KEY_OPPORTUNITYTYPE_UID + " = '" + uid + "'";
-	// 		//selectQuery += " AND A." + Columns.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-	// 		//selectQuery += " AND A." + Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            }
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 
-  //           SQLiteDatabase db = databaseHandler.getWritableDatabase();
-  //           Cursor cursor = db.rawQuery(selectQuery, null);
-  //           if (cursor.moveToFirst()) {
-  //               do {
-  //                   dataItem = new OpportunityType();
-	// 						dataItem.setOpportunityTypeID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID)));
-	// 	dataItem.setOpportunityTypeCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE)));
-	// 	dataItem.setOpportunityTypeName(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME)));
-	// 	dataItem.setInternalCode(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_INTERNALCODE)));
-	// 	dataItem.setIsDefault(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDEFAULT)));
-	// 	dataItem.setSequentialOrder(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER)));
-	// 	dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDON)));
-	// 	dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_CREATEDBY)));
-	// 	dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDON)));
-	// 	dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_MODIFIEDBY)));
-	// 	dataItem.setUid(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_UID)));
-	// 	dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERID)));
-	// 	dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_APPUSERGROUPID)));
-	// 	dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISARCHIVED)));
-	// 	dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISACTIVE)));
-	// 	dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(Columns.KEY_OPPORTUNITYTYPE_ISDELETED)));
+     static Future<OpportunityType?> GetMasterOpportunityTypeRecord(DatabaseHandler databaseHandler,  String id) async {
+        OpportunityType ?dataItem ;
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.* ";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+          
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
+
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
 
-					
-	// 				dataItem.setId(cursor.getString(cursor.getColumnIndex(Columns.KEY_ID)));
-	// 				dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDIRTY)));
-	// 				dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(Columns.KEY_ISDELETED)));
-	// 				dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_UPSYNCMESSAGE)));				
-	// 				dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(Columns.KEY_DOWNSYNCMESSAGE)));
-	// 				dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SCREATEDON)));
-	// 				dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(Columns.KEY_SMODIFIEDON)));
-	// 				dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_CREATEDBYUSER)));
-	// 				dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(Columns.KEY_MODIFIEDBYUSER)));
-	// 				dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(Columns.KEY_OWNERUSERID)));
-					
-	// 			} while (cursor.moveToNext());
-  //           }
-  //           cursor.close();
-  //           //db.close();
-  //       }
-  //       catch(Exception ex)
-  //       {
-	//     Globals.HandleException(context, "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecordByUid()", ex);
-  //           throw ex;
-  //       }
-  //       return dataItem;
-  //   }
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetMasterOpportunityTypeRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
+
+     static Future<int> AddOpportunityTypeRecord(DatabaseHandler databaseHandler,  OpportunityType dataItem) async {
+        int id = 0;
+        try {
+            final db = await databaseHandler.database;
+Map<String, dynamic> values = Map<String, dynamic>();
+
+if (dataItem.opportunityTypeID != null && dataItem.opportunityTypeID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID] = dataItem.opportunityTypeID;
+}
+
+if (dataItem.opportunityTypeCode != null && dataItem.opportunityTypeCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE] = dataItem.opportunityTypeCode;
+}
+
+if (dataItem.opportunityTypeName != null && dataItem.opportunityTypeName != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME] = dataItem.opportunityTypeName;
+}
+
+if (dataItem.internalCode != null && dataItem.internalCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE] = dataItem.internalCode;
+}
+
+if (dataItem.isDefault != null && dataItem.isDefault != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT] = dataItem.isDefault;
+}
+
+if (dataItem.sequentialOrder != null && dataItem.sequentialOrder != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER] = dataItem.sequentialOrder;
+}
+
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON] = dataItem.createdOn;
+}
+
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY] = dataItem.createdBy;
+}
+
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON] = dataItem.modifiedOn;
+}
+
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY] = dataItem.modifiedBy;
+}
+
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_UID] = dataItem.uid;
+}
+
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID] = dataItem.appUserID;
+}
+
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED] = dataItem.isArchived;
+}
+
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE] = dataItem.isActive;
+}
+
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED] = dataItem.isDeleted;
+}
+
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+values[ColumnsBase.KEY_UPSYNCINDEX] = 0;
+values[ColumnsBase.KEY_ISACTIVE] = "true";
+values[ColumnsBase.KEY_ISDELETED] = "false";
+
+id = await db.insert(TablesBase.TABLE_OPPORTUNITYTYPE, values);
+
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:AddOpportunityTypeRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> UpdateOpportunityTypeRecord(DatabaseHandler databaseHandler,  String id1, OpportunityType dataItem) async {
+        int id = 0;
+        try {
+            final db = await databaseHandler.database;
+Map<String, dynamic> values = Map<String, dynamic>();
+
+if (dataItem.opportunityTypeID != null && dataItem.opportunityTypeID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID] = dataItem.opportunityTypeID;
+}
+
+if (dataItem.opportunityTypeCode != null && dataItem.opportunityTypeCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE] = dataItem.opportunityTypeCode;
+}
+
+if (dataItem.opportunityTypeName != null && dataItem.opportunityTypeName != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME] = dataItem.opportunityTypeName;
+}
+
+if (dataItem.internalCode != null && dataItem.internalCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE] = dataItem.internalCode;
+}
+
+if (dataItem.isDefault != null && dataItem.isDefault != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT] = dataItem.isDefault;
+}
+
+if (dataItem.sequentialOrder != null && dataItem.sequentialOrder != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER] = dataItem.sequentialOrder;
+}
+
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON] = dataItem.createdOn;
+}
+
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY] = dataItem.createdBy;
+}
+
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON] = dataItem.modifiedOn;
+}
+
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY] = dataItem.modifiedBy;
+}
+
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_UID] = dataItem.uid;
+}
+
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID] = dataItem.appUserID;
+}
+
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED] = dataItem.isArchived;
+}
+
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE] = dataItem.isActive;
+}
+
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED] = dataItem.isDeleted;
+}
+
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+if(dataItem.upSyncIndex != null && dataItem.upSyncIndex != "null") {
+  values[ColumnsBase.KEY_UPSYNCINDEX] = dataItem.upSyncIndex;
+}
+
+
+            id = await db.update(TablesBase.TABLE_OPPORTUNITYTYPE, values, where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:UpdateOpportunityTypeRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> DeleteOpportunityTypeRecord(DatabaseHandler databaseHandler,  String id1) async {
+        int id = 0;
+        try {
+            final db = await databaseHandler.database;
+            id = await db.delete(TablesBase.TABLE_OPPORTUNITYTYPE, where: "${ColumnsBase.KEY_ID} = $id1",whereArgs : null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:DeleteOpportunityTypeRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<String> GetServerId(DatabaseHandler databaseHandler,  String id) async {
+        String serverId = "-1";
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID}";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+
+            final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                serverId = result[0][ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID].toString();
+            }
+            
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetServerId()", ex);
+            throw ex;
+        }
+        return serverId;
+    }
+
+     static Future<String> GetLocalId(DatabaseHandler databaseHandler,  String id) async {
+        String localId = "";
+        try {
+
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_ID}";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID} = $id";
+
+            final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                localId = result[0][ColumnsBase.KEY_ID].toString();
+            }
+            
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetLocalId()", ex);
+            throw ex;
+        }
+        return localId;
+    }
+
+     static Future<List<OpportunityType>> GetOpportunityTypeUpSyncRecords(DatabaseHandler databaseHandler,  String changeType) async {
+        List<OpportunityType> dataList =[];
+        try {
+            String selectQuery = "SELECT * FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            if (changeType == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'false'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            } else if (changeType == (AppConstants.DB_RECORD_DELETED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_ISDELETED} = 'true'  AND ${ColumnsBase.KEY_UPSYNCINDEX} < ${Globals.SyncIndex}";
+            }
+            selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND ${ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+           
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
+
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+dataList.add(dataItem);
+
+            }
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTypeDataHandlerBase:GetOpportunityTypeUpSyncRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
+
+
+	  static Future<OpportunityType?> GetOpportunityTypeRecordByUid(DatabaseHandler databaseHandler,  String uid) async {
+        OpportunityType? dataItem ;
+        try
+        {
+
+			String selectQuery = 	"SELECT A.* " ;
+		selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTYPE} A "; 
+			selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTYPE_UID} = '$uid'";
+			//selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+			//selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+
+                    OpportunityType dataItem = new OpportunityType();
+                    dataItem.opportunityTypeID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPEID];
+                    dataItem.opportunityTypeCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPECODE];
+                    dataItem.opportunityTypeName = element[ColumnsBase.KEY_OPPORTUNITYTYPE_OPPORTUNITYTYPENAME];
+                    dataItem.internalCode = element[ColumnsBase.KEY_OPPORTUNITYTYPE_INTERNALCODE];
+                    dataItem.isDefault = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDEFAULT];
+                    dataItem.sequentialOrder = element[ColumnsBase.KEY_OPPORTUNITYTYPE_SEQUENTIALORDER];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDON];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_CREATEDBY];
+                    dataItem.modifiedOn = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTYPE_MODIFIEDBY];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTYPE_UID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTYPE_APPUSERGROUPID];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISDELETED];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISACTIVE];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTYPE_ISARCHIVED];
+
+                    dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+
+
+            }
+        }
+        catch( ex)
+        {
+	    Globals.handleException( "OpportunityTypeDataHandlerBase:GetOpportunityTypeRecordByUid()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 
 	/*-------------------HAPPSALES-------------------*/
 

@@ -1,6 +1,8 @@
 
 
- import '../../AppTables/ColumnsBase.dart';
+import 'package:happsales_crm/database/AppConstants.dart';
+
+import '../../AppTables/ColumnsBase.dart';
 import '../../AppTables/TablesBase.dart';
 import '../../Globals.dart';
 import '../../models/OpportunityModels/OpportunityTeam.dart';
@@ -8,600 +10,695 @@ import '../DataBaseHandler.dart';
 
 class OpportunityTeamDataHandlerBase {
 
-    //  static List<OpportunityTeam> GetOpportunityTeamRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) {
-    //     List<OpportunityTeam> dataList = new ArrayList<OpportunityTeam>();
-    //     try {
-    //         int startRowIndex = ((pageIndex - 1) * pageSize);
+     static Future<List<OpportunityTeam>> GetOpportunityTeamRecordsPaged(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize) async {
+        List<OpportunityTeam> dataList  =[];
+        try {
+            int startRowIndex = ((pageIndex - 1) * pageSize);
 
-    //         String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " D ON A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " = D." + ColumnsBase.KEY_ID;
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED + ",'false')) = 'false' ";
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE + ",'true')) = 'true' ";
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED + ",'false')) = 'false' ";
-    //         if (searchString.trim().length > 0)
-    //             selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME + " LIKE '%" + searchString + "%'";
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} D ON A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED},'false')) = 'false' ";
+            if (searchString.trim().length > 0)
+                selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME} LIKE '%$searchString%'";
 
-    //         /* FILTER */
-		// 	/*String groups = "";
-		// 	String tags = "";
-		// 	String groupitem = "";
-		// 	for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
-		// 		String key1 = entry.getKey();
-		// 		String value1 = entry.getValue();
-		// 		if (entry.getKey().equals("XXXXX")) {
-		// 			groupitem = value1;
-		// 		} else {
-		// 			groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
-		// 			tags += (tags.equals("") ? value1 : "," + value1);
-		// 		}
-		// 	}
-		// 	if (groupitem.trim().length() > 0)
-		// 		selectQuery += " AND A." + ColumnsBase.KEY_OpportunityTeam_ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME + " IN(" + groupitem.trim() + ")";
-		// 	if (groups.trim().length() > 0)
-		// 		selectQuery += " AND TG." + ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
-		// 	if (tags.trim().length() > 0)
-		// 		selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
+            /* FILTER */
+			/*String groups = "";
+			String tags = "";
+			String groupitem = "";
+			for (Map.Entry<String, String> entry : filterHashMap.entrySet()) {
+				String key1 = entry.getKey();
+				String value1 = entry.getValue();
+				if (entry.getKey().equals("XXXXX")) {
+					groupitem = value1;
+				} else {
+					groups += (groups.equals("") ? "'" + key1 + "'" : ",'" + key1 + "'");
+					tags += (tags.equals("") ? value1 : "," + value1);
+				}
+			}
+			if (groupitem.trim().length() > 0)
+				selectQuery += " AND A." + ColumnsBase.KEY_OpportunityTeam_ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME + " IN(" + groupitem.trim() + ")";
+			if (groups.trim().length() > 0)
+				selectQuery += " AND TG." + ColumnsBase.KEY_TAGGROUP_TAGGROUPNAME + " IN(" + groups.trim() + ")";
+			if (tags.trim().length() > 0)
+				selectQuery += " AND T." + ColumnsBase.KEY_TAG_TAGNAME + " IN(" + tags.trim() + ")";*/
 
-    //         selectQuery += " ORDER BY A." + sortColumn + " COLLATE NOCASE " + sortDirection;
-    //         selectQuery += " LIMIT " + startRowIndex + "," + pageSize;
-
-
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 OpportunityTeam dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
-
-    //                 dataItem.setOpportunityName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME)));
-
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
-
-    //                 dataList.add(dataItem);
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecordsPaged()", ex);
-    //         throw ex;
-    //     }
-    //     return dataList;
-    // }
-
-    //  static List<OpportunityTeam> GetOpportunityTeamRecords(DatabaseHandler databaseHandler,  String searchString) {
-    //     List<OpportunityTeam> dataList = new ArrayList<OpportunityTeam>();
-    //     try {
-    //         String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " D ON A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " = D." + ColumnsBase.KEY_ID;
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED + ",'false')) = 'false' ";
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE + ",'true')) = 'true' ";
-    //         selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED + ",'false')) = 'false' ";
-    //         if (searchString.trim().length() > 0)
-    //             selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME + " LIKE '" + searchString + "%'";
-    //         selectQuery += " ORDER BY A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME + " COLLATE NOCASE ASC ";
-
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 OpportunityTeam dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
-
-    //                 dataItem.setOpportunityName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME)));
-
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
-
-    //                 dataList.add(dataItem);
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecords()", ex);
-    //         throw ex;
-    //     }
-    //     return dataList;
-    // }
-
-    //  static OpportunityTeam GetOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id) {
-    //     OpportunityTeam dataItem = null;
-    //     try {
-    //         id = Globals.TryParseLongForDBId(id);
-
-    //         String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " D ON A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " = D." + ColumnsBase.KEY_ID;
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " = " + id;
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
-
-    //                 dataItem.setOpportunityName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME)));
+            selectQuery += " ORDER BY A.$sortColumn COLLATE NOCASE $sortDirection";
+            selectQuery += "${" LIMIT " + startRowIndex.toString()}," + pageSize.toString();
 
 
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
+           
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecord()", ex);
-    //         throw ex;
-    //     }
-    //     return dataItem;
-    // }
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
 
-    //  static OpportunityTeam GetOpportunityTeamRecordByUid(DatabaseHandler databaseHandler,  String uid) {
-    //     OpportunityTeam dataItem = null;
-    //     try {
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-    //         String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " D ON A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " = D." + ColumnsBase.KEY_ID;
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_OPPORTUNITYTEAM_UID + " = '" + uid + "'";
-    //         //selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    //         //selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+                    dataList.add(dataItem);
 
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecordsPaged()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
 
-    //                 dataItem.setOpportunityName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME)));
+     static Future<List<OpportunityTeam>> GetOpportunityTeamRecords(DatabaseHandler databaseHandler,  String searchString) async {
+        List<OpportunityTeam> dataList = [];
+        try {
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} D ON A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED},'false')) = 'false' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISACTIVE},'true')) = 'true' AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE},'true')) = 'true' ";
+            selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED},'false')) = 'false' ";
+            if (searchString.trim().length > 0)
+                selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME} LIKE '$searchString%'";
+            selectQuery += " ORDER BY A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME} COLLATE NOCASE ASC ";
+
+           
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
+
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+                    dataList.add(dataItem);
+
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
+
+     static Future<OpportunityTeam?> GetOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id) async {
+        OpportunityTeam? dataItem ;
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} D ON A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
+
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
 
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecordByUid()", ex);
-    //         throw ex;
-    //     }
-    //     return dataItem;
-    // }
+     static Future<OpportunityTeam?> GetOpportunityTeamRecordByUid(DatabaseHandler databaseHandler,  String uid) async {
+        OpportunityTeam? dataItem ;
+        try {
 
-    //  static OpportunityTeam GetMasterOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id) {
-    //     OpportunityTeam dataItem = null;
-    //     try {
-    //         id = Globals.TryParseLongForDBId(id);
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} D ON A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTEAM_UID} = '$uid'";
+            //selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            //selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
 
-    //         String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " D ON A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " = D." + ColumnsBase.KEY_ID;
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID + " = " + id;
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    //         selectQuery += " AND A." + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+           
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
 
-    //                 dataItem.setOpportunityName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME)));
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
 
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetMasterOpportunityTeamRecord()", ex);
-    //         throw ex;
-    //     }
-    //     return dataItem;
-    // }
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetOpportunityTeamRecordByUid()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 
-    //  static long AddOpportunityTeamRecord(DatabaseHandler databaseHandler,  OpportunityTeam dataItem) {
-    //     long id = 0;
-    //     try {
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         ContentValues values = new ContentValues();
-    //         if (dataItem.getOpportunityTeamID() != null && !dataItem.getOpportunityTeamID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID, dataItem.getOpportunityTeamID());
-    //         if (dataItem.getOpportunityTeamCode() != null && !dataItem.getOpportunityTeamCode().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE, dataItem.getOpportunityTeamCode());
-    //         if (dataItem.getOpportunityID() != null && !dataItem.getOpportunityID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID, dataItem.getOpportunityID());
-    //         if (dataItem.getOpportunityTeamAppUserID() != null && !dataItem.getOpportunityTeamAppUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID, dataItem.getOpportunityTeamAppUserID());
-    //         if (dataItem.getDescription() != null && !dataItem.getDescription().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION, dataItem.getDescription());
-    //         if (dataItem.getAppUserName() != null && !dataItem.getAppUserName().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME, dataItem.getAppUserName());
-    //         if (dataItem.getDesignation() != null && !dataItem.getDesignation().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION, dataItem.getDesignation());
-    //         if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY, dataItem.getCreatedBy());
-    //         if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON, dataItem.getCreatedOn());
-    //         if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY, dataItem.getModifiedBy());
-    //         if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON, dataItem.getModifiedOn());
-    //         if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE, dataItem.getIsActive());
-    //         if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_UID, dataItem.getUid());
-    //         if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID, dataItem.getAppUserGroupID());
-    //         if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID, dataItem.getAppUserID());
-    //         if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED, dataItem.getIsArchived());
-    //         if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED, dataItem.getIsDeleted());
-    //         if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-    //             values.put(ColumnsBase.KEY_ID, dataItem.getId());
-    //         if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-    //             values.put(ColumnsBase.KEY_ISDIRTY, dataItem.getIsDirty());
-    //         if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-    //             values.put(ColumnsBase.KEY_ISDELETED, dataItem.getIsDeleted1());
-    //         if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-    //             values.put(ColumnsBase.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-    //         if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-    //             values.put(ColumnsBase.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-    //         if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_SCREATEDON, dataItem.getSCreatedOn());
-    //         if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-    //         if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-    //             values.put(ColumnsBase.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-    //         if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-    //             values.put(ColumnsBase.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-    //         if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-    //         values.put(ColumnsBase.KEY_UPSYNCINDEX, 0);
-    //         values.put(ColumnsBase.KEY_ISACTIVE, "true");
-    //         values.put(ColumnsBase.KEY_ISDELETED, "false");
+     static Future<OpportunityTeam?> GetMasterOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id) async {
+        OpportunityTeam? dataItem;
+        try {
+            id = Globals.tryParseLongForDBId(id);
 
-    //         id = db.insert(TablesBase.TABLE_OPPORTUNITYTEAM, null, values);
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "DatabaseHandler:AddOpportunityTeamRecord()", ex);
-    //         throw ex;
-    //     }
-    //     return id;
-    // }
+            String selectQuery = "SELECT A.* " + ",D." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME;
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} D ON A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} = D.${ColumnsBase.KEY_ID}";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID} = $id";
+            selectQuery += " AND A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND A.${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
 
-    //  static long UpdateOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id1, OpportunityTeam dataItem) {
-    //     long id = 0;
-    //     try {
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         ContentValues values = new ContentValues();
-    //         if (dataItem.getOpportunityTeamID() != null && !dataItem.getOpportunityTeamID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID, dataItem.getOpportunityTeamID());
-    //         if (dataItem.getOpportunityTeamCode() != null && !dataItem.getOpportunityTeamCode().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE, dataItem.getOpportunityTeamCode());
-    //         if (dataItem.getOpportunityID() != null && !dataItem.getOpportunityID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID, dataItem.getOpportunityID());
-    //         if (dataItem.getOpportunityTeamAppUserID() != null && !dataItem.getOpportunityTeamAppUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID, dataItem.getOpportunityTeamAppUserID());
-    //         if (dataItem.getDescription() != null && !dataItem.getDescription().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION, dataItem.getDescription());
-    //         if (dataItem.getAppUserName() != null && !dataItem.getAppUserName().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME, dataItem.getAppUserName());
-    //         if (dataItem.getDesignation() != null && !dataItem.getDesignation().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION, dataItem.getDesignation());
-    //         if (dataItem.getCreatedBy() != null && !dataItem.getCreatedBy().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY, dataItem.getCreatedBy());
-    //         if (dataItem.getCreatedOn() != null && !dataItem.getCreatedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON, dataItem.getCreatedOn());
-    //         if (dataItem.getModifiedBy() != null && !dataItem.getModifiedBy().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY, dataItem.getModifiedBy());
-    //         if (dataItem.getModifiedOn() != null && !dataItem.getModifiedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON, dataItem.getModifiedOn());
-    //         if (dataItem.getIsActive() != null && !dataItem.getIsActive().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE, dataItem.getIsActive());
-    //         if (dataItem.getUid() != null && !dataItem.getUid().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_UID, dataItem.getUid());
-    //         if (dataItem.getAppUserGroupID() != null && !dataItem.getAppUserGroupID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID, dataItem.getAppUserGroupID());
-    //         if (dataItem.getAppUserID() != null && !dataItem.getAppUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID, dataItem.getAppUserID());
-    //         if (dataItem.getIsArchived() != null && !dataItem.getIsArchived().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED, dataItem.getIsArchived());
-    //         if (dataItem.getIsDeleted() != null && !dataItem.getIsDeleted().equals("null"))
-    //             values.put(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED, dataItem.getIsDeleted());
-    //         if (dataItem.getId() != null && !dataItem.getId().equals("null"))
-    //             values.put(ColumnsBase.KEY_ID, dataItem.getId());
-    //         if (dataItem.getIsDirty() != null && !dataItem.getIsDirty().equals("null"))
-    //             values.put(ColumnsBase.KEY_ISDIRTY, dataItem.getIsDirty());
-    //         if (dataItem.getIsDeleted1() != null && !dataItem.getIsDeleted1().equals("null"))
-    //             values.put(ColumnsBase.KEY_ISDELETED, dataItem.getIsDeleted1());
-    //         if (dataItem.getUpSyncMessage() != null && !dataItem.getUpSyncMessage().equals("null"))
-    //             values.put(ColumnsBase.KEY_UPSYNCMESSAGE, dataItem.getUpSyncMessage());
-    //         if (dataItem.getDownSyncMessage() != null && !dataItem.getDownSyncMessage().equals("null"))
-    //             values.put(ColumnsBase.KEY_DOWNSYNCMESSAGE, dataItem.getDownSyncMessage());
-    //         if (dataItem.getSCreatedOn() != null && !dataItem.getSCreatedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_SCREATEDON, dataItem.getSCreatedOn());
-    //         if (dataItem.getSModifiedOn() != null && !dataItem.getSModifiedOn().equals("null"))
-    //             values.put(ColumnsBase.KEY_SMODIFIEDON, dataItem.getSModifiedOn());
-    //         if (dataItem.getCreatedByUser() != null && !dataItem.getCreatedByUser().equals("null"))
-    //             values.put(ColumnsBase.KEY_CREATEDBYUSER, dataItem.getCreatedByUser());
-    //         if (dataItem.getModifiedByUser() != null && !dataItem.getModifiedByUser().equals("null"))
-    //             values.put(ColumnsBase.KEY_MODIFIEDBYUSER, dataItem.getModifiedByUser());
-    //         if (dataItem.getOwnerUserID() != null && !dataItem.getOwnerUserID().equals("null"))
-    //             values.put(ColumnsBase.KEY_OWNERUSERID, dataItem.getOwnerUserID());
-    //         if (dataItem.getUpSyncIndex() != null && !dataItem.getUpSyncIndex().equals("null"))
-    //             values.put(ColumnsBase.KEY_UPSYNCINDEX, dataItem.getUpSyncIndex());
+         
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
 
-    //         id = db.update(TablesBase.TABLE_OPPORTUNITYTEAM, values, ColumnsBase.KEY_ID + " = " + id1, null);
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "DatabaseHandler:UpdateOpportunityTeamRecord()", ex);
-    //         throw ex;
-    //     }
-    //     return id;
-    // }
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
 
-    //  static long DeleteOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id1) {
-    //     long id = 0;
-    //     try {
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         id = db.delete(TablesBase.TABLE_OPPORTUNITYTEAM, ColumnsBase.KEY_ID + " = " + id1, null);
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "DatabaseHandler:DeleteOpportunityTeamRecord()", ex);
-    //         throw ex;
-    //     }
-    //     return id;
-    // }
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
 
-    //  static String GetServerId(DatabaseHandler databaseHandler,  String id) {
-    //     String serverId = "-1";
-    //     try {
-    //         id = Globals.TryParseLongForDBId(id);
 
-    //         String selectQuery = "SELECT A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " = " + id;
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetMasterOpportunityTeamRecord()", ex);
+            throw ex;
+        }
+        return dataItem;
+    }
 
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             serverId = cursor.getString(0);
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetServerId()", ex);
-    //         throw ex;
-    //     }
-    //     return serverId;
-    // }
+     static Future<int> AddOpportunityTeamRecord(DatabaseHandler databaseHandler,  OpportunityTeam dataItem) async {
+        int id = 0;
+        try {
+            final db =  await databaseHandler.database;
+Map<String, dynamic> values = Map<String, dynamic>();
 
-    //  static String GetLocalId(DatabaseHandler databaseHandler,  String id) {
-    //     String localId = "";
-    //     try {
+if (dataItem.opportunityTeamID != null && dataItem.opportunityTeamID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID] = dataItem.opportunityTeamID;
+}
 
-    //         id = Globals.TryParseLongForDBId(id);
+if (dataItem.opportunityTeamCode != null && dataItem.opportunityTeamCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE] = dataItem.opportunityTeamCode;
+}
 
-    //         String selectQuery = "SELECT A." + ColumnsBase.KEY_ID;
-    //         selectQuery += " FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " A ";
-    //         selectQuery += " WHERE A." + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID + " = " + id;
+if (dataItem.opportunityID != null && dataItem.opportunityID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID] = dataItem.opportunityID;
+}
 
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             localId = cursor.getString(0);
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetLocalId()", ex);
-    //         throw ex;
-    //     }
-    //     return localId;
-    // }
+if (dataItem.opportunityTeamAppUserID != null && dataItem.opportunityTeamAppUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID] = dataItem.opportunityTeamAppUserID;
+}
 
-    //  static List<OpportunityTeam> GetOpportunityTeamUpSyncRecords(DatabaseHandler databaseHandler,  String changeType) {
-    //     List<OpportunityTeam> dataList = new ArrayList<OpportunityTeam>();
-    //     try {
-    //         String selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-    //         if (changeType.equals(AppConstant.DB_RECORD_NEW_OR_MODIFIED)) {
-    //             selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND "  + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-    //         }
-    //     /*    if (changeType.equals(AppConstant.DB_RECORD_NEW_OR_MODIFIED)) {
-    //             selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'false' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-    //         } else if (changeType.equals(AppConstant.DB_RECORD_DELETED)) {
-    //             selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'true' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
-    //         }*/
-    //         selectQuery += " AND " + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    //         selectQuery += " AND " + ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-    //         selectQuery += " AND " + ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID + " IN (SELECT  " + ColumnsBase.KEY_ID + " FROM " + TablesBase.TABLE_OPPORTUNITY + " WHERE coalesce(" + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID + ",'') <> '')";
+if (dataItem.description != null && dataItem.description != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION] = dataItem.description;
+}
 
-    //         SQLiteDatabase db = databaseHandler.getWritableDatabase();
-    //         Cursor cursor = db.rawQuery(selectQuery, null);
-    //         if (cursor.moveToFirst()) {
-    //             do {
-    //                 OpportunityTeam dataItem = new OpportunityTeam();
-    //                 dataItem.setOpportunityTeamID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID)));
-    //                 dataItem.setOpportunityTeamCode(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE)));
-    //                 dataItem.setOpportunityID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID)));
-    //                 dataItem.setOpportunityTeamAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID)));
-    //                 dataItem.setDescription(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION)));
-    //                 dataItem.setAppUserName(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME)));
-    //                 dataItem.setDesignation(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION)));
-    //                 dataItem.setCreatedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY)));
-    //                 dataItem.setCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON)));
-    //                 dataItem.setModifiedBy(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY)));
-    //                 dataItem.setModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON)));
-    //                 dataItem.setIsActive(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE)));
-    //                 dataItem.setUid(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_UID)));
-    //                 dataItem.setAppUserGroupID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID)));
-    //                 dataItem.setAppUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID)));
-    //                 dataItem.setIsArchived(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED)));
-    //                 dataItem.setIsDeleted(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED)));
+if (dataItem.appUserName != null && dataItem.appUserName != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME] = dataItem.appUserName;
+}
 
-    //                 dataItem.setId(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ID)));
-    //                 dataItem.setIsDirty(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDIRTY)));
-    //                 dataItem.setIsDeleted1(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_ISDELETED)));
-    //                 dataItem.setUpSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_UPSYNCMESSAGE)));
-    //                 dataItem.setDownSyncMessage(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_DOWNSYNCMESSAGE)));
-    //                 dataItem.setSCreatedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SCREATEDON)));
-    //                 dataItem.setSModifiedOn(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_SMODIFIEDON)));
-    //                 dataItem.setCreatedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_CREATEDBYUSER)));
-    //                 dataItem.setModifiedByUser(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_MODIFIEDBYUSER)));
-    //                 dataItem.setOwnerUserID(cursor.getString(cursor.getColumnIndex(ColumnsBase.KEY_OWNERUSERID)));
+if (dataItem.designation != null && dataItem.designation != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION] = dataItem.designation;
+}
 
-    //                 dataList.add(dataItem);
-    //             } while (cursor.moveToNext());
-    //         }
-    //         cursor.close();
-    //         //db.close();
-    //     } catch ( ex) {
-    //         Globals.Handle( "OpportunityTeamDataHandlerBase:GetOpportunityTeamUpSyncRecords()", ex);
-    //         throw ex;
-    //     }
-    //     return dataList;
-    // }
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY] = dataItem.createdBy;
+}
+
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON] = dataItem.createdOn;
+}
+
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY] = dataItem.modifiedBy;
+}
+
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON] = dataItem.modifiedOn;
+}
+
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE] = dataItem.isActive;
+}
+
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_UID] = dataItem.uid;
+}
+
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID] = dataItem.appUserID;
+}
+
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED] = dataItem.isArchived;
+}
+
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED] = dataItem.isDeleted;
+}
+
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+values[ColumnsBase.KEY_UPSYNCINDEX] = 0;
+values[ColumnsBase.KEY_ISACTIVE] = "true";
+values[ColumnsBase.KEY_ISDELETED] = "false";
+
+int id = await db.insert(TablesBase.TABLE_OPPORTUNITYTEAM, values);
+
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:AddOpportunityTeamRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> UpdateOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id1, OpportunityTeam dataItem) async {
+        int id = 0;
+        try {
+             final db =  await databaseHandler.database;
+Map<String, dynamic> values = Map<String, dynamic>();
+
+if (dataItem.opportunityTeamID != null && dataItem.opportunityTeamID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID] = dataItem.opportunityTeamID;
+}
+
+if (dataItem.opportunityTeamCode != null && dataItem.opportunityTeamCode != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE] = dataItem.opportunityTeamCode;
+}
+
+if (dataItem.opportunityID != null && dataItem.opportunityID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID] = dataItem.opportunityID;
+}
+
+if (dataItem.opportunityTeamAppUserID != null && dataItem.opportunityTeamAppUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID] = dataItem.opportunityTeamAppUserID;
+}
+
+if (dataItem.description != null && dataItem.description != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION] = dataItem.description;
+}
+
+if (dataItem.appUserName != null && dataItem.appUserName != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME] = dataItem.appUserName;
+}
+
+if (dataItem.designation != null && dataItem.designation != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION] = dataItem.designation;
+}
+
+if (dataItem.createdBy != null && dataItem.createdBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY] = dataItem.createdBy;
+}
+
+if (dataItem.createdOn != null && dataItem.createdOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON] = dataItem.createdOn;
+}
+
+if (dataItem.modifiedBy != null && dataItem.modifiedBy != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY] = dataItem.modifiedBy;
+}
+
+if (dataItem.modifiedOn != null && dataItem.modifiedOn != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDON] = dataItem.modifiedOn;
+}
+
+if (dataItem.isActive != null && dataItem.isActive != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE] = dataItem.isActive;
+}
+
+if (dataItem.uid != null && dataItem.uid != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_UID] = dataItem.uid;
+}
+
+if (dataItem.appUserGroupID != null && dataItem.appUserGroupID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID] = dataItem.appUserGroupID;
+}
+
+if (dataItem.appUserID != null && dataItem.appUserID != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID] = dataItem.appUserID;
+}
+
+if (dataItem.isArchived != null && dataItem.isArchived != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED] = dataItem.isArchived;
+}
+
+if (dataItem.isDeleted != null && dataItem.isDeleted != "null") {
+  values[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED] = dataItem.isDeleted;
+}
+
+if (dataItem.id != null && dataItem.id != "null") {
+  values[ColumnsBase.KEY_ID] = dataItem.id;
+}
+
+if (dataItem.isDirty != null && dataItem.isDirty != "null") {
+  values[ColumnsBase.KEY_ISDIRTY] = dataItem.isDirty;
+}
+
+if (dataItem.isDeleted1 != null && dataItem.isDeleted1 != "null") {
+  values[ColumnsBase.KEY_ISDELETED] = dataItem.isDeleted1;
+}
+
+if (dataItem.upSyncMessage != null && dataItem.upSyncMessage != "null") {
+  values[ColumnsBase.KEY_UPSYNCMESSAGE] = dataItem.upSyncMessage;
+}
+
+if (dataItem.downSyncMessage != null && dataItem.downSyncMessage != "null") {
+  values[ColumnsBase.KEY_DOWNSYNCMESSAGE] = dataItem.downSyncMessage;
+}
+
+if (dataItem.sCreatedOn != null && dataItem.sCreatedOn != "null") {
+  values[ColumnsBase.KEY_SCREATEDON] = dataItem.sCreatedOn;
+}
+
+if (dataItem.sModifiedOn != null && dataItem.sModifiedOn != "null") {
+  values[ColumnsBase.KEY_SMODIFIEDON] = dataItem.sModifiedOn;
+}
+
+if (dataItem.createdByUser != null && dataItem.createdByUser != "null") {
+  values[ColumnsBase.KEY_CREATEDBYUSER] = dataItem.createdByUser;
+}
+
+if (dataItem.modifiedByUser != null && dataItem.modifiedByUser != "null") {
+  values[ColumnsBase.KEY_MODIFIEDBYUSER] = dataItem.modifiedByUser;
+}
+
+if (dataItem.ownerUserID != null && dataItem.ownerUserID != "null") {
+  values[ColumnsBase.KEY_OWNERUSERID] = dataItem.ownerUserID;
+}
+
+if(dataItem.upSyncIndex != null && dataItem.upSyncIndex != "null") {
+
+  values[ColumnsBase.KEY_UPSYNCINDEX] = dataItem.upSyncIndex;
+
+}
+           
+
+            id = await  db.update(TablesBase.TABLE_OPPORTUNITYTEAM, values, where: "${ColumnsBase.KEY_ID} = $id1", whereArgs: null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:UpdateOpportunityTeamRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<int> DeleteOpportunityTeamRecord(DatabaseHandler databaseHandler,  String id1)async {
+        int id = 0;
+        try {
+            final db = await databaseHandler.database;
+            id = await db.delete(TablesBase.TABLE_OPPORTUNITYTEAM,  where: "${ColumnsBase.KEY_ID} = $id1", whereArgs:  null);
+            //db.close();
+        } catch ( ex) {
+            Globals.handleException( "DatabaseHandler:DeleteOpportunityTeamRecord()", ex);
+            throw ex;
+        }
+        return id;
+    }
+
+     static Future<String> GetServerId(DatabaseHandler databaseHandler,  String id)async {
+        String serverId = "-1";
+        try {
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID}";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_ID} = $id";
+
+            
+            final db = await  databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+            if (result.length > 0) {
+                serverId = result[0][ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetServerId()", ex);
+            throw ex;
+        }
+        return serverId;
+    }
+
+     static Future<String> GetLocalId(DatabaseHandler databaseHandler,  String id) async {
+        String localId = "";
+        try {
+
+            id = Globals.tryParseLongForDBId(id);
+
+            String selectQuery = "SELECT A.${ColumnsBase.KEY_ID}";
+            selectQuery += " FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} A ";
+            selectQuery += " WHERE A.${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID} = $id";
+
+            final db = await  databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+            if (result.length > 0) {
+                localId = result[0][ColumnsBase.KEY_ID];
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetLocalId()", ex);
+            throw ex;
+        }
+        return localId;
+    }
+
+     static Future<List<OpportunityTeam>> GetOpportunityTeamUpSyncRecords(DatabaseHandler databaseHandler,  String changeType) async {
+        List<OpportunityTeam> dataList = [];
+        try {
+            String selectQuery = "SELECT * FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < " + Globals.SyncIndex.toString();
+            if (changeType == (AppConstants.DB_RECORD_NEW_OR_MODIFIED)) {
+                selectQuery = "SELECT * FROM ${TablesBase.TABLE_OPPORTUNITYTEAM} WHERE ${ColumnsBase.KEY_ISDIRTY} = 'true' AND ${ColumnsBase.KEY_UPSYNCINDEX} < " + Globals.SyncIndex.toString();
+            }
+        /*    if (changeType.equals(AppConstant.DB_RECORD_NEW_OR_MODIFIED)) {
+                selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'false' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
+            } else if (changeType.equals(AppConstant.DB_RECORD_DELETED)) {
+                selectQuery = "SELECT * FROM " + TablesBase.TABLE_OPPORTUNITYTEAM + " WHERE " + ColumnsBase.KEY_ISDIRTY + " = 'true' AND " + ColumnsBase.KEY_ISDELETED + " = 'true' " + " AND " + ColumnsBase.KEY_UPSYNCINDEX + " < " + Globals.SyncIndex;
+            }*/
+            selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+            selectQuery += " AND ${ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+            selectQuery += " AND ${ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYID} IN (SELECT  ${ColumnsBase.KEY_ID} FROM ${TablesBase.TABLE_OPPORTUNITY} WHERE coalesce(${ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYID},'') <> '')";
+
+           
+   final db = await databaseHandler.database;
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            for(var element in result){
+                    OpportunityTeam dataItem = new OpportunityTeam();
+                    dataItem.opportunityTeamID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMID];
+                    dataItem.opportunityTeamCode = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMCODE];
+                    dataItem.opportunityTeamAppUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_OPPORTUNITYTEAMAPPUSERID];
+                    dataItem.description = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESCRIPTION];
+                    dataItem.appUserName = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERNAME];
+                    dataItem.designation = element[ColumnsBase.KEY_OPPORTUNITYTEAM_DESIGNATION];
+                    dataItem.createdBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDBY];
+                    dataItem.createdOn = element[ColumnsBase.KEY_OPPORTUNITYTEAM_CREATEDON];
+                    dataItem.modifiedBy = element[ColumnsBase.KEY_OPPORTUNITYTEAM_MODIFIEDBY];
+                    dataItem.isActive = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISACTIVE];
+                    dataItem.uid = element[ColumnsBase.KEY_OPPORTUNITYTEAM_UID];
+                    dataItem.appUserGroupID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERGROUPID];
+                    dataItem.appUserID = element[ColumnsBase.KEY_OPPORTUNITYTEAM_APPUSERID];
+                    dataItem.isArchived = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISARCHIVED];
+                    dataItem.isDeleted = element[ColumnsBase.KEY_OPPORTUNITYTEAM_ISDELETED];
+                    dataItem.opportunityName = element[ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME];
+
+                         dataItem.id = element[ColumnsBase.KEY_ID];
+        dataItem.isDirty = element[ColumnsBase.KEY_ISDIRTY];
+        dataItem.isDeleted1 = element[ColumnsBase.KEY_ISDELETED];
+        dataItem.upSyncMessage = element[ColumnsBase.KEY_UPSYNCMESSAGE];
+        dataItem.downSyncMessage = element[ColumnsBase.KEY_DOWNSYNCMESSAGE];
+        dataItem.sCreatedOn = element[ColumnsBase.KEY_SCREATEDON];
+        dataItem.sModifiedOn = element[ColumnsBase.KEY_SMODIFIEDON];
+        dataItem.createdByUser = element[ColumnsBase.KEY_CREATEDBYUSER];
+        dataItem.modifiedByUser = element[ColumnsBase.KEY_MODIFIEDBYUSER];
+        dataItem.ownerUserID = element[ColumnsBase.KEY_OWNERUSERID];
+
+                    dataList.add(dataItem);
+
+            }
+           
+        } catch ( ex) {
+            Globals.handleException( "OpportunityTeamDataHandlerBase:GetOpportunityTeamUpSyncRecords()", ex);
+            throw ex;
+        }
+        return dataList;
+    }
 
 
 }
