@@ -47,6 +47,9 @@ import '../Handlers/OpportunityHandlers/OpportunityMeasureDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityMediaDataHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityNameDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityPermissionDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityProductDetailAttributeDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityStageTypeDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityTeamDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/AppUserLocationDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ChatUserAndGroupDataHandler.dart';
 import '../Handlers/OtherHandlers/ChatUserAndGroupDataHandlerBase.dart';
@@ -76,8 +79,22 @@ import '../Handlers/OtherHandlers/NoteMediaDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/NotePermissionDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/NotificationAssignmentDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/NotificationDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/PerformanceSummaryDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/PhoneTypeDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ProductCategoryDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ProductDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ReimbursementTypeDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ReminderDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ResourceDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ServiceInvoiceDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ServiceInvoiceDetailDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/SyncDataHandler.dart';
+import '../Handlers/OtherHandlers/TagDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TagGroupDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TerritoryDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TimeZoneDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TravelPurposeDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/UnitDataHandlerBase.dart';
 import '../models/AccountModels/AccountCategory.dart';
 import '../models/AccountModels/AccountSegment.dart';
 import '../models/AccountModels/AccountStatus.dart';
@@ -90,6 +107,8 @@ import '../models/OpportunityModels/OpportunityFulfillmentStatus.dart';
 import '../models/OpportunityModels/OpportunityMeasure.dart';
 import '../models/OpportunityModels/OpportunityName.dart';
 import '../models/OpportunityModels/OpportunityProductDetailAttribute.dart';
+import '../models/OpportunityModels/OpportunityStatus.dart';
+import '../models/OpportunityModels/OpportunityType.dart';
 import '../models/OtherModels/AppFeatureField.dart';
 import '../models/OtherModels/AppFeatureGroup.dart';
 import '../models/OtherModels/AppLog.dart';
@@ -123,6 +142,15 @@ import '../models/OtherModels/LeadSource.dart';
 import '../models/OtherModels/ModeOfTravel.dart';
 import '../models/OtherModels/Notification.dart';
 import '../models/OtherModels/NotificationAssignment.dart';
+import '../models/OtherModels/PerformanceSummary.dart';
+import '../models/OtherModels/PhoneType.dart';
+import '../models/OtherModels/Product.dart';
+import '../models/OtherModels/ProductAuxiliary.dart';
+import '../models/OtherModels/ProductCategory.dart';
+import '../models/OtherModels/ProductInstallation.dart';
+import '../models/OtherModels/ProductInstallationDetail.dart';
+import '../models/OtherModels/ProductMedia.dart';
+import '../models/OtherModels/ReimbursementType.dart';
 import '../models/OtherModels/Reminder.dart';
 
 import '../AppConstants.dart';
@@ -182,6 +210,14 @@ import '../models/OtherModels/NoteMedia.dart';
 import '../models/OtherModels/NotePermission.dart';
 import '../models/OtherModels/Reimbursement.dart';
 import '../models/OtherModels/ReimbursementDetail.dart';
+import '../models/OtherModels/Resource.dart';
+import '../models/OtherModels/ServiceInvoice.dart';
+import '../models/OtherModels/ServiceInvoiceDetail.dart';
+import '../models/OtherModels/TagGroup.dart';
+import '../models/OtherModels/Territory.dart';
+import '../models/OtherModels/TimeZone.dart';
+import '../models/OtherModels/TravelPurpose.dart';
+import '../models/OtherModels/Unit.dart';
 import 'JsonCopier.dart';
 import 'Utility.dart';
 
@@ -505,7 +541,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityProduct
-            List<String> newOrModifiedOpportunityIdList =await  OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsOpportunityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<String> newOrModifiedOpportunityIdList =await  OpportunityProductDataHandlerBase.GetOpportunityProductupSyncRecordsOpportunityIds(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityIdList.length > 0) {
                 Logger.d("New Or Modified OpportunityProducts - " + newOrModifiedOpportunityIdList.length.toString());
                 totalRecordsToupSync += newOrModifiedOpportunityIdList.length;
@@ -517,11 +553,11 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
                     if (masterOpportunityId !=("") && !upSyncList.contains("OpportunityProduct-" + masterOpportunityId)) {
 
-                        List<OpportunityProduct> opportunityProductListOriginal = await OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProduct> opportunityProductListOriginal = await OpportunityProductDataHandlerBase.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
                         List<OpportunityProductDetail> opportunityProductDetailListOriginal = await OpportunityProductDetailDataHandler.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
 
-                        List<OpportunityProduct> opportunityProductList = await OpportunityProductDataHandler.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
-                        List<OpportunityProductDetail> opportunityProductDetailList =await  OpportunityProductDetailDataHandler.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProduct> opportunityProductList = await OpportunityProductDataHandlerBase.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
+                        List<OpportunityProductDetail> opportunityProductDetailList =await  OpportunityProductDataHandlerBase.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
 
                         //String serverOpportunityId = OpportunityDataHandler.getServerId(dbHandler,  opportunityId);
 
@@ -1513,17 +1549,17 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
     }
 
 
-   void runDownSync() {
+   Future<void> runDownSync() async {
         try {
             LogMessage("Current download: " + currentdownload);
 
             if (currentdownload == "") {
 
-                AppSyncItem amiSync = SyncDataHandler.GetNextSyncRecord(dbHandler);
+                AppSyncItem? amiSync = await  SyncDataHandler.GetNextSyncRecord(dbHandler);
 
                 if (amiSync != null) {
 
-                    currentdownload = amiSync.getTableName();
+                    currentdownload = amiSync.tableName!;
 
                     if (currentdownload==("Account")) {
                         downSyncAccounts(currentdownload);
@@ -1787,7 +1823,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                 } else {
                     currentdownload = "MaxDates";
                      downSyncMaxDates();
-                    if (isFirst downloadCompleted) {
+                    if (isFirstdownloadCompleted) {
                         if (syncCount == 5)
                              downSyncIDs("Account");
                         if (syncCount == 10)
@@ -1802,17 +1838,17 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         }
                         syncCount++;
                     }
-                    isFirst downloadCompleted = true;
+                    isFirstdownloadCompleted = true;
                 }
 
             }
         } catch ( ex) {
-            Globals.Handle( "SyncService:Run downSync()", ex);
+            Globals.handle( "SyncService:Run downSync()", ex);
         }
     }
 
 
-    void upSyncAccountCategoryMapping(AccountCategoryMapping accountCategoryMapping) async {
+void upSyncAccountCategoryMapping(AccountCategoryMapping accountCategoryMapping) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN.isNotEmpty) {
       String url = AppConstants.API_VERSION_URL + '/accountcategorymapping';
@@ -9702,7 +9738,7 @@ Future<void> downSyncChatUserGroupMembers(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetChatUserGroupMemberPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -9736,20 +9772,20 @@ Future<void> downSyncChatUserGroupMembers(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    chatUserGroupMember = ChatUserGroupMemberDataHandlerBase.GetMasterChatUserGroupMemberRecord(dbHandler, context, id);
+                    chatUserGroupMember = ChatUserGroupMemberDataHandlerBase.GetMasterChatUserGroupMemberRecord(dbHandler,  id);
                   }
 
                   if (chatUserGroupMember == null && doDoubleCheck && uid != null && uid != '') {
-                    chatUserGroupMember = ChatUserGroupMemberDataHandlerBase.GetChatUserGroupMemberRecordByUid(dbHandler, context, uid);
+                    chatUserGroupMember = ChatUserGroupMemberDataHandlerBase.GetChatUserGroupMemberRecordByUid(dbHandler,  uid);
                   }
 
                   if (chatUserGroupMember == null) {
                     chatUserGroupMember = ChatUserGroupMember();
-                    chatUserGroupMember = JSONCopier.CopyJsonDataToChatUserGroupMember(context, dbHandler, jsonObject, chatUserGroupMember, true);
-                    var rid = ChatUserGroupMemberDataHandler.AddChatUserGroupMemberRecord(dbHandler, context, chatUserGroupMember);
+                    chatUserGroupMember = JSONCopier.CopyJsonDataToChatUserGroupMember( dbHandler, jsonObject, chatUserGroupMember, true);
+                    var rid = ChatUserGroupMemberDataHandler.AddChatUserGroupMemberRecord(dbHandler,  chatUserGroupMember);
                   } else {
-                    chatUserGroupMember = JSONCopier.CopyJsonDataToChatUserGroupMember(context, dbHandler, jsonObject, chatUserGroupMember, false);
-                    var rid = ChatUserGroupMemberDataHandlerBase.UpdateChatUserGroupMemberRecord(dbHandler, context, chatUserGroupMember.id, chatUserGroupMember);
+                    chatUserGroupMember = JSONCopier.CopyJsonDataToChatUserGroupMember( dbHandler, jsonObject, chatUserGroupMember, false);
+                    var rid = ChatUserGroupMemberDataHandlerBase.UpdateChatUserGroupMemberRecord(dbHandler,  chatUserGroupMember.id, chatUserGroupMember);
                   }
                 }
               }
@@ -9795,7 +9831,7 @@ Future<void> downSyncCompetitors(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetCompetitorPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -9829,20 +9865,20 @@ Future<void> downSyncCompetitors(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    competitor = CompetitorDataHandlerBase.GetMasterCompetitorRecord(dbHandler, context, id);
+                    competitor = CompetitorDataHandlerBase.GetMasterCompetitorRecord(dbHandler,  id);
                   }
 
                   if (competitor == null && doDoubleCheck && uid != null && uid != '') {
-                    competitor = CompetitorDataHandlerBase.GetCompetitorRecordByUid(dbHandler, context, uid);
+                    competitor = CompetitorDataHandlerBase.GetCompetitorRecordByUid(dbHandler,  uid);
                   }
 
                   if (competitor == null) {
                     competitor = Competitor();
-                    competitor = JSONCopier.CopyJsonDataToCompetitor(context, dbHandler, jsonObject, competitor, true);
-                    var rid = CompetitorDataHandlerBase.AddCompetitorRecord(dbHandler, context, competitor);
+                    competitor = JSONCopier.CopyJsonDataToCompetitor( dbHandler, jsonObject, competitor, true);
+                    var rid = CompetitorDataHandlerBase.AddCompetitorRecord(dbHandler,  competitor);
                   } else {
-                    competitor = JSONCopier.CopyJsonDataToCompetitor(context, dbHandler, jsonObject, competitor, false);
-                    var rid = CompetitorDataHandlerBase.UpdateCompetitorRecord(dbHandler, context, competitor.id, competitor);
+                    competitor = JSONCopier.CopyJsonDataToCompetitor( dbHandler, jsonObject, competitor, false);
+                    var rid = CompetitorDataHandlerBase.UpdateCompetitorRecord(dbHandler,  competitor.id, competitor);
                   }
                 }
               }
@@ -9888,7 +9924,7 @@ Future<void> downSyncContacts(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -9922,20 +9958,20 @@ Future<void> downSyncContacts(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contact = ContactHandlerDataBase.GetMasterContactRecord(dbHandler, context, id);
+                    contact = ContactHandlerDataBase.GetMasterContactRecord(dbHandler,  id);
                   }
 
                   if (contact == null && doDoubleCheck && uid != null && uid != '') {
-                    contact = ContactHandlerDataBase.GetContactRecordByUid(dbHandler, context, uid);
+                    contact = ContactHandlerDataBase.GetContactRecordByUid(dbHandler,  uid);
                   }
 
                   if (contact == null) {
                     contact = Contact();
-                    contact = JSONCopier.CopyJsonDataToContact(context, dbHandler, jsonObject, contact, true);
-                    var rid = ContactHandlerDataBase.AddContactRecord(dbHandler, context, contact);
+                    contact = JSONCopier.CopyJsonDataToContact( dbHandler, jsonObject, contact, true);
+                    var rid = ContactHandlerDataBase.AddContactRecord(dbHandler,  contact);
                   } else {
-                    contact = JSONCopier.CopyJsonDataToContact(context, dbHandler, jsonObject, contact, false);
-                    var rid = ContactHandlerDataBase.UpdateContactRecord(dbHandler, context, contact.id, contact);
+                    contact = JSONCopier.CopyJsonDataToContact( dbHandler, jsonObject, contact, false);
+                    var rid = ContactHandlerDataBase.UpdateContactRecord(dbHandler,  contact.id, contact);
                   }
                 }
               }
@@ -9982,7 +10018,7 @@ Future<void> downSyncContactAlignments(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactAlignmentPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10016,20 +10052,20 @@ Future<void> downSyncContactAlignments(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contactAlignment = ContactAlignmentDataHandlerBase.GetMasterContactAlignmentRecord(dbHandler, context, id);
+                    contactAlignment = ContactAlignmentDataHandlerBase.GetMasterContactAlignmentRecord(dbHandler,  id);
                   }
 
                   if (contactAlignment == null && doDoubleCheck && uid != null && uid != '') {
-                    contactAlignment = ContactAlignmentDataHandlerBase.GetContactAlignmentRecordByUid(dbHandler, context, uid);
+                    contactAlignment = ContactAlignmentDataHandlerBase.GetContactAlignmentRecordByUid(dbHandler,  uid);
                   }
 
                   if (contactAlignment == null) {
                     contactAlignment = ContactAlignment();
-                    contactAlignment = JSONCopier.copyJsonDataToContactAlignment(context, dbHandler, jsonObject, contactAlignment, true);
-                    var rid = ContactAlignmentDataHandler.AddContactAlignmentRecord(dbHandler, context, contactAlignment);
+                    contactAlignment = JSONCopier.copyJsonDataToContactAlignment( dbHandler, jsonObject, contactAlignment, true);
+                    var rid = ContactAlignmentDataHandler.AddContactAlignmentRecord(dbHandler,  contactAlignment);
                   } else {
-                    contactAlignment = JSONCopier.copyJsonDataToContactAlignment(context, dbHandler, jsonObject, contactAlignment, false);
-                    var rid = ContactAlignmentDataHandlerBase.UpdateContactAlignmentRecord(dbHandler, context, contactAlignment.id, contactAlignment);
+                    contactAlignment = JSONCopier.copyJsonDataToContactAlignment( dbHandler, jsonObject, contactAlignment, false);
+                    var rid = ContactAlignmentDataHandlerBase.UpdateContactAlignmentRecord(dbHandler,  contactAlignment.id, contactAlignment);
                   }
                 }
               }
@@ -10075,7 +10111,7 @@ Future<void> downSyncContactCategories(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactCategoryPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10109,20 +10145,20 @@ Future<void> downSyncContactCategories(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contactCategory = ContactCategoryDataHandlerBase.GetMasterContactCategoryRecord(dbHandler, context, id);
+                    contactCategory = ContactCategoryDataHandlerBase.GetMasterContactCategoryRecord(dbHandler,  id);
                   }
 
                   if (contactCategory == null && doDoubleCheck && uid != null && uid != '') {
-                    contactCategory = ContactCategoryDataHandlerBase.GetContactCategoryRecordByUid(dbHandler, context, uid);
+                    contactCategory = ContactCategoryDataHandlerBase.GetContactCategoryRecordByUid(dbHandler,  uid);
                   }
 
                   if (contactCategory == null) {
                     contactCategory = ContactCategory();
-                    contactCategory = JSONCopier.CopyJsonDataToContactCategory(context, dbHandler, jsonObject, contactCategory, true);
-                    var rid = ContactCategoryDataHandler.AddContactCategoryRecord(dbHandler, context, contactCategory);
+                    contactCategory = JSONCopier.CopyJsonDataToContactCategory( dbHandler, jsonObject, contactCategory, true);
+                    var rid = ContactCategoryDataHandler.AddContactCategoryRecord(dbHandler,  contactCategory);
                   } else {
-                    contactCategory = JSONCopier.CopyJsonDataToContactCategory(context, dbHandler, jsonObject, contactCategory, false);
-                    var rid = ContactCategoryDataHandlerBase.UpdateContactCategoryRecord(dbHandler, context, contactCategory.id, contactCategory);
+                    contactCategory = JSONCopier.CopyJsonDataToContactCategory( dbHandler, jsonObject, contactCategory, false);
+                    var rid = ContactCategoryDataHandlerBase.UpdateContactCategoryRecord(dbHandler,  contactCategory.id, contactCategory);
                   }
                 }
               }
@@ -10170,7 +10206,7 @@ void downSyncContactMedia(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactMediaPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10204,21 +10240,21 @@ void downSyncContactMedia(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contactMedia = ContactMediaDataHandlerBase.GetMasterContactMediaRecord(dbHandler, context, id);
+                    contactMedia = ContactMediaDataHandlerBase.GetMasterContactMediaRecord(dbHandler,  id);
                   }
 
                   if (contactMedia == null && doDoubleCheck && uid != null && uid != '') {
-                    contactMedia = ContactMediaDataHandlerBase.GetContactMediaRecordByUid(dbHandler, context, uid);
+                    contactMedia = ContactMediaDataHandlerBase.GetContactMediaRecordByUid(dbHandler,  uid);
                   }
 
                   if (contactMedia == null) {
                     contactMedia = ContactMedia();
-                    contactMedia = JSONCopier.copyJsonDataToContactMedia(context, dbHandler, jsonObject, contactMedia, true);
+                    contactMedia = JSONCopier.copyJsonDataToContactMedia( dbHandler, jsonObject, contactMedia, true);
                     contactMedia.setIsUploaded('true');
-                    var rid = ContactMediaDataHandlerBase.AddContactMediaRecord(dbHandler, context, contactMedia);
+                    var rid = ContactMediaDataHandlerBase.AddContactMediaRecord(dbHandler,  contactMedia);
                   } else {
-                    contactMedia = JSONCopier.copyJsonDataToContactMedia(context, dbHandler, jsonObject, contactMedia, false);
-                    var rid = ContactMediaDataHandler.UpdateContactMediaRecord(dbHandler, context, contactMedia.id, contactMedia);
+                    contactMedia = JSONCopier.copyJsonDataToContactMedia( dbHandler, jsonObject, contactMedia, false);
+                    var rid = ContactMediaDataHandler.UpdateContactMediaRecord(dbHandler,  contactMedia.id, contactMedia);
                   }
                 }
               }
@@ -10258,12 +10294,13 @@ void downSyncContactMedia(String typeOfData) async {
     LogError('Error: SyncService:DownSyncContactMedia() 3-> ' + e.toString());
   }
 }
+
 void downSyncContactTitles(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContactTitlePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10297,20 +10334,20 @@ void downSyncContactTitles(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contactTitle = ContactTitleDataHandlerBase.GetMasterContactTitleRecord(dbHandler, context, id);
+                    contactTitle = ContactTitleDataHandlerBase.GetMasterContactTitleRecord(dbHandler,  id);
                   }
 
                   if (contactTitle == null && doDoubleCheck && uid != null && uid != '') {
-                    contactTitle = ContactTitleDataHandlerBase.GetContactTitleRecordByUid(dbHandler, context, uid);
+                    contactTitle = ContactTitleDataHandlerBase.GetContactTitleRecordByUid(dbHandler,  uid);
                   }
 
                   if (contactTitle == null) {
                     contactTitle = ContactTitle();
-                    contactTitle = JSONCopier.CopyJsonDataToContactTitle(context, dbHandler, jsonObject, contactTitle, true);
+                    contactTitle = JSONCopier.CopyJsonDataToContactTitle( dbHandler, jsonObject, contactTitle, true);
                     var rid = await ContactTitleDataHandlerBase.addContactTitleRecord(dbHandler, contactTitle);
                   } else {
-                    contactTitle = JSONCopier.CopyJsonDataToContactTitle(context, dbHandler, jsonObject, contactTitle, false);
-                    var rid = ContactTitleDataHandler.UpdateContactTitleRecord(dbHandler, context, contactTitle.id, contactTitle);
+                    contactTitle = JSONCopier.CopyJsonDataToContactTitle( dbHandler, jsonObject, contactTitle, false);
+                    var rid = ContactTitleDataHandler.UpdateContactTitleRecord(dbHandler,  contactTitle.id, contactTitle);
                   }
                 }
               }
@@ -10350,12 +10387,13 @@ void downSyncContactTitles(String typeOfData) async {
     LogError('Error: SyncService:DownSyncContactTitle() 3-> ' + e.toString());
   }
 }
+
 void downSyncContentTypes(String typeOfData) async {
   try {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetContentTypePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10389,20 +10427,20 @@ void downSyncContentTypes(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    contentType = ContentTypeDataHandlerBase.GetMasterContentTypeRecord(dbHandler, context, id);
+                    contentType = ContentTypeDataHandlerBase.GetMasterContentTypeRecord(dbHandler,  id);
                   }
 
                   if (contentType == null && doDoubleCheck && uid != null && uid != '') {
-                    contentType = ContentTypeDataHandlerBase.GetContentTypeRecordByUid(dbHandler, context, uid);
+                    contentType = ContentTypeDataHandlerBase.GetContentTypeRecordByUid(dbHandler,  uid);
                   }
 
                   if (contentType == null) {
                     contentType = ContentType();
-                    contentType = JSONCopier.copyJsonDataToContentType(context, dbHandler, jsonObject, contentType, true);
-                    var rid = ContentTypeDataHandlerBase.AddContentTypeRecord(dbHandler, context, contentType);
+                    contentType = JSONCopier.copyJsonDataToContentType( dbHandler, jsonObject, contentType, true);
+                    var rid = ContentTypeDataHandlerBase.AddContentTypeRecord(dbHandler,  contentType);
                   } else {
-                    contentType = JSONCopier.copyJsonDataToContentType(context, dbHandler, jsonObject, contentType, false);
-                    var rid = ContentTypeDataHandlerBase.UpdateContentTypeRecord(dbHandler, context, contentType.id, contentType);
+                    contentType = JSONCopier.copyJsonDataToContentType( dbHandler, jsonObject, contentType, false);
+                    var rid = ContentTypeDataHandlerBase.UpdateContentTypeRecord(dbHandler,  contentType.id, contentType);
                   }
                 }
               }
@@ -10448,7 +10486,7 @@ void downSyncCountries(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetCountryPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10482,20 +10520,20 @@ void downSyncCountries(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    country = CountryDataHandlerBase.GetMasterCountryRecord(dbHandler, context, id);
+                    country = CountryDataHandlerBase.GetMasterCountryRecord(dbHandler,  id);
                   }
 
                   if (country == null && doDoubleCheck && uid != null && uid != '') {
-                    country = CountryDataHandlerBase.GetCountryRecordByUid(dbHandler, context, uid);
+                    country = CountryDataHandlerBase.GetCountryRecordByUid(dbHandler,  uid);
                   }
 
                   if (country == null) {
                     country = Country();
-                    country = JSONCopier.CopyJsonDataToCountry(context, dbHandler, jsonObject, country, true);
-                    var rid = CountryDataHandlerBase.AddCountryRecord(dbHandler, context, country);
+                    country = JSONCopier.CopyJsonDataToCountry( dbHandler, jsonObject, country, true);
+                    var rid = CountryDataHandlerBase.AddCountryRecord(dbHandler,  country);
                   } else {
-                    country = JSONCopier.CopyJsonDataToCountry(context, dbHandler, jsonObject, country, false);
-                    var rid = CountryDataHandlerBase.UpdateCountryRecord(dbHandler, context, country.id, country);
+                    country = JSONCopier.CopyJsonDataToCountry( dbHandler, jsonObject, country, false);
+                    var rid = CountryDataHandlerBase.UpdateCountryRecord(dbHandler,  country.id, country);
                   }
                 }
               }
@@ -10542,7 +10580,7 @@ void downSyncCreditRatings(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetCreditRatingPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10576,20 +10614,20 @@ void downSyncCreditRatings(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    creditRating = CreditRatingDataHandlerBase.GetMasterCreditRatingRecord(dbHandler, context, id);
+                    creditRating = CreditRatingDataHandlerBase.GetMasterCreditRatingRecord(dbHandler,  id);
                   }
 
                   if (creditRating == null && doDoubleCheck && uid != null && uid != '') {
-                    creditRating = CreditRatingDataHandlerBase.GetCreditRatingRecordByUid(dbHandler, context, uid);
+                    creditRating = CreditRatingDataHandlerBase.GetCreditRatingRecordByUid(dbHandler,  uid);
                   }
 
                   if (creditRating == null) {
                     creditRating = CreditRating();
-                    creditRating = JSONCopier.CopyJsonDataToCreditRating(context, dbHandler, jsonObject, creditRating, true);
-                    var rid = CreditRatingDataHandlerBase.AddCreditRatingRecord(dbHandler, context, creditRating);
+                    creditRating = JSONCopier.CopyJsonDataToCreditRating( dbHandler, jsonObject, creditRating, true);
+                    var rid = CreditRatingDataHandlerBase.AddCreditRatingRecord(dbHandler,  creditRating);
                   } else {
-                    creditRating = JSONCopier.CopyJsonDataToCreditRating(context, dbHandler, jsonObject, creditRating, false);
-                    var rid = CreditRatingDataHandlerBase.UpdateCreditRatingRecord(dbHandler, context, creditRating.id, creditRating);
+                    creditRating = JSONCopier.CopyJsonDataToCreditRating( dbHandler, jsonObject, creditRating, false);
+                    var rid = CreditRatingDataHandlerBase.UpdateCreditRatingRecord(dbHandler,  creditRating.id, creditRating);
                   }
                 }
               }
@@ -10637,7 +10675,7 @@ void downSyncCurrencies(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetCurrencyPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10671,20 +10709,20 @@ void downSyncCurrencies(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    currency = CurrencyDataHandlerBase.GetMasterCurrencyRecord(dbHandler, context, id);
+                    currency = CurrencyDataHandlerBase.GetMasterCurrencyRecord(dbHandler,  id);
                   }
 
                   if (currency == null && doDoubleCheck && uid != null && uid != '') {
-                    currency = CurrencyDataHandlerBase.GetCurrencyRecordByUid(dbHandler, context, uid);
+                    currency = CurrencyDataHandlerBase.GetCurrencyRecordByUid(dbHandler,  uid);
                   }
 
                   if (currency == null) {
                     currency = Currency();
-                    currency = JSONCopier.CopyJsonDataToCurrency(context, dbHandler, jsonObject, currency, true);
-                    var rid = CurrencyDataHandlerBase.AddCurrencyRecord(dbHandler, context, currency);
+                    currency = JSONCopier.CopyJsonDataToCurrency( dbHandler, jsonObject, currency, true);
+                    var rid = CurrencyDataHandlerBase.AddCurrencyRecord(dbHandler,  currency);
                   } else {
-                    currency = JSONCopier.CopyJsonDataToCurrency(context, dbHandler, jsonObject, currency, false);
-                    var rid = CurrencyDataHandlerBase.UpdateCurrencyRecord(dbHandler, context, currency.id, currency);
+                    currency = JSONCopier.CopyJsonDataToCurrency( dbHandler, jsonObject, currency, false);
+                    var rid = CurrencyDataHandlerBase.UpdateCurrencyRecord(dbHandler,  currency.id, currency);
                   }
                 }
               }
@@ -10732,7 +10770,7 @@ void downSyncCustomerMeetings(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetCustomerMeetingPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10766,20 +10804,20 @@ void downSyncCustomerMeetings(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    customerMeeting = CustomerMeetingDataHandlerBase.GetMasterCustomerMeetingRecord(dbHandler, context, id);
+                    customerMeeting = CustomerMeetingDataHandlerBase.GetMasterCustomerMeetingRecord(dbHandler,  id);
                   }
 
                   if (customerMeeting == null && doDoubleCheck && uid != null && uid != '') {
-                    customerMeeting = CustomerMeetingDataHandlerBase.GetCustomerMeetingRecordByUid(dbHandler, context, uid);
+                    customerMeeting = CustomerMeetingDataHandlerBase.GetCustomerMeetingRecordByUid(dbHandler,  uid);
                   }
 
                   if (customerMeeting == null) {
                     customerMeeting = CustomerMeeting();
-                    customerMeeting = JSONCopier.copyJsonDataToCustomerMeeting(context, dbHandler, jsonObject, customerMeeting, true);
-                    var rid = CustomerMeetingDataHandlerBase.AddCustomerMeetingRecord(dbHandler, context, customerMeeting);
+                    customerMeeting = JSONCopier.copyJsonDataToCustomerMeeting( dbHandler, jsonObject, customerMeeting, true);
+                    var rid = CustomerMeetingDataHandlerBase.AddCustomerMeetingRecord(dbHandler,  customerMeeting);
                   } else {
-                    customerMeeting = JSONCopier.copyJsonDataToCustomerMeeting(context, dbHandler, jsonObject, customerMeeting, false);
-                    var rid = CustomerMeetingDataHandlerBase.UpdateCustomerMeetingRecord(dbHandler, context, customerMeeting.id, customerMeeting);
+                    customerMeeting = JSONCopier.copyJsonDataToCustomerMeeting( dbHandler, jsonObject, customerMeeting, false);
+                    var rid = CustomerMeetingDataHandlerBase.UpdateCustomerMeetingRecord(dbHandler,  customerMeeting.id, customerMeeting);
                   }
                 }
               }
@@ -10828,7 +10866,7 @@ void downSyncDepartments(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetDepartmentPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10862,20 +10900,20 @@ void downSyncDepartments(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    department = DepartmentDataHandler.GetMasterDepartmentRecord(dbHandler, context, id);
+                    department = DepartmentDataHandler.GetMasterDepartmentRecord(dbHandler,  id);
                   }
 
                   if (department == null && doDoubleCheck && uid != null && uid != '') {
-                    department = DepartmentDataHandler.GetDepartmentRecordByUid(dbHandler, context, uid);
+                    department = DepartmentDataHandler.GetDepartmentRecordByUid(dbHandler,  uid);
                   }
 
                   if (department == null) {
                     department = Department();
-                    department = JSONCopier.CopyJsonDataToDepartment(context, dbHandler, jsonObject, department, true);
-                    var rid = DepartmentDataHandler.AddDepartmentRecord(dbHandler, context, department);
+                    department = JSONCopier.CopyJsonDataToDepartment( dbHandler, jsonObject, department, true);
+                    var rid = DepartmentDataHandler.AddDepartmentRecord(dbHandler,  department);
                   } else {
-                    department = JSONCopier.CopyJsonDataToDepartment(context, dbHandler, jsonObject, department, false);
-                    var rid = DepartmentDataHandler.UpdateDepartmentRecord(dbHandler, context, department.id, department);
+                    department = JSONCopier.CopyJsonDataToDepartment( dbHandler, jsonObject, department, false);
+                    var rid = DepartmentDataHandler.UpdateDepartmentRecord(dbHandler,  department.id, department);
                   }
                 }
               }
@@ -10923,7 +10961,7 @@ void downSyncDesignations(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetDesignationPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -10957,20 +10995,20 @@ void downSyncDesignations(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    designation = DesignationDataHandlerBase.GetMasterDesignationRecord(dbHandler, context, id);
+                    designation = DesignationDataHandlerBase.GetMasterDesignationRecord(dbHandler,  id);
                   }
 
                   if (designation == null && doDoubleCheck && uid != null && uid != '') {
-                    designation =  await DesignationDataHandlerBase.GetDesignationRecordByUid(dbHandler, context, uid);
+                    designation =  await DesignationDataHandlerBase.GetDesignationRecordByUid(dbHandler,  uid);
                   }
 
                   if (designation == null) {
                     designation = Designation();
-                    designation = JSONCopier.copyJsonDataToDesignation(context, dbHandler, jsonObject, designation, true);
-                    var rid = await DesignationDataHandlerBase.AddDesignationRecord(dbHandler, context, designation);
+                    designation = JSONCopier.copyJsonDataToDesignation( dbHandler, jsonObject, designation, true);
+                    var rid = await DesignationDataHandlerBase.AddDesignationRecord(dbHandler,  designation);
                   } else {
-                    designation = JSONCopier.copyJsonDataToDesignation(context, dbHandler, jsonObject, designation, false);
-                    var rid =await  DesignationDataHandlerBase.UpdateDesignationRecord(dbHandler, context, designation.id, designation);
+                    designation = JSONCopier.copyJsonDataToDesignation( dbHandler, jsonObject, designation, false);
+                    var rid =await  DesignationDataHandlerBase.UpdateDesignationRecord(dbHandler,  designation.id, designation);
                   }
                 }
               }
@@ -11019,7 +11057,7 @@ void downSyncEmailManualTemplates(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetEmailManualTemplatePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11053,20 +11091,20 @@ void downSyncEmailManualTemplates(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    emailManualTemplate = await  EmailManualTemplateDataHandlerBase.GetMasterEmailManualTemplateRecord(dbHandler, context, id);
+                    emailManualTemplate = await  EmailManualTemplateDataHandlerBase.GetMasterEmailManualTemplateRecord(dbHandler,  id);
                   }
 
                   if (emailManualTemplate == null && doDoubleCheck && uid != null && uid != '') {
-                    emailManualTemplate =  await EmailManualTemplateDataHandlerBase.GetEmailManualTemplateRecordByUid(dbHandler, context, uid);
+                    emailManualTemplate =  await EmailManualTemplateDataHandlerBase.GetEmailManualTemplateRecordByUid(dbHandler,  uid);
                   }
 
                   if (emailManualTemplate == null) {
                     emailManualTemplate = EmailManualTemplate();
-                    emailManualTemplate = JSONCopier.CopyJsonDataToEmailManualTemplate(context, dbHandler, jsonObject, emailManualTemplate, true);
-                    var rid = await  EmailManualTemplateDataHandlerBase.AddEmailManualTemplateRecord(dbHandler, context, emailManualTemplate);
+                    emailManualTemplate = JSONCopier.CopyJsonDataToEmailManualTemplate( dbHandler, jsonObject, emailManualTemplate, true);
+                    var rid = await  EmailManualTemplateDataHandlerBase.AddEmailManualTemplateRecord(dbHandler,  emailManualTemplate);
                   } else {
-                    emailManualTemplate = JSONCopier.CopyJsonDataToEmailManualTemplate(context, dbHandler, jsonObject, emailManualTemplate, false);
-                    var rid = await EmailManualTemplateDataHandlerBase.UpdateEmailManualTemplateRecord(dbHandler, context, emailManualTemplate.id, emailManualTemplate);
+                    emailManualTemplate = JSONCopier.CopyJsonDataToEmailManualTemplate( dbHandler, jsonObject, emailManualTemplate, false);
+                    var rid = await EmailManualTemplateDataHandlerBase.UpdateEmailManualTemplateRecord(dbHandler,  emailManualTemplate.id, emailManualTemplate);
                   }
                 }
               }
@@ -11112,7 +11150,7 @@ void downSyncExpenseTypes(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetExpenseTypePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11146,20 +11184,20 @@ void downSyncExpenseTypes(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    expenseType = ExpenseTypeDataHandlerBase.GetMasterExpenseTypeRecord(dbHandler, context, id);
+                    expenseType = ExpenseTypeDataHandlerBase.GetMasterExpenseTypeRecord(dbHandler,  id);
                   }
 
                   if (expenseType == null && doDoubleCheck && uid != null && uid != '') {
-                    expenseType = await ExpenseTypeDataHandlerBase.GetExpenseTypeRecordByUid(dbHandler, context, uid);
+                    expenseType = await ExpenseTypeDataHandlerBase.GetExpenseTypeRecordByUid(dbHandler,  uid);
                   }
 
                   if (expenseType == null) {
                     expenseType = ExpenseType();
-                    expenseType = JSONCopier.copyJsonDataToExpenseType(context, dbHandler, jsonObject, expenseType, true);
-                    var rid = await ExpenseTypeDataHandlerBase.AddExpenseTypeRecord(dbHandler, context, expenseType);
+                    expenseType = JSONCopier.copyJsonDataToExpenseType( dbHandler, jsonObject, expenseType, true);
+                    var rid = await ExpenseTypeDataHandlerBase.AddExpenseTypeRecord(dbHandler,  expenseType);
                   } else {
-                    expenseType = JSONCopier.copyJsonDataToExpenseType(context, dbHandler, jsonObject, expenseType, false);
-                    var rid = await ExpenseTypeDataHandlerBase.UpdateExpenseTypeRecord(dbHandler, context, expenseType.id, expenseType);
+                    expenseType = JSONCopier.copyJsonDataToExpenseType( dbHandler, jsonObject, expenseType, false);
+                    var rid = await ExpenseTypeDataHandlerBase.UpdateExpenseTypeRecord(dbHandler,  expenseType.id, expenseType);
                   }
                 }
               }
@@ -11208,7 +11246,7 @@ void downSyncFieldAttendances(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFieldAttendancePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11242,20 +11280,20 @@ void downSyncFieldAttendances(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    fieldAttendance = await FieldAttendanceDataHandlerBase.GetMasterFieldAttendanceRecord(dbHandler, context, id);
+                    fieldAttendance = await FieldAttendanceDataHandlerBase.GetMasterFieldAttendanceRecord(dbHandler,  id);
                   }
 
                   if (fieldAttendance == null && doDoubleCheck && uid != null && uid != '') {
-                    fieldAttendance = await FieldAttendanceDataHandlerBase.GetFieldAttendanceRecordByUid(dbHandler, context, uid);
+                    fieldAttendance = await FieldAttendanceDataHandlerBase.GetFieldAttendanceRecordByUid(dbHandler,  uid);
                   }
 
                   if (fieldAttendance == null) {
                     fieldAttendance = FieldAttendance();
-                    fieldAttendance = JSONCopier.copyJsonDataToFieldAttendance(context, dbHandler, jsonObject, fieldAttendance, true);
-                    var rid = await FieldAttendanceDataHandlerBase.AddFieldAttendanceRecord(dbHandler, context, fieldAttendance);
+                    fieldAttendance = JSONCopier.copyJsonDataToFieldAttendance( dbHandler, jsonObject, fieldAttendance, true);
+                    var rid = await FieldAttendanceDataHandlerBase.AddFieldAttendanceRecord(dbHandler,  fieldAttendance);
                   } else {
-                    fieldAttendance = JSONCopier.copyJsonDataToFieldAttendance(context, dbHandler, jsonObject, fieldAttendance, false);
-                    var rid = await FieldAttendanceDataHandlerBase.UpdateFieldAttendanceRecord(dbHandler, context, fieldAttendance.id, fieldAttendance);
+                    fieldAttendance = JSONCopier.copyJsonDataToFieldAttendance( dbHandler, jsonObject, fieldAttendance, false);
+                    var rid = await FieldAttendanceDataHandlerBase.UpdateFieldAttendanceRecord(dbHandler,  fieldAttendance.id, fieldAttendance);
                   }
                 }
               }
@@ -11301,7 +11339,7 @@ void downSyncFinancialInstitutions(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFinancialInstitutionPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11335,20 +11373,20 @@ void downSyncFinancialInstitutions(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    financialInstitution = await FinancialInstitutionDataHandlerBase.GetMasterFinancialInstitutionRecord(dbHandler, context, id);
+                    financialInstitution = await FinancialInstitutionDataHandlerBase.GetMasterFinancialInstitutionRecord(dbHandler,  id);
                   }
 
                   if (financialInstitution == null && doDoubleCheck && uid != null && uid != '') {
-                    financialInstitution =  await FinancialInstitutionDataHandlerBase.GetFinancialInstitutionRecordByUid(dbHandler, context, uid);
+                    financialInstitution =  await FinancialInstitutionDataHandlerBase.GetFinancialInstitutionRecordByUid(dbHandler,  uid);
                   }
 
                   if (financialInstitution == null) {
                     financialInstitution = FinancialInstitution();
-                    financialInstitution = JSONCopier.copyJsonDataToFinancialInstitution(context, dbHandler, jsonObject, financialInstitution, true);
-                    var rid = await FinancialInstitutionDataHandlerBase.AddFinancialInstitutionRecord(dbHandler, context, financialInstitution);
+                    financialInstitution = JSONCopier.copyJsonDataToFinancialInstitution( dbHandler, jsonObject, financialInstitution, true);
+                    var rid = await FinancialInstitutionDataHandlerBase.AddFinancialInstitutionRecord(dbHandler,  financialInstitution);
                   } else {
-                    financialInstitution = JSONCopier.copyJsonDataToFinancialInstitution(context, dbHandler, jsonObject, financialInstitution, false);
-                    var rid = await FinancialInstitutionDataHandlerBase.UpdateFinancialInstitutionRecord(dbHandler, context, financialInstitution.id, financialInstitution);
+                    financialInstitution = JSONCopier.copyJsonDataToFinancialInstitution( dbHandler, jsonObject, financialInstitution, false);
+                    var rid = await FinancialInstitutionDataHandlerBase.UpdateFinancialInstitutionRecord(dbHandler,  financialInstitution.id, financialInstitution);
                   }
                 }
               }
@@ -11395,7 +11433,7 @@ void downSyncFinancialYears(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFinancialYearPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11429,20 +11467,20 @@ void downSyncFinancialYears(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    financialYear = await  FinancialYearDataHandlerBase.GetMasterFinancialYearRecord(dbHandler, context, id);
+                    financialYear = await  FinancialYearDataHandlerBase.GetMasterFinancialYearRecord(dbHandler,  id);
                   }
 
                   if (financialYear == null && doDoubleCheck && uid != null && uid != '') {
-                    financialYear = await FinancialYearDataHandlerBase.GetFinancialYearRecordByUid(dbHandler, context, uid);
+                    financialYear = await FinancialYearDataHandlerBase.GetFinancialYearRecordByUid(dbHandler,  uid);
                   }
 
                   if (financialYear == null) {
                     financialYear = FinancialYear();
-                    financialYear = JSONCopier.copyJsonDataToFinancialYear(context, dbHandler, jsonObject, financialYear, true);
-                    var rid = await FinancialYearDataHandlerBase.AddFinancialYearRecord(dbHandler, context, financialYear);
+                    financialYear = JSONCopier.copyJsonDataToFinancialYear( dbHandler, jsonObject, financialYear, true);
+                    var rid = await FinancialYearDataHandlerBase.AddFinancialYearRecord(dbHandler,  financialYear);
                   } else {
-                    financialYear = JSONCopier.copyJsonDataToFinancialYear(context, dbHandler, jsonObject, financialYear, false);
-                    var rid = await FinancialYearDataHandlerBase.UpdateFinancialYearRecord(dbHandler, context, financialYear.id, financialYear);
+                    financialYear = JSONCopier.copyJsonDataToFinancialYear( dbHandler, jsonObject, financialYear, false);
+                    var rid = await FinancialYearDataHandlerBase.UpdateFinancialYearRecord(dbHandler,  financialYear.id, financialYear);
                   }
                 }
               }
@@ -11489,7 +11527,7 @@ void downSyncForms(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFormPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11523,20 +11561,20 @@ void downSyncForms(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    form = FormDataHandlerBase.GetMasterFormRecord(dbHandler, context, id);
+                    form = FormDataHandlerBase.GetMasterFormRecord(dbHandler,  id);
                   }
 
                   if (form == null && doDoubleCheck && uid != null && uid != '') {
-                    form = FormDataHandlerBase.GetFormRecordByUid(dbHandler, context, uid);
+                    form = FormDataHandlerBase.GetFormRecordByUid(dbHandler,  uid);
                   }
 
                   if (form == null) {
                     form = Form();
-                    form = JSONCopier.CopyJsonDataToForm(context, dbHandler, jsonObject, form, true);
-                    var rid = FormDataHandlerBase.AddFormRecord(dbHandler, context, form);
+                    form = JSONCopier.CopyJsonDataToForm( dbHandler, jsonObject, form, true);
+                    var rid = FormDataHandlerBase.AddFormRecord(dbHandler,  form);
                   } else {
-                    form = JSONCopier.CopyJsonDataToForm(context, dbHandler, jsonObject, form, false);
-                    var rid = FormDataHandlerBase.UpdateFormRecord(dbHandler, context, form.id, form);
+                    form = JSONCopier.CopyJsonDataToForm( dbHandler, jsonObject, form, false);
+                    var rid = FormDataHandlerBase.UpdateFormRecord(dbHandler,  form.id, form);
                   }
                 }
               }
@@ -11584,7 +11622,7 @@ void downSyncFormCells(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFormCellPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11618,20 +11656,20 @@ void downSyncFormCells(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    formCell = await FormCellDataHandlerBase.GetMasterFormCellRecord(dbHandler, context, id);
+                    formCell = await FormCellDataHandlerBase.GetMasterFormCellRecord(dbHandler,  id);
                   }
 
                   if (formCell == null && doDoubleCheck && uid != null && uid != '') {
-                    formCell = await  FormCellDataHandlerBase.GetFormCellRecordByUid(dbHandler, context, uid);
+                    formCell = await  FormCellDataHandlerBase.GetFormCellRecordByUid(dbHandler,  uid);
                   }
 
                   if (formCell == null) {
                     formCell = FormCell();
-                    formCell = JSONCopier.CopyJsonDataToFormCell(context, dbHandler, jsonObject, formCell, true);
-                    var rid = await FormCellDataHandlerBase.AddFormCellRecord(dbHandler, context, formCell);
+                    formCell = JSONCopier.CopyJsonDataToFormCell( dbHandler, jsonObject, formCell, true);
+                    var rid = await FormCellDataHandlerBase.AddFormCellRecord(dbHandler,  formCell);
                   } else {
-                    formCell = JSONCopier.CopyJsonDataToFormCell(context, dbHandler, jsonObject, formCell, false);
-                    var rid = await FormCellDataHandlerBase.UpdateFormCellRecord(dbHandler, context, formCell.id, formCell);
+                    formCell = JSONCopier.CopyJsonDataToFormCell( dbHandler, jsonObject, formCell, false);
+                    var rid = await FormCellDataHandlerBase.UpdateFormCellRecord(dbHandler,  formCell.id, formCell);
                   }
                 }
               }
@@ -11679,7 +11717,7 @@ void downSyncFormCellElements(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFormCellElementPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11713,20 +11751,20 @@ void downSyncFormCellElements(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    formCellElement =await  FormCellElementDataHandlerBase.GetMasterFormCellElementRecord(dbHandler, context, id);
+                    formCellElement =await  FormCellElementDataHandlerBase.GetMasterFormCellElementRecord(dbHandler,  id);
                   }
 
                   if (formCellElement == null && doDoubleCheck && uid != null && uid != '') {
-                    formCellElement = await  FormCellElementDataHandlerBase.GetFormCellElementRecordByUid(dbHandler, context, uid);
+                    formCellElement = await  FormCellElementDataHandlerBase.GetFormCellElementRecordByUid(dbHandler,  uid);
                   }
 
                   if (formCellElement == null) {
                     formCellElement = FormCellElement();
-                    formCellElement = JSONCopier.copyJsonDataToFormCellElement(context, dbHandler, jsonObject, formCellElement, true);
-                    var rid =await  FormCellElementDataHandlerBase.AddFormCellElementRecord(dbHandler, context, formCellElement);
+                    formCellElement = JSONCopier.copyJsonDataToFormCellElement( dbHandler, jsonObject, formCellElement, true);
+                    var rid =await  FormCellElementDataHandlerBase.AddFormCellElementRecord(dbHandler,  formCellElement);
                   } else {
-                    formCellElement = JSONCopier.copyJsonDataToFormCellElement(context, dbHandler, jsonObject, formCellElement, false);
-                    var rid =  await FormCellElementDataHandlerBase.UpdateFormCellElementRecord(dbHandler, context, formCellElement.id, formCellElement);
+                    formCellElement = JSONCopier.copyJsonDataToFormCellElement( dbHandler, jsonObject, formCellElement, false);
+                    var rid =  await FormCellElementDataHandlerBase.UpdateFormCellElementRecord(dbHandler,  formCellElement.id, formCellElement);
                   }
                 }
               }
@@ -11772,7 +11810,7 @@ void downSyncFormSections(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetFormSectionPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11806,20 +11844,20 @@ void downSyncFormSections(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    formSection = await FormSectionDataHandlerBase.GetMasterFormSectionRecord(dbHandler, context, id);
+                    formSection = await FormSectionDataHandlerBase.GetMasterFormSectionRecord(dbHandler,  id);
                   }
 
                   if (formSection == null && doDoubleCheck && uid != null && uid != '') {
-                    formSection = await  FormSectionDataHandlerBase.GetFormSectionRecordByUid(dbHandler, context, uid);
+                    formSection = await  FormSectionDataHandlerBase.GetFormSectionRecordByUid(dbHandler,  uid);
                   }
 
                   if (formSection == null) {
                     formSection = FormSection();
-                    formSection = await JSONCopier.copyJsonDataToFormSection(context, dbHandler, jsonObject, formSection, true);
-                    var rid = await FormSectionDataHandlerBase.AddFormSectionRecord(dbHandler, context, formSection);
+                    formSection = await JSONCopier.copyJsonDataToFormSection( dbHandler, jsonObject, formSection, true);
+                    var rid = await FormSectionDataHandlerBase.AddFormSectionRecord(dbHandler,  formSection);
                   } else {
-                    formSection = await JSONCopier.copyJsonDataToFormSection(context, dbHandler, jsonObject, formSection, false);
-                    var rid = await FormSectionDataHandlerBase.UpdateFormSectionRecord(dbHandler, context, formSection.id, formSection);
+                    formSection = await JSONCopier.copyJsonDataToFormSection( dbHandler, jsonObject, formSection, false);
+                    var rid = await FormSectionDataHandlerBase.UpdateFormSectionRecord(dbHandler,  formSection.id, formSection);
                   }
                 }
               }
@@ -11866,7 +11904,7 @@ void downSyncIndustries(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetIndustryPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11900,20 +11938,20 @@ void downSyncIndustries(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    industry = await IndustryDataHandlerBase.GetMasterIndustryRecord(dbHandler, context, id);
+                    industry = await IndustryDataHandlerBase.GetMasterIndustryRecord(dbHandler,  id);
                   }
 
                   if (industry == null && doDoubleCheck && uid != null && uid != '') {
-                    industry = await IndustryDataHandlerBase.GetIndustryRecordByUid(dbHandler, context, uid);
+                    industry = await IndustryDataHandlerBase.GetIndustryRecordByUid(dbHandler,  uid);
                   }
 
                   if (industry == null) {
                     industry = Industry();
-                    industry = JSONCopier.copyJsonDataToIndustry(context, dbHandler, jsonObject, industry, true);
-                    var rid = await IndustryDataHandlerBase.AddIndustryRecord(dbHandler, context, industry);
+                    industry = JSONCopier.copyJsonDataToIndustry( dbHandler, jsonObject, industry, true);
+                    var rid = await IndustryDataHandlerBase.AddIndustryRecord(dbHandler,  industry);
                   } else {
-                    industry = JSONCopier.copyJsonDataToIndustry(context, dbHandler, jsonObject, industry, false);
-                    var rid = IndustryDataHandlerBase.UpdateIndustryRecord(dbHandler, context, industry.id, industry);
+                    industry = JSONCopier.copyJsonDataToIndustry( dbHandler, jsonObject, industry, false);
+                    var rid = IndustryDataHandlerBase.UpdateIndustryRecord(dbHandler,  industry.id, industry);
                   }
                 }
               }
@@ -11961,7 +11999,7 @@ void downSyncLeadSources(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetLeadSourcePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -11995,20 +12033,20 @@ void downSyncLeadSources(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    leadSource = await LeadSourceDataHandlerBase.GetMasterLeadSourceRecord(dbHandler, context, id);
+                    leadSource = await LeadSourceDataHandlerBase.GetMasterLeadSourceRecord(dbHandler,  id);
                   }
 
                   if (leadSource == null && doDoubleCheck && uid != null && uid != '') {
-                    leadSource = await LeadSourceDataHandlerBase.GetLeadSourceRecordByUid(dbHandler, context, uid);
+                    leadSource = await LeadSourceDataHandlerBase.GetLeadSourceRecordByUid(dbHandler,  uid);
                   }
 
                   if (leadSource == null) {
                     leadSource = LeadSource();
-                    leadSource = JSONCopier.copyJsonDataToLeadSource(context, dbHandler, jsonObject, leadSource, true);
-                    var rid = LeadSourceDataHandlerBase.AddLeadSourceRecord(dbHandler, context, leadSource);
+                    leadSource = JSONCopier.copyJsonDataToLeadSource( dbHandler, jsonObject, leadSource, true);
+                    var rid = LeadSourceDataHandlerBase.AddLeadSourceRecord(dbHandler,  leadSource);
                   } else {
-                    leadSource = JSONCopier.copyJsonDataToLeadSource(context, dbHandler, jsonObject, leadSource, false);
-                    var rid = await LeadSourceDataHandlerBase.UpdateLeadSourceRecord(dbHandler, context, leadSource.id, leadSource);
+                    leadSource = JSONCopier.copyJsonDataToLeadSource( dbHandler, jsonObject, leadSource, false);
+                    var rid = await LeadSourceDataHandlerBase.UpdateLeadSourceRecord(dbHandler,  leadSource.id, leadSource);
                   }
                 }
               }
@@ -12057,7 +12095,7 @@ void downSyncModeOfTravels(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetModeOfTravelPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12091,20 +12129,20 @@ void downSyncModeOfTravels(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    modeOfTravel =await  ModeOfTravelDataHandlerBase.GetMasterModeOfTravelRecord(dbHandler, context, id);
+                    modeOfTravel =await  ModeOfTravelDataHandlerBase.GetMasterModeOfTravelRecord(dbHandler,  id);
                   }
 
                   if (modeOfTravel == null && doDoubleCheck && uid != null && uid != '') {
-                    modeOfTravel = await ModeOfTravelDataHandlerBase.GetModeOfTravelRecordByUid(dbHandler, context, uid);
+                    modeOfTravel = await ModeOfTravelDataHandlerBase.GetModeOfTravelRecordByUid(dbHandler,  uid);
                   }
 
                   if (modeOfTravel == null) {
                     modeOfTravel = ModeOfTravel();
-                    modeOfTravel = JSONCopier.copyJsonDataToModeOfTravel(context, dbHandler, jsonObject, modeOfTravel, true);
-                    var rid =await  ModeOfTravelDataHandlerBase.AddModeOfTravelRecord(dbHandler, context, modeOfTravel);
+                    modeOfTravel = JSONCopier.copyJsonDataToModeOfTravel( dbHandler, jsonObject, modeOfTravel, true);
+                    var rid =await  ModeOfTravelDataHandlerBase.AddModeOfTravelRecord(dbHandler,  modeOfTravel);
                   } else {
-                    modeOfTravel = JSONCopier.copyJsonDataToModeOfTravel(context, dbHandler, jsonObject, modeOfTravel, false);
-                    var rid = await ModeOfTravelDataHandlerBase.UpdateModeOfTravelRecord(dbHandler, context, modeOfTravel.id, modeOfTravel);
+                    modeOfTravel = JSONCopier.copyJsonDataToModeOfTravel( dbHandler, jsonObject, modeOfTravel, false);
+                    var rid = await ModeOfTravelDataHandlerBase.UpdateModeOfTravelRecord(dbHandler,  modeOfTravel.id, modeOfTravel);
                   }
                 }
               }
@@ -12151,7 +12189,7 @@ void downSyncNotes(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetNotePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12185,20 +12223,20 @@ void downSyncNotes(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    note =await  NoteDataHandlerBase.GetMasterNoteRecord(dbHandler, context, id);
+                    note =await  NoteDataHandlerBase.GetMasterNoteRecord(dbHandler,  id);
                   }
 
                   if (note == null && doDoubleCheck && uid != null && uid != '') {
-                    note = await NoteDataHandlerBase.GetNoteRecordByUid(dbHandler, context, uid);
+                    note = await NoteDataHandlerBase.GetNoteRecordByUid(dbHandler,  uid);
                   }
 
                   if (note == null) {
                     note = Note();
-                    note = JSONCopier.copyJsonDataToNote(context, dbHandler, jsonObject, note, true);
-                    var rid = await NoteDataHandlerBase.AddNoteRecord(dbHandler, context, note);
+                    note = JSONCopier.copyJsonDataToNote( dbHandler, jsonObject, note, true);
+                    var rid = await NoteDataHandlerBase.AddNoteRecord(dbHandler,  note);
                   } else {
-                    note = JSONCopier.copyJsonDataToNote(context, dbHandler, jsonObject, note, false);
-                    var rid =await NoteDataHandlerBase.UpdateNoteRecord(dbHandler, context, note.id, note);
+                    note = JSONCopier.copyJsonDataToNote( dbHandler, jsonObject, note, false);
+                    var rid =await NoteDataHandlerBase.UpdateNoteRecord(dbHandler,  note.id, note);
                   }
                 }
               }
@@ -12245,7 +12283,7 @@ void downSyncNoteMedia(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetNoteMediaPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12279,21 +12317,21 @@ void downSyncNoteMedia(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    noteMedia = NoteMediaDataHandlerBase.GetMasterNoteMediaRecord(dbHandler, context, id);
+                    noteMedia = NoteMediaDataHandlerBase.GetMasterNoteMediaRecord(dbHandler,  id);
                   }
 
                   if (noteMedia == null && doDoubleCheck && uid != null && uid != '') {
-                    noteMedia = NoteMediaDataHandlerBase.GetNoteMediaRecordByUid(dbHandler, context, uid);
+                    noteMedia = NoteMediaDataHandlerBase.GetNoteMediaRecordByUid(dbHandler,  uid);
                   }
 
                   if (noteMedia == null) {
                     noteMedia = NoteMedia();
-                    noteMedia = JSONCopier.copyJsonDataToNoteMedia(context, dbHandler, jsonObject, noteMedia, true);
+                    noteMedia = JSONCopier.copyJsonDataToNoteMedia( dbHandler, jsonObject, noteMedia, true);
                     noteMedia.setIsUploaded('true');
-                    var rid = NoteMediaDataHandlerBase.AddNoteMediaRecord(dbHandler, context, noteMedia);
+                    var rid = NoteMediaDataHandlerBase.AddNoteMediaRecord(dbHandler,  noteMedia);
                   } else {
-                    noteMedia = JSONCopier.copyJsonDataToNoteMedia(context, dbHandler, jsonObject, noteMedia, false);
-                    var rid = NoteMediaDataHandlerBase.UpdateNoteMediaRecord(dbHandler, context, noteMedia.id, noteMedia);
+                    noteMedia = JSONCopier.copyJsonDataToNoteMedia( dbHandler, jsonObject, noteMedia, false);
+                    var rid = NoteMediaDataHandlerBase.UpdateNoteMediaRecord(dbHandler,  noteMedia.id, noteMedia);
                   }
                 }
               }
@@ -12340,7 +12378,7 @@ void downSyncNotePermissions(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetNotePermissionPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12374,20 +12412,20 @@ void downSyncNotePermissions(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    notePermission = await NotePermissionDataHandlerBase.GetMasterNotePermissionRecord(dbHandler, context, id);
+                    notePermission = await NotePermissionDataHandlerBase.GetMasterNotePermissionRecord(dbHandler,  id);
                   }
 
                   if (notePermission == null && doDoubleCheck && uid != null && uid != '') {
-                    notePermission = await NotePermissionDataHandlerBase.GetNotePermissionRecordByUid(dbHandler, context, uid);
+                    notePermission = await NotePermissionDataHandlerBase.GetNotePermissionRecordByUid(dbHandler,  uid);
                   }
 
                   if (notePermission == null) {
                     notePermission = NotePermission();
-                    notePermission = JSONCopier.copyJsonDataToNotePermission(context, dbHandler, jsonObject, notePermission, true);
-                    var rid = await NotePermissionDataHandlerBase.AddNotePermissionRecord(dbHandler, context, notePermission);
+                    notePermission = JSONCopier.copyJsonDataToNotePermission( dbHandler, jsonObject, notePermission, true);
+                    var rid = await NotePermissionDataHandlerBase.AddNotePermissionRecord(dbHandler,  notePermission);
                   } else {
-                    notePermission = JSONCopier.copyJsonDataToNotePermission(context, dbHandler, jsonObject, notePermission, false);
-                    var rid =await  NotePermissionDataHandlerBase.UpdateNotePermissionRecord(dbHandler, context, notePermission.id, notePermission);
+                    notePermission = JSONCopier.copyJsonDataToNotePermission( dbHandler, jsonObject, notePermission, false);
+                    var rid =await  NotePermissionDataHandlerBase.UpdateNotePermissionRecord(dbHandler,  notePermission.id, notePermission);
                   }
                 }
               }
@@ -12434,7 +12472,7 @@ void downSyncNotifications(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetNotificationPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12468,20 +12506,20 @@ void downSyncNotifications(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    notification = await NotificationDataHandlerBase.GetMasterNotificationRecord(dbHandler, context, id);
+                    notification = await NotificationDataHandlerBase.GetMasterNotificationRecord(dbHandler,  id);
                   }
 
                   if (notification == null && doDoubleCheck && uid != null && uid != '') {
-                    notification = await NotificationDataHandlerBase.GetNotificationRecordByUid(dbHandler, context, uid);
+                    notification = await NotificationDataHandlerBase.GetNotificationRecordByUid(dbHandler,  uid);
                   }
 
                   if (notification == null) {
                     notification = Notification();
-                    notification = JSONCopier.copyJsonDataToNotification(context, dbHandler, jsonObject, notification, true);
-                    var rid = await NotificationDataHandlerBase.AddNotificationRecord(dbHandler, context, notification);
+                    notification = JSONCopier.copyJsonDataToNotification( dbHandler, jsonObject, notification, true);
+                    var rid = await NotificationDataHandlerBase.AddNotificationRecord(dbHandler,  notification);
                   } else {
-                    notification = JSONCopier.copyJsonDataToNotification(context, dbHandler, jsonObject, notification, false);
-                    var rid = await  NotificationDataHandlerBase.UpdateNotificationRecord(dbHandler, context, notification.id, notification);
+                    notification = JSONCopier.copyJsonDataToNotification( dbHandler, jsonObject, notification, false);
+                    var rid = await  NotificationDataHandlerBase.UpdateNotificationRecord(dbHandler,  notification.id, notification);
                   }
                 }
               }
@@ -12526,7 +12564,7 @@ void downSyncNotificationAssignments(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetNotificationAssignmentPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12560,20 +12598,20 @@ void downSyncNotificationAssignments(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    notificationAssignment = await NotificationAssignmentDataHandlerBase.GetMasterNotificationAssignmentRecord(dbHandler, context, id);
+                    notificationAssignment = await NotificationAssignmentDataHandlerBase.GetMasterNotificationAssignmentRecord(dbHandler,  id);
                   }
 
                   if (notificationAssignment == null && doDoubleCheck && uid != null && uid != '') {
-                    notificationAssignment =await  NotificationAssignmentDataHandlerBase.GetNotificationAssignmentRecordByUid(dbHandler, context, uid);
+                    notificationAssignment =await  NotificationAssignmentDataHandlerBase.GetNotificationAssignmentRecordByUid(dbHandler,  uid);
                   }
 
                   if (notificationAssignment == null) {
                     notificationAssignment = NotificationAssignment();
-                    notificationAssignment = JSONCopier.copyJsonDataToNotificationAssignment(context, dbHandler, jsonObject, notificationAssignment, true);
-                    var rid = await NotificationAssignmentDataHandlerBase.AddNotificationAssignmentRecord(dbHandler, context, notificationAssignment);
+                    notificationAssignment = JSONCopier.copyJsonDataToNotificationAssignment( dbHandler, jsonObject, notificationAssignment, true);
+                    var rid = await NotificationAssignmentDataHandlerBase.AddNotificationAssignmentRecord(dbHandler,  notificationAssignment);
                   } else {
-                    notificationAssignment = JSONCopier.copyJsonDataToNotificationAssignment(context, dbHandler, jsonObject, notificationAssignment, false);
-                    var rid =await  NotificationAssignmentDataHandlerBase.UpdateNotificationAssignmentRecord(dbHandler, context, notificationAssignment.id, notificationAssignment);
+                    notificationAssignment = JSONCopier.copyJsonDataToNotificationAssignment( dbHandler, jsonObject, notificationAssignment, false);
+                    var rid =await  NotificationAssignmentDataHandlerBase.UpdateNotificationAssignmentRecord(dbHandler,  notificationAssignment.id, notificationAssignment);
                   }
                 }
               }
@@ -12618,7 +12656,7 @@ void downSyncOpportunities(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12654,24 +12692,24 @@ void downSyncOpportunities(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunity = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, context, id);
+                    opportunity = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler,  id);
                   }
 
                   if (opportunity == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunity = await OpportunityDataHandlerBase.GetOpportunityRecordByUid(dbHandler, context, uid);
+                    opportunity = await OpportunityDataHandlerBase.GetOpportunityRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunity == null) {
                     opportunity = Opportunity();
-                    opportunity = JSONCopier.copyJsonDataToOpportunity(context, dbHandler, jsonObject, opportunity, true);
-                    var rid = OpportunityDataHandlerBase.AddOpportunityRecord(dbHandler, context, opportunity);
-                    if (opportunity.getCreatedBy() != Globals.AppUserLoginName && (IsForCurrentDate(opportunity.getCreatedOn()) || IsForCurrentDate(opportunity.getModifiedOn()))) {
+                    opportunity = JSONCopier.copyJsonDataToOpportunity( dbHandler, jsonObject, opportunity, true);
+                    var rid = OpportunityDataHandlerBase.AddOpportunityRecord(dbHandler,  opportunity);
+                    if (opportunity.getCreatedBy() != Globals.AppUserLoginName && (IsForCurrentDate(opportunity.createdOn) || IsForCurrentDate(opportunity.modifiedOn))) {
                       // Create a reminder with 'New opportunity assigned: ' + opportunity title. Time = current datetime + 2;
-                      new HSReminder().saveReminderData('', rid.toString(), 'New opportunity assigned', opportunity.getOpportunityName(), context);
+                      new HSReminder().saveReminderData('', rid.toString(), 'New opportunity assigned', opportunity.opportunityName);
                     }
                   } else {
-                    opportunity = JSONCopier.copyJsonDataToOpportunity(context, dbHandler, jsonObject, opportunity, false);
-                    var rid = await OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler, context, opportunity.id, opportunity);
+                    opportunity = JSONCopier.copyJsonDataToOpportunity( dbHandler, jsonObject, opportunity, false);
+                    var rid = await OpportunityDataHandlerBase.UpdateOpportunityRecord(dbHandler,  opportunity.id, opportunity);
                   }
                 }
               }
@@ -12718,7 +12756,7 @@ void downSyncOpportunityApprovals(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityApprovalPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12752,20 +12790,20 @@ void downSyncOpportunityApprovals(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityApproval = await OpportunityApprovalDataHandlerBase.GetMasterOpportunityApprovalRecord(dbHandler, context, id);
+                    opportunityApproval = await OpportunityApprovalDataHandlerBase.GetMasterOpportunityApprovalRecord(dbHandler,  id);
                   }
 
                   if (opportunityApproval == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityApproval = await OpportunityApprovalDataHandlerBase.GetOpportunityApprovalRecordByUid(dbHandler, context, uid);
+                    opportunityApproval = await OpportunityApprovalDataHandlerBase.GetOpportunityApprovalRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityApproval == null) {
                     opportunityApproval = OpportunityApproval();
-                    opportunityApproval = JSONCopier.copyJsonDataToOpportunityApproval(context, dbHandler, jsonObject, opportunityApproval, true);
-                    var rid = await OpportunityApprovalDataHandlerBase.AddOpportunityApprovalRecord(dbHandler, context, opportunityApproval);
+                    opportunityApproval = JSONCopier.copyJsonDataToOpportunityApproval( dbHandler, jsonObject, opportunityApproval, true);
+                    var rid = await OpportunityApprovalDataHandlerBase.AddOpportunityApprovalRecord(dbHandler,  opportunityApproval);
                   } else {
-                    opportunityApproval = JSONCopier.copyJsonDataToOpportunityApproval(context, dbHandler, jsonObject, opportunityApproval, false);
-                    var rid = await OpportunityApprovalDataHandlerBase.UpdateOpportunityApprovalRecord(dbHandler, context, opportunityApproval.id, opportunityApproval);
+                    opportunityApproval = JSONCopier.copyJsonDataToOpportunityApproval( dbHandler, jsonObject, opportunityApproval, false);
+                    var rid = await OpportunityApprovalDataHandlerBase.UpdateOpportunityApprovalRecord(dbHandler,  opportunityApproval.id, opportunityApproval);
                   }
                 }
               }
@@ -12811,7 +12849,7 @@ void downSyncOpportunityApprovalTypes(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityApprovalTypePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12845,20 +12883,20 @@ void downSyncOpportunityApprovalTypes(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityApprovalType = await  OpportunityApprovalTypeDataHandlerBase.GetMasterOpportunityApprovalTypeRecord(dbHandler, context, id);
+                    opportunityApprovalType = await  OpportunityApprovalTypeDataHandlerBase.GetMasterOpportunityApprovalTypeRecord(dbHandler,  id);
                   }
 
                   if (opportunityApprovalType == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityApprovalType =  await  OpportunityApprovalTypeDataHandlerBase.GetOpportunityApprovalTypeRecordByUid(dbHandler, context, uid);
+                    opportunityApprovalType =  await  OpportunityApprovalTypeDataHandlerBase.GetOpportunityApprovalTypeRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityApprovalType == null) {
                     opportunityApprovalType = OpportunityApprovalType();
-                    opportunityApprovalType = JSONCopier.copyJsonDataToOpportunityApprovalType(context, dbHandler, jsonObject, opportunityApprovalType, true);
-                    var rid = await OpportunityApprovalTypeDataHandlerBase.AddOpportunityApprovalTypeRecord(dbHandler, context, opportunityApprovalType);
+                    opportunityApprovalType = JSONCopier.copyJsonDataToOpportunityApprovalType( dbHandler, jsonObject, opportunityApprovalType, true);
+                    var rid = await OpportunityApprovalTypeDataHandlerBase.AddOpportunityApprovalTypeRecord(dbHandler,  opportunityApprovalType);
                   } else {
-                    opportunityApprovalType = JSONCopier.copyJsonDataToOpportunityApprovalType(context, dbHandler, jsonObject, opportunityApprovalType, false);
-                    var rid = await  OpportunityApprovalTypeDataHandlerBase.UpdateOpportunityApprovalTypeRecord(dbHandler, context, opportunityApprovalType.id, opportunityApprovalType);
+                    opportunityApprovalType = JSONCopier.copyJsonDataToOpportunityApprovalType( dbHandler, jsonObject, opportunityApprovalType, false);
+                    var rid = await  OpportunityApprovalTypeDataHandlerBase.UpdateOpportunityApprovalTypeRecord(dbHandler,  opportunityApprovalType.id, opportunityApprovalType);
                   }
                 }
               }
@@ -12904,7 +12942,7 @@ void downSyncOpportunityBusinessUnits(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityBusinessUnitPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -12938,20 +12976,20 @@ void downSyncOpportunityBusinessUnits(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityBusinessUnit = OpportunityBusinessUnitDataHandlerBase.GetMasterOpportunityBusinessUnitRecord(dbHandler, context, id);
+                    opportunityBusinessUnit = OpportunityBusinessUnitDataHandlerBase.GetMasterOpportunityBusinessUnitRecord(dbHandler,  id);
                   }
 
                   if (opportunityBusinessUnit == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityBusinessUnit = OpportunityBusinessUnitDataHandlerBase.GetOpportunityBusinessUnitRecordByUid(dbHandler, context, uid);
+                    opportunityBusinessUnit = OpportunityBusinessUnitDataHandlerBase.GetOpportunityBusinessUnitRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityBusinessUnit == null) {
                     opportunityBusinessUnit = OpportunityBusinessUnit();
-                    opportunityBusinessUnit = JSONCopier.copyJsonDataToOpportunityBusinessUnit(context, dbHandler, jsonObject, opportunityBusinessUnit, true);
-                    var rid = OpportunityBusinessUnitDataHandlerBase.AddOpportunityBusinessUnitRecord(dbHandler, context, opportunityBusinessUnit);
+                    opportunityBusinessUnit = JSONCopier.copyJsonDataToOpportunityBusinessUnit( dbHandler, jsonObject, opportunityBusinessUnit, true);
+                    var rid = OpportunityBusinessUnitDataHandlerBase.AddOpportunityBusinessUnitRecord(dbHandler,  opportunityBusinessUnit);
                   } else {
-                    opportunityBusinessUnit = JSONCopier.copyJsonDataToOpportunityBusinessUnit(context, dbHandler, jsonObject, opportunityBusinessUnit, false);
-                    var rid = OpportunityBusinessUnitDataHandlerBase.UpdateOpportunityBusinessUnitRecord(dbHandler, context, opportunityBusinessUnit.id, opportunityBusinessUnit);
+                    opportunityBusinessUnit = JSONCopier.copyJsonDataToOpportunityBusinessUnit( dbHandler, jsonObject, opportunityBusinessUnit, false);
+                    var rid = OpportunityBusinessUnitDataHandlerBase.UpdateOpportunityBusinessUnitRecord(dbHandler,  opportunityBusinessUnit.id, opportunityBusinessUnit);
                   }
                 }
               }
@@ -12996,7 +13034,7 @@ void downSyncOpportunityContacts(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityContactPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13030,20 +13068,20 @@ void downSyncOpportunityContacts(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityContact = await OpportunityContactDataHandlerBase.GetMasterOpportunityContactRecord(dbHandler, context, id);
+                    opportunityContact = await OpportunityContactDataHandlerBase.GetMasterOpportunityContactRecord(dbHandler,  id);
                   }
 
                   if (opportunityContact == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityContact = await OpportunityContactDataHandlerBase.GetOpportunityContactRecordByUid(dbHandler, context, uid);
+                    opportunityContact = await OpportunityContactDataHandlerBase.GetOpportunityContactRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityContact == null) {
                     opportunityContact = OpportunityContact();
-                    opportunityContact = JSONCopier.copyJsonDataToOpportunityContact(context, dbHandler, jsonObject, opportunityContact, true);
-                    var rid = await OpportunityContactDataHandlerBase.AddOpportunityContactRecord(dbHandler, context, opportunityContact);
+                    opportunityContact = JSONCopier.copyJsonDataToOpportunityContact( dbHandler, jsonObject, opportunityContact, true);
+                    var rid = await OpportunityContactDataHandlerBase.AddOpportunityContactRecord(dbHandler,  opportunityContact);
                   } else {
-                    opportunityContact = JSONCopier.copyJsonDataToOpportunityContact(context, dbHandler, jsonObject, opportunityContact, false);
-                    var rid = await OpportunityContactDataHandlerBase.UpdateOpportunityContactRecord(dbHandler, context, opportunityContact.id, opportunityContact);
+                    opportunityContact = JSONCopier.copyJsonDataToOpportunityContact( dbHandler, jsonObject, opportunityContact, false);
+                    var rid = await OpportunityContactDataHandlerBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
                   }
                 }
               }
@@ -13089,7 +13127,7 @@ void downSyncOpportunityFulfillmentStatuses(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityFulfillmentStatusPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13123,20 +13161,20 @@ void downSyncOpportunityFulfillmentStatuses(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityFulfillmentStatus = await OpportunityFulfillmentStatusDataHandlerBase.GetMasterOpportunityFulfillmentStatusRecord(dbHandler, context, id);
+                    opportunityFulfillmentStatus = await OpportunityFulfillmentStatusDataHandlerBase.GetMasterOpportunityFulfillmentStatusRecord(dbHandler,  id);
                   }
 
                   if (opportunityFulfillmentStatus == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityFulfillmentStatus = await OpportunityFulfillmentStatusDataHandlerBase.GetOpportunityFulfillmentStatusRecordByUid(dbHandler, context, uid);
+                    opportunityFulfillmentStatus = await OpportunityFulfillmentStatusDataHandlerBase.GetOpportunityFulfillmentStatusRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityFulfillmentStatus == null) {
                     opportunityFulfillmentStatus = OpportunityFulfillmentStatus();
-                    opportunityFulfillmentStatus = JSONCopier.CopyJsonDataToOpportunityFulfillmentStatus(context, dbHandler, jsonObject, opportunityFulfillmentStatus, true);
-                    var rid =  await OpportunityFulfillmentStatusDataHandlerBase.AddOpportunityFulfillmentStatusRecord(dbHandler, context, opportunityFulfillmentStatus);
+                    opportunityFulfillmentStatus = JSONCopier.CopyJsonDataToOpportunityFulfillmentStatus( dbHandler, jsonObject, opportunityFulfillmentStatus, true);
+                    var rid =  await OpportunityFulfillmentStatusDataHandlerBase.AddOpportunityFulfillmentStatusRecord(dbHandler,  opportunityFulfillmentStatus);
                   } else {
-                    opportunityFulfillmentStatus = JSONCopier.CopyJsonDataToOpportunityFulfillmentStatus(context, dbHandler, jsonObject, opportunityFulfillmentStatus, false);
-                    var rid = await OpportunityFulfillmentStatusDataHandlerBase.UpdateOpportunityFulfillmentStatusRecord(dbHandler, context, opportunityFulfillmentStatus.id, opportunityFulfillmentStatus);
+                    opportunityFulfillmentStatus = JSONCopier.CopyJsonDataToOpportunityFulfillmentStatus( dbHandler, jsonObject, opportunityFulfillmentStatus, false);
+                    var rid = await OpportunityFulfillmentStatusDataHandlerBase.UpdateOpportunityFulfillmentStatusRecord(dbHandler,  opportunityFulfillmentStatus.id, opportunityFulfillmentStatus);
                   }
                 }
               }
@@ -13176,7 +13214,7 @@ void downSyncOpportunityMeasures(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityMeasurePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13210,20 +13248,20 @@ void downSyncOpportunityMeasures(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityMeasure = await OpportunityMeasureDataHandlerBase.GetMasterOpportunityMeasureRecord(dbHandler, context, id);
+                    opportunityMeasure = await OpportunityMeasureDataHandlerBase.GetMasterOpportunityMeasureRecord(dbHandler,  id);
                   }
 
                   if (opportunityMeasure == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityMeasure = await OpportunityMeasureDataHandlerBase.GetOpportunityMeasureRecordByUid(dbHandler, context, uid);
+                    opportunityMeasure = await OpportunityMeasureDataHandlerBase.GetOpportunityMeasureRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityMeasure == null) {
                     opportunityMeasure = OpportunityMeasure();
-                    opportunityMeasure = JSONCopier.CopyJsonDataToOpportunityMeasure(context, dbHandler, jsonObject, opportunityMeasure, true);
-                    var rid = await OpportunityMeasureDataHandlerBase.AddOpportunityMeasureRecord(dbHandler, context, opportunityMeasure);
+                    opportunityMeasure = JSONCopier.CopyJsonDataToOpportunityMeasure( dbHandler, jsonObject, opportunityMeasure, true);
+                    var rid = await OpportunityMeasureDataHandlerBase.AddOpportunityMeasureRecord(dbHandler,  opportunityMeasure);
                   } else {
-                    opportunityMeasure = JSONCopier.CopyJsonDataToOpportunityMeasure(context, dbHandler, jsonObject, opportunityMeasure, false);
-                    var rid =await  OpportunityMeasureDataHandlerBase.UpdateOpportunityMeasureRecord(dbHandler, context, opportunityMeasure.id, opportunityMeasure);
+                    opportunityMeasure = JSONCopier.CopyJsonDataToOpportunityMeasure( dbHandler, jsonObject, opportunityMeasure, false);
+                    var rid =await  OpportunityMeasureDataHandlerBase.UpdateOpportunityMeasureRecord(dbHandler,  opportunityMeasure.id, opportunityMeasure);
                   }
                 }
               }
@@ -13262,7 +13300,7 @@ void downSyncOpportunityMedia(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityMediaPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13296,21 +13334,21 @@ void downSyncOpportunityMedia(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityMedia =await  OpportunityMediaDataHandlerBase.GetMasterOpportunityMediaRecord(dbHandler, context, id);
+                    opportunityMedia =await  OpportunityMediaDataHandlerBase.GetMasterOpportunityMediaRecord(dbHandler,  id);
                   }
 
                   if (opportunityMedia == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityMedia = await OpportunityMediaDataHandlerBase.GetOpportunityMediaRecordByUid(dbHandler, context, uid);
+                    opportunityMedia = await OpportunityMediaDataHandlerBase.GetOpportunityMediaRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityMedia == null) {
                     opportunityMedia = OpportunityMedia();
-                    opportunityMedia = await JSONCopier.copyJsonDataToOpportunityMedia(context, dbHandler, jsonObject, opportunityMedia, true);
+                    opportunityMedia = await JSONCopier.copyJsonDataToOpportunityMedia( dbHandler, jsonObject, opportunityMedia, true);
                     opportunityMedia.isUploaded = ('true');
-                    var rid = await OpportunityMediaDataHandlerBase.AddOpportunityMediaRecord(dbHandler, context, opportunityMedia);
+                    var rid = await OpportunityMediaDataHandlerBase.AddOpportunityMediaRecord(dbHandler,  opportunityMedia);
                   } else {
-                    opportunityMedia = JSONCopier.copyJsonDataToOpportunityMedia(context, dbHandler, jsonObject, opportunityMedia, false);
-                    var rid = OpportunityMediaDataHandlerBase.UpdateOpportunityMediaRecord(dbHandler, context, opportunityMedia.id, opportunityMedia);
+                    opportunityMedia = JSONCopier.copyJsonDataToOpportunityMedia( dbHandler, jsonObject, opportunityMedia, false);
+                    var rid = OpportunityMediaDataHandlerBase.UpdateOpportunityMediaRecord(dbHandler,  opportunityMedia.id, opportunityMedia);
                   }
                 }
               }
@@ -13350,7 +13388,7 @@ void downSyncOpportunityNames(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityNamePaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13384,20 +13422,20 @@ void downSyncOpportunityNames(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityName = await OpportunityNameDataHandlerBase.GetMasterOpportunityNameRecord(dbHandler, context, id);
+                    opportunityName = await OpportunityNameDataHandlerBase.GetMasterOpportunityNameRecord(dbHandler,  id);
                   }
 
                   if (opportunityName == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityName = await OpportunityNameDataHandlerBase.GetOpportunityNameRecordByUid(dbHandler, context, uid);
+                    opportunityName = await OpportunityNameDataHandlerBase.GetOpportunityNameRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityName == null) {
                     opportunityName = OpportunityName();
-                    opportunityName = JSONCopier.copyJsonDataToOpportunityName(context, dbHandler, jsonObject, opportunityName, true);
-                    var rid = await  OpportunityNameDataHandlerBase.AddOpportunityNameRecord(dbHandler, context, opportunityName);
+                    opportunityName = JSONCopier.copyJsonDataToOpportunityName( dbHandler, jsonObject, opportunityName, true);
+                    var rid = await  OpportunityNameDataHandlerBase.AddOpportunityNameRecord(dbHandler,  opportunityName);
                   } else {
-                    opportunityName = JSONCopier.copyJsonDataToOpportunityName(context, dbHandler, jsonObject, opportunityName, false);
-                    var rid = await OpportunityNameDataHandlerBase.UpdateOpportunityNameRecord(dbHandler, context, opportunityName.id, opportunityName);
+                    opportunityName = JSONCopier.copyJsonDataToOpportunityName( dbHandler, jsonObject, opportunityName, false);
+                    var rid = await OpportunityNameDataHandlerBase.UpdateOpportunityNameRecord(dbHandler,  opportunityName.id, opportunityName);
                   }
                 }
               }
@@ -13437,7 +13475,7 @@ void downSyncOpportunityPermissions(String typeOfData) async {
     if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
       String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityPermissionPaged';
 
-      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler, context, typeOfData);
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
       if (dataItem != null && dataItem.records != '0') {
         int records = Globals.tryParseInt(dataItem.records);
         int pageSize = Globals.tryParseInt(dataItem.pgSize);
@@ -13471,20 +13509,20 @@ void downSyncOpportunityPermissions(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityPermission = await OpportunityPermissionDataHandlerBase.GetMasterOpportunityPermissionRecord(dbHandler, context, id);
+                    opportunityPermission = await OpportunityPermissionDataHandlerBase.GetMasterOpportunityPermissionRecord(dbHandler,  id);
                   }
 
                   if (opportunityPermission == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityPermission = await OpportunityPermissionDataHandlerBase.GetOpportunityPermissionRecordByUid(dbHandler, context, uid);
+                    opportunityPermission = await OpportunityPermissionDataHandlerBase.GetOpportunityPermissionRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityPermission == null) {
                     opportunityPermission = OpportunityPermission();
-                    opportunityPermission = JSONCopier.copyJsonDataToOpportunityPermission(context, dbHandler, jsonObject, opportunityPermission, true);
-                    var rid = await  OpportunityPermissionDataHandlerBase.AddOpportunityPermissionRecord(dbHandler, context, opportunityPermission);
+                    opportunityPermission = JSONCopier.copyJsonDataToOpportunityPermission( dbHandler, jsonObject, opportunityPermission, true);
+                    var rid = await  OpportunityPermissionDataHandlerBase.AddOpportunityPermissionRecord(dbHandler,  opportunityPermission);
                   } else {
-                    opportunityPermission = JSONCopier.copyJsonDataToOpportunityPermission(context, dbHandler, jsonObject, opportunityPermission, false);
-                    var rid = await OpportunityPermissionDataHandlerBase.UpdateOpportunityPermissionRecord(dbHandler, context, opportunityPermission.id, opportunityPermission);
+                    opportunityPermission = JSONCopier.copyJsonDataToOpportunityPermission( dbHandler, jsonObject, opportunityPermission, false);
+                    var rid = await OpportunityPermissionDataHandlerBase.UpdateOpportunityPermissionRecord(dbHandler,  opportunityPermission.id, opportunityPermission);
                   }
                 }
               }
@@ -13515,6 +13553,2726 @@ void downSyncOpportunityPermissions(String typeOfData) async {
     }
   } catch (e) {
     LogError('Error: SyncService:DownSyncOpportunityPermission() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityProducts(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityProductPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityProductsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityProductsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityProduct opportunityProduct;
+                  var id = jsonObject['OpportunityProductID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityProduct = OpportunityProductDataHandlerBase.GetMasterOpportunityProductRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityProduct == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityProduct = OpportunityProductDataHandlerBase.GetOpportunityProductRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityProduct == null) {
+                    opportunityProduct = OpportunityProduct();
+                    opportunityProduct = JSONCopier.copyJsonDataToOpportunityProduct( dbHandler, jsonObject, opportunityProduct, true);
+                    var rid = OpportunityProductDataHandlerBase.AddOpportunityProductRecord(dbHandler,  opportunityProduct);
+                  } else {
+                    opportunityProduct = JSONCopier.copyJsonDataToOpportunityProduct( dbHandler, jsonObject, opportunityProduct, false);
+                    var rid = OpportunityProductDataHandlerBase.UpdateOpportunityProductRecord(dbHandler,  opportunityProduct.id, opportunityProduct);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityProductsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityProduct() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityProduct() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityProduct() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityProductDetails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityProductDetailPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityProductDetailsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityProductDetailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityProductDetail opportunityProductDetail;
+                  var id = jsonObject['OpportunityProductDetailID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityProductDetail = OpportunityProductDetailDataHandlerBase.GetMasterOpportunityProductDetailRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityProductDetail == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityProductDetail = OpportunityProductDetailDataHandlerBase.GetOpportunityProductDetailRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityProductDetail == null) {
+                    opportunityProductDetail = OpportunityProductDetail();
+                    opportunityProductDetail = JSONCopier.copyJsonDataToOpportunityProductDetail( dbHandler, jsonObject, opportunityProductDetail, true);
+                    var rid = OpportunityProductDetailDataHandlerBase.AddOpportunityProductDetailRecord(dbHandler,  opportunityProductDetail);
+                  } else {
+                    opportunityProductDetail = JSONCopier.copyJsonDataToOpportunityProductDetail( dbHandler, jsonObject, opportunityProductDetail, false);
+                    var rid = OpportunityProductDetailDataHandlerBase.UpdateOpportunityProductDetailRecord(dbHandler,  opportunityProductDetail.id, opportunityProductDetail);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityProductDetailsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityProductDetail() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityProductDetail() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityProductDetail() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityProductDetailAttributes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityProductDetailAttributePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityProductDetailAttributesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityProductDetailAttributesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityProductDetailAttribute opportunityProductDetailAttribute;
+                  var id = jsonObject['OpportunityProductDetailAttributeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityProductDetailAttribute = OpportunityProductDetailAttributeDataHandlerBase.GetMasterOpportunityProductDetailAttributeRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityProductDetailAttribute == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityProductDetailAttribute = OpportunityProductDetailAttributeDataHandlerBase.GetOpportunityProductDetailAttributeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityProductDetailAttribute == null) {
+                    opportunityProductDetailAttribute = OpportunityProductDetailAttribute();
+                    opportunityProductDetailAttribute = JSONCopier.copyJsonDataToOpportunityProductDetailAttribute( dbHandler, jsonObject, opportunityProductDetailAttribute, true);
+                    var rid = OpportunityProductDetailAttributeDataHandlerBase.AddOpportunityProductDetailAttributeRecord(dbHandler,  opportunityProductDetailAttribute);
+                  } else {
+                    opportunityProductDetailAttribute = JSONCopier.copyJsonDataToOpportunityProductDetailAttribute( dbHandler, jsonObject, opportunityProductDetailAttribute, false);
+                    var rid = OpportunityProductDetailAttributeDataHandlerBase.UpdateOpportunityProductDetailAttributeRecord(dbHandler,  opportunityProductDetailAttribute.id, opportunityProductDetailAttribute);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityProductDetailAttributesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityProductDetailAttribute() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityProductDetailAttribute() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityProductDetailAttribute() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityStages(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityStagePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityStagesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityStagesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityStage opportunityStage;
+                  var id = jsonObject['OpportunityStageID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityStage = OpportunityStageDataHandlerBase.GetMasterOpportunityStageRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityStage == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityStage = OpportunityStageDataHandlerBase.GetOpportunityStageRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityStage == null) {
+                    opportunityStage = OpportunityStage();
+                    opportunityStage = JSONCopier.copyJsonDataToOpportunityStage( dbHandler, jsonObject, opportunityStage, true);
+                    var rid = OpportunityStageDataHandlerBase.AddOpportunityStageRecord(dbHandler,  opportunityStage);
+                  } else {
+                    opportunityStage = JSONCopier.copyJsonDataToOpportunityStage( dbHandler, jsonObject, opportunityStage, false);
+                    var rid = OpportunityStageDataHandlerBase.UpdateOpportunityStageRecord(dbHandler,  opportunityStage.id, opportunityStage);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityStagesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityStage() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityStage() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityStage() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityStageTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityStageTypePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityStageTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityStageTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityStageType ?opportunityStageType;
+                  var id = jsonObject['OpportunityStageTypeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityStageType = OpportunityStageTypeDataHandlerBase.GetMasterOpportunityStageTypeRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityStageType == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityStageType = OpportunityStageTypeDataHandlerBase.GetOpportunityStageTypeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityStageType == null) {
+                    opportunityStageType = OpportunityStageType();
+                    opportunityStageType = JSONCopier.copyJsonDataToOpportunityStageType( dbHandler, jsonObject, opportunityStageType, true);
+                    var rid = OpportunityStageTypeDataHandlerBase.AddOpportunityStageTypeRecord(dbHandler,  opportunityStageType);
+                  } else {
+                    opportunityStageType = JSONCopier.copyJsonDataToOpportunityStageType( dbHandler, jsonObject, opportunityStageType, false);
+                    var rid = OpportunityStageTypeDataHandlerBase.UpdateOpportunityStageTypeRecord(dbHandler,  opportunityStageType.id, opportunityStageType);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityStageTypesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityStageType() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityStageType() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityStageType() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityStatuses(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityStatusPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityStatusesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityStatusesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityStatus? opportunityStatus;
+                  var id = jsonObject['OpportunityStatusID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityStatus = OpportunityStatusDataHandlerBase.GetMasterOpportunityStatusRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityStatus == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityStatus = OpportunityStatusDataHandlerBase.GetOpportunityStatusRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityStatus == null) {
+                    opportunityStatus = OpportunityStatus();
+                    opportunityStatus = JSONCopier.copyJsonDataToOpportunityStatus( dbHandler, jsonObject, opportunityStatus, true);
+                    var rid = OpportunityStatusDataHandlerBase.AddOpportunityStatusRecord(dbHandler,  opportunityStatus);
+                  } else {
+                    opportunityStatus = JSONCopier.copyJsonDataToOpportunityStatus( dbHandler, jsonObject, opportunityStatus, false);
+                    var rid = OpportunityStatusDataHandlerBase.UpdateOpportunityStatusRecord(dbHandler,  opportunityStatus.id, opportunityStatus);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityStatusesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityStatus() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityStatus() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityStatus() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityTeams(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityTeamPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityTeamsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityTeamsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityTeam opportunityTeam;
+                  var id = jsonObject['OpportunityTeamID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityTeam = OpportunityTeamDataHandlerBase.GetMasterOpportunityTeamRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityTeam == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityTeam = OpportunityTeamDataHandlerBase.GetOpportunityTeamRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityTeam == null) {
+                    opportunityTeam = OpportunityTeam();
+                    opportunityTeam = JSONCopier.copyJsonDataToOpportunityTeam( dbHandler, jsonObject, opportunityTeam, true);
+                    var rid = OpportunityTeamDataHandlerBase.AddOpportunityTeamRecord(dbHandler,  opportunityTeam);
+                  } else {
+                    opportunityTeam = JSONCopier.copyJsonDataToOpportunityTeam( dbHandler, jsonObject, opportunityTeam, false);
+                    var rid = OpportunityTeamDataHandlerBase.UpdateOpportunityTeamRecord(dbHandler,  opportunityTeam.id, opportunityTeam);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityTeamsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityTeam() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityTeam() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityTeam() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncOpportunityTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetOpportunityTypePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        OpportunityTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': OpportunityTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  OpportunityType ?opportunityType;
+                  var id = jsonObject['OpportunityTypeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    opportunityType = await  OpportunityTypeDataHandlerBase.GetMasterOpportunityTypeRecord(dbHandler,  id);
+                  }
+
+                  if (opportunityType == null && doDoubleCheck && uid != null && uid != '') {
+                    opportunityType = await  OpportunityTypeDataHandlerBase.GetOpportunityTypeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (opportunityType == null) {
+                    opportunityType = OpportunityType();
+                    opportunityType = JSONCopier.copyJsonDataToOpportunityType( dbHandler, jsonObject, opportunityType, true);
+                    var rid = await OpportunityTypeDataHandlerBase.AddOpportunityTypeRecord(dbHandler,  opportunityType);
+                  } else {
+                    opportunityType = JSONCopier.copyJsonDataToOpportunityType( dbHandler, jsonObject, opportunityType, false);
+                    var rid = await OpportunityTypeDataHandlerBase.UpdateOpportunityTypeRecord(dbHandler,  opportunityType.id, opportunityType);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) OpportunityTypesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncOpportunityType() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncOpportunityType() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncOpportunityType() 3-> ' + e.toString());
+  }
+}
+
+
+
+void downSyncPerformanceSummaries(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetPerformanceSummaryPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        PerformanceSummariesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': PerformanceSummariesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  PerformanceSummary? performanceSummary;
+                  var id = jsonObject['PerformanceSummaryID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    performanceSummary =  await PerformanceSummaryDataHandlerBase.GetMasterPerformanceSummaryRecord(dbHandler,  id);
+                  }
+
+                  if (performanceSummary == null && doDoubleCheck && uid != null && uid != '') {
+                    performanceSummary = await  PerformanceSummaryDataHandlerBase.GetPerformanceSummaryRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (performanceSummary == null) {
+                    performanceSummary = PerformanceSummary();
+                    performanceSummary = JSONCopier.copyJsonDataToPerformanceSummary( dbHandler, jsonObject, performanceSummary, true);
+                    var rid = await  PerformanceSummaryDataHandlerBase.AddPerformanceSummaryRecord(dbHandler,  performanceSummary);
+                  } else {
+                    performanceSummary = JSONCopier.copyJsonDataToPerformanceSummary( dbHandler, jsonObject, performanceSummary, false);
+                    var rid =  await PerformanceSummaryDataHandlerBase.UpdatePerformanceSummaryRecord(dbHandler,  performanceSummary.id, performanceSummary);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) PerformanceSummariesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncPerformanceSummary() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncPerformanceSummary() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncPerformanceSummary() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncPhoneTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetPhoneTypePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        PhoneTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': PhoneTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  PhoneType? phoneType;
+                  var id = jsonObject['PhoneTypeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    phoneType = PhoneTypeDataHandlerBase.GetMasterPhoneTypeRecord(dbHandler,  id);
+                  }
+
+                  if (phoneType == null && doDoubleCheck && uid != null && uid != '') {
+                    phoneType = PhoneTypeDataHandlerBase.GetPhoneTypeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (phoneType == null) {
+                    phoneType = PhoneType();
+                    phoneType = JSONCopier.CopyJsonDataToPhoneType( dbHandler, jsonObject, phoneType, true);
+                    var rid = PhoneTypeDataHandlerBase.AddPhoneTypeRecord(dbHandler,  phoneType);
+                  } else {
+                    phoneType = JSONCopier.CopyJsonDataToPhoneType( dbHandler, jsonObject, phoneType, false);
+                    var rid = PhoneTypeDataHandlerBase.UpdatePhoneTypeRecord(dbHandler,  phoneType.id, phoneType);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) PhoneTypesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncPhoneType() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncPhoneType() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncPhoneType() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProducts(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Product? product;
+                  var id = jsonObject['ProductID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    product = ProductDataHandlerBase.GetMasterProductRecord(dbHandler,  id);
+                  }
+
+                  if (product == null && doDoubleCheck && uid != null && uid != '') {
+                    product = ProductDataHandlerBase.GetProductRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (product == null) {
+                    product = Product();
+                    product = JSONCopier.copyJsonDataToProduct( dbHandler, jsonObject, product, true);
+                    var rid = ProductDataHandlerBase.AddProductRecord(dbHandler,  product);
+                  } else {
+                    product = JSONCopier.copyJsonDataToProduct( dbHandler, jsonObject, product, false);
+                    var rid = ProductDataHandlerBase.UpdateProductRecord(dbHandler,  product.id, product);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProduct() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProduct() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProduct() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProductAuxiliaries(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductAuxiliaryPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductAuxiliariesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductAuxiliariesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ProductAuxiliary? productAuxiliary;
+                  var id = jsonObject['ProductAuxiliaryID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    productAuxiliary = ProductAuxiliaryDataHandlerBase.GetMasterProductAuxiliaryRecord(dbHandler,  id);
+                  }
+
+                  if (productAuxiliary == null && doDoubleCheck && uid != null && uid != '') {
+                    productAuxiliary = ProductAuxiliaryDataHandlerBase.GetProductAuxiliaryRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (productAuxiliary == null) {
+                    productAuxiliary = ProductAuxiliary();
+                    productAuxiliary = JSONCopier.copyJsonDataToProductAuxiliary( dbHandler, jsonObject, productAuxiliary, true);
+                    var rid = ProductAuxiliaryDataHandlerBase.AddProductAuxiliaryRecord(dbHandler,  productAuxiliary);
+                  } else {
+                    productAuxiliary = JSONCopier.copyJsonDataToProductAuxiliary( dbHandler, jsonObject, productAuxiliary, false);
+                    var rid = ProductAuxiliaryDataHandlerBase.UpdateProductAuxiliaryRecord(dbHandler,  productAuxiliary.id, productAuxiliary);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductAuxiliariesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProductAuxiliary() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProductAuxiliary() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProductAuxiliary() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProductCategories(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductCategoryPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductCategoriesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductCategoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ProductCategory ?productCategory;
+                  var id = jsonObject['ProductCategoryID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    productCategory = await ProductCategoryDataHandlerBase.GetMasterProductCategoryRecord(dbHandler,  id);
+                  }
+
+                  if (productCategory == null && doDoubleCheck && uid != null && uid != '') {
+                    productCategory = await ProductCategoryDataHandlerBase.GetProductCategoryRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (productCategory == null) {
+                    productCategory = ProductCategory();
+                    productCategory = JSONCopier.copyJsonDataToProductCategory( dbHandler, jsonObject, productCategory, true);
+                    var rid = await ProductCategoryDataHandlerBase.AddProductCategoryRecord(dbHandler,  productCategory);
+                  } else {
+                    productCategory = JSONCopier.copyJsonDataToProductCategory( dbHandler, jsonObject, productCategory, false);
+                    var rid =await ProductCategoryDataHandlerBase.UpdateProductCategoryRecord(dbHandler,  productCategory.id, productCategory);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductCategoriesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProductCategory() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProductCategory() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProductCategory() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProductInstallations(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductInstallationPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductInstallationsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductInstallationsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ProductInstallation? productInstallation;
+                  var id = jsonObject['ProductInstallationID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    productInstallation = ProductInstallationDataHandlerBase.GetMasterProductInstallationRecord(dbHandler,  id);
+                  }
+
+                  if (productInstallation == null && doDoubleCheck && uid != null && uid != '') {
+                    productInstallation = ProductInstallationDataHandlerBase.GetProductInstallationRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (productInstallation == null) {
+                    productInstallation = ProductInstallation();
+                    productInstallation = JSONCopier.copyJsonDataToProductInstallation( dbHandler, jsonObject, productInstallation, true);
+                    var rid = ProductInstallationDataHandlerBase.AddProductInstallationRecord(dbHandler,  productInstallation);
+                  } else {
+                    productInstallation = JSONCopier.copyJsonDataToProductInstallation( dbHandler, jsonObject, productInstallation, false);
+                    var rid = ProductInstallationDataHandlerBase.UpdateProductInstallationRecord(dbHandler,  productInstallation.id, productInstallation);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductInstallationsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProductInstallation() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProductInstallation() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProductInstallation() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProductInstallationDetails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductInstallationDetailPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductInstallationDetailsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductInstallationDetailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ProductInstallationDetail? productInstallationDetail;
+                  var id = jsonObject['ProductInstallationDetailID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    productInstallationDetail = await ProductInstallationDetailDataHandlerBase.GetMasterProductInstallationDetailRecord(dbHandler,  id);
+                  }
+
+                  if (productInstallationDetail == null && doDoubleCheck && uid != null && uid != '') {
+                    productInstallationDetail = await ProductInstallationDetailDataHandlerBase.GetProductInstallationDetailRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (productInstallationDetail == null) {
+                    productInstallationDetail = ProductInstallationDetail();
+                    productInstallationDetail = JSONCopier.copyJsonDataToProductInstallationDetail( dbHandler, jsonObject, productInstallationDetail, true);
+                    var rid = await  ProductInstallationDetailDataHandlerBase.AddProductInstallationDetailRecord(dbHandler,  productInstallationDetail);
+                  } else {
+                    productInstallationDetail = JSONCopier.copyJsonDataToProductInstallationDetail( dbHandler, jsonObject, productInstallationDetail, false);
+                    var rid =  await ProductInstallationDetailDataHandlerBase.UpdateProductInstallationDetailRecord(dbHandler,  productInstallationDetail.id, productInstallationDetail);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductInstallationDetailsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProductInstallationDetail() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProductInstallationDetail() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProductInstallationDetail() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncProductMedia(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetProductMediaPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ProductMediaPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ProductMediaPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ProductMedia? productMedia;
+                  var id = jsonObject['ProductMediaID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    productMedia =  await ProductMediaDataHandlerBase.GetMasterProductMediaRecord(dbHandler,  id);
+                  }
+
+                  if (productMedia == null && doDoubleCheck && uid != null && uid != '') {
+                    productMedia = await ProductMediaDataHandlerBase.GetProductMediaRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (productMedia == null) {
+                    productMedia = ProductMedia();
+                    productMedia = JSONCopier.copyJsonDataToProductMedia( dbHandler, jsonObject, productMedia, true);
+                    var rid = await ProductMediaDataHandlerBase.AddProductMediaRecord(dbHandler,  productMedia);
+                  } else {
+                    productMedia = JSONCopier.copyJsonDataToProductMedia( dbHandler, jsonObject, productMedia, false);
+                    var rid = await ProductMediaDataHandlerBase.UpdateProductMediaRecord(dbHandler,  productMedia.id, productMedia);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ProductMediaPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncProductMedia() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncProductMedia() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncProductMedia() 3-> ' + e.toString());
+  }
+}
+
+void downSyncReimbursements(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetReimbursementPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ReimbursementsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ReimbursementsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Reimbursement reimbursement;
+                  var id = jsonObject['ReimbursementID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    reimbursement = await ReimbursementDataHandlerBase.GetMasterReimbursementRecord(dbHandler,  id);
+                  }
+
+                  if (reimbursement == null && doDoubleCheck && uid != null && uid != '') {
+                    reimbursement = await ReimbursementDataHandlerBase.GetReimbursementRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (reimbursement == null) {
+                    reimbursement = Reimbursement();
+                    reimbursement = JSONCopier.copyJsonDataToReimbursement( dbHandler, jsonObject, reimbursement, true);
+                    var rid =  await ReimbursementDataHandlerBase.AddReimbursementRecord(dbHandler,  reimbursement);
+                  } else {
+                    reimbursement = JSONCopier.copyJsonDataToReimbursement( dbHandler, jsonObject, reimbursement, false);
+                    var rid = await ReimbursementDataHandlerBase.UpdateReimbursementRecord(dbHandler,  reimbursement.id, reimbursement);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ReimbursementsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncReimbursement() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncReimbursement() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncReimbursement() 3-> ' + e.toString());
+  }
+}
+
+void downSyncReimbursementDetails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetReimbursementDetailPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ReimbursementDetailsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ReimbursementDetailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ReimbursementDetail reimbursementDetail;
+                  var id = jsonObject['ReimbursementDetailID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    reimbursementDetail =await  ReimbursementDetailDataHandlerBase.GetMasterReimbursementDetailRecord(dbHandler,  id);
+                  }
+
+                  if (reimbursementDetail == null && doDoubleCheck && uid != null && uid != '') {
+                    reimbursementDetail = await ReimbursementDetailDataHandlerBase.GetReimbursementDetailRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (reimbursementDetail == null) {
+                    reimbursementDetail = ReimbursementDetail();
+                    reimbursementDetail = JSONCopier.copyJsonDataToReimbursementDetail( dbHandler, jsonObject, reimbursementDetail, true);
+                    var rid = await ReimbursementDetailDataHandlerBase.AddReimbursementDetailRecord(dbHandler,  reimbursementDetail);
+                  } else {
+                    reimbursementDetail = JSONCopier.copyJsonDataToReimbursementDetail( dbHandler, jsonObject, reimbursementDetail, false);
+                    var rid = await ReimbursementDetailDataHandlerBase.UpdateReimbursementDetailRecord(dbHandler,  reimbursementDetail.id, reimbursementDetail);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ReimbursementDetailsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncReimbursementDetail() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        }
+
+        String posterror = error != null ? error.toString() : '';
+
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          posterror += utf8.decode(response.bodyBytes);
+        }
+
+        LogError('VolleyError: SyncService:DownSyncReimbursementDetail() 2-> ' + posterror);
+        currentDownload = '';
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncReimbursementDetail() 3-> ' + e.toString());
+  }
+}
+
+void downSyncReimbursementTypes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetReimbursementTypePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ReimbursementTypesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ReimbursementTypesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ReimbursementType? reimbursementType;
+                  var id = jsonObject['ReimbursementTypeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    reimbursementType = await ReimbursementTypeDataHandlerBase.GetMasterReimbursementTypeRecord(dbHandler,  id);
+                  }
+
+                  if (reimbursementType == null && doDoubleCheck && uid != null && uid != '') {
+                    reimbursementType = await ReimbursementTypeDataHandlerBase.GetReimbursementTypeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (reimbursementType == null) {
+                    reimbursementType = ReimbursementType();
+                    reimbursementType = JSONCopier.copyJsonDataToReimbursementType( dbHandler, jsonObject, reimbursementType, true);
+                    var rid = await ReimbursementTypeDataHandlerBase.AddReimbursementTypeRecord(dbHandler,  reimbursementType);
+                  } else {
+                    reimbursementType = JSONCopier.copyJsonDataToReimbursementType( dbHandler, jsonObject, reimbursementType, false);
+                    var rid = await ReimbursementTypeDataHandlerBase.UpdateReimbursementTypeRecord(dbHandler,  reimbursementType.id, reimbursementType);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ReimbursementTypesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncReimbursementType() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncReimbursementType() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncReimbursementType() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncReminders(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetReminderPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        RemindersPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': RemindersPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Reminder reminder;
+                  var id = jsonObject['ReminderID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    reminder = await ReminderDataHandlerBase.GetMasterReminderRecord(dbHandler,  id);
+                  }
+
+                  if (reminder == null && doDoubleCheck && uid != null && uid != '') {
+                    reminder = await ReminderDataHandlerBase.GetReminderRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (reminder == null) {
+                    reminder = Reminder();
+                    reminder = JSONCopier.copyJsonDataToReminder( dbHandler, jsonObject, reminder, true);
+                    var rid = await ReminderDataHandlerBase.AddReminderRecord(dbHandler,  reminder);
+                  } else {
+                    reminder = JSONCopier.copyJsonDataToReminder( dbHandler, jsonObject, reminder, false);
+                    var rid = await ReminderDataHandlerBase.UpdateReminderRecord(dbHandler,  reminder.id, reminder);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) RemindersPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncReminder() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncReminder() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncReminder() 3-> ' + e.toString());
+  }
+}
+void downSyncResources(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetResourcePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ResourcesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ResourcesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Resource ?resource;
+                  var id = jsonObject['ResourceID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    resource = await ResourceDataHandlerBase.GetMasterResourceRecord(dbHandler,  id);
+                  }
+
+                  if (resource == null && doDoubleCheck && uid != null && uid != '') {
+                    resource =await ResourceDataHandlerBase.GetResourceRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (resource == null) {
+                    resource = Resource();
+                    resource = JSONCopier.copyJsonDataToResource( dbHandler, jsonObject, resource, true);
+                    var rid =  await ResourceDataHandlerBase.AddResourceRecord(dbHandler,  resource);
+                  } else {
+                    resource = JSONCopier.copyJsonDataToResource( dbHandler, jsonObject, resource, false);
+                    var rid = await ResourceDataHandlerBase.UpdateResourceRecord(dbHandler,  resource.id, resource);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ResourcesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncResource() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncResource() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncResource() 3-> ' + e.toString());
+  }
+}
+void downSyncServiceInvoices(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetServiceInvoicePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ServiceInvoicesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ServiceInvoicesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ServiceInvoice? serviceInvoice;
+                  var id = jsonObject['ServiceInvoiceID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    serviceInvoice = await ServiceInvoiceDataHandlerBase.GetMasterServiceInvoiceRecord(dbHandler,  id);
+                  }
+
+                  if (serviceInvoice == null && doDoubleCheck && uid != null && uid != '') {
+                    serviceInvoice = await ServiceInvoiceDataHandlerBase.GetServiceInvoiceRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (serviceInvoice == null) {
+                    serviceInvoice = ServiceInvoice();
+                    serviceInvoice = JSONCopier.copyJsonDataToServiceInvoice( dbHandler, jsonObject, serviceInvoice, true);
+                    var rid = await ServiceInvoiceDataHandlerBase.AddServiceInvoiceRecord(dbHandler,  serviceInvoice);
+                  } else {
+                    serviceInvoice = JSONCopier.copyJsonDataToServiceInvoice( dbHandler, jsonObject, serviceInvoice, false);
+                    var rid = await ServiceInvoiceDataHandlerBase.UpdateServiceInvoiceRecord(dbHandler,  serviceInvoice.id, serviceInvoice);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ServiceInvoicesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncServiceInvoice() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncServiceInvoice() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncServiceInvoice() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncServiceInvoiceDetails(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetServiceInvoiceDetailPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        ServiceInvoiceDetailsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': ServiceInvoiceDetailsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  ServiceInvoiceDetail? serviceInvoiceDetail;
+                  var id = jsonObject['ServiceInvoiceDetailID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    serviceInvoiceDetail = await ServiceInvoiceDetailDataHandlerBase.GetMasterServiceInvoiceDetailRecord(dbHandler,  id);
+                  }
+
+                  if (serviceInvoiceDetail == null && doDoubleCheck && uid != null && uid != '') {
+                    serviceInvoiceDetail = await ServiceInvoiceDetailDataHandlerBase.GetServiceInvoiceDetailRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (serviceInvoiceDetail == null) {
+                    serviceInvoiceDetail = ServiceInvoiceDetail();
+                    serviceInvoiceDetail = JSONCopier.copyJsonDataToServiceInvoiceDetail( dbHandler, jsonObject, serviceInvoiceDetail, true);
+                    var rid = await ServiceInvoiceDetailDataHandlerBase.AddServiceInvoiceDetailRecord(dbHandler,  serviceInvoiceDetail);
+                  } else {
+                    serviceInvoiceDetail = JSONCopier.copyJsonDataToServiceInvoiceDetail( dbHandler, jsonObject, serviceInvoiceDetail, false);
+                    var rid = await ServiceInvoiceDetailDataHandlerBase.UpdateServiceInvoiceDetailRecord(dbHandler,  serviceInvoiceDetail.id, serviceInvoiceDetail);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) ServiceInvoiceDetailsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncServiceInvoiceDetail() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncServiceInvoiceDetail() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncServiceInvoiceDetail() 3-> ' + e.toString());
+  }
+}
+
+void downSyncTags(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetTagPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        TagsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': TagsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Tag tag;
+                  var id = jsonObject['TagID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    tag =await TagDataHandlerBase.GetMasterTagRecord(dbHandler,  id);
+                  }
+
+                  if (tag == null && doDoubleCheck && uid != null && uid != '') {
+                    tag =  await TagDataHandlerBase.GetTagRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (tag == null) {
+                    tag = Tag();
+                    tag =await JSONCopier.copyJsonDataToAccountCategoryMapping( dbHandler, jsonObject, tag, true);
+                    var rid = await TagDataHandlerBase.AddTagRecord(dbHandler,  tag);
+                  } else {
+                    tag =  await JSONCopier.copyJsonDataToTag( dbHandler, jsonObject, tag, false);
+                    var rid = await TagDataHandlerBase.UpdateTagRecord(dbHandler,  tag.id, tag);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) TagsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncTag() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncTag() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncTag() 3-> ' + e.toString());
+  }
+}
+
+void downSyncTagGroups(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetTagGroupPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        TagGroupsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': TagGroupsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  TagGroup tagGroup;
+                  var id = jsonObject['TagGroupID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    tagGroup = await TagGroupDataHandlerBase.GetMasterTagGroupRecord(dbHandler,  id);
+                  }
+
+                  if (tagGroup == null && doDoubleCheck && uid != null && uid != '') {
+                    tagGroup =  await TagGroupDataHandlerBase.GetTagGroupRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (tagGroup == null) {
+                    tagGroup = TagGroup();
+                    tagGroup = await JSONCopier.copyJsonDataToTagGroup( dbHandler, jsonObject, tagGroup, true);
+                    var rid = await TagGroupDataHandlerBase.AddTagGroupRecord(dbHandler,  tagGroup);
+                  } else {
+                    tagGroup = await JSONCopier.copyJsonDataToTagGroup( dbHandler, jsonObject, tagGroup, false);
+                    var rid =  await TagGroupDataHandlerBase.UpdateTagGroupRecord(dbHandler,  tagGroup.id, tagGroup);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) TagGroupsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncTagGroup() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncTagGroup() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncTagGroup() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncTerritories(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetTerritoryPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        TerritoriesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': TerritoriesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Territory? territory;
+                  var id = jsonObject['TerritoryID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    territory =  await TerritoryDataHandlerBase.GetMasterTerritoryRecord(dbHandler,  id);
+                  }
+
+                  if (territory == null && doDoubleCheck && uid != null && uid != '') {
+                    territory =  await TerritoryDataHandlerBase.GetTerritoryRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (territory == null) {
+                    territory = Territory();
+                    territory =  await JSONCopier.copyJsonDataToTerritory( dbHandler, jsonObject, territory, true);
+                    var rid =  await TerritoryDataHandlerBase.AddTerritoryRecord(dbHandler,  territory);
+                  } else {
+                    territory = await  JSONCopier.copyJsonDataToTerritory( dbHandler, jsonObject, territory, false);
+                    var rid = await TerritoryDataHandlerBase.UpdateTerritoryRecord(dbHandler,  territory.id, territory);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) TerritoriesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncTerritory() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncTerritory() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncTerritory() 3-> ' + e.toString());
+  }
+}
+
+void downSyncTimeZones(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetTimeZonePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        TimeZonesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': TimeZonesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  TimeZone? timeZone;
+                  var id = jsonObject['TimeZoneID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    timeZone =  await TimeZoneDataHandlerBase.GetMasterTimeZoneRecord(dbHandler,  id);
+                  }
+
+                  if (timeZone == null && doDoubleCheck && uid != null && uid != '') {
+                    timeZone = await  TimeZoneDataHandlerBase.GetTimeZoneRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (timeZone == null) {
+                    timeZone = TimeZone();
+                    timeZone = await  JSONCopier.copyJsonDataToTimeZone( dbHandler, jsonObject, timeZone, true);
+                    var rid = await TimeZoneDataHandlerBase.AddTimeZoneRecord(dbHandler,  timeZone);
+                  } else {
+                    timeZone = await JSONCopier.copyJsonDataToTimeZone( dbHandler, jsonObject, timeZone, false);
+                    var rid = await TimeZoneDataHandlerBase.UpdateTimeZoneRecord(dbHandler,  timeZone.id, timeZone);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) TimeZonesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncTimeZone() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncTimeZone() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncTimeZone() 3-> ' + e.toString());
+  }
+}
+void downSyncTravelPurposes(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetTravelPurposePaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        TravelPurposesPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': TravelPurposesPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  TravelPurpose ?travelPurpose;
+                  var id = jsonObject['TravelPurposeID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    travelPurpose = await TravelPurposeDataHandlerBase.GetMasterTravelPurposeRecord(dbHandler,  id);
+                  }
+
+                  if (travelPurpose == null && doDoubleCheck && uid != null && uid != '') {
+                    travelPurpose = await TravelPurposeDataHandlerBase.GetTravelPurposeRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (travelPurpose == null) {
+                    travelPurpose = TravelPurpose();
+                    travelPurpose =  await JSONCopier.copyJsonDataToTravelPurpose( dbHandler, jsonObject, travelPurpose, true);
+                    var rid = await TravelPurposeDataHandlerBase.AddTravelPurposeRecord(dbHandler,  travelPurpose);
+                  } else {
+                    travelPurpose =  await JSONCopier.copyJsonDataToTravelPurpose( dbHandler, jsonObject, travelPurpose, false);
+                    var rid = await TravelPurposeDataHandlerBase.UpdateTravelPurposeRecord(dbHandler,  travelPurpose.id, travelPurpose);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) TravelPurposesPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncTravelPurpose() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncTravelPurpose() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncTravelPurpose() 3-> ' + e.toString());
+  }
+}
+
+void downSyncUnits(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetUnitPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        UnitsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': UnitsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  Unit unit;
+                  var id = jsonObject['UnitID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    unit = await  UnitDataHandlerBase.GetMasterUnitRecord(dbHandler,  id);
+                  }
+
+                  if (unit == null && doDoubleCheck && uid != null && uid != '') {
+                    unit = await  UnitDataHandlerBase.GetUnitRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (unit == null) {
+                    unit = Unit();
+                    unit = JSONCopier.copyJsonDataToUnit( dbHandler, jsonObject, unit, true);
+                    var rid =await UnitDataHandlerBase.AddUnitRecord(dbHandler,  unit);
+                  } else {
+                    unit = JSONCopier.copyJsonDataToUnit( dbHandler, jsonObject, unit, false);
+                    var rid =  await UnitDataHandlerBase.UpdateUnitRecord(dbHandler,  unit.id, unit);
+                  }
+                }
+              } 
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) UnitsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncUnit() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncUnit() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncUnit() 3-> ' + e.toString());
+  }
+}
+
+
+
+void downSyncHSSupportTickets(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetHSSupportTicketPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        HSSupportTicketsPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': HSSupportTicketsPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  HSSupportTicket hSSupportTicket;
+                  var id = jsonObject['HSSupportTicketID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    hSSupportTicket = await  HSSupportTicketDataHandlerBase.GetMasterHSSupportTicketRecord(dbHandler,  id);
+                  }
+
+                  if (hSSupportTicket == null && doDoubleCheck && uid != null && uid != '') {
+                    hSSupportTicket = await HSSupportTicketDataHandlerBase.GetHSSupportTicketRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (hSSupportTicket == null) {
+                    hSSupportTicket = HSSupportTicket();
+                    hSSupportTicket = JSONCopier.copyJsonDataToHSSupportTicket( dbHandler, jsonObject, hSSupportTicket, true);
+                    var rid = await HSSupportTicketDataHandlerBase.AddHSSupportTicketRecord(dbHandler,  hSSupportTicket);
+                  } else {
+                    hSSupportTicket = JSONCopier.copyJsonDataToHSSupportTicket( dbHandler, jsonObject, hSSupportTicket, false);
+                    var rid = await HSSupportTicketDataHandlerBase.UpdateHSSupportTicketRecord(dbHandler,  hSSupportTicket.id, hSSupportTicket);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) HSSupportTicketsPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncHSSupportTicket() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += utf8.decode(response.bodyBytes);
+          }
+
+          LogError('VolleyError: SyncService:DownSyncHSSupportTicket() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncHSSupportTicket() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncHSSupportTicketMedia(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/GetHSSupportTicketMediaPaged';
+
+      final AppSyncItem dataItem = SyncDataHandler.GetAppSyncItemRecord(dbHandler,  typeOfData);
+      if (dataItem != null && dataItem.records != '0') {
+        int records = Globals.tryParseInt(dataItem.records);
+        int pageSize = Globals.tryParseInt(dataItem.pgSize);
+        int totalPages = (records / pageSize).ceil();
+
+        int pageNow = Globals.tryParseInt(dataItem.page);
+        HSSupportTicketMediaPageCurrent = pageNow + 1;
+
+        var postData = {
+          'pageindex': HSSupportTicketMediaPageCurrent,
+          'pagesize': pageSize,
+          'objectdate1': dataItem.getLMaxDate(),
+          'objectdate2': dataItem.getSMaxDate(),
+        };
+
+        final response = await http.post(Uri.parse(url), body: jsonEncode(postData), headers: {
+          'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        });
+
+        if (response.statusCode == 200) {
+          try {
+            final jsonArray = jsonDecode(response.body) as List<dynamic>;
+
+            if (jsonArray != null) {
+              for (var i = 0; i < jsonArray.length; i++) {
+                var jsonObject = jsonArray[i];
+
+                if (jsonObject != null) {
+                  HSSupportTicketMedia hSSupportTicketMedia;
+                  var id = jsonObject['HSSupportTicketMediaID'];
+                  var uid = jsonObject['Uid'];
+
+                  if (id != null && id != '') {
+                    hSSupportTicketMedia = await HSSupportTicketMediaDataHandlerBase.GetMasterHSSupportTicketMediaRecord(dbHandler,  id);
+                  }
+
+                  if (hSSupportTicketMedia == null && doDoubleCheck && uid != null && uid != '') {
+                    hSSupportTicketMedia = await HSSupportTicketMediaDataHandlerBase.GetHSSupportTicketMediaRecordByUid(dbHandler,  uid);
+                  }
+
+                  if (hSSupportTicketMedia == null) {
+                    hSSupportTicketMedia = HSSupportTicketMedia();
+                    hSSupportTicketMedia =  await JSONCopier.copyJsonDataToHSSupportTicketMedia( dbHandler, jsonObject, hSSupportTicketMedia, true);
+                    var rid = await HSSupportTicketMediaDataHandlerBase.AddHSSupportTicketMediaRecord(dbHandler,  hSSupportTicketMedia);
+                  } else {
+                    hSSupportTicketMedia =  await JSONCopier.copyJsonDataToHSSupportTicketMedia( dbHandler, jsonObject, hSSupportTicketMedia, false);
+                    var rid = await HSSupportTicketMediaDataHandlerBase.UpdateHSSupportTicketMediaRecord(dbHandler,  hSSupportTicketMedia.id, hSSupportTicketMedia);
+                  }
+                }
+              }
+
+              bool isAllPagesDone = UpdateDownSyncPageStatus(dataItem);
+              if (isAllPagesDone) HSSupportTicketMediaPageCurrent = 0;
+            } else {
+              ResetRecordCount(dataItem);
+            }
+          } catch ( ex) {
+            LogError('Error: SyncService:DownSyncHSSupportTicketMedia() 1-> ' + ex.toString());
+          } finally {
+            currentDownload = '';
+          }
+        } else {
+          String posterror = error != null ? error.toString() : '';
+
+          if (response.statusCode == 401) {
+            Globals.USER_TOKEN_ALT = '';
+          } else if (response.statusCode >= 500) {
+            posterror += response.body;
+          }
+
+          LogError('VolleyError: SyncService:DownSyncHSSupportTicketMedia() 2-> ' + posterror);
+          currentDownload = '';
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncHSSupportTicketMedia() 3-> ' + e.toString());
+  }
+}
+
+
+void downSyncIDs(String typeOfData) async {
+  try {
+    if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != '') {
+      String url = AppConstants.API_VERSION_URL + '/DownSyncManager/Get$typeOfDataIDs';
+
+      final response = await http.post(Uri.parse(url), body: jsonEncode({
+        'pageindex': '1',
+        'pagesize': '10000',
+        'objectdate1': '2000-01-01',
+        'objectdate2': '2050-01-01',
+      }), headers: {
+        'Authorization': 'Bearer ${Globals.USER_TOKEN}',
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        if (response.body != null && response.body != '' && !response.body.startsWith('ERROR_')) {
+          dbHandler.activateDeactivateRecords(typeOfData, response.body);
+        }
+      } else {
+        if (response.statusCode == 401) {
+          Globals.USER_TOKEN_ALT = '';
+        } else if (response.statusCode >= 500) {
+          String posterror = response.body ?? '';
+          LogError('Error: SyncService:DownSyncIDs() 3-> $typeOfData:$posterror');
+        }
+      }
+    }
+  } catch (e) {
+    LogError('Error: SyncService:DownSyncIDs() 3-> $typeOfData:${e.toString()}');
   }
 }
 

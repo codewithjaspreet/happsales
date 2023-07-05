@@ -146,7 +146,7 @@ class FormCellElementDataHandler extends FormCellElementDataHandlerBase {
         dataList.add(dataItem);
       }
         } catch ( ex) {
-            Globals.hashCode( "FormCellElementDataHandlerBase:GetFormCellElementRecords()", ex);
+            Globals.handleException( "FormCellElementDataHandlerBase:GetFormCellElementRecords()", ex);
             throw ex;
         }
         return dataList;

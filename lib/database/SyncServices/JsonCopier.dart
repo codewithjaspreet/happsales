@@ -35,9 +35,16 @@ import '../Handlers/DatabaseHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityProductDetailDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/AppFeatureDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/BusinessFeatureDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/BusinessUnitDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/CurrencyDataHandler.dart';
 import '../Handlers/OtherHandlers/FormDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ProductDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ServiceInvoiceDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TagDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TagGroupDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/TerritoryDataHandler.dart';
+import '../Handlers/OtherHandlers/TerritoryDataHandlerBase.dart';
 import '../models/AccountModels/Account.dart';
 import '../models/AccountModels/AccountAddress.dart';
 import '../models/AccountModels/AccountBusinessPlan.dart';
@@ -163,6 +170,7 @@ import '../models/OtherModels/ReimbursementType.dart';
 import '../models/OtherModels/Reminder.dart';
 import '../models/OtherModels/Resource.dart';
 import '../models/OtherModels/ServiceInvoice.dart';
+import '../models/OtherModels/ServiceInvoiceDetail.dart';
 import '../models/OtherModels/Tag.dart';
 import '../models/OtherModels/TagGroup.dart';
 import '../models/OtherModels/Territory.dart';
@@ -402,8 +410,8 @@ class JSONCopier {
         account.leadQualificationID = jsonObj["LeadQualificationID"];
       }
 
-      account.isDirty = false;
-      account.isDeleted1 = true;
+      account.isDirty = "false";
+      account.isDeleted1 = "true";
       account.upSyncMessage = "";
       account.downSyncMessage = "";
       if (jsonObj.containsKey("CreatedOn")) {
@@ -479,7 +487,7 @@ class JSONCopier {
         String contactId = jsonObj["ContactID"];
         contactId =
             contactId != null && contactId.isNotEmpty ? contactId : "-1";
-        Contact contact = await ContactDataHandlerBase.GetMasterContactRecord(
+        Contact? contact = await ContactHandlerDataBase.GetMasterContactRecord(
             dbHandler, contactId);
         if (contact != null) {
           accountAddress.contactID = contact.id;
@@ -2146,7 +2154,7 @@ if (jsonObj.containsKey("ProductInstallationDetailID")) {
   productInstallationDetailId = productInstallationDetailId != null && productInstallationDetailId.isNotEmpty ? productInstallationDetailId : "-1";
   ProductInstallationDetail productInstallationDetail = ProductInstallationDetailDataHandler.GetMasterProductInstallationDetailRecord(dbHandler,  productInstallationDetailId);
   if (productInstallationDetail != null) {
-    activity.productInstallationDetailID = productInstallationDetail.getId();
+    activity.productInstallationDetailID = productInstallationDetail.id;
   }
 }*/
 
@@ -2340,7 +2348,7 @@ Future<ActivityApproval> copyJsonDataToActivityApproval(
           jsonObj['ParentActivityApprovalID'].toString();
       activityApprovalId =
           activityApprovalId.isNotEmpty ? activityApprovalId : '-1';
-      ActivityApproval ?activityApproval1 =
+      ActivityApproval? activityApproval1 =
           await ActivityApprovalDataHandlerBase.GetMasterActivityApprovalRecord(
               dbHandler, activityApprovalId);
       if (activityApproval1 != null) {
@@ -2777,7 +2785,7 @@ Future<ActivityMedia> copyJsonDataToActivityMedia(
         contentTypeId,
       );
       if (contentType != null) {
-        activityMedia.contentTypeID = contentType.getId();
+        activityMedia.contentTypeID = contentType.id;
       }
     }
 
@@ -2894,7 +2902,7 @@ Future<ActivityPermission> copyJsonDataToActivityPermission(
         activityId,
       );
       if (activity != null) {
-        activityPermission.activityID = activity.getId();
+        activityPermission.activityID = activity.id;
       }
     }
 
@@ -3081,7 +3089,7 @@ Future<ActivityProduct> copyJsonDataToActivityProduct(
         activityId,
       );
       if (activity != null) {
-        activityProduct.activityID = activity.getId();
+        activityProduct.activityID = activity.id;
       }
     }
 
@@ -3094,7 +3102,7 @@ Future<ActivityProduct> copyJsonDataToActivityProduct(
         productId,
       );
       if (product != null) {
-        activityProduct.productID = product.getId();
+        activityProduct.productID = product.id;
       }
     }
     if (jsonObj.containsKey('Price')) {
@@ -3194,7 +3202,7 @@ Future<ActivityProductDetail> copyJsonDataToActivityProductDetail(
         activityProductId,
       );
       if (activityProduct != null) {
-        activityProductDetail.activityProductID = activityProduct.getId();
+        activityProductDetail.activityProductID = activityProduct.id;
       }
     }
 
@@ -3585,7 +3593,7 @@ Future<ActivityTravel> copyJsonDataToActivityTravel(
         modeOfTravelId,
       );
       if (modeOfTravel != null) {
-        activityTravel.modeOfTravelID = modeOfTravel.getId();
+        activityTravel.modeOfTravelID = modeOfTravel.id;
       }
     }
     if (jsonObj.containsKey('TravelExpense')) {
@@ -3730,7 +3738,7 @@ ActivityTravelExpense copyJsonDataToActivityTravelExpense(
         activityTravelId,
       );
       if (activityTravel != null) {
-        activityTravelExpense.activityTravelID = activityTravel.getId();
+        activityTravelExpense.activityTravelID = activityTravel.id;
       }
     }
     if (jsonObj.containsKey('ExpenseTypeID')) {
@@ -3744,7 +3752,7 @@ ActivityTravelExpense copyJsonDataToActivityTravelExpense(
         expenseTypeId,
       );
       if (expenseType != null) {
-        activityTravelExpense.expenseTypeID = expenseType.getId();
+        activityTravelExpense.expenseTypeID = expenseType.id;
       }
     }
     if (jsonObj.containsKey('DistanceTravelled')) {
@@ -3762,7 +3770,7 @@ ActivityTravelExpense copyJsonDataToActivityTravelExpense(
         modeOfTravelId,
       );
       if (modeOfTravel != null) {
-        activityTravelExpense.modeOfTravelID = modeOfTravel.getId();
+        activityTravelExpense.modeOfTravelID = modeOfTravel.id;
       }
     }
     if (jsonObj.containsKey('Amount')) {
@@ -3883,7 +3891,7 @@ ActivityTravelMapping copyJsonDataToActivityTravelMapping(
         activityTravelId,
       );
       if (activityTravel != null) {
-        activityTravelMapping.activityTravelID = activityTravel.getId();
+        activityTravelMapping.activityTravelID = activityTravel.id;
       }
     }
     if (jsonObj.containsKey('ActivityID')) {
@@ -3898,7 +3906,7 @@ ActivityTravelMapping copyJsonDataToActivityTravelMapping(
         activityId,
       );
       if (activity != null) {
-        activityTravelMapping.activityID = activity.getId();
+        activityTravelMapping.activityID = activity.id;
       }
     }
     if (jsonObj.containsKey('CreatedBy')) {
@@ -4019,7 +4027,7 @@ ActivityTravelMedia copyJsonDataToActivityTravelMedia(
         contentTypeId,
       );
       if (contentType != null) {
-        activityTravelMedia.contentTypeID = contentType.getId();
+        activityTravelMedia.contentTypeID = contentType.id;
       }
     }
     if (jsonObj.containsKey('MediaPath')) {
@@ -4150,7 +4158,7 @@ Future<ActivityType> copyJsonDataToActivityType(
         businessFeatureId,
       );
       if (businessFeature != null) {
-        activityType.businessFeatureID = businessFeature.getId();
+        activityType.businessFeatureID = businessFeature.id;
       }
     }
     if (jsonObj.containsKey('InternalCode')) {
@@ -8942,7 +8950,7 @@ Future<Opportunity> copyJsonDataToOpportunity(
           await OpportunityTypeDataHandlerBase.GetMasterOpportunityTypeRecord(
               dbHandler, opportunityTypeId);
       if (opportunityType != null) {
-        opportunity.opportunityTypeID = opportunityType.getId();
+        opportunity.opportunityTypeID = opportunityType.id;
       }
     }
 
@@ -9026,7 +9034,7 @@ if (jsonObj.containsKey("OpportunityStageID")) {
       await OpportunityStageDataHandler.GetMasterOpportunityStageRecord(
           dbHandler,  opportunityStageId);
   if (opportunityStage != null) {
-    opportunity.opportunityStageID = opportunityStage.getId();
+    opportunity.opportunityStageID = opportunityStage.id;
   }
 }
 
@@ -9038,7 +9046,7 @@ if (jsonObj.containsKey("OpportunityStatusID")) {
       await OpportunityStatusDataHandler.GetMasterOpportunityStatusRecord(
           dbHandler,  opportunityStatusId);
   if (opportunityStatus != null) {
-    opportunity.opportunityStatusID = opportunityStatus.getId();
+    opportunity.opportunityStatusID = opportunityStatus.id;
   }
 }
 
@@ -9110,7 +9118,7 @@ if (jsonObj.containsKey("ParentOpportunityID")) {
   Opportunity opportunity1 = await OpportunityDataHandler.GetMasterOpportunityRecord(
       dbHandler,  opportunityId);
   if (opportunity1 != null) {
-    opportunity.parentOpportunityID = opportunity1.getId();
+    opportunity.parentOpportunityID = opportunity1.id;
   }
 }
 
@@ -9132,7 +9140,7 @@ if (jsonObj.containsKey("RecurringOpportunityID")) {
   Opportunity opportunity2 = await OpportunityDataHandler.GetMasterOpportunityRecord(
       dbHandler,  opportunityId);
   if (opportunity2 != null) {
-    opportunity.recurringOpportunityID = opportunity2.getId();
+    opportunity.recurringOpportunityID = opportunity2.id;
   }
 }
 
@@ -9151,7 +9159,7 @@ if (jsonObj.containsKey("SupplierAccountID")) {
   Account account1 = await AccountDataHandler.GetMasterAccountRecord(
       dbHandler,  accountId);
   if (account1 != null) {
-    opportunity.supplierAccountID = account1.getId();
+    opportunity.supplierAccountID = account1.id;
   }
 }
 
@@ -11596,7 +11604,7 @@ Future<ProductCategory> copyJsonDataToProductCategory(
     productCategory.upSyncIndex = '0';
     /*if (jsonObj.containsKey('AppUserID'))
       productCategory.ownerUserID = jsonObj['AppUserID'].toString();*/
-    productCategory.ownerUserID = Globals.appUserID.toString();
+    productCategory.ownerUserID = Globals.AppUserID.toString();
   } catch (ex) {
     Globals.handleException(
          'JSONDataCopier:CopyJsonDataToProductCategory()', ex);
@@ -12347,7 +12355,7 @@ Future<Reminder> copyJsonDataToReminder(
       Activity activity = ActivityDataHandler.GetMasterActivityRecord(
           dbHandler,  activityId);
       if (activity != null) {
-        reminder.activityID = activity.getId();
+        reminder.activityID = activity.id;
       }
     }
 
@@ -12358,7 +12366,7 @@ Future<Reminder> copyJsonDataToReminder(
       Opportunity opportunity = OpportunityDataHandler.GetMasterOpportunityRecord(
           dbHandler,  opportunityId);
       if (opportunity != null) {
-        reminder.opportunityID = opportunity.getId();
+        reminder.opportunityID = opportunity.id;
       }
     }
 
@@ -12368,7 +12376,7 @@ Future<Reminder> copyJsonDataToReminder(
       Account account = AccountDataHandler.GetMasterAccountRecord(
           dbHandler,  accountId);
       if (account != null) {
-        reminder.accountID = account.getId();
+        reminder.accountID = account.id;
       }
     }
 
@@ -12452,7 +12460,7 @@ Resource copyJsonDataToResource(
       Product product = ProductDataHandler.GetMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
-        resource.productID = product.getId();
+        resource.productID = product.id;
       }
     }
 
@@ -12463,7 +12471,7 @@ Resource copyJsonDataToResource(
       ContentType contentType = ContentTypeDataHandler.GetMasterContentTypeRecord(
           dbHandler,  contentTypeId);
       if (contentType != null) {
-        resource.contentTypeID = contentType.getId();
+        resource.contentTypeID = contentType.id;
       }
     }
 
@@ -12567,7 +12575,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
       Account account = AccountDataHandler.GetMasterAccountRecord(
           dbHandler,  accountId);
       if (account != null) {
-        serviceInvoice.accountID = account.getId();
+        serviceInvoice.accountID = account.id;
       }
     }
 
@@ -12577,7 +12585,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
       Activity activity = ActivityDataHandler.GetMasterActivityRecord(
           dbHandler,  activityId);
       if (activity != null) {
-        serviceInvoice.activityID = activity.getId();
+        serviceInvoice.activityID = activity.id;
       }
     }
 
@@ -12587,7 +12595,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
       Product product = ProductDataHandler.GetMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
-        serviceInvoice.productID = product.getId();
+        serviceInvoice.productID = product.id;
       }
     }
 
@@ -12619,7 +12627,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
       Currency ?currency = await  CurrencyDataHandlerBase.GetMasterCurrencyRecord(
           dbHandler, currencyId);
       if (currency != null) {
-        serviceInvoice.currencyID = currency.getId();
+        serviceInvoice.currencyID = currency.id;
       }
     }
 
@@ -12684,11 +12692,11 @@ ServiceInvoice copyJsonDataToServiceInvoice(
   return serviceInvoice;
 }
 
-ServiceInvoiceDetail copyJsonDataToServiceInvoiceDetail(
+Future<ServiceInvoiceDetail> copyJsonDataToServiceInvoiceDetail(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     ServiceInvoiceDetail serviceInvoiceDetail,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("ServiceInvoiceDetailID")) {
       serviceInvoiceDetail.serviceInvoiceDetailID = jsonObj["ServiceInvoiceDetailID"].toString();
@@ -12703,20 +12711,20 @@ ServiceInvoiceDetail copyJsonDataToServiceInvoiceDetail(
     if (jsonObj.containsKey("ServiceInvoiceID")) {
       String serviceInvoiceId = jsonObj["ServiceInvoiceID"].toString();
       serviceInvoiceId = serviceInvoiceId != null && serviceInvoiceId.isNotEmpty ? serviceInvoiceId : "-1";
-      ServiceInvoice serviceInvoice = ServiceInvoiceDataHandler.GetMasterServiceInvoiceRecord(
+      ServiceInvoice? serviceInvoice = await ServiceInvoiceDataHandlerBase.GetMasterServiceInvoiceRecord(
           dbHandler,  serviceInvoiceId);
       if (serviceInvoice != null) {
-        serviceInvoiceDetail.serviceInvoiceID = serviceInvoice.getId();
+        serviceInvoiceDetail.serviceInvoiceID = serviceInvoice.id;
       }
     }
 
     if (jsonObj.containsKey("ProductID")) {
       String productId = jsonObj["ProductID"].toString();
       productId = productId != null && productId.isNotEmpty ? productId : "-1";
-      Product product = ProductDataHandler.GetMasterProductRecord(
+      Product? product = await ProductDataHandlerBase.GetMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
-        serviceInvoiceDetail.productID = product.getId();
+        serviceInvoiceDetail.productID = product.id;
       }
     }
 
@@ -12788,11 +12796,11 @@ ServiceInvoiceDetail copyJsonDataToServiceInvoiceDetail(
 }
 
 
-Tag copyJsonDataToTag(
+Future<Tag> copyJsonDataToTag(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     Tag tag,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("TagID")) {
       tag.tagID = jsonObj["TagID"].toString();
@@ -12810,18 +12818,18 @@ Tag copyJsonDataToTag(
     if (jsonObj.containsKey("ParentTagID")) {
       String tagId = jsonObj["ParentTagID"].toString();
       tagId = tagId != null && tagId.isNotEmpty ? tagId : "-1";
-      Tag tag1 = TagDataHandler.GetMasterTagRecord(dbHandler,  tagId);
+      Tag? tag1 =  await TagDataHandlerBase.GetMasterTagRecord(dbHandler,  tagId);
       if (tag1 != null) {
-        tag.parentTagID = tag1.getId();
+        tag.parentTagID = tag1.id;
       }
     }
 
     if (jsonObj.containsKey("TagGroupID")) {
       String tagGroupId = jsonObj["TagGroupID"].toString();
       tagGroupId = tagGroupId != null && tagGroupId.isNotEmpty ? tagGroupId : "-1";
-      TagGroup tagGroup = TagGroupDataHandler.GetMasterTagGroupRecord(dbHandler,  tagGroupId);
+      TagGroup? tagGroup = await TagGroupDataHandlerBase.GetMasterTagGroupRecord(dbHandler,  tagGroupId);
       if (tagGroup != null) {
-        tag.tagGroupID = tagGroup.getId();
+        tag.tagGroupID = tagGroup.id;
       }
     }
 
@@ -12889,11 +12897,11 @@ Tag copyJsonDataToTag(
   return tag;
 }
 
-TagGroup copyJsonDataToTagGroup(
+Future<TagGroup> copyJsonDataToTagGroup(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     TagGroup tagGroup,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("TagGroupID")) {
       tagGroup.tagGroupID = jsonObj["TagGroupID"].toString();
@@ -12908,9 +12916,9 @@ TagGroup copyJsonDataToTagGroup(
     if (jsonObj.containsKey("BusinessFeatureID")) {
       String businessFeatureId = jsonObj["BusinessFeatureID"].toString();
       businessFeatureId = businessFeatureId != null && businessFeatureId.isNotEmpty ? businessFeatureId : "-1";
-      BusinessFeature businessFeature = BusinessFeatureDataHandler.GetMasterBusinessFeatureRecord(dbHandler,  businessFeatureId);
+      BusinessFeature ?businessFeature = await BusinessFeatureDataHandlerBase.GetMasterBusinessFeatureRecord(dbHandler,  businessFeatureId);
       if (businessFeature != null) {
-        tagGroup.businessFeatureID = businessFeature.getId();
+        tagGroup.businessFeatureID = businessFeature.id;
       }
     }
 
@@ -12987,11 +12995,11 @@ TagGroup copyJsonDataToTagGroup(
   return tagGroup;
 }
 
-Territory copyJsonDataToTerritory(
+Future<Territory> copyJsonDataToTerritory(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     Territory territory,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("TerritoryID")) {
       territory.territoryID = jsonObj["TerritoryID"].toString();
@@ -13009,9 +13017,9 @@ Territory copyJsonDataToTerritory(
     if (jsonObj.containsKey("ParentTerritoryID")) {
       String territoryId = jsonObj["ParentTerritoryID"].toString();
       territoryId = territoryId != null && territoryId.isNotEmpty ? territoryId : "-1";
-      Territory territory1 = TerritoryDataHandler.GetMasterTerritoryRecord(dbHandler,  territoryId);
+      Territory? territory1 = await TerritoryDataHandlerBase.GetMasterTerritoryRecord(dbHandler,  territoryId);
       if (territory1 != null) {
-        territory.parentTerritoryID = territory1.getId();
+        territory.parentTerritoryID = territory1.id;
       }
     }
 
@@ -13091,16 +13099,16 @@ TimeZone copyJsonDataToTimeZone(
       timeZone.timeZoneName = jsonObj["TimeZoneName"].toString();
     }
     if (jsonObj.containsKey("GMTOffSet")) {
-      timeZone.gMTOffSet = jsonObj["GMTOffSet"].toString();
+      timeZone.gmtOffSet = jsonObj["GMTOffSet"].toString();
     }
     if (jsonObj.containsKey("GMTOffSetInMinutes")) {
-      timeZone.gMTOffSetInMinutes = jsonObj["GMTOffSetInMinutes"].toString();
+      timeZone.gmtOffSetInMinutes = jsonObj["GMTOffSetInMinutes"].toString();
     }
     if (jsonObj.containsKey("ServerRelativeOffSet")) {
       timeZone.serverRelativeOffSet = jsonObj["ServerRelativeOffSet"].toString();
     }
     if (jsonObj.containsKey("DSTCorrection")) {
-      timeZone.dSTCorrection = jsonObj["DSTCorrection"].toString();
+      timeZone.dstCorrection = jsonObj["DSTCorrection"].toString();
     }
     if (jsonObj.containsKey("CreatedOn")) {
       timeZone.createdOn = jsonObj["CreatedOn"].toString();
@@ -13160,11 +13168,11 @@ TimeZone copyJsonDataToTimeZone(
   return timeZone;
 }
 
-TravelPurpose copyJsonDataToTravelPurpose(
+Future<TravelPurpose> copyJsonDataToTravelPurpose(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     TravelPurpose travelPurpose,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("TravelPurposeID")) {
       travelPurpose.travelPurposeID = jsonObj["TravelPurposeID"].toString();
@@ -13185,7 +13193,7 @@ TravelPurpose copyJsonDataToTravelPurpose(
       businessFeatureId = businessFeatureId != null && businessFeatureId.isNotEmpty
           ? businessFeatureId
           : "-1";
-      BusinessFeature businessFeature = BusinessFeatureDataHandler
+      BusinessFeature ?businessFeature =await  BusinessFeatureDataHandlerBase
           .GetMasterBusinessFeatureRecord(dbHandler,  businessFeatureId);
       if (businessFeature != null) {
         travelPurpose.businessFeatureID = businessFeature.id;

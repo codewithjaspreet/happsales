@@ -8,7 +8,7 @@ import 'ActivityDataHandlerBase.dart';
 
 class ActivityDataHandler extends ActivityDataHandlerBase {
 
-     static Activity GetFollowUpActivityRecord(DatabaseHandler databaseHandler,  String id)async {
+     static Future<Activity?> GetFollowUpActivityRecord(DatabaseHandler databaseHandler,  String id)async {
         Activity? dataItem;
         try {
             id = Globals.tryParseLongForDBId(id);
@@ -24,8 +24,8 @@ class ActivityDataHandler extends ActivityDataHandlerBase {
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
             selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = " + id;
-            selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
 final db = await databaseHandler.database;
 
       final List<Map<String, dynamic>> result =
@@ -182,14 +182,14 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
             selectQuery += " WHERE A." + ColumnsBase.KEY_ID + " IN (";
             selectQuery += " SELECT IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_ACTIVITYID + " FROM " + TablesBase.TABLE_ACTIVITYTRAVELMAPPING + " IQ ";
-            selectQuery += " WHERE IQ." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE IQ." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_ACTIVITYTRAVELID + " = " + activityTravelId;
             selectQuery += " AND LOWER(IFNULL(IQ." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(IQ." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(IQ." + ColumnsBase.KEY_ACTIVITYTRAVELMAPPING_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(IQ." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false')";
-            selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
 
            final db = await databaseHandler.database;
 
@@ -345,8 +345,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -501,8 +501,8 @@ final db = await databaseHandler.database;
         return dataList;
     }
 
-     static List<Activity> GetActivityRecordsPending(DatabaseHandler databaseHandler,  String activityDate) {
-        List<Activity> dataList = new ArrayList<Activity>();
+     static Future<List<Activity>> GetActivityRecordsPending(DatabaseHandler databaseHandler,  String activityDate) async {
+        List<Activity> dataList = [];
         try {
 
             String selectQuery = "SELECT A.* " + ",E." + ColumnsBase.KEY_ACTIVITYTYPE_ACTIVITYTYPENAME + ",B." + ColumnsBase.KEY_ACCOUNT_ACCOUNTNAME + ",H." + ColumnsBase.KEY_CONTACT_CONTACTNAME + ",L." + ColumnsBase.KEY_OPPORTUNITY_OPPORTUNITYNAME + ",I." + ColumnsBase.KEY_CURRENCY_CURRENCYNAME + ",D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",M." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + " AS " + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYTITLE + ",N." + ColumnsBase.KEY_PRODUCTINSTALLATIONDETAIL_PRODUCTINSTALLATIONDETAILCODE;
@@ -515,8 +515,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -677,8 +677,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -842,8 +842,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -994,8 +994,8 @@ final db = await databaseHandler.database;
     }
 
 
-     static List<Activity> GetActivityRecordsPagedForPlanned(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize, String accountId, String contactId,String opportunityId,
-   String activityDateTime, String activityType, String filterActivityStatus, String filterActivityStartDateTime, String filterActivityEndDateTime) {
+     static Future<List<Activity>> GetActivityRecordsPagedForPlanned(DatabaseHandler databaseHandler,  String searchString, String sortColumn, String sortDirection, Map<String, String> filterHashMap, int pageIndex, int pageSize, String accountId, String contactId,String opportunityId,
+   String activityDateTime, String activityType, String filterActivityStatus, String filterActivityStartDateTime, String filterActivityEndDateTime) async {
         List<Activity> dataList = [];
         try {
             int startRowIndex = ((pageIndex - 1) * pageSize);
@@ -1010,8 +1010,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -1235,8 +1235,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -1454,8 +1454,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -1676,8 +1676,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -1894,8 +1894,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYSTATUS + " C ON " + " A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYSTATUSID + " = C." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " D ON A." + ColumnsBase.KEY_ACTIVITY_ACCOUNTID + " = D." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " E ON A." + ColumnsBase.KEY_ACTIVITY_CONTACTID + " = E." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             //selectQuery += " AND IFNULL(A." + KEY_ISACTIVE + ",'true') <> 'false' "; //Filter accessible records
             //selectQuery += " AND IFNULL(A." + KEY_ISDELETED + ",'false') = 'false' ";  //Filter accessible records
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
@@ -2051,7 +2051,7 @@ final db = await databaseHandler.database;
         dataList.add(dataItem);
       }
         } catch ( ex) {
-            Globals.handleException(, "ActivityDataHandler:GetActivitiesForDateRange()", ex);
+            Globals.handleException( "ActivityDataHandler:GetActivitiesForDateRange()", ex);
             throw ex;
         }
         return dataList;
@@ -2071,8 +2071,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " N ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = N." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " O ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = O." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " P ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = P." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             if (searchString.trim().length > 0) {
@@ -2272,7 +2272,7 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " P ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = P." + ColumnsBase.KEY_ID;
 
             //selectQuery += " LEFT JOIN " + TABLE_REMINDER + " R ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + " = R." + ColumnsBase.KEY_REMINDER_TITLE;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString().toString();
             //selectQuery += " AND (A." + KEY_ACTIVITY_ISCOMPLETED + " <> 'true' " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " IS NULL " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " = ''" + ")";
             //selectQuery += " AND A." + KEY_ACTIVITY_ACTIVITYDATE + " IS NOT NULL ";
             //selectQuery += " AND IFNULL(A." + KEY_ISACTIVE + ",'true') <> 'false' "; //Filter accessible records
@@ -2490,7 +2490,7 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_CURRENCY + " G ON A." + ColumnsBase.KEY_ACTIVITY_CURRENCYID + " = G." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " P ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = P." + ColumnsBase.KEY_ID;
            // selectQuery += " LEFT JOIN " + TABLE_REMINDER + " R ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTITLE + " = R." + ColumnsBase.KEY_REMINDER_TITLE;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString().toString();
             //selectQuery += " AND (A." + KEY_ACTIVITY_ISCOMPLETED + " <> 'true' " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " IS NULL " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " = ''" + ")";
             //selectQuery += " AND A." + KEY_ACTIVITY_ACTIVITYDATE + " IS NOT NULL ";
             //selectQuery += " AND IFNULL(A." + KEY_ISACTIVE + ",'true') <> 'false' ";  //Filter accessible records
@@ -2707,7 +2707,7 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_CURRENCY + " G ON A." + ColumnsBase.KEY_ACTIVITY_CURRENCYID + " = G." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " P ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = P." + ColumnsBase.KEY_ID;
             //selectQuery += " LEFT JOIN " + TABLE_REMINDER + " R ON A." + KEY_ID + " = R." + KEY_REMINDER_ACTIVITYID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString().toString();
             //selectQuery += " AND (A." + KEY_ACTIVITY_ISCOMPLETED + " <> 'true' " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " IS NULL " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " = ''" + ")";
             //selectQuery += " AND A." + KEY_ACTIVITY_ACTIVITYDATE + " IS NOT NULL ";
             //selectQuery += " AND IFNULL(A." + KEY_ISACTIVE + ",'true') <> 'false' "; //Filter accessible records
@@ -2922,7 +2922,7 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_CURRENCY + " G ON A." + ColumnsBase.KEY_ACTIVITY_CURRENCYID + " = G." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " P ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = P." + ColumnsBase.KEY_ID;
             //selectQuery += " LEFT JOIN " + TABLE_REMINDER + " R ON A." + KEY_ID + " = R." + KEY_REMINDER_ACTIVITYID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_ACTIVITY_APPUSERID + " = " + Globals.AppUserID.toString().toString();
             //selectQuery += " AND (A." + KEY_ACTIVITY_ISCOMPLETED + " <> 'true' " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " IS NULL " + " OR A." + KEY_ACTIVITY_ISCOMPLETED + " = ''" + ")";
             //selectQuery += " AND A." + KEY_ACTIVITY_ACTIVITYDATE + " IS NOT NULL ";
             //selectQuery += " AND IFNULL(A." + KEY_ISACTIVE + ",'true') <> 'false' "; //Filter accessible records
@@ -3135,8 +3135,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3302,8 +3302,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
 
             if (searchString.trim().length() > 0) {
@@ -3423,8 +3423,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3459,8 +3459,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3499,8 +3499,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3614,8 +3614,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             //selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3748,7 +3748,44 @@ final db = await databaseHandler.database;
 
 
 
-     static int GetOverDueActivityCount(DatabaseHandler databaseHandler, String todayDate) {
+     static Future<int> GetOverDueActivityCount(DatabaseHandler databaseHandler, String todayDate) async {
+        int itemCount = 0;
+        try {
+
+            String selectQuery = "SELECT COUNT(*) " ;
+            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITY + " A ";
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_ACTIVITY_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYSTATUS + " D ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYSTATUSID + " = D." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYTYPE + " E ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTYPEID + " = E." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " H ON A." + ColumnsBase.KEY_ACTIVITY_CONTACTID + " = H." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CURRENCY + " I ON A." + ColumnsBase.KEY_ACTIVITY_CURRENCYID + " = I." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
+            selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
+            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
+            selectQuery += " AND COALESCE(D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",'') NOT IN ('Completed','Failed','Cancelled')";
+            selectQuery += " AND date(A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYDATE + ") < '" + todayDate + "'";
+
+
+
+            final db = await databaseHandler.database;
+
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                itemCount = result[0]["COUNT(*)"];
+            
+            }
+        } catch ( ex) {
+            Globals.handleException( "OpportunityDataHandler:GetDueAllOpportunityCount()", ex);
+            throw ex;
+        }
+        return itemCount;
+    }
+
+     static Future<int> GetTodayActivityCount(DatabaseHandler databaseHandler, String todayDate) async {
         int itemCount = 0;
         try {
 
@@ -3766,53 +3803,23 @@ final db = await databaseHandler.database;
             selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND COALESCE(D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",'') NOT IN ('Completed','Failed','Cancelled')";
-            selectQuery += " AND date(A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYDATE + ") < '" + todayDate + "'";
-
-
-
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                itemCount = cursor.getInt(0);
-            }
-            cursor.close();
-            //db.close();
-        } catch ( ex) {
-            Globals.handleException( "OpportunityDataHandler:GetDueAllOpportunityCount()", ex);
-            throw ex;
-        }
-        return itemCount;
-    }
-
-     static int GetTodayActivityCount(DatabaseHandler databaseHandler, String todayDate) {
-        int itemCount = 0;
-        try {
-
-            String selectQuery = "SELECT COUNT(*) " ;
-            selectQuery += " FROM " + TablesBase.TABLE_ACTIVITY + " A ";
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACCOUNT + " B ON A." + ColumnsBase.KEY_ACTIVITY_ACCOUNTID + " = B." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYSTATUS + " D ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYSTATUSID + " = D." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITYTYPE + " E ON A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYTYPEID + " = E." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CONTACT + " H ON A." + ColumnsBase.KEY_ACTIVITY_CONTACTID + " = H." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_CURRENCY + " I ON A." + ColumnsBase.KEY_ACTIVITY_CURRENCYID + " = I." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
-            selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
-            selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
-            selectQuery += " AND COALESCE(D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",'') NOT IN ('Completed','Failed','Cancelled')";
             selectQuery += " AND date(A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYDATE + ") = '" + todayDate + "'";
 
 
+  final db = await databaseHandler.database;
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                itemCount = cursor.getInt(0);
+            List<Map<String, dynamic>> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                itemCount = result[0]["COUNT(*)"];
+            
             }
-            cursor.close();
-            //db.close();
+
+            // if (cursor.moveToFirst()) {
+            //     itemCount = cursor.getInt(0);
+            // }
+            // cursor.close();
+            // //db.close();
         } catch ( ex) {
             Globals.handleException( "OpportunityDataHandler:GetTodayActivityCount()", ex);
             throw ex;
@@ -3820,7 +3827,7 @@ final db = await databaseHandler.database;
         return itemCount;
     }
 
-     static int GetWeekActivityCount(DatabaseHandler databaseHandler, String weekStartDate,String weekEndDate) {
+     static Future<int> GetWeekActivityCount(DatabaseHandler databaseHandler, String weekStartDate,String weekEndDate) async {
         int itemCount = 0;
         try {
 
@@ -3834,8 +3841,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND COALESCE(D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",'') NOT IN ('Completed','Failed','Cancelled')";
             selectQuery += " AND date(A." + ColumnsBase.KEY_ACTIVITY_ACTIVITYDATE + ") >= '" + weekStartDate + "'";
@@ -3843,13 +3850,17 @@ final db = await databaseHandler.database;
 
 
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                itemCount = cursor.getInt(0);
+            final db = await databaseHandler.database;
+            List<Map> result = await db.rawQuery(selectQuery, null);
+
+            if (result.length > 0) {
+                itemCount = result[0]["COUNT(*)"];
             }
-            cursor.close();
-            //db.close();
+            // if (cursor.moveToFirst()) {
+            //     itemCount = cursor.getInt(0);
+            // }
+            // cursor.close();
+            // //db.close();
         } catch ( ex) {
             Globals.handleException( "OpportunityDataHandler:GetTodayActivityCount()", ex);
             throw ex;
@@ -3858,7 +3869,7 @@ final db = await databaseHandler.database;
     }
 
 
-     static int GetAllActivityCount(DatabaseHandler databaseHandler, String accountId) {
+     static Future<int> GetAllActivityCount(DatabaseHandler databaseHandler, String accountId) async {
         int itemCount = 0;
         try {
 
@@ -3872,8 +3883,8 @@ final db = await databaseHandler.database;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             //selectQuery += " AND COALESCE(D." + ColumnsBase.KEY_ACTIVITYSTATUS_ACTIVITYSTATUSNAME + ",'') NOT IN ('Completed','Failed','Cancelled')";
 
@@ -3881,12 +3892,22 @@ final db = await databaseHandler.database;
                 selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_ACCOUNTID + " = " + accountId + "";
             }
 
-            SQLiteDatabase db = databaseHandler.getWritableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                itemCount = cursor.getInt(0);
+            final db = await  databaseHandler.database;
+
+            List<Map> list = await db.rawQuery(selectQuery, null);
+
+            if (list.length > 0) {
+                itemCount = list[0]["COUNT(*)"];
             }
-            cursor.close();
+
+           
+            // Cursor cursor = db.rawQuery(selectQuery, null);
+            // if (cursor.moveToFirst()) {
+            //     itemCount = cursor.getInt(0);
+            // }
+
+
+           
             //db.close();
         } catch ( ex) {
             Globals.handleException( "ActivityDataHandler:GetAllActivityCount()", ex);
@@ -3907,8 +3928,8 @@ final db = await databaseHandler.database;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
     selectQuery += "AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
 
     if (Globals.isIntegerString(accountId)) {
@@ -3949,8 +3970,8 @@ final db = await databaseHandler.database;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID;
-    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID;
+    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
+    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
     selectQuery += "AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
     selectQuery += "AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
     selectQuery += "AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
@@ -3986,8 +4007,8 @@ final db = await databaseHandler.database;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
     selectQuery += "LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+    selectQuery += "WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+    selectQuery += "AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
     selectQuery += "AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
 
     if (Globals.isIntegerString(accountId)) {
@@ -4031,8 +4052,8 @@ static Future<int> getCompletedActivityCountByOpportunityId(DatabaseHandler data
     selectQuery += " LEFT JOIN ${TablesBase.TABLE_OPPORTUNITY} L ON A.${ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID} = L.${ColumnsBase.KEY_ID}";
     selectQuery += " LEFT JOIN ${TablesBase.TABLE_ACTIVITY} M ON A.${ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID} = M.${ColumnsBase.KEY_ID}";
     selectQuery += " LEFT JOIN ${TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL} N ON A.${ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID} = N.${ColumnsBase.KEY_ID}";
-    selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID.toString()}";
-    selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID} = ${Globals.AppUserGroupID.toString()}";
+    selectQuery += " WHERE A.${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID.toString().toString()}";
+    selectQuery += " AND A.${ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID} = ${Globals.AppUserGroupID.toString().toString()}";
     selectQuery += " AND LOWER(IFNULL(A.${ColumnsBase.KEY_ISDELETED},'false')) = 'false' AND LOWER(IFNULL(A.${ColumnsBase.KEY_ACTIVITY_ISDELETED},'false')) = 'false'";
 
     if (Globals.isIntegerString(accountId))
@@ -4071,8 +4092,8 @@ static Future<int> getCompletedActivityCountByOpportunityId(DatabaseHandler data
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_OPPORTUNITY + " L ON A." + ColumnsBase.KEY_ACTIVITY_OPPORTUNITYID + " = L." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_ACTIVITY + " M ON A." + ColumnsBase.KEY_ACTIVITY_PARENTACTIVITYID + " = M." + ColumnsBase.KEY_ID;
             selectQuery += " LEFT JOIN " + TablesBase.TABLE_PRODUCTINSTALLATIONDETAIL + " N ON A." + ColumnsBase.KEY_ACTIVITY_PRODUCTINSTALLATIONDETAILID + " = N." + ColumnsBase.KEY_ID;
-            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString();
-            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString();
+            selectQuery += " WHERE A." + ColumnsBase.KEY_OWNERUSERID + " = " + Globals.AppUserID.toString().toString();
+            selectQuery += " AND A." + ColumnsBase.KEY_ACTIVITY_APPUSERGROUPID + " = " + Globals.AppUserGroupID.toString().toString();
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISDELETED + ",'false')) = 'false' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISDELETED + ",'false')) = 'false' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ISACTIVE + ",'true')) = 'true' AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISACTIVE + ",'true')) = 'true' ";
             selectQuery += " AND LOWER(IFNULL(A." + ColumnsBase.KEY_ACTIVITY_ISARCHIVED + ",'false')) = 'false' ";
