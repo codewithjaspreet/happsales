@@ -161,6 +161,8 @@ class FieldAttendanceDataHandler extends FieldAttendanceDataHandlerBase {
     for (Map<String, dynamic> row in resultList) {
       totalSeconds += row['InTimeInSeconds'];
     }
+
+    
     //db.close();
   } catch (ex) {
     Globals.handleException(
