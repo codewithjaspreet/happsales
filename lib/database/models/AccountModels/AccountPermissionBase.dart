@@ -1,4 +1,6 @@
-class AccountPermissionBase {
+import 'package:happsales_crm/database/models/BaseEntity.dart';
+
+class AccountPermissionBase extends BaseEntity {
   String? _accountID;
   String? _appUserID;
   String? _assignmentPermissionTypeID;

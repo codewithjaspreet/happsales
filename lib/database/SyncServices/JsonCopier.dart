@@ -1,6 +1,5 @@
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountAddressDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountCategoryDataHandlerBase.dart';
-import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountFormDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountSegmentDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/AccountHandlers/AccountStatusDataHandlerBase.dart';
@@ -15,7 +14,6 @@ import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactCategoryD
 import 'package:happsales_crm/database/Handlers/ContactHandlers/ContactMediaDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityApprovalDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityApprovalTypeDataHandlerBase.dart';
-import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityPriorityDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityStageDataHandlerBase.dart';
 import 'package:happsales_crm/database/Handlers/OpportunityHandlers/OpportunityTypeDataHandlerBase.dart';
@@ -25,26 +23,29 @@ import 'package:happsales_crm/database/models/ActivityModels/ActivityBusinessUni
 import 'package:happsales_crm/database/models/OtherModels/AppUserTertitory.dart';
 import 'package:happsales_crm/database/models/OtherModels/BusinessUnit.dart';
 import '../Globals.dart';
-import '../Handlers/AccountHandlers/AccountDataHandler.dart';
+import '../Handlers/AccountHandlers/AccountDataHandlerBase.dart';
 import '../Handlers/AccountHandlers/AccountFormDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountSegmentDataHandler.dart';
 import '../Handlers/AccountHandlers/AccountTypeHandlerBase.dart';
-import '../Handlers/ActivityHandlers/ActivityDataHandler.dart';
 import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/DatabaseHandler.dart';
-import '../Handlers/OpportunityHandlers/OpportunityDataHandler.dart';
+import '../Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityProductDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityProductDetailDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/AppFeatureDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/BusinessFeatureDataHandlerBase.dart';
-import '../Handlers/OtherHandlers/BusinessUnitDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ContentTypeDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/CurrencyDataHandler.dart';
 import '../Handlers/OtherHandlers/FormDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/HSSupportTicketDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/ProductDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ProductDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ServiceInvoiceDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/TagDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/TagGroupDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/TerritoryDataHandler.dart';
 import '../Handlers/OtherHandlers/TerritoryDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/UnitDataHandlerBase.dart';
 import '../models/AccountModels/Account.dart';
 import '../models/AccountModels/AccountAddress.dart';
 import '../models/AccountModels/AccountBusinessPlan.dart';
@@ -56,6 +57,7 @@ import '../models/AccountModels/AccountCompetitionActivity.dart';
 import '../models/AccountModels/AccountForm.dart';
 import '../models/AccountModels/AccountFormValue.dart';
 import '../models/AccountModels/AccountMedia.dart';
+import '../models/AccountModels/AccountPermission.dart';
 import '../models/AccountModels/AccountPhone.dart';
 import '../models/AccountModels/AccountSegment.dart';
 import '../models/AccountModels/AccountStatus.dart';
@@ -147,6 +149,7 @@ import '../models/OtherModels/FormCellElement.dart';
 import '../models/OtherModels/FormCellElementBase.dart';
 import '../models/OtherModels/FormSection.dart';
 import '../models/OtherModels/HSSupportTicket.dart';
+import '../models/OtherModels/HSSupportTicketMedia.dart';
 import '../models/OtherModels/Industry..dart';
 import '../models/OtherModels/LeadSource.dart';
 import '../models/OtherModels/Location.dart';
@@ -248,7 +251,7 @@ class JSONCopier {
         String accountId = jsonObj["ParentAccountID"];
         accountId =
             accountId != null && accountId.isNotEmpty ? accountId : "-1";
-        Account? account1 = await AccountDataHandlerBase.GetMasterAccountRecord(
+        Account? account1 = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
             dbHandler, accountId);
         if (account1 != null) {
           account.parentAccountID = account1.id;
@@ -476,7 +479,7 @@ class JSONCopier {
         String accountId = jsonObj["AccountID"];
         accountId =
             accountId != null && accountId.isNotEmpty ? accountId : "-1";
-        Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+        Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
             dbHandler, accountId);
         if (account != null) {
           accountAddress.accountID = account.id;
@@ -589,7 +592,7 @@ class JSONCopier {
         String accountId = jsonObj["AccountID"];
         accountId =
             accountId != null && accountId.isNotEmpty ? accountId : "-1";
-        Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+        Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
             dbHandler, accountId);
         if (account != null) {
           accountBusinessPlan.accountID = account.id;
@@ -612,7 +615,7 @@ class JSONCopier {
         String accountId = jsonObj['AccountID'];
         accountId =
             accountId != null && accountId.isNotEmpty ? accountId : '-1';
-        Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+        Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
             dbHandler, accountId);
         if (account != null) {
           accountBusinessPlan.accountID = account.id;
@@ -709,7 +712,7 @@ class JSONCopier {
         String accountId = jsonObj["AccountID"];
         accountId =
             (accountId != null && accountId.isNotEmpty) ? accountId : "-1";
-        Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+        Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
             dbHandler, accountId);
         if (account != null) {
           accountBusinessUnit.accountID = account.id;
@@ -722,7 +725,7 @@ class JSONCopier {
             ? businessUnitId
             : "-1";
         BusinessUnit? businessUnit =
-            await BusinessUnitDataHandlerBase.GetMasterBusinessUnitRecord(
+            await BusinessUnitDataHandlerBaseBase.GetMasterBusinessUnitRecord(
                 dbHandler, businessUnitId);
         if (businessUnit != null) {
           accountBusinessUnit.businessUnitID = businessUnit.id;
@@ -811,7 +814,7 @@ static Future<AccountBuyingProcess> copyJsonDataToAccountBuyingProcess(
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
-      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+      Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         accountBuyingProcess.accountID = account.id;
@@ -986,7 +989,7 @@ static Future<AccountCategoryMapping> copyJsonDataToAccountCategoryMapping(
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId.isNotEmpty ? accountId : "-1";
-      Account? account = await  AccountDataHandlerBase.GetMasterAccountRecord(
+      Account? account = await  AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         accountCategoryMapping.accountID = account.id;
@@ -1088,7 +1091,7 @@ static Future<AccountCompetitionActivity> copyJsonDataToAccountCompetitionActivi
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId.isNotEmpty ? accountId : "-1";
-      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord( dbHandler, accountId);
+      Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord( dbHandler, accountId);
       if (account != null) {
         accountCompetitionActivity.accountID = account.id;
       }
@@ -1098,7 +1101,7 @@ static Future<AccountCompetitionActivity> copyJsonDataToAccountCompetitionActivi
       String opportunityId = jsonObj["OpportunityID"].toString();
       opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
 
-      Opportunity? opportunity = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+      Opportunity? opportunity = await OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
       if (opportunity != null) {
         accountCompetitionActivity.opportunityID = opportunity.id;
       }
@@ -1215,7 +1218,7 @@ static Future<AccountCompetitionActivity> copyJsonDataToAccountCompetitionActivi
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId.isNotEmpty ? accountId : "-1";
-      Account? account = await  AccountDataHandlerBase.GetMasterAccountRecord(
+      Account? account = await  AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         accountForm.accountID = account.id;
@@ -1235,7 +1238,7 @@ static Future<AccountCompetitionActivity> copyJsonDataToAccountCompetitionActivi
     if (jsonObj.containsKey("ActivityID")) {
       String activityId = jsonObj["ActivityID"].toString();
       activityId = activityId.isNotEmpty ? activityId : "-1";
-      Activity? activity = await  ActivityDataHandlerBase.GetMasterActivityRecord( dbHandler, activityId);
+      Activity? activity = await  ActivityDataHandlerBaseBase.GetMasterActivityRecord( dbHandler, activityId);
       if (activity != null) {
         accountForm.activityID = activity.id;
       }
@@ -1244,7 +1247,7 @@ static Future<AccountCompetitionActivity> copyJsonDataToAccountCompetitionActivi
     if (jsonObj.containsKey("OpportunityID")) {
       String opportunityId = jsonObj["OpportunityID"].toString();
       opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
-      Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+      Opportunity? opportunity = await  OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
       if (opportunity != null) {
         accountForm.opportunityID = opportunity.id;
       }
@@ -1446,7 +1449,7 @@ static Future<AccountFormValue> copyJsonDataToAccountFormValue(
     if (jsonObj.containsKey('AccountID')) {
       String accountId = jsonObj['AccountID'].toString();
       accountId = (accountId != null && accountId != '') ? accountId : '-1';
-      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+      Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         accountMedia.accountID = account.id;
@@ -1457,7 +1460,7 @@ static Future<AccountFormValue> copyJsonDataToAccountFormValue(
       String contentTypeId = jsonObj['ContentTypeID'].toString();
       contentTypeId =
           (contentTypeId != null && contentTypeId != '') ? contentTypeId : '-1';
-      ContentType contentType = await ContentTypeDataHandler
+      ContentType contentType = await ContentTypeDataHandlerBaseBase
           .getMasterContentTypeRecord(dbHandler,  contentTypeId);
       if (contentType != null) {
         accountMedia.contentTypeID = contentType.id;
@@ -1566,7 +1569,7 @@ static Future<AccountPhone> copyJsonDataToAccountPhone(
     if (jsonObj.containsKey('AccountID')) {
       String accountId = jsonObj['AccountID'].toString();
       accountId = (accountId != null && accountId != '') ? accountId : '-1';
-      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
+      Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         accountPhone.accountID = account.id;
@@ -1866,7 +1869,7 @@ static Future<AccountTerritory> copyJsonDataToAccountTerritory(
     if (jsonObj.containsKey('AccountID')) {
       String accountId = jsonObj['AccountID'].toString();
       accountId = accountId.isNotEmpty ? accountId : '-1';
-      Account account = AccountDataHandler.getMasterAccountRecord(
+      Account account = AccountDataHandlerBase.getMasterAccountRecord(
         dbHandler,
         
         accountId,
@@ -2042,7 +2045,7 @@ static Future<Activity> copyJsonDataToActivity( DatabaseHandler dbHandler, dynam
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"];
       accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
-      Account? account =await  AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      Account? account =await  AccountDataHandlerBaseBase.GetMasterAccountRecord(dbHandler, accountId);
       if (account != null) {
         activity.accountID = account.id;
       }
@@ -2060,7 +2063,7 @@ static Future<Activity> copyJsonDataToActivity( DatabaseHandler dbHandler, dynam
     if (jsonObj.containsKey("OpportunityID")) {
   String opportunityId = jsonObj["OpportunityID"];
   opportunityId = opportunityId != null && opportunityId.isNotEmpty ? opportunityId : "-1";
-  Opportunity? opportunity = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+  Opportunity? opportunity = await OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
   if (opportunity != null) {
     activity.opportunityID = opportunity.id;
   }
@@ -2132,7 +2135,7 @@ if (jsonObj.containsKey("IsNeedFollowUpActivity")) {
 if (jsonObj.containsKey("ParentActivityID")) {
   String activityId = jsonObj["ParentActivityID"];
   activityId = activityId != null && activityId.isNotEmpty ? activityId : "-1";
-  Activity? activity1 = await ActivityDataHandlerBase.GetMasterActivityRecord(dbHandler, activityId);
+  Activity? activity1 = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(dbHandler, activityId);
   if (activity1 != null) {
     activity.parentActivityID = activity1.id;
   }
@@ -2326,7 +2329,7 @@ Future<ActivityApproval> copyJsonDataToActivityApproval(
     if (jsonObj.containsKey('ActivityID')) {
       String activityId = jsonObj['ActivityID'].toString();
       activityId = activityId.isNotEmpty ? activityId : '-1';
-      Activity ?activity = await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity ?activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
           dbHandler, activityId);
       if (activity != null) {
         activityApproval.activityID = activity.id;
@@ -2564,7 +2567,7 @@ Future<ActivityBusinessunit> copyJsonDataToActivityBusinessUnit(
     if (jsonObj.containsKey('ActivityID')) {
       String activityId = jsonObj['ActivityID'].toString();
       activityId = activityId.isNotEmpty ? activityId : '-1';
-      Activity? activity = await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity? activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
           dbHandler, activityId);
       if (activity != null) {
         activityBusinessUnit.activityID = activity.id;
@@ -2574,7 +2577,7 @@ Future<ActivityBusinessunit> copyJsonDataToActivityBusinessUnit(
     if (jsonObj.containsKey('BusinessUnitID')) {
       String businessUnitId = jsonObj['BusinessUnitID'].toString();
       businessUnitId = businessUnitId.isNotEmpty ? businessUnitId : '-1';
-      BusinessUnit? businessUnit = await BusinessUnitDataHandlerBase
+      BusinessUnit? businessUnit = await BusinessUnitDataHandlerBaseBase
           .GetMasterBusinessUnitRecord(dbHandler, businessUnitId);
       if (businessUnit != null) {
         activityBusinessUnit.businessUnitID = businessUnit.id;
@@ -2765,7 +2768,7 @@ Future<ActivityMedia> copyJsonDataToActivityMedia(
       activityId = activityId != null && activityId.isNotEmpty
           ? activityId
           : '-1';
-      Activity? activity =  await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity? activity =  await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
         dbHandler,
         activityId,
       );
@@ -2779,7 +2782,7 @@ Future<ActivityMedia> copyJsonDataToActivityMedia(
       contentTypeId = contentTypeId != null && contentTypeId.isNotEmpty
           ? contentTypeId
           : '-1';
-      ContentType contentType = ContentTypeDataHandlerBase.GetMasterContentTypeRecord(
+      ContentType contentType = ContentTypeDataHandlerBaseBaseBase.GetMasterContentTypeRecord(
         dbHandler,
         
         contentTypeId,
@@ -2896,7 +2899,7 @@ Future<ActivityPermission> copyJsonDataToActivityPermission(
       activityId = activityId != null && activityId.isNotEmpty
           ? activityId
           : '-1';
-      Activity ?activity =await  ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity ?activity =await  ActivityDataHandlerBaseBase.GetMasterActivityRecord(
         dbHandler,
         
         activityId,
@@ -3084,7 +3087,7 @@ Future<ActivityProduct> copyJsonDataToActivityProduct(
     if (jsonObj.containsKey('ActivityID')) {
       String activityId = jsonObj['ActivityID'].toString();
       activityId = activityId.isNotEmpty ? activityId : '-1';
-      Activity? activity = await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity? activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
         dbHandler,
         activityId,
       );
@@ -3236,7 +3239,7 @@ Future<ActivityProductDetail> copyJsonDataToActivityProductDetail(
       String accountId = jsonObj['SupplierAccountID'].toString();
       accountId = accountId.isNotEmpty ? accountId : '-1';
       Account? account =
-          await AccountDataHandlerBase.GetMasterAccountRecord(
+          await AccountDataHandlerBaseBase.GetMasterAccountRecord(
         dbHandler,
         accountId,
       );
@@ -3438,7 +3441,7 @@ Future<ActivityTeam> copyJsonDataToActivityTeam(
     if (jsonObj.containsKey('ActivityID')) {
       String activityId = jsonObj['ActivityID'].toString();
       activityId = activityId.isNotEmpty ? activityId : '-1';
-      Activity? activity = await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity? activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
         dbHandler,
         activityId,
       );
@@ -3542,7 +3545,7 @@ Future<ActivityTravel> copyJsonDataToActivityTravel(
     if (jsonObj.containsKey('ActivityID')) {
       String activityId = jsonObj['ActivityID'].toString();
       activityId = activityId.isNotEmpty ? activityId : '-1';
-      Activity ?activity = await ActivityDataHandlerBase.GetMasterActivityRecord(
+      Activity ?activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(
         dbHandler,
         activityId,
       );
@@ -3900,7 +3903,7 @@ ActivityTravelMapping copyJsonDataToActivityTravelMapping(
       activityId =
           activityId.isNotEmpty ? activityId : '-1';
       Activity activity =
-          ActivityDataHandler.GetMasterActivityRecord(
+          ActivityDataHandlerBase.GetMasterActivityRecord(
         dbHandler,
         
         activityId,
@@ -4021,7 +4024,7 @@ ActivityTravelMedia copyJsonDataToActivityTravelMedia(
       contentTypeId =
           contentTypeId.isNotEmpty ? contentTypeId : '-1';
       ContentType ?contentType =await 
-          ContentTypeDataHandlerBase.GetMasterContentTypeRecord(
+          ContentTypeDataHandlerBaseBaseBase.GetMasterContentTypeRecord(
         dbHandler,
         
         contentTypeId,
@@ -6905,7 +6908,7 @@ Future<Contact> copyJsonDataToContact(
       String accountId = jsonObj["AccountID"];
       accountId = accountId != null && accountId != "" ? accountId : "-1";
       Account? account =await 
-          AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+          AccountDataHandlerBaseBase.GetMasterAccountRecord(dbHandler, accountId);
       if (account != null) {
         contact.accountID = account.id;
       }
@@ -7212,7 +7215,7 @@ Future<ContactMedia> copyJsonDataToContactMedia(, DatabaseHandler dbHandler, Map
     if (jsonObj.containsKey("ContentTypeID")) {
       String contentTypeId = jsonObj["ContentTypeID"] as String;
       contentTypeId = contentTypeId != null && contentTypeId.isNotEmpty ? contentTypeId : "-1";
-      ContentType contentType = ContentTypeDataHandlerBase.getMasterContentTypeRecord(dbHandler, contentTypeId);
+      ContentType contentType = ContentTypeDataHandlerBaseBaseBase.getMasterContentTypeRecord(dbHandler, contentTypeId);
       if (contentType != null) {
         contactMedia.contentTypeID = contentType.id;
       }
@@ -7439,7 +7442,7 @@ Future<CustomerMeeting> copyJsonDataToCustomerMeeting( DatabaseHandler dbHandler
     if (jsonObj.containsKey("ActivityID")) {
       String activityId = jsonObj["ActivityID"] as String;
       activityId = activityId != null && activityId.isNotEmpty ? activityId : "-1";
-      Activity? activity = await ActivityDataHandlerBase.GetMasterActivityRecord(dbHandler, activityId);
+      Activity? activity = await ActivityDataHandlerBaseBase.GetMasterActivityRecord(dbHandler, activityId);
       if (activity != null) {
         customerMeeting.activityID = activity.id;
       }
@@ -7448,7 +7451,7 @@ Future<CustomerMeeting> copyJsonDataToCustomerMeeting( DatabaseHandler dbHandler
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"] as String;
       accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
-      Account?account = await AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      Account?account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(dbHandler, accountId);
       if (account != null) {
         customerMeeting.accountID = account.id;
       }
@@ -7781,7 +7784,7 @@ static Future<Form> copyJsonDataToForm(  DatabaseHandler dbHandler, Map<String, 
     if (jsonObj.containsKey("ParentFormID")) {
       String formId = jsonObj["ParentFormID"] as String;
       formId = formId != null && formId.isNotEmpty ? formId : "-1";
-      Form form1 = await FormDataHandlerBase.GetMasterFormRecord(dbHandler, formId);
+      Form? form1 = await FormDataHandlerBase.GetMasterFormRecord(dbHandler, formId);
       if (form1 != null) {
         form.parentFormID = form1.id;
       }
@@ -8445,7 +8448,7 @@ Future<Note> copyJsonDataToNote(  DatabaseHandler dbHandler, Map<String, dynamic
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = (accountId != null && accountId.isNotEmpty) ? accountId : "-1";
-      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(dbHandler, accountId);
+      Account? account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(dbHandler, accountId);
       if (account != null) {
         note.accountID = account.id;
       }
@@ -8463,7 +8466,7 @@ Future<Note> copyJsonDataToNote(  DatabaseHandler dbHandler, Map<String, dynamic
     if (jsonObj.containsKey("OpportunityID")) {
       String opportunityId = jsonObj["OpportunityID"].toString();
       opportunityId = (opportunityId != null && opportunityId.isNotEmpty) ? opportunityId : "-1";
-      Opportunity? opportunity =await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+      Opportunity? opportunity =await OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
       if (opportunity != null) {
         note.opportunityID = opportunity.id;
       }
@@ -8472,7 +8475,7 @@ Future<Note> copyJsonDataToNote(  DatabaseHandler dbHandler, Map<String, dynamic
     if (jsonObj.containsKey("ActivityID")) {
       String activityId = jsonObj["ActivityID"].toString();
       activityId = (activityId != null && activityId.isNotEmpty) ? activityId : "-1";
-      Activity? activity =await ActivityDataHandlerBase.GetMasterActivityRecord(dbHandler, activityId);
+      Activity? activity =await ActivityDataHandlerBaseBase.GetMasterActivityRecord(dbHandler, activityId);
       if (activity != null) {
         note.activityID = activity.id;
       }
@@ -8594,7 +8597,7 @@ NoteMedia copyJsonDataToNoteMedia(  DatabaseHandler dbHandler, Map<String, dynam
     if (jsonObj.containsKey("ContentTypeID")) {
       String contentTypeId = jsonObj["ContentTypeID"].toString();
       contentTypeId = (contentTypeId != null && contentTypeId.isNotEmpty) ? contentTypeId : "-1";
-      ContentType contentType = ContentTypeDataHandler.getMasterContentTypeRecord(dbHandler,  contentTypeId);
+      ContentType contentType = ContentTypeDataHandlerBaseBase.getMasterContentTypeRecord(dbHandler,  contentTypeId);
       if (contentType != null) {
         noteMedia.contentTypeId = contentType.id;
       }
@@ -8957,7 +8960,7 @@ Future<Opportunity> copyJsonDataToOpportunity(
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId.isNotEmpty ? accountId : "-1";
-      Account ?account = await AccountDataHandlerBase.GetMasterAccountRecord(
+      Account ?account = await AccountDataHandlerBaseBase.GetMasterAccountRecord(
           dbHandler, accountId);
       if (account != null) {
         opportunity.accountID = account.id;
@@ -9115,7 +9118,7 @@ if (jsonObj.containsKey("IsApprovalRequired")) {
 if (jsonObj.containsKey("ParentOpportunityID")) {
   String opportunityId = jsonObj["ParentOpportunityID"].toString();
   opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
-  Opportunity opportunity1 = await OpportunityDataHandler.GetMasterOpportunityRecord(
+  Opportunity? opportunity1 = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(
       dbHandler,  opportunityId);
   if (opportunity1 != null) {
     opportunity.parentOpportunityID = opportunity1.id;
@@ -9137,7 +9140,7 @@ if (jsonObj.containsKey("RecurrenceCount")) {
 if (jsonObj.containsKey("RecurringOpportunityID")) {
   String opportunityId = jsonObj["RecurringOpportunityID"].toString();
   opportunityId = opportunityId.isNotEmpty ? opportunityId : "-1";
-  Opportunity opportunity2 = await OpportunityDataHandler.GetMasterOpportunityRecord(
+  Opportunity? opportunity2 = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(
       dbHandler,  opportunityId);
   if (opportunity2 != null) {
     opportunity.recurringOpportunityID = opportunity2.id;
@@ -9156,7 +9159,7 @@ if (jsonObj.containsKey("OpportunityAssignmentID")) {
 if (jsonObj.containsKey("SupplierAccountID")) {
   String accountId = jsonObj["SupplierAccountID"].toString();
   accountId = accountId.isNotEmpty ? accountId : "-1";
-  Account account1 = await AccountDataHandler.GetMasterAccountRecord(
+  Account ?account1 = await AccountDataHandlerBase.GetMasterAccountRecord(
       dbHandler,  accountId);
   if (account1 != null) {
     opportunity.supplierAccountID = account1.id;
@@ -9533,7 +9536,7 @@ Future<OpportunityBusinessUnit> copyJsonDataToOpportunityBusinessUnit(
       if (jsonObj.containsKey("OpportunityID")) {
         String opportunityId = jsonObj["OpportunityID"];
         opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
-        Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandle, opportunityId);
+        Opportunity? opportunity = await  OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandle, opportunityId);
         if (opportunity != null) {
           opportunityBusinessUnit.opportunityID = opportunity.id;
         }
@@ -9542,7 +9545,7 @@ Future<OpportunityBusinessUnit> copyJsonDataToOpportunityBusinessUnit(
       if (jsonObj.containsKey("BusinessUnitID")) {
         String businessUnitId = jsonObj["BusinessUnitID"];
         businessUnitId = businessUnitId != null && businessUnitId != "" ? businessUnitId : "-1";
-        BusinessUnit? businessUnit =await  BusinessUnitDataHandlerBase.GetMasterBusinessUnitRecord(dbHandler, businessUnitId);
+        BusinessUnit? businessUnit =await  BusinessUnitDataHandlerBaseBase.GetMasterBusinessUnitRecord(dbHandler, businessUnitId);
         if (businessUnit != null) {
           opportunityBusinessUnit.businessUnitID = businessUnit.id;
         }
@@ -9623,7 +9626,7 @@ Future<OpportunityBusinessUnit> copyJsonDataToOpportunityBusinessUnit(
       if (jsonObj.containsKey("OpportunityID")) {
         String opportunityId = jsonObj["OpportunityID"];
         opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
-        Opportunity? opportunity = await  OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        Opportunity? opportunity = await  OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
         if (opportunity != null) {
           opportunityContact.opportunityID = opportunity.id;
         }
@@ -9883,7 +9886,7 @@ Future<OpportunityMedia> copyJsonDataToOpportunityMedia(
       if (jsonObj.containsKey("OpportunityID")) {
         String opportunityId = jsonObj["OpportunityID"];
         opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
-        Opportunity ?opportunity =  await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        Opportunity ?opportunity =  await OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
         if (opportunity != null) {
           opportunityMedia.opportunityID = opportunity.id;
         }
@@ -9892,7 +9895,7 @@ Future<OpportunityMedia> copyJsonDataToOpportunityMedia(
       if (jsonObj.containsKey("ContentTypeID")) {
         String contentTypeId = jsonObj["ContentTypeID"];
         contentTypeId = contentTypeId != null && contentTypeId != "" ? contentTypeId : "-1";
-        ContentType contentType = ContentTypeDataHandler.getMasterContentTypeRecord(dbHandler,  contentTypeId);
+        ContentType contentType = ContentTypeDataHandlerBaseBase.getMasterContentTypeRecord(dbHandler,  contentTypeId);
         if (contentType != null) {
           opportunityMedia.contentTypeID = contentType.id;
         }
@@ -10213,7 +10216,7 @@ OpportunityProduct copyJsonDataToOpportunityProduct(
       if (jsonObj.containsKey("OpportunityID")) {
         String opportunityId = jsonObj["OpportunityID"];
         opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
-        Opportunity ?opportunity =  await OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+        Opportunity ?opportunity =  await OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
         if (opportunity != null) {
           opportunityProduct.opportunityID = opportunity.id;
         }
@@ -10222,7 +10225,7 @@ OpportunityProduct copyJsonDataToOpportunityProduct(
       if (jsonObj.containsKey("ProductID")) {
         String productId = jsonObj["ProductID"];
         productId = productId != null && productId != "" ? productId : "-1";
-        Product product = ProductDataHandler.getMasterProductRecord(dbHandler, productId);
+        Product product = ProductDataHandlerBase.getMasterProductRecord(dbHandler, productId);
         if (product != null) {
           opportunityProduct.productID = product.id;
         }
@@ -10296,7 +10299,7 @@ OpportunityProduct copyJsonDataToOpportunityProduct(
     return opportunityProduct;
   }
 OpportunityProductDetail copyJsonDataToOpportunityProductDetail(
-    Context 
+     
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     OpportunityProductDetail opportunityProductDetail,
@@ -10318,8 +10321,8 @@ OpportunityProductDetail copyJsonDataToOpportunityProductDetail(
       opportunityProductId = opportunityProductId.isNotEmpty
           ? opportunityProductId
           : "-1";
-      OpportunityProduct opportunityProduct =
-          OpportunityProductDataHandler.getMasterOpportunityProductRecord(
+      OpportunityProduct? opportunityProduct =await
+          OpportunityProductDataHandlerBase.GetMasterOpportunityProductRecord(
         dbHandler,
         
         opportunityProductId,
@@ -10362,7 +10365,7 @@ OpportunityProductDetail copyJsonDataToOpportunityProductDetail(
     if (jsonObj.containsKey("SupplierAccountID")) {
       String accountId = jsonObj["SupplierAccountID"].toString();
       accountId = accountId.isNotEmpty ? accountId : "-1";
-      Account account = AccountDataHandler.getMasterAccountRecord(
+      Account account = AccountDataHandlerBase.getMasterAccountRecord(
         dbHandler,
         
         accountId,
@@ -10873,7 +10876,7 @@ Future<OpportunityTeam> copyJsonDataToOpportunityTeam(
       String opportunityId = jsonObj["OpportunityID"];
       opportunityId = opportunityId != null && opportunityId != "" ? opportunityId : "-1";
       Opportunity? opportunity =await 
-          OpportunityDataHandlerBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
+          OpportunityDataHandlerBaseBase.GetMasterOpportunityRecord(dbHandler, opportunityId);
       if (opportunity != null) {
         opportunityTeam.opportunityID = opportunity.id;
       }
@@ -11284,7 +11287,7 @@ Future<Product> copyJsonDataToProduct(
     if (jsonObj.containsKey("UnitID")) {
       String unitId = jsonObj["UnitID"].toString();
       unitId = unitId.isNotEmpty ? unitId : "-1";
-      Unit unit = await UnitDataHandler.getMasterUnitRecord(dbHandler,  unitId);
+      Unit unit = await UnitDataHandlerBase.getMasterUnitRecord(dbHandler,  unitId);
       if (unit != null) {
         product.unitID = unit.id;
       }
@@ -11323,7 +11326,7 @@ Future<Product> copyJsonDataToProduct(
     if (jsonObj.containsKey("ParentProductID")) {
       String productId = jsonObj["ParentProductID"].toString();
       productId = productId.isNotEmpty ? productId : "-1";
-      Product product1 = await ProductDataHandler.getMasterProductRecord(dbHandler,  productId);
+      Product product1 = await ProductDataHandlerBase.getMasterProductRecord(dbHandler,  productId);
       if (product1 != null) {
         product.parentProductID = product1.id;
       }
@@ -11434,7 +11437,7 @@ Future<ProductAuxiliary> copyJsonDataToProductAuxiliary(
     if (jsonObj.containsKey('ProductID')) {
       String productId = jsonObj['ProductID'].toString();
       productId = (productId != null && productId != '') ? productId : '-1';
-      Product product = await ProductDataHandler.getMasterProductRecord(
+      Product product = await ProductDataHandlerBase.getMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
         productAuxiliary.productID = product.id;
@@ -11444,7 +11447,7 @@ Future<ProductAuxiliary> copyJsonDataToProductAuxiliary(
     if (jsonObj.containsKey('AuxiliaryProductID')) {
       String productId = jsonObj['AuxiliaryProductID'].toString();
       productId = (productId != null && productId != '') ? productId : '-1';
-      Product product1 = await ProductDataHandler.getMasterProductRecord(
+      Product product1 = await ProductDataHandlerBase.getMasterProductRecord(
           dbHandler,  productId);
       if (product1 != null) {
         productAuxiliary.auxiliaryProductID = product1.id;
@@ -11634,7 +11637,7 @@ Future<ProductInstallation> copyJsonDataToProductInstallation(
       String accountId = jsonObj['AccountID'].toString();
       accountId =
           (accountId != null && accountId != '') ? accountId : '-1';
-      Account account = await AccountDataHandler.getMasterAccountRecord(
+      Account account = await AccountDataHandlerBase.getMasterAccountRecord(
           dbHandler,  accountId);
       if (account != null) {
         productInstallation.accountID = account.id;
@@ -11656,7 +11659,7 @@ Future<ProductInstallation> copyJsonDataToProductInstallation(
       String productId = jsonObj['ProductID'].toString();
       productId =
           (productId != null && productId != '') ? productId : '-1';
-      Product product = await ProductDataHandler.getMasterProductRecord(
+      Product product = await ProductDataHandlerBase.getMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
         productInstallation.productID = product.id;
@@ -11807,7 +11810,7 @@ ProductInstallationDetail copyJsonDataToProductInstallationDetail(
     if (jsonObj.containsKey("ProductID")) {
       String productId = jsonObj["ProductID"].toString();
       productId = productId.isNotEmpty ? productId : "-1";
-      Product product = ProductDataHandler.getMasterProductRecord(dbHandler,  productId);
+      Product product = ProductDataHandlerBase.getMasterProductRecord(dbHandler,  productId);
       if (product != null) {
         productInstallationDetail.productID = product.id;
       }
@@ -11918,7 +11921,7 @@ ProductMedia copyJsonDataToProductMedia(
     if (jsonObj.containsKey("ProductID")) {
       String productId = jsonObj["ProductID"].toString();
       productId = productId.isNotEmpty ? productId : "-1";
-      Product product = ProductDataHandler.getMasterProductRecord(dbHandler,  productId);
+      Product product = ProductDataHandlerBase.getMasterProductRecord(dbHandler,  productId);
       if (product != null) {
         productMedia.productID = product.id;
       }
@@ -11927,7 +11930,7 @@ ProductMedia copyJsonDataToProductMedia(
     if (jsonObj.containsKey("ContentTypeID")) {
       String contentTypeId = jsonObj["ContentTypeID"].toString();
       contentTypeId = contentTypeId.isNotEmpty ? contentTypeId : "-1";
-      ContentType contentType = ContentTypeDataHandler.getMasterContentTypeRecord(dbHandler,  contentTypeId);
+      ContentType contentType = ContentTypeDataHandlerBaseBase.getMasterContentTypeRecord(dbHandler,  contentTypeId);
       if (contentType != null) {
         productMedia.contentTypeID = contentType.id;
       }
@@ -12148,7 +12151,7 @@ Future<ReimbursementDetail> copyJsonDataToReimbursementDetail(
       activityId =
           activityId != null && activityId.isNotEmpty ? activityId : "-1";
       Activity activity =
-          ActivityDataHandler.getMasterActivityRecord(dbHandler,  activityId);
+          ActivityDataHandlerBase.getMasterActivityRecord(dbHandler,  activityId);
       if (activity != null) {
         reimbursementDetail.activityID = activity.id;
       }
@@ -12352,7 +12355,7 @@ Future<Reminder> copyJsonDataToReminder(
     if (jsonObj.containsKey("ActivityID")) {
       String activityId = jsonObj["ActivityID"].toString();
       activityId = activityId != null && activityId.isNotEmpty ? activityId : "-1";
-      Activity activity = ActivityDataHandler.GetMasterActivityRecord(
+      Activity? activity = await  ActivityDataHandlerBase.GetMasterActivityRecord(
           dbHandler,  activityId);
       if (activity != null) {
         reminder.activityID = activity.id;
@@ -12363,7 +12366,7 @@ Future<Reminder> copyJsonDataToReminder(
       String opportunityId = jsonObj["OpportunityID"].toString();
       opportunityId =
           opportunityId != null && opportunityId.isNotEmpty ? opportunityId : "-1";
-      Opportunity opportunity = OpportunityDataHandler.GetMasterOpportunityRecord(
+      Opportunity? opportunity = await OpportunityDataHandlerBase.GetMasterOpportunityRecord(
           dbHandler,  opportunityId);
       if (opportunity != null) {
         reminder.opportunityID = opportunity.id;
@@ -12373,7 +12376,7 @@ Future<Reminder> copyJsonDataToReminder(
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
-      Account account = AccountDataHandler.GetMasterAccountRecord(
+      Account? account = await AccountDataHandlerBase.GetMasterAccountRecord(
           dbHandler,  accountId);
       if (account != null) {
         reminder.accountID = account.id;
@@ -12457,7 +12460,7 @@ Resource copyJsonDataToResource(
     if (jsonObj.containsKey("ProductID")) {
       String productId = jsonObj["ProductID"].toString();
       productId = productId != null && productId.isNotEmpty ? productId : "-1";
-      Product product = ProductDataHandler.GetMasterProductRecord(
+      Product? product =  await ProductDataHandlerBase.GetMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
         resource.productID = product.id;
@@ -12468,7 +12471,7 @@ Resource copyJsonDataToResource(
       String contentTypeId = jsonObj["ContentTypeID"].toString();
       contentTypeId =
           contentTypeId != null && contentTypeId.isNotEmpty ? contentTypeId : "-1";
-      ContentType contentType = ContentTypeDataHandler.GetMasterContentTypeRecord(
+      ContentType? contentType =await ContentTypeDataHandlerBaseBase.GetMasterContentTypeRecord(
           dbHandler,  contentTypeId);
       if (contentType != null) {
         resource.contentTypeID = contentType.id;
@@ -12550,11 +12553,11 @@ Resource copyJsonDataToResource(
   }
   return resource;
 }
-ServiceInvoice copyJsonDataToServiceInvoice(
+Future<ServiceInvoice> copyJsonDataToServiceInvoice(
     DatabaseHandler dbHandler,
     Map<String, dynamic> jsonObj,
     ServiceInvoice serviceInvoice,
-    bool isForNew) {
+    bool isForNew) async {
   try {
     if (jsonObj.containsKey("ServiceInvoiceID")) {
       serviceInvoice.serviceInvoiceID = jsonObj["ServiceInvoiceID"].toString();
@@ -12572,7 +12575,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
     if (jsonObj.containsKey("AccountID")) {
       String accountId = jsonObj["AccountID"].toString();
       accountId = accountId != null && accountId.isNotEmpty ? accountId : "-1";
-      Account account = AccountDataHandler.GetMasterAccountRecord(
+      Account? account = await  AccountDataHandlerBase.GetMasterAccountRecord(
           dbHandler,  accountId);
       if (account != null) {
         serviceInvoice.accountID = account.id;
@@ -12582,7 +12585,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
     if (jsonObj.containsKey("ActivityID")) {
       String activityId = jsonObj["ActivityID"].toString();
       activityId = activityId != null && activityId.isNotEmpty ? activityId : "-1";
-      Activity activity = ActivityDataHandler.GetMasterActivityRecord(
+      Activity? activity = await  ActivityDataHandlerBase.GetMasterActivityRecord(
           dbHandler,  activityId);
       if (activity != null) {
         serviceInvoice.activityID = activity.id;
@@ -12592,7 +12595,7 @@ ServiceInvoice copyJsonDataToServiceInvoice(
     if (jsonObj.containsKey("ProductID")) {
       String productId = jsonObj["ProductID"].toString();
       productId = productId != null && productId.isNotEmpty ? productId : "-1";
-      Product product = ProductDataHandler.GetMasterProductRecord(
+      Product? product = await ProductDataHandlerBase.GetMasterProductRecord(
           dbHandler,  productId);
       if (product != null) {
         serviceInvoice.productID = product.id;
@@ -13427,7 +13430,307 @@ HSSupportTicket copyJsonDataToHSSupportTicket(
   }
   return hSSupportTicket;
 }
+Future<HSSupportTicketMedia> copyJsonDataToHSSupportTicketMedia(
+    DatabaseHandler dbHandler,
+    Map<String, dynamic> jsonObj,
+    HSSupportTicketMedia hSSupportTicketMedia,
+    bool isForNew) async {
+  try {
+    if (jsonObj.containsKey('HSSupportTicketMediaID')) {
+      hSSupportTicketMedia.hSSupportTicketMediaID =
+          jsonObj['HSSupportTicketMediaID'];
+    }
+    if (jsonObj.containsKey('HSSupportTicketMediaCode')) {
+      hSSupportTicketMedia.hSSupportTicketMediaCode =
+          jsonObj['HSSupportTicketMediaCode'];
+    }
+    if (jsonObj.containsKey('HSSupportTicketMediaName')) {
+      hSSupportTicketMedia.hSSupportTicketMediaName =
+          jsonObj['HSSupportTicketMediaName'];
+    }
 
+    if (jsonObj.containsKey('HSSupportTicketID')) {
+      String hSSupportTicketId = jsonObj['HSSupportTicketID'];
+      hSSupportTicketId = hSSupportTicketId != null && hSSupportTicketId != ''
+          ? hSSupportTicketId
+          : '-1';
+      HSSupportTicket? hSSupportTicket =await
+          HSSupportTicketDataHandlerBase.GetMasterHSSupportTicketRecord(
+              dbHandler, hSSupportTicketId);
+      if (hSSupportTicket != null) {
+        hSSupportTicketMedia.hSSupportTicketID = hSSupportTicket.id;
+      }
+    }
+
+    if (jsonObj.containsKey('ContentTypeID')) {
+      String contentTypeId = jsonObj['ContentTypeID'];
+      contentTypeId = contentTypeId != null && contentTypeId != ''
+          ? contentTypeId
+          : '-1';
+      ContentType? contentType =await
+          ContentTypeDataHandlerBase.GetMasterContentTypeRecord(
+              dbHandler, contentTypeId);
+      if (contentType != null) {
+        hSSupportTicketMedia.contentTypeID = contentType.id;
+      }
+    }
+
+    if (jsonObj.containsKey('MediaPath')) {
+      hSSupportTicketMedia.mediaPath = jsonObj['MediaPath'];
+    }
+    if (jsonObj.containsKey('MediaContent')) {
+      hSSupportTicketMedia.mediaContent = jsonObj['MediaContent'];
+    }
+    if (jsonObj.containsKey('Description')) {
+      hSSupportTicketMedia.description = jsonObj['Description'];
+    }
+    if (jsonObj.containsKey('Tags')) {
+      hSSupportTicketMedia.tags = jsonObj['Tags'];
+    }
+    if (jsonObj.containsKey('CreatedBy')) {
+      hSSupportTicketMedia.createdBy = jsonObj['CreatedBy'];
+    }
+    if (jsonObj.containsKey('CreatedOn')) {
+      hSSupportTicketMedia.createdOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedBy')) {
+      hSSupportTicketMedia.modifiedBy = jsonObj['ModifiedBy'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      hSSupportTicketMedia.modifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('DeviceIdentifier')) {
+      hSSupportTicketMedia.deviceIdentifier = jsonObj['DeviceIdentifier'];
+    }
+    if (jsonObj.containsKey('ReferenceIdentifier')) {
+      hSSupportTicketMedia.referenceIdentifier =
+          jsonObj['ReferenceIdentifier'];
+    }
+    if (jsonObj.containsKey('IsActive')) {
+      hSSupportTicketMedia.isActive = jsonObj['IsActive'];
+    }
+    if (jsonObj.containsKey('Uid')) {
+      hSSupportTicketMedia.uid = jsonObj['Uid'];
+    }
+    if (jsonObj.containsKey('AppUserID')) {
+      hSSupportTicketMedia.appUserID = jsonObj['AppUserID'];
+    }
+    if (jsonObj.containsKey('AppUserGroupID')) {
+      hSSupportTicketMedia.appUserGroupID = jsonObj['AppUserGroupID'];
+    }
+    if (jsonObj.containsKey('IsArchived')) {
+      hSSupportTicketMedia.isArchived = jsonObj['IsArchived'];
+    }
+    if (jsonObj.containsKey('IsDeleted')) {
+      hSSupportTicketMedia.isDeleted = jsonObj['IsDeleted'];
+    }
+
+    hSSupportTicketMedia.isDirty = 'false';
+    hSSupportTicketMedia.isDeleted1 = 'false';
+    hSSupportTicketMedia.upSyncMessage = '';
+    hSSupportTicketMedia.downSyncMessage = '';
+    if (jsonObj.containsKey('CreatedOn')) {
+      hSSupportTicketMedia.sCreatedOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      hSSupportTicketMedia.sModifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('CreatedByUser')) {
+      hSSupportTicketMedia.createdByUser = jsonObj['CreatedByUser'];
+    }
+    if (jsonObj.containsKey('ModifiedByUser')) {
+      hSSupportTicketMedia.modifiedByUser = jsonObj['ModifiedByUser'];
+    }
+    hSSupportTicketMedia.upSyncIndex = '0';
+    hSSupportTicketMedia.ownerUserID = '${Globals.AppUserID}';
+
+  } catch (ex) {
+    Globals.handleException(
+         'JSONDataCopier:CopyJsonDataToHSSupportTicketMedia()', ex);
+  }
+  return hSSupportTicketMedia;
+}
+
+Future<AccountPermission> copyJsonDataToAccountPermission(
+    DatabaseHandler dbHandler ,
+    dynamic jsonObj,
+    AccountPermission accountPermission,
+    bool isForNew) async {
+  try {
+    if (jsonObj.containsKey('AccountPermissionID')) {
+      accountPermission.accountPermissionID =
+          jsonObj['AccountPermissionID'];
+    }
+    if (jsonObj.containsKey('AccountPermissionCode')) {
+      accountPermission.assignmentPermissionTypeCode =
+          jsonObj['AccountPermissionCode'];
+    }
+    if (jsonObj.containsKey('AccountID')) {
+      accountPermission.accountID = jsonObj['AccountID'];
+    }
+
+    if (jsonObj.containsKey('AppUserID')) {
+      accountPermission.appUserID = jsonObj['AppUserID'];
+    }
+
+    if (jsonObj.containsKey('AssignmentPermissionTypeID')) {
+      accountPermission.assignmentPermissionTypeID =
+          jsonObj['AssignmentPermissionTypeID'];
+    }
+    if (jsonObj.containsKey('IsDenied')) {
+      accountPermission.isDenied = jsonObj['IsDenied'];
+    }
+
+    if (jsonObj.containsKey('CreatedBy')) {
+      accountPermission.createdBy = jsonObj['CreatedBy'];
+    }
+    if (jsonObj.containsKey('CreatedOn')) {
+      accountPermission.createdOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedBy')) {
+      accountPermission.modifiedBy = jsonObj['ModifiedBy'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      accountPermission.modifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('IsActive')) {
+      accountPermission.isActive = jsonObj['IsActive'];
+    }
+    if (jsonObj.containsKey('Uid')) {
+      accountPermission.uid = jsonObj['Uid'];
+    }
+    if (jsonObj.containsKey('AppUserGroupID')) {
+      accountPermission.appUserGroupID = jsonObj['AppUserGroupID'];
+    }
+    if (jsonObj.containsKey('IsArchived')) {
+      accountPermission.isArchived = jsonObj['IsArchived'];
+    }
+    if (jsonObj.containsKey('IsDeleted')) {
+      accountPermission.isDeleted = jsonObj['IsDeleted'];
+    }
+    if (jsonObj.containsKey('AccountName')) {
+      accountPermission.accountName = jsonObj['AccountName'];
+    }
+    if (jsonObj.containsKey('AppUserName')) {
+      accountPermission.appUserName = jsonObj['AppUserName'];
+    }
+
+    accountPermission.isDirty = 'false';
+    accountPermission.isDeleted1 = 'false';
+    accountPermission.upSyncMessage = '';
+    accountPermission.downSyncMessage = '';
+
+    if (jsonObj.containsKey('CreatedOn')) {
+      accountPermission.sCreatedOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      accountPermission.sModifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('CreatedByUser')) {
+      accountPermission.createdByUser = jsonObj['CreatedByUser'];
+    }
+    if (jsonObj.containsKey('ModifiedByUser')) {
+      accountPermission.modifiedByUser = jsonObj['ModifiedByUser'];
+    }
+    accountPermission.upSyncIndex = '0';
+
+    accountPermission.ownerUserID = '${Globals.AppUserID}';
+
+  } catch (ex) {
+    Globals.handleException(
+         'JSONDataCopier:CopyJsonDataToAccountPermission()', ex);
+  }
+  return accountPermission;
+}
+
+Future<Unit> copyJsonDataToUnit(
+    DatabaseHandler dbHandler,
+    dynamic jsonObj,
+    Unit unit,
+    bool isForNew) async {
+  try {
+    if (jsonObj.containsKey('UnitID')) {
+      unit.unitID = jsonObj['UnitID'];
+    }
+    if (jsonObj.containsKey('UnitCode')) {
+      unit.unitCode = jsonObj['UnitCode'];
+    }
+    if (jsonObj.containsKey('UnitName')) {
+      unit.unitName = jsonObj['UnitName'];
+    }
+    if (jsonObj.containsKey('ShortForm')) {
+      unit.shortForm = jsonObj['ShortForm'];
+    }
+    if (jsonObj.containsKey('NumberSystemBase')) {
+      unit.numberSystemBase = jsonObj['NumberSystemBase'];
+    }
+
+    if (jsonObj.containsKey('ParentUnitID')) {
+      String unitId = jsonObj['ParentUnitID'];
+      unitId = unitId != null && unitId.isNotEmpty ? unitId : '-1';
+      Unit? unit1 =  await UnitDataHandlerBase.GetMasterUnitRecord(dbHandler, unitId);
+      if (unit1 != null) {
+        unit.parentUnitID = unit1.id;
+      }
+    }
+
+    if (jsonObj.containsKey('ConversionFactor')) {
+      unit.conversionFactor = jsonObj['ConversionFactor'];
+    }
+    if (jsonObj.containsKey('CreatedOn')) {
+      unit.createdOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('CreatedBy')) {
+      unit.createdBy = jsonObj['CreatedBy'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      unit.modifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedBy')) {
+      unit.modifiedBy = jsonObj['ModifiedBy'];
+    }
+    if (jsonObj.containsKey('IsActive')) {
+      unit.isActive = jsonObj['IsActive'];
+    }
+    if (jsonObj.containsKey('Uid')) {
+      unit.uid = jsonObj['Uid'];
+    }
+    if (jsonObj.containsKey('AppUserID')) {
+      unit.appUserID = jsonObj['AppUserID'];
+    }
+    if (jsonObj.containsKey('AppUserGroupID')) {
+      unit.appUserGroupID = jsonObj['AppUserGroupID'];
+    }
+    if (jsonObj.containsKey('IsArchived')) {
+      unit.isArchived = jsonObj['IsArchived'];
+    }
+    if (jsonObj.containsKey('IsDeleted')) {
+      unit.isDeleted = jsonObj['IsDeleted'];
+    }
+
+    unit.isDirty = 'false';
+    unit.isDeleted1 = 'false';
+    unit.upSyncMessage = '';
+    unit.downSyncMessage = '';
+    if (jsonObj.containsKey('CreatedOn')) {
+      unit.sCreatedOn = jsonObj['CreatedOn'];
+    }
+    if (jsonObj.containsKey('ModifiedOn')) {
+      unit.sModifiedOn = jsonObj['ModifiedOn'];
+    }
+    if (jsonObj.containsKey('CreatedByUser')) {
+      unit.createdByUser = jsonObj['CreatedByUser'];
+    }
+    if (jsonObj.containsKey('ModifiedByUser')) {
+      unit.modifiedByUser = jsonObj['ModifiedByUser'];
+    }
+    unit.upSyncIndex = '0';
+    unit.ownerUserID = '${Globals.AppUserID}';
+  } catch (ex) {
+    Globals.handleException( 'JSONDataCopier:CopyJsonDataToUnit()', ex);
+  }
+  return unit;
+}
 
 }
 
