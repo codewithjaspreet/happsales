@@ -142,40 +142,36 @@ class FieldAttendanceDataHandler extends FieldAttendanceDataHandlerBase {
     }
 
 
-     static Future<int> GetTotalAttendanceSecondsForToday(DatabaseHandler databaseHandler, String dateString) async{
-        int totalSeconds = 0;
-        try
-        {
-            String selectQuery = "SELECT ((strftime('%s', ifnull(PunchOutTime,DATETIME('now', 'localtime'))) - strftime('%s', PunchInTime)))  AS 'InTimeInSeconds' FROM ${TablesBase.TABLE_FIELDATTENDANCE} WHERE  date(${ColumnsBase.KEY_FIELDATTENDANCE_FIELDATTENDANCEDATE}) = '$dateString'";
-            selectQuery += " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
-            selectQuery += " AND ${ColumnsBase.KEY_FIELDATTENDANCE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
-            selectQuery += " ORDER BY ${ColumnsBase.KEY_ID}";
+    Future<int> getTotalAttendanceSecondsForToday(
+    DatabaseHandler databaseHandler,
+    String dateString,
+) async {
+  int totalSeconds = 0;
+  try {
+    String selectQuery =
+        "SELECT (strftime('%s', ifnull(PunchOutTime,DATETIME('now', 'localtime'))) - strftime('%s', PunchInTime)) AS 'InTimeInSeconds' FROM ${TablesBase.TABLE_FIELDATTENDANCE} WHERE date(${ColumnsBase.KEY_FIELDATTENDANCE_FIELDATTENDANCEDATE}) = '$dateString'";
+    selectQuery +=
+        " AND ${ColumnsBase.KEY_OWNERUSERID} = ${Globals.AppUserID}";
+    selectQuery +=
+        " AND ${ColumnsBase.KEY_FIELDATTENDANCE_APPUSERGROUPID} = ${Globals.AppUserGroupID}";
+    selectQuery += " ORDER BY ${ColumnsBase.KEY_ID}";
 
-            final db = await  databaseHandler.database;
-
-            List<Map> list = await db.rawQuery(selectQuery, null);
-
-            for (Map map in list) {
-                totalSeconds = totalSeconds + map["InTimeInSeconds"];
-            }
-
-
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    totalSeconds = totalSeconds + cursor.getInt(0);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            //db.close();
-        }
-        catch(Exception ex)
-        {
-            Globals.HandleException(context, "FieldAttendanceDataHandler:GetTotalAttendanceSecondsForToday()", ex);
-            throw ex;
-        }
-        return totalSeconds;
+    final db = await databaseHandler.database;
+    List<Map<String, dynamic>> resultList = await db.rawQuery(selectQuery, null);
+    for (Map<String, dynamic> row in resultList) {
+      totalSeconds += row['InTimeInSeconds'];
     }
+    //db.close();
+  } catch (ex) {
+    Globals.handleException(
+      'FieldAttendanceDataHandler:GetTotalAttendanceSecondsForToday()',
+      ex,
+    );
+    throw ex;
+  }
+  return totalSeconds;
+}
+
 	/*-------------------HAPPSALES-------------------*/
 
 }
