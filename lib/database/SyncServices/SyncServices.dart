@@ -34,13 +34,15 @@ import '../Handlers/ActivityHandlers/ActivityDataHandlerBase.dart';
 import '../Handlers/ActivityHandlers/ActivityMediaDataHandler.dart';
 import '../Handlers/ActivityHandlers/ActivityTravelExpenseDataHandlerBase.dart';
 import '../Handlers/ContactHandlers/ContactDataHandlerBase.dart';
+import '../Handlers/ContactHandlers/ContactHandlerDataBase.dart';
+import '../Handlers/ContactHandlers/ContactHandlerDataBaseBase.dart';
 import '../Handlers/ContactHandlers/ContactMediaDataHandler.dart';
 import '../Handlers/ContactHandlers/ContactMediaDataHandlerBase.dart';
 import '../Handlers/ContactHandlers/ContactTitleDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityApprovalDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityApprovalTypeDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityBusinessUnitDataHandlerBase.dart';
-import '../Handlers/OpportunityHandlers/OpportunityContactDataHandlerBase.dart';
+import '../Handlers/OpportunityHandlers/OpportunityContactHandlerDataBaseBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityFulfillmentStatusDataHandlerBase.dart';
 import '../Handlers/OpportunityHandlers/OpportunityMeasureDataHandlerBase.dart';
@@ -57,7 +59,7 @@ import '../Handlers/OtherHandlers/ChatUserGroupMemberDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/CompetitorDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ContentTypeDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/CreditRatingDataHandlerBase.dart';
-import '../Handlers/OtherHandlers/CurrencyDataHandlerBase.dart';
+import '../Handlers/OtherHandlers/CurrencyDataHandlerBaseBase.dart';
 import '../Handlers/OtherHandlers/DesignationDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/EmailManualTemplateDataHandlerBase.dart';
 import '../Handlers/OtherHandlers/ExpenseTypeDataHandlerBase.dart';
@@ -161,7 +163,6 @@ import '../Handlers/ActivityHandlers/ActivityDataHandler.dart';
 import '../Handlers/ActivityHandlers/ActivityProductDataHandler.dart';
 import '../Handlers/ActivityHandlers/ActivityProductDetailDataHandler.dart';
 import '../Handlers/DataBaseHandler.dart';
-import '../Handlers/OpportunityHandlers/OpportunityContactDataHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityProductDataHandler.dart';
 import '../Handlers/OpportunityHandlers/OpportunityProductDetailDataHandler.dart';
 import '../models/AccountModels/Account.dart';
@@ -509,7 +510,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             for (String activityId in  newOrModifiedActivityIdList) {
                 try {
 
-                    String masterActivityId =  await ActivityDataHandlerBase.getServerId(dbHandler,  activityId);
+                    String masterActivityId =  await ActivityDataHandlerBase.GetServerId(dbHandler,  activityId);
 
                     if (masterActivityId != ("") && !upSyncList.contains("ActivityProduct-" + masterActivityId)) {
 
@@ -519,7 +520,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         List<ActivityProduct> activityProductList = await  ActivityProductDataHandler.GetActivityProductupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
                         List<ActivityProductDetail> activityProductDetailList = await ActivityProductDetailDataHandler.GetActivityProductDetailupSyncRecordsByActivityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, activityId);
 
-                        //String serverActivityId = ActivityDataHandler.getServerId(dbHandler,  activityId);
+                        //String serverActivityId = ActivityDataHandler.GetServerId(dbHandler,  activityId);
 
                         for (ActivityProduct activityProduct in activityProductList) {
                             activityProduct.activityID = (masterActivityId);
@@ -528,7 +529,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
                         for (ActivityProductDetail activityProductDetail in activityProductDetailList) {
                             activityProductDetail.activityProductID = ("-1");
-                            activityProductDetail.supplierAccountID =  await (AccountDataHandlerBase.getServerId(dbHandler,  activityProductDetail.supplierAccountID! ));
+                            activityProductDetail.supplierAccountID =  await (AccountDataHandlerBase.GetServerId(dbHandler,  activityProductDetail.supplierAccountID! ));
                         }
 
                         upSyncList.add("ActivityProduct-" + masterActivityId);
@@ -559,7 +560,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         List<OpportunityProduct> opportunityProductList = await OpportunityProductDataHandlerBase.GetOpportunityProductupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
                         List<OpportunityProductDetail> opportunityProductDetailList =await  OpportunityProductDataHandlerBase.GetOpportunityProductDetailupSyncRecordsByOpportunityId(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED, opportunityId);
 
-                        //String serverOpportunityId = OpportunityDataHandler.getServerId(dbHandler,  opportunityId);
+                        //String serverOpportunityId = OpportunityDataHandler.GetServerId(dbHandler,  opportunityId);
 
                         for (OpportunityProduct opportunityProduct in  opportunityProductList) {
                             opportunityProduct.opportunityID = (masterOpportunityId);
@@ -568,7 +569,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
                         for (OpportunityProductDetail opportunityProductDetail in opportunityProductDetailList) {
                             opportunityProductDetail.opportunityProductID = ("-1");
-                            opportunityProductDetail.supplierAccountID = await (AccountDataHandlerBase.getServerId(dbHandler,  opportunityProductDetail.supplierAccountID!));
+                            opportunityProductDetail.supplierAccountID = await (AccountDataHandlerBase.GetServerId(dbHandler,  opportunityProductDetail.supplierAccountID!));
                         }
 
                         upSyncList.add("OpportunityProduct-" + masterOpportunityId);
@@ -611,7 +612,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
             }
 
             //OpportunityContact
-            List<OpportunityContact> newOrModifiedOpportunityContactList = await OpportunityContactDataHandlerBase.GetOpportunityContactupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
+            List<OpportunityContact> newOrModifiedOpportunityContactList = await OpportunityContactHandlerDataBaseBase.GetOpportunityContactupSyncRecords(dbHandler,  AppConstants.DB_RECORD_NEW_OR_MODIFIED);
             if (newOrModifiedOpportunityContactList.length > 0) {
                 logger.d(LOG_TAG, "New Or Modified OpportunityContacts - " +  newOrModifiedOpportunityContactList.length.toString());
                 totalRecordsToupSync += newOrModifiedOpportunityContactList.length;
@@ -966,8 +967,8 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
                         List<AccountFormValue> accountFormValuesOriginal = AccountFormValueDataHandler.GetAccountFormValueupSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
                         List<AccountFormValue> accountFormValues = AccountFormValueDataHandler.GetAccountFormValueupSyncRecordsByAccountFormId(dbHandler,  accountForm.id);
                         for (AccountFormValue accountFormValue in accountFormValues) {
-                            accountFormValue.setAccountFormID(AccountFormDataHandler.getServerId(dbHandler,  accountFormValue.getAccountFormID()));
-                            accountFormValue.setFormCellElementID(FormCellElementDataHandler.getServerId(dbHandler,  accountFormValue.getFormCellElementID()));
+                            accountFormValue.setAccountFormID(AccountFormDataHandler.GetServerId(dbHandler,  accountFormValue.getAccountFormID()));
+                            accountFormValue.setFormCellElementID(FormCellElementDataHandler.GetServerId(dbHandler,  accountFormValue.getFormCellElementID()));
                         }
                         upSyncAccountFormValue(accountForm.id, accountFormValuesOriginal, accountFormValues);
                     }
@@ -1531,19 +1532,20 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
             Globals.SyncIndex++;
 
-            if (Globals.SyncIndex > Globals.MAX_upSync_INDEX) {
+            if (Globals.SyncIndex > Globals.MAX_UPSYNC_INDEX) {
                 Globals.SyncIndex = 0;
             }
 
             if (totalRecordsToupSync == 0) {
                 LogMessage("Reseting failed upSyncindexesin ");
-                DatabaseHandler.getInstance().ResetPendingupSyncIndexes();
+                // DatabaseHandler.getInstance().ResetPendingupSyncIndexes();
+                DatabaseHandler.db.ResetPendingUpSyncIndexes();
             }
 
             logger.d("upSync - Completed");
 
         } catch ( ex) {
-            Globals.handle( "SyncServiceinRunupSync()", ex);
+            Globals.handleException( "SyncServiceinRunupSync()", ex);
         }
 
     }
@@ -1843,7 +1845,7 @@ for (Opportunity opportunity in newOrModifiedOpportunityList) {
 
             }
         } catch ( ex) {
-            Globals.handle( "SyncService:Run downSync()", ex);
+            Globals.handleException( "SyncService:Run downSync()", ex);
         }
     }
 
@@ -1856,7 +1858,7 @@ void upSyncAccountCategoryMapping(AccountCategoryMapping accountCategoryMapping)
       Map<String, dynamic> postData = {
         'AccountCategoryMappingID': Globals.isNullOrEmpty(accountCategoryMapping.accountCategoryMappingID!) ? '-1' : accountCategoryMapping.accountCategoryMappingID,
         'AccountCategoryMappingCode': Globals.isNullOrEmpty(accountCategoryMapping.accountCategoryMappingCode!) ? '' : accountCategoryMapping.accountCategoryMappingCode,
-        'AccountID':   AccountDataHandlerBase.getServerId(dbHandler,  accountCategoryMapping.accountID!),
+        'AccountID':   AccountDataHandlerBase.GetServerId(dbHandler,  accountCategoryMapping.accountID!),
         'AccountCategoryID': AccountCategoryDataHandlerBase.GetServerId(dbHandler,  accountCategoryMapping.accountCategoryID!),
         'CreatedBy': accountCategoryMapping.createdBy,
         'CreatedOn': accountCategoryMapping.createdOn,
@@ -1933,13 +1935,13 @@ void upSyncContact(Contact contact) async {
   "LastName": contact.lastName,
   "ContactName": contact.contactName,
   "ContactIdentifier": contact.contactIdentifier,
-  "AccountID": AccountDataHandlerBase.getServerId(dbHandler, contact.accountID!),
-  "ContactCategoryID": ContactCategoryDataHandlerBase.getServerId(dbHandler, contact.contactCategoryID!),
+  "AccountID": AccountDataHandlerBase.GetServerId(dbHandler, contact.accountID!),
+  "ContactCategoryID": ContactCategoryDataHandlerBase.GetServerId(dbHandler, contact.contactCategoryID!),
   "DepartmentName": contact.departmentName,
   "Designation": contact.designation,
   "RolesAndResponsibilities": contact.rolesAndResponsibilities,
   "ReportingManager": contact.reportingManager,
-  "ReportingContactID": ContactHandlerDataBase.getServerId(dbHandler, contact.reportingContactID!),
+  "ReportingContactID": ContactHandlerDataBase.GetServerId(dbHandler, contact.reportingContactID!),
   "MobileNumber": contact.mobileNumber,
   "AlternateMobileNumber": contact.alternateMobileNumber,
   "WorkPhone": contact.workPhone,
@@ -1959,7 +1961,7 @@ void upSyncContact(Contact contact) async {
   "PastDesignations": contact.pastDesignations,
   "DateOfBirth": contact.dateOfBirth,
   "RemindBirthday": Globals.tryParseBoolean(contact.remindBirthday),
-  "ContactAlignmentID": ContactAlignmentDataHandlerBase.getServerId(dbHandler, contact.contactAlignmentID!),
+  "ContactAlignmentID": ContactAlignmentDataHandlerBase.GetServerId(dbHandler, contact.contactAlignmentID!),
   "Remarks": contact.remarks,
   "ReferenceHistory": contact.referenceHistory,
   "IsPrimaryContact": Globals.tryParseBoolean(contact.isPrimaryContact),
@@ -1968,7 +1970,7 @@ void upSyncContact(Contact contact) async {
   "FreeTextField1": contact.freeTextField1,
   "FreeTextField2": contact.freeTextField2,
   "FreeTextField3": contact.freeTextField3,
-  // "MarketingContactID": MarketingContactDataHandler.getServerId(dbHandler,  contact.marketingContactID),
+  // "MarketingContactID": MarketingContactHandlerDataBase.GetServerId(dbHandler,  contact.marketingContactID),
   "CreatedBy": contact.createdBy,
   "CreatedOn": contact.createdOn,
   "ModifiedBy": contact.modifiedBy,
@@ -2005,7 +2007,7 @@ void upSyncContact(Contact contact) async {
             contactReturn.isDirty = "false";
             contactReturn.upSyncMessage = "SUCCESS";
             contactReturn.upSyncIndex = Globals.SyncIndex.toString();
-            ContactHandlerDataBase.UpdateContactRecord(dbHandler, contact.id!, contactReturn);
+            var id = await ContactHandlerDataBase.UpdateContactRecord(dbHandler, contact.id!, contactReturn);
             logger.d("Contact - Saved successfully.");
           } catch ( ex) {
             logger.e("Error: SyncService:upSyncContact() 1-> ${ex.toString()}");
@@ -2025,7 +2027,7 @@ void upSyncContact(Contact contact) async {
           logger.e("VolleyError: SyncService:upSyncContact() 3-> $posterror");
           contact.upSyncMessage = "FAIL: $posterror";
           contact.upSyncIndex = Globals.SyncIndex.toString();
-          ContactDataHandler.UpdateContactRecord(dbHandler,  contact.id, contact);
+          ContactHandlerDataBase.UpdateContactRecord(dbHandler,  contact.id!, contact);
         }
         upSyncList.remove("Contact-${contact.id}");
       }
@@ -2035,7 +2037,7 @@ void upSyncContact(Contact contact) async {
   }
 }
 
-void upSyncActivity(Activity activity) {
+Future<void> upSyncActivity(Activity activity) async {
   if (await Utility.isNetworkConnected() && Globals.USER_TOKEN != "") {
     String url = AppConstants.API_VERSION_URL + "/activity";
 
@@ -2043,25 +2045,25 @@ void upSyncActivity(Activity activity) {
       "ActivityID": !Globals.isNullOrEmpty(activity.activityID) ? activity.activityID : "-1",
       "ActivityCode": !Globals.isNullOrEmpty(activity.activityCode) ? activity.activityCode : "",
       "ActivityTitle": activity.activityTitle,
-      "ActivityTypeID": ActivityTypeDataHandler.getServerId(dbHandler,  activity.activityTypeID),
+      "ActivityTypeID": ActivityTypeDataHandlerBase.GetServerId(dbHandler,  activity.activityTypeID),
       "LeadSource": activity.leadSource,
-      "AccountID": AccountDataHandler.getServerId(dbHandler,  activity.accountID),
-      "ContactID": ContactDataHandler.getServerId(dbHandler,  activity.contactID),
-      "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  activity.opportunityID),
+      "AccountID": AccountDataHandler.GetServerId(dbHandler,  activity.accountID),
+      "ContactID": ContactHandlerDataBase.GetServerId(dbHandler,  activity.contactID),
+      "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  activity.opportunityID),
       "ActivityMeasure": activity.activityMeasure,
       "ActivityDate": activity.activityDate,
       "ActivityEndDate": activity.activityEndDate,
       "ActivityDetails": activity.activityDetails,
-      "ActivityPriorityID": ActivityPriorityDataHandlerBase.getServerId(dbHandler,  activity.activityPriorityID),
+      "ActivityPriorityID": ActivityPriorityDataHandlerBase.GetServerId(dbHandler,  activity.activityPriorityID),
       "TotalAmount": activity.totalAmount,
       "AmountCollected": activity.amountCollected,
-      "CurrencyID": CurrencyDataHandler.getServerId(dbHandler,  activity.currencyID),
+      "CurrencyID": CurrencyDataHandlerBase.GetServerId(dbHandler,  activity.currencyID),
       "CollectionDetails": activity.collectionDetails,
       "IsTravelled": Globals.tryParseBoolean(activity.isTravelled),
       "TravelPurposeName": activity.travelPurposeName,
-      "ActivityStatusID": ActivityStatusDataHandler.getServerId(dbHandler,  activity.activityStatusID),
+      "ActivityStatusID": ActivityStatusDataHandler.GetServerId(dbHandler,  activity.activityStatusID),
       "NeedFollowUpActivity": Globals.tryParseBoolean(activity.needFollowUpActivity),
-      "ParentActivityID": ActivityDataHandler.getServerId(dbHandler,  activity.parentActivityID),
+      "ParentActivityID": ActivityDataHandler.GetServerId(dbHandler,  activity.parentActivityID),
       "ExpectedCompletionDate": activity.expectedCompletionDate,
       "ActivityCodeInternal": activity.activityCodeInternal,
       "Tags": activity.tags,
@@ -2156,19 +2158,19 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
         "OpportunityName": opportunity.opportunityName,
         "OpportunityDetail": opportunity.opportunityDetail,
         "LeadSource": opportunity.leadSource,
-        "OpportunityTypeID": OpportunityTypeDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityTypeID),
-        "AccountID": AccountDataHandler.getServerId(dbHandler,  opportunity.accountID),
-        "ContactID": ContactDataHandlerBase.getServerId(dbHandler,  opportunity.contactID),
+        "OpportunityTypeID": OpportunityTypeDataHandlerBase.GetServerId(dbHandler,  opportunity.opportunityTypeID!),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler,  opportunity.accountID),
+        "ContactID": ContactHandlerDataBase.getServerId(dbHandler,  opportunity.contactID!),
         "OpportunityMeasure": opportunity.opportunityMeasure,
         "OpportunityValue": opportunity.opportunityValue,
-        "CurrencyID": CurrencyDataHandler.getServerId(dbHandler,  opportunity.currencyID),
+        "CurrencyID": CurrencyDataHandlerBase.getServerId(dbHandler,  opportunity.currencyID),
         "GrossProfit": opportunity.grossProfit,
         "DealRegistrationNumber": opportunity.dealRegistrationNumber,
         "ClosureDate": opportunity.closureDate,
         "Probability": opportunity.probability,
-        "OpportunityPriorityID": OpportunityPriorityDataHandler.getServerId(dbHandler,  opportunity.opportunityPriorityID),
-        "OpportunityStageID": OpportunityStageDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityStageID!),
-        "OpportunityStatusID": OpportunityStatusDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityStatusID),
+        "OpportunityPriorityID": OpportunityPriorityDataHandlerBase.getServerId(dbHandler,  opportunity.opportunityPriorityID),
+        "OpportunityStageID": OpportunityStageDataHandlerBase.GetServerId(dbHandler,  opportunity.opportunityStageID!),
+        "OpportunityStatusID": OpportunityStatusDataHandlerBase.GetServerId(dbHandler,  opportunity.opportunityStatusID!),
         "ActualOpportunityValue": opportunity.actualOpportunityValue,
         "LostToCompetitor": opportunity.lostToCompetitor,
         "ReasonForOpportunityStatus": opportunity.reasonForOpportunityStatus,
@@ -2179,16 +2181,16 @@ Future<void> upSyncOpportunity(Opportunity opportunity) async {
         "FinanceBy": opportunity.financeBy,
         "FinanceRemarks": opportunity.financeRemarks,
         "IsApprovalRequired": Globals.tryParseBoolean(opportunity.isApprovalRequired),
-        "ParentOpportunityID": OpportunityDataHandlerBase.getServerId(dbHandler,  opportunity.parentOpportunityID!),
+        "ParentOpportunityID": OpportunityDataHandlerBase.GetServerId(dbHandler,  opportunity.parentOpportunityID!),
         "IsRecurringOpportunity": Globals.tryParseBoolean(opportunity.isRecurringOpportunity),
         "RecurrenceIntervalInDays": opportunity.recurrenceIntervalInDays,
         "RecurrenceCount": opportunity.recurrenceCount,
-        "RecurringOpportunityID": OpportunityDataHandlerBase.getServerId(dbHandler,  opportunity.recurringOpportunityID!),
+        "RecurringOpportunityID": OpportunityDataHandlerBase.GetServerId(dbHandler,  opportunity.recurringOpportunityID!),
         "DateGeneratedForRecurring": opportunity.dateGeneratedForRecurring,
         "RequestedDeliveryDate": opportunity.requestedDeliveryDate,
         "PlannedDeliveryDate": opportunity.plannedDeliveryDate,
         "ActualDeliveryDate": opportunity.actualDeliveryDate,
-        "SupplierAccountID": AccountDataHandler.getServerId(dbHandler,  opportunity.supplierAccountID),
+        "SupplierAccountID": AccountDataHandler.GetServerId(dbHandler,  opportunity.supplierAccountID),
         "Tags": opportunity.tags,
         "OpportunityCodeInternal": opportunity.opportunityCodeInternal,
         "FreeTextField1": opportunity.freeTextField1,
@@ -2278,9 +2280,9 @@ void upSyncCustomerMeeting(CustomerMeeting customerMeeting) async {
         'CustomerMeetingID': customerMeeting.customerMeetingID != null && customerMeeting.customerMeetingID.isNotEmpty ? customerMeeting.customerMeetingID : '-1',
         'CustomerMeetingCode': customerMeeting.customerMeetingCode != null && customerMeeting.customerMeetingCode.isNotEmpty ? customerMeeting.customerMeetingCode : '',
         'CustomerMeetingTitle': customerMeeting.customerMeetingTitle,
-        'ActivityID': ActivityDataHandler.getServerId(dbHandler,  customerMeeting.activityID),
-        'AccountID': AccountDataHandler.getServerId(dbHandler,  customerMeeting.accountID),
-        'ContactID': ContactDataHandler.getServerId(dbHandler,  customerMeeting.contactID),
+        'ActivityID': ActivityDataHandler.GetServerId(dbHandler,  customerMeeting.activityID),
+        'AccountID': AccountDataHandler.GetServerId(dbHandler,  customerMeeting.accountID),
+        'ContactID': ContactHandlerDataBase.GetServerId(dbHandler,  customerMeeting.contactID),
         'CustomerMeetingDate': customerMeeting.customerMeetingDate,
         'PunchInTime': customerMeeting.punchInTime,
         'PunchOutTime': customerMeeting.punchOutTime,
@@ -2554,9 +2556,9 @@ Future<void> upSyncOpportunityProductDetailAttribute(OpportunityProductDetailAtt
       var postData = {
         "OpportunityProductDetailAttributeID": Globals.isNullOrEmpty(opportunityProductDetailAttribute.opportunityProductDetailAttributeID) ? "-1" : opportunityProductDetailAttribute.opportunityProductDetailAttributeID,
         "OpportunityProductDetailAttributeCode": Globals.isNullOrEmpty(opportunityProductDetailAttribute.opportunityProductDetailAttributeCode) ? "" : opportunityProductDetailAttribute.opportunityProductDetailAttributeCode,
-        "OpportunityProductDetailID": OpportunityProductDetailDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.opportunityProductDetailID),
-        "AttributeID": AttributeDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.attributeID),
-        "AttributeValueID": AttributeValueDataHandler.getServerId(dbHandler,  opportunityProductDetailAttribute.attributeValueID),
+        "OpportunityProductDetailID": OpportunityProductDetailDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.opportunityProductDetailID),
+        "AttributeID": AttributeDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.attributeID),
+        "AttributeValueID": AttributeValueDataHandler.GetServerId(dbHandler,  opportunityProductDetailAttribute.attributeValueID),
         "AttributeValue": opportunityProductDetailAttribute.attributeValue,
         "CreatedBy": opportunityProductDetailAttribute.createdBy,
         "CreatedOn": opportunityProductDetailAttribute.createdOn,
@@ -2644,8 +2646,8 @@ Future<void> upSyncAccountAddress(AccountAddress accountAddress) async {
         "State": accountAddress.state,
         "Country": accountAddress.country,
         "PIN": accountAddress.pin,
-        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountAddress.accountID),
-        "ContactID": ContactDataHandler.getServerId(dbHandler,  accountAddress.contactID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountAddress.accountID),
+        "ContactID": ContactHandlerDataBase.GetServerId(dbHandler,  accountAddress.contactID),
         "GPSCoordinates": accountAddress.gpsCoordinates,
         "CreatedBy": accountAddress.createdBy,
         "CreatedOn": accountAddress.createdOn,
@@ -2725,8 +2727,8 @@ Future<void> upSyncOpportunityContact(OpportunityContact opportunityContact) asy
       var postData = {
         "OpportunityContactID": Globals.isNullOrEmpty(opportunityContact.opportunityContactID) ? "-1" : opportunityContact.opportunityContactID,
         "OpportunityContactCode": Globals.isNullOrEmpty(opportunityContact.opportunityContactCode) ? "" : opportunityContact.opportunityContactCode,
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityContact.opportunityID),
-        "ContactID": ContactDataHandler.getServerId(dbHandler,  opportunityContact.contactID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityContact.opportunityID),
+        "ContactID": ContactHandlerDataBase.GetServerId(dbHandler,  opportunityContact.contactID),
         "Description": opportunityContact.description,
         "CreatedBy": opportunityContact.createdBy,
         "CreatedOn": opportunityContact.createdOn,
@@ -2761,7 +2763,7 @@ Future<void> upSyncOpportunityContact(OpportunityContact opportunityContact) asy
               opportunityContactReturn.isDirty = "false";
               opportunityContactReturn.upSyncMessage = "SUCCESS";
               opportunityContactReturn.upSyncIndex = Globals.SyncIndex.toString();
-              OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContactReturn);
+              OpportunityContactHandlerDataBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContactReturn);
               logMessage("OpportunityContact - Saved successfully.");
             } catch (ex) {
               logger.e("Error: SyncService:upSyncOpportunityContact() 1-> $ex");
@@ -2770,7 +2772,7 @@ Future<void> upSyncOpportunityContact(OpportunityContact opportunityContact) asy
             logger.e("VolleyError: SyncService:upSyncOpportunityContact() 2-> ${opportunityContact.id} : Object not returned.");
             opportunityContact.upSyncMessage = "FAIL: Object not returned";
             opportunityContact.upSyncIndex = Globals.SyncIndex.toString();
-            OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
+            OpportunityContactHandlerDataBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
           }
         } else {
           String posterror = response.body != null ? response.body.toString() : "";
@@ -2782,7 +2784,7 @@ Future<void> upSyncOpportunityContact(OpportunityContact opportunityContact) asy
 
           opportunityContact.upSyncMessage = "FAIL: $posterror";
           opportunityContact.upSyncIndex = Globals.SyncIndex.toString();
-          OpportunityContactDataHandler.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
+          OpportunityContactHandlerDataBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
           logger.e("VolleyError: SyncService:upSyncOpportunityContact() 3-> $posterror");
         }
 
@@ -2807,8 +2809,8 @@ Future<void> upSyncAccountPhone(AccountPhone accountPhone) async {
         "AccountPhoneCode": Globals.isNullOrEmpty(accountPhone.accountPhoneCode) ? "" : accountPhone.accountPhoneCode,
         "Phone": accountPhone.phone,
         "PhoneTypeName": accountPhone.phoneTypeName,
-        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountPhone.accountID),
-        "AccountAddressID": AccountAddressDataHandler.getServerId(dbHandler,  accountPhone.accountAddressID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountPhone.accountID),
+        "AccountAddressID": AccountAddressDataHandler.GetServerId(dbHandler,  accountPhone.accountAddressID),
         "CreatedBy": accountPhone.createdBy,
         "CreatedOn": accountPhone.createdOn,
         "ModifiedBy": accountPhone.modifiedBy,
@@ -2886,7 +2888,7 @@ Future<void> upSyncAccountBuyingProcess(AccountBuyingProcess accountBuyingProces
         "AccountBuyingProcessID": Globals.isNullOrEmpty(accountBuyingProcess.accountBuyingProcessID) ? "-1" : accountBuyingProcess.accountBuyingProcessID,
         "AccountBuyingProcessCode": Globals.isNullOrEmpty(accountBuyingProcess.accountBuyingProcessCode) ? "" : accountBuyingProcess.accountBuyingProcessCode,
         "BuyingProcess": accountBuyingProcess.buyingProcess,
-        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountBuyingProcess.accountID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountBuyingProcess.accountID),
         "CreatedBy": accountBuyingProcess.createdBy,
         "CreatedOn": accountBuyingProcess.createdOn,
         "ModifiedBy": accountBuyingProcess.modifiedBy,
@@ -2964,7 +2966,7 @@ Future<void> upSyncAccountBusinessPlan(AccountBusinessPlan accountBusinessPlan) 
         "AccountBusinessPlanID": Globals.isNullOrEmpty(accountBusinessPlan.accountBusinessPlanID) ? "-1" : accountBusinessPlan.accountBusinessPlanID,
         "AccountBusinessPlanCode": Globals.isNullOrEmpty(accountBusinessPlan.accountBusinessPlanCode) ? "" : accountBusinessPlan.accountBusinessPlanCode,
         "BusinessPlans": accountBusinessPlan.businessPlans,
-        "AccountID": AccountDataHandler.getServerId(dbHandler, accountBusinessPlan.accountID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler, accountBusinessPlan.accountID),
         "CustomerTargetDate": accountBusinessPlan.customerTargetDate,
         "CreatedBy": accountBusinessPlan.createdBy,
         "CreatedOn": accountBusinessPlan.createdOn,
@@ -3044,8 +3046,8 @@ Future<void> upSyncAccountCompetitionActivity(AccountCompetitionActivity account
         "AccountCompetitionActivityID": Globals.isNullOrEmpty(accountCompetitionActivity.accountCompetitionActivityID) ? "-1" : accountCompetitionActivity.accountCompetitionActivityID,
         "AccountCompetitionActivityCode": Globals.isNullOrEmpty(accountCompetitionActivity.accountCompetitionActivityCode) ? "" : accountCompetitionActivity.accountCompetitionActivityCode,
         "CompetitionActivity": accountCompetitionActivity.competitionActivity,
-        "AccountID": AccountDataHandler.getServerId(dbHandler, accountCompetitionActivity.accountID),
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, accountCompetitionActivity.opportunityID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler, accountCompetitionActivity.accountID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, accountCompetitionActivity.opportunityID),
         "CompetitorName": accountCompetitionActivity.competitorName,
         "CreatedBy": accountCompetitionActivity.createdBy,
         "CreatedOn": accountCompetitionActivity.createdOn,
@@ -3123,10 +3125,10 @@ Future<void> upSyncNote(Note note) async {
       var postData = {
         "NoteID": Globals.isNullOrEmpty(note.noteID) ? "-1" : note.noteID,
         "NoteCode": Globals.isNullOrEmpty(note.noteCode) ? "" : note.noteCode,
-        "AccountID": AccountDataHandler.getServerId(dbHandler, note.accountID),
-        "ContactID": ContactDataHandler.getServerId(dbHandler, note.contactID),
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, note.opportunityID),
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, note.activityID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler, note.accountID),
+        "ContactID": ContactHandlerDataBase.GetServerId(dbHandler, note.contactID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, note.opportunityID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, note.activityID),
         "IsPersonal": Globals.tryParseBoolean(note.isPersonal),
         "NoteDate": note.noteDate,
         "NoteContent": note.noteContent,
@@ -3210,7 +3212,7 @@ Future<void> upSyncActivityTravel(ActivityTravel activityTravel) async {
         "ActivityTravelID": Globals.isNullOrEmpty(activityTravel.activityTravelID) ? "-1" : activityTravel.activityTravelID,
         "ActivityTravelCode": Globals.isNullOrEmpty(activityTravel.activityTravelCode) ? "" : activityTravel.activityTravelCode,
         "ActivityTravelTitle": activityTravel.activityTravelTitle,
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityTravel.activityID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityTravel.activityID),
         "ActivityTravelDate": activityTravel.activityTravelDate,
         "ActivityTravelEndDate": activityTravel.activityTravelEndDate,
         "TravelPurposeName": activityTravel.travelPurposeName,
@@ -3220,7 +3222,7 @@ Future<void> upSyncActivityTravel(ActivityTravel activityTravel) async {
         "EndLocationCoordinate": activityTravel.endLocationCoordinate,
         "ActualDistance": activityTravel.actualDistance,
         "DistanceTravelled": activityTravel.distanceTravelled,
-        "ModeOfTravelID": ModeOfTravelDataHandler.getServerId(dbHandler, activityTravel.modeOfTravelID),
+        "ModeOfTravelID": ModeOfTravelDataHandler.GetServerId(dbHandler, activityTravel.modeOfTravelID),
         "TravelExpense": activityTravel.travelExpense,
         "ReasonForDeviation": activityTravel.reasonForDeviation,
         "OtherExpense": activityTravel.otherExpense,
@@ -3307,8 +3309,8 @@ Future<void> upSyncAccountMedia(AccountMedia accountMedia) async {
         "AccountMediaID": Globals.isNullOrEmpty(accountMedia.accountMediaID) ? "-1" : accountMedia.accountMediaID,
         "AccountMediaCode": Globals.isNullOrEmpty(accountMedia.accountMediaCode) ? "" : accountMedia.accountMediaCode,
         "AccountMediaName": accountMedia.accountMediaName,
-        "AccountID": AccountDataHandlerBase.getServerId(dbHandler, accountMedia.accountID!),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler,  accountMedia.contentTypeID),
+        "AccountID": AccountDataHandlerBase.GetServerId(dbHandler, accountMedia.accountID!),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler,  accountMedia.contentTypeID),
         "MediaPath": accountMedia.mediaPath,
         "MediaContent": accountMedia.mediaContent,
         "Description": accountMedia.description,
@@ -3395,8 +3397,8 @@ Future<void> upSyncContactMedia(ContactMedia contactMedia) async {
         "ContactMediaID": Globals.isNullOrEmpty(contactMedia.contactMediaID) ? "-1" : contactMedia.contactMediaID,
         "ContactMediaCode": Globals.isNullOrEmpty(contactMedia.contactMediaCode) ? "" : contactMedia.contactMediaCode,
         "ContactMediaName": contactMedia.contactMediaName,
-        "ContactID": ContactDataHandler.getServerId(dbHandler, contactMedia.contactID),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, contactMedia.contentTypeID),
+        "ContactID": ContactHandlerDataBase.GetServerId(dbHandler, contactMedia.contactID),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, contactMedia.contentTypeID),
         "MediaPath": contactMedia.mediaPath,
         "MediaContent": contactMedia.mediaContent,
         "Description": contactMedia.description,
@@ -3480,8 +3482,8 @@ Future<void> upSyncOpportunityMedia(OpportunityMedia opportunityMedia) async {
         "OpportunityMediaID": Globals.isNullOrEmpty(opportunityMedia.opportunityMediaID) ? "-1" : opportunityMedia.opportunityMediaID,
         "OpportunityMediaCode": Globals.isNullOrEmpty(opportunityMedia.opportunityMediaCode) ? "" : opportunityMedia.opportunityMediaCode,
         "OpportunityMediaName": opportunityMedia.opportunityMediaName,
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, opportunityMedia.opportunityID),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, opportunityMedia.contentTypeID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, opportunityMedia.opportunityID),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, opportunityMedia.contentTypeID),
         "MediaPath": opportunityMedia.mediaPath,
         "MediaContent": opportunityMedia.mediaContent,
         "Description": opportunityMedia.description,
@@ -3563,8 +3565,8 @@ Future<void> upSyncActivityMedia(ActivityMedia activityMedia) async {
         "ActivityMediaID": Globals.isNullOrEmpty(activityMedia.activityMediaID) ? "-1" : activityMedia.activityMediaID,
         "ActivityMediaCode": Globals.isNullOrEmpty(activityMedia.activityMediaCode) ? "" : activityMedia.activityMediaCode,
         "ActivityMediaName": activityMedia.activityMediaName,
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityMedia.activityID),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, activityMedia.contentTypeID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityMedia.activityID),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, activityMedia.contentTypeID),
         "MediaPath": activityMedia.mediaPath,
         "MediaContent": activityMedia.mediaContent,
         "Description": activityMedia.description,
@@ -3650,8 +3652,8 @@ Future<void> upSyncNoteMedia(NoteMedia noteMedia) async {
         "NoteMediaID": Globals.isNullOrEmpty(noteMedia.noteMediaID) ? "-1" : noteMedia.noteMediaID,
         "NoteMediaCode": Globals.isNullOrEmpty(noteMedia.noteMediaCode) ? "" : noteMedia.noteMediaCode,
         "NoteMediaName": noteMedia.noteMediaName,
-        "NoteID": NoteDataHandler.getServerId(dbHandler, noteMedia.noteID),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, noteMedia.contentTypeID),
+        "NoteID": NoteDataHandler.GetServerId(dbHandler, noteMedia.noteID),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, noteMedia.contentTypeID),
         "MediaPath": noteMedia.mediaPath,
         "MediaContent": noteMedia.mediaContent,
         "Description": noteMedia.description,
@@ -3736,8 +3738,8 @@ Future<void> upSyncActivityTravelMedia(ActivityTravelMedia activityTravelMedia) 
         "ActivityTravelMediaID": Globals.isNullOrEmpty(activityTravelMedia.activityTravelMediaID) ? "-1" : activityTravelMedia.activityTravelMediaID,
         "ActivityTravelMediaCode": Globals.isNullOrEmpty(activityTravelMedia.activityTravelMediaCode) ? "" : activityTravelMedia.activityTravelMediaCode,
         "ActivityTravelMediaName": activityTravelMedia.activityTravelMediaName,
-        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler, activityTravelMedia.activityTravelID),
-        "ContentTypeID": ContentTypeDataHandler.getServerId(dbHandler, activityTravelMedia.contentTypeID),
+        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler, activityTravelMedia.activityTravelID),
+        "ContentTypeID": ContentTypeDataHandler.GetServerId(dbHandler, activityTravelMedia.contentTypeID),
         "MediaPath": activityTravelMedia.mediaPath,
         "MediaContent": activityTravelMedia.mediaContent,
         "Description": activityTravelMedia.description,
@@ -3830,10 +3832,10 @@ Future<void> upSyncActivityTravelExpense(ActivityTravelExpense activityTravelExp
         "ActivityTravelExpenseID": Globals.isNullOrEmpty(activityTravelExpense.activityTravelExpenseID) ? "-1" : activityTravelExpense.activityTravelExpenseID,
         "ActivityTravelExpenseCode": Globals.isNullOrEmpty(activityTravelExpense.activityTravelExpenseCode) ? "" : activityTravelExpense.activityTravelExpenseCode,
         "ActivityTravelExpenseTitle": activityTravelExpense.activityTravelExpenseTitle,
-        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler, activityTravelExpense.activityTravelID),
-        "ExpenseTypeID": ExpenseTypeDataHandler.getServerId(dbHandler, activityTravelExpense.expenseTypeID),
+        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler, activityTravelExpense.activityTravelID),
+        "ExpenseTypeID": ExpenseTypeDataHandler.GetServerId(dbHandler, activityTravelExpense.expenseTypeID),
         "DistanceTravelled": activityTravelExpense.distanceTravelled,
-        "ModeOfTravelID": ModeOfTravelDataHandler.getServerId(dbHandler, activityTravelExpense.modeOfTravelID),
+        "ModeOfTravelID": ModeOfTravelDataHandler.GetServerId(dbHandler, activityTravelExpense.modeOfTravelID),
         "Amount": activityTravelExpense.amount,
         "Remarks": activityTravelExpense.remarks,
         "CreatedBy": activityTravelExpense.createdBy,
@@ -4074,10 +4076,10 @@ Future<void> upSyncAccountForm(AccountForm accountForm) async {
         "AccountFormID": accountForm.accountFormID != null && accountForm.accountFormID.isNotEmpty ? accountForm.accountFormID : "-1",
         "AccountFormCode": accountForm.accountFormCode != null && accountForm.accountFormCode.isNotEmpty ? accountForm.accountFormCode : "",
         "AccountFormTitle": accountForm.accountFormTitle,
-        "FormID": FormDataHandler.getServerId(dbHandler, accountForm.formID),
-        "AccountID": AccountDataHandler.getServerId(dbHandler, accountForm.accountID),
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, accountForm.activityID),
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, accountForm.opportunityID),
+        "FormID": FormDataHandler.GetServerId(dbHandler, accountForm.formID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler, accountForm.accountID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, accountForm.activityID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, accountForm.opportunityID),
         "FileName": accountForm.fileName,
         "FileUrl": accountForm.fileUrl,
         "CreatedOn": accountForm.createdOn,
@@ -4279,10 +4281,10 @@ Future<void> upSyncReimbursementDetail(ReimbursementDetail reimbursementDetail) 
         "BillNumber": reimbursementDetail.billNumber,
         "BillDate": reimbursementDetail.billDate,
         "Amount": reimbursementDetail.amount,
-        "ReimbursementID": ReimbursementDataHandler.getServerId(dbHandler, reimbursementDetail.reimbursementID),
-        "ReimbursementTypeID": ReimbursementTypeDataHandler.getServerId(dbHandler, reimbursementDetail.reimbursementTypeID),
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, reimbursementDetail.activityID),
-        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler, reimbursementDetail.activityTravelID),
+        "ReimbursementID": ReimbursementDataHandler.GetServerId(dbHandler, reimbursementDetail.reimbursementID),
+        "ReimbursementTypeID": ReimbursementTypeDataHandler.GetServerId(dbHandler, reimbursementDetail.reimbursementTypeID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, reimbursementDetail.activityID),
+        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler, reimbursementDetail.activityTravelID),
         "Description": reimbursementDetail.description,
         "DocumentPath": reimbursementDetail.documentPath,
         "DocumentContent": reimbursementDetail.documentContent,
@@ -4447,7 +4449,7 @@ Future<void> upSyncActivityPermission(ActivityPermission activityPermission) asy
       var postData = {
         "ActivityPermissionID": !Globals.isNullOrEmpty(activityPermission.activityPermissionID) ? activityPermission.activityPermissionID : "-1",
         "ActivityPermissionCode": !Globals.isNullOrEmpty(activityPermission.activityPermissionCode) ? activityPermission.activityPermissionCode : "",
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityPermission.activityID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityPermission.activityID),
         "AppUserID": activityPermission.appUserID,
         "PermissionLevel": activityPermission.permissionLevel,
         "CreatedOn": activityPermission.createdOn,
@@ -4521,7 +4523,7 @@ Future<void> upSyncNotePermission(NotePermission notePermission)async {
       var postData = {
         "NotePermissionID": !Globals.isNullOrEmpty(notePermission.notePermissionID) ? notePermission.notePermissionID : "-1",
         "NotePermissionCode": !Globals.isNullOrEmpty(notePermission.notePermissionCode) ? notePermission.notePermissionCode : "",
-        "NoteID": NoteDataHandler.getServerId(dbHandler, notePermission.noteID),
+        "NoteID": NoteDataHandler.GetServerId(dbHandler, notePermission.noteID),
         "AppUserID": notePermission.appUserID,
         "PermissionLevel": notePermission.permissionLevel,
         "CreatedOn": notePermission.createdOn,
@@ -4595,7 +4597,7 @@ Future<void> upSyncOpportunityPermission(OpportunityPermission opportunityPermis
       var postData = {
         "OpportunityPermissionID": !Globals.isNullOrEmpty(opportunityPermission.opportunityPermissionID) ? opportunityPermission.opportunityPermissionID : "-1",
         "OpportunityPermissionCode": !Globals.isNullOrEmpty(opportunityPermission.opportunityPermissionCode) ? opportunityPermission.opportunityPermissionCode : "",
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler, opportunityPermission.opportunityID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler, opportunityPermission.opportunityID),
         "AppUserID": opportunityPermission.appUserID,
         "PermissionLevel": opportunityPermission.permissionLevel,
         "CreatedOn": opportunityPermission.createdOn,
@@ -4668,7 +4670,7 @@ Future<void> upSyncActivityTeam(ActivityTeam activityTeam) async{
       Map<String, dynamic> postData = {
         "ActivityTeamID": Globals.isNullOrEmpty(activityTeam.activityTeamID) ? "-1" : activityTeam.activityTeamID,
         "ActivityTeamCode": Globals.isNullOrEmpty(activityTeam.activityTeamCode) ? "" : activityTeam.activityTeamCode,
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler, activityTeam.activityID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler, activityTeam.activityID),
         "ActivityTeamAppUserID": activityTeam.activityTeamAppUserID,
         "Description": activityTeam.description,
         "CreatedBy": activityTeam.createdBy,
@@ -4746,7 +4748,7 @@ Future<void> upSyncAppUserMessage(AppUserMessage appUserMessage)async {
         "ObjectType": appUserMessage.objectType,
         "ObjectID": appUserMessage.objectID,
         "IsAttachment": Globals.tryParseBoolean(appUserMessage.isAttachment),
-        "ParentAppUserMessageID": AppUserMessageDataHandler.getServerId(dbHandler, appUserMessage.parentAppUserMessageID),
+        "ParentAppUserMessageID": AppUserMessageDataHandler.GetServerId(dbHandler, appUserMessage.parentAppUserMessageID),
         "AppUserMessageTo": appUserMessage.appUserMessageTo,
         "AppUserMessageReadBy": appUserMessage.appUserMessageReadBy,
         "CreatedBy": appUserMessage.createdBy,
@@ -4821,7 +4823,7 @@ Future<void> upSyncOpportunityTeam(OpportunityTeam opportunityTeam) async{
       Map<String, dynamic> postData = {
         "OpportunityTeamID": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamID) ? "-1" : opportunityTeam.opportunityTeamID,
         "OpportunityTeamCode": Globals.isNullOrEmpty(opportunityTeam.opportunityTeamCode) ? "" : opportunityTeam.opportunityTeamCode,
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityTeam.opportunityID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityTeam.opportunityID),
         "OpportunityTeamAppUserID": opportunityTeam.opportunityTeamAppUserID,
         "Description": opportunityTeam.description,
         "CreatedBy": opportunityTeam.createdBy,
@@ -4897,8 +4899,8 @@ Future<void> upSyncActivityTravelMapping(ActivityTravelMapping activityTravelMap
       var postData = {
         "ActivityTravelMappingID": !Globals.isNullOrEmpty(activityTravelMapping.activityTravelMappingID) ? activityTravelMapping.activityTravelMappingID : "-1",
         "ActivityTravelMappingCode": !Globals.isNullOrEmpty(activityTravelMapping.activityTravelMappingCode) ? activityTravelMapping.activityTravelMappingCode : "",
-        "ActivityTravelID": ActivityTravelDataHandler.getServerId(dbHandler,  activityTravelMapping.activityTravelID),
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler,  activityTravelMapping.activityID),
+        "ActivityTravelID": ActivityTravelDataHandler.GetServerId(dbHandler,  activityTravelMapping.activityTravelID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler,  activityTravelMapping.activityID),
         "CreatedBy": activityTravelMapping.createdBy,
         "CreatedOn": activityTravelMapping.createdOn,
         "ModifiedBy": activityTravelMapping.modifiedBy,
@@ -4970,8 +4972,8 @@ Future<void> upSyncAccountBusinessUnit(AccountBusinessUnit accountBusinessUnit)a
       Map<String, dynamic> postData = {
         "AccountBusinessUnitID": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitID) ? "-1" : accountBusinessUnit.accountBusinessUnitID,
         "AccountBusinessUnitCode": Globals.isNullOrEmpty(accountBusinessUnit.accountBusinessUnitCode) ? "" : accountBusinessUnit.accountBusinessUnitCode,
-        "AccountID": AccountDataHandler.getServerId(dbHandler,  accountBusinessUnit.accountID),
-        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  accountBusinessUnit.businessUnitID),
+        "AccountID": AccountDataHandler.GetServerId(dbHandler,  accountBusinessUnit.accountID),
+        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  accountBusinessUnit.businessUnitID),
         "CreatedBy": accountBusinessUnit.createdBy,
         "CreatedOn": accountBusinessUnit.createdOn,
         "ModifiedBy": accountBusinessUnit.modifiedBy,
@@ -5045,8 +5047,8 @@ void upSyncActivityBusinessUnit(ActivityBusinessunit activityBusinessUnit) {
       Map<String, dynamic> postData = {
         "ActivityBusinessUnitID": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitID) ? "-1" : activityBusinessUnit.activityBusinessUnitID,
         "ActivityBusinessUnitCode": Globals.isNullOrEmpty(activityBusinessUnit.activityBusinessUnitCode) ? "" : activityBusinessUnit.activityBusinessUnitCode,
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler,  activityBusinessUnit.activityID),
-        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  activityBusinessUnit.businessUnitID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler,  activityBusinessUnit.activityID),
+        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  activityBusinessUnit.businessUnitID),
         "CreatedBy": activityBusinessUnit.createdBy,
         "CreatedOn": activityBusinessUnit.createdOn,
         "ModifiedBy": activityBusinessUnit.modifiedBy,
@@ -5120,8 +5122,8 @@ void upSyncOpportunityBusinessUnit(OpportunityBusinessUnit opportunityBusinessUn
       Map<String, dynamic> postData = {
         "OpportunityBusinessUnitID": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitID) ? "-1" : opportunityBusinessUnit.opportunityBusinessUnitID,
         "OpportunityBusinessUnitCode": Globals.isNullOrEmpty(opportunityBusinessUnit.opportunityBusinessUnitCode) ? "" : opportunityBusinessUnit.opportunityBusinessUnitCode,
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityBusinessUnit.opportunityID),
-        "BusinessUnitID": BusinessUnitDataHandler.getServerId(dbHandler,  opportunityBusinessUnit.businessUnitID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityBusinessUnit.opportunityID),
+        "BusinessUnitID": BusinessUnitDataHandler.GetServerId(dbHandler,  opportunityBusinessUnit.businessUnitID),
         "CreatedBy": opportunityBusinessUnit.createdBy,
         "CreatedOn": opportunityBusinessUnit.createdOn,
         "ModifiedBy": opportunityBusinessUnit.modifiedBy,
@@ -5196,12 +5198,12 @@ Future<void> upSyncActivityApproval(ActivityApproval activityApproval)async {
         "ActivityApprovalID": Globals.isNullOrEmpty(activityApproval.activityApprovalID) ? "-1" : activityApproval.activityApprovalID,
         "ActivityApprovalCode": Globals.isNullOrEmpty(activityApproval.activityApprovalCode) ? "" : activityApproval.activityApprovalCode,
         "ActivityApprovalTitle": activityApproval.activityApprovalTitle,
-        "ActivityApprovalTypeID": ActivityApprovalTypeDataHandler.getServerId(dbHandler,  activityApproval.activityApprovalTypeID),
-        "ActivityID": ActivityDataHandler.getServerId(dbHandler,  activityApproval.activityID),
+        "ActivityApprovalTypeID": ActivityApprovalTypeDataHandler.GetServerId(dbHandler,  activityApproval.activityApprovalTypeID),
+        "ActivityID": ActivityDataHandler.GetServerId(dbHandler,  activityApproval.activityID),
         "RequestDate": activityApproval.requestDate,
         "RequestDetail": activityApproval.requestDetail,
         "IsSubmitted": Globals.tryParseBoolean(activityApproval.isSubmitted),
-        "ParentActivityApprovalID": ActivityApprovalDataHandler.getServerId(dbHandler,  activityApproval.parentActivityApprovalID),
+        "ParentActivityApprovalID": ActivityApprovalDataHandler.GetServerId(dbHandler,  activityApproval.parentActivityApprovalID),
         "ApprovalStatus": activityApproval.approvalStatus,
         "ApprovalByAppUserID": activityApproval.approvalByAppUserID,
         "ApprovalTime": activityApproval.approvalTime,
@@ -5280,12 +5282,12 @@ Future<void> upSyncOpportunityApproval(OpportunityApproval opportunityApproval)a
         "OpportunityApprovalID": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalID) ? opportunityApproval.opportunityApprovalID : "-1",
         "OpportunityApprovalCode": !Globals.isNullOrEmpty(opportunityApproval.opportunityApprovalCode) ? opportunityApproval.opportunityApprovalCode : "",
         "OpportunityApprovalTitle": opportunityApproval.opportunityApprovalTitle,
-        "OpportunityApprovalTypeID": OpportunityApprovalTypeDataHandler.getServerId(dbHandler,  opportunityApproval.opportunityApprovalTypeID),
-        "OpportunityID": OpportunityDataHandler.getServerId(dbHandler,  opportunityApproval.opportunityID),
+        "OpportunityApprovalTypeID": OpportunityApprovalTypeDataHandler.GetServerId(dbHandler,  opportunityApproval.opportunityApprovalTypeID),
+        "OpportunityID": OpportunityDataHandler.GetServerId(dbHandler,  opportunityApproval.opportunityID),
         "RequestDate": opportunityApproval.requestDate,
         "RequestDetail": opportunityApproval.requestDetail,
         "IsSubmitted": Globals.tryParseBoolean(opportunityApproval.isSubmitted),
-        "ParentOpportunityApprovalID": OpportunityApprovalDataHandler.getServerId(dbHandler,  opportunityApproval.parentOpportunityApprovalID),
+        "ParentOpportunityApprovalID": OpportunityApprovalDataHandler.GetServerId(dbHandler,  opportunityApproval.parentOpportunityApprovalID),
         "ApprovalStatus": opportunityApproval.approvalStatus,
         "ApprovalByAppUserID": opportunityApproval.approvalByAppUserID,
         "ApprovalTime": opportunityApproval.approvalTime,
@@ -5526,8 +5528,8 @@ void upSyncHSSupportTicketMedia(HSSupportTicketMedia hSSupportTicketMedia) async
         'HSSupportTicketMediaID': Globals.isNullOrEmpty(hSSupportTicketMedia.HSSupportTicketMediaID) ? '-1' : hSSupportTicketMedia.HSSupportTicketMediaID,
         'HSSupportTicketMediaCode': Globals.isNullOrEmpty(hSSupportTicketMedia.HSSupportTicketMediaCode) ? '' : hSSupportTicketMedia.HSSupportTicketMediaCode,
         'HSSupportTicketMediaName': hSSupportTicketMedia.HSSupportTicketMediaName,
-        'HSSupportTicketID': HSSupportTicketDataHandler.getServerId(dbHandler,  hSSupportTicketMedia.HSSupportTicketID),
-        'ContentTypeID': ContentTypeDataHandler.getServerId(dbHandler,  hSSupportTicketMedia.ContentTypeID),
+        'HSSupportTicketID': HSSupportTicketDataHandler.GetServerId(dbHandler,  hSSupportTicketMedia.HSSupportTicketID),
+        'ContentTypeID': ContentTypeDataHandler.GetServerId(dbHandler,  hSSupportTicketMedia.ContentTypeID),
         'MediaPath': hSSupportTicketMedia.MediaPath,
         'MediaContent': hSSupportTicketMedia.MediaContent,
         'Description': hSSupportTicketMedia.Description,
@@ -5616,9 +5618,9 @@ Future<void> upSyncReminder(Reminder reminder) async {
         'RepeatNumber': reminder.RepeatNumber,
         'RepeatType': reminder.RepeatType,
         'Active': Globals.tryParseBoolean(reminder.Active),
-        'ActivityID': ActivityDataHandler.getServerId(dbHandler,  reminder.ActivityID),
-        'OpportunityID': OpportunityDataHandler.getServerId(dbHandler,  reminder.OpportunityID),
-        'AccountID': AccountDataHandler.getServerId(dbHandler,  reminder.AccountID),
+        'ActivityID': ActivityDataHandler.GetServerId(dbHandler,  reminder.ActivityID),
+        'OpportunityID': OpportunityDataHandler.GetServerId(dbHandler,  reminder.OpportunityID),
+        'AccountID': AccountDataHandler.GetServerId(dbHandler,  reminder.AccountID),
         'IsSetBySystem': Globals.tryParseBoolean(reminder.IsSetBySystem),
         'CreatedBy': reminder.CreatedBy,
         'CreatedOn': reminder.CreatedOn,
@@ -8205,19 +8207,19 @@ Future<void> downSyncActivityTypes(String typeOfData) async {
               var id = jsonObject['ActivityTypeID'].toString();
               var uid = jsonObject['Uid'].toString();
               if (id.isNotEmpty) {
-                activityType = ActivityTypeDataHandler.GetMasterActivityTypeRecord(dbHandler,  id);
+                activityType = ActivityTypeDataHandlerBase.GetMasterActivityTypeRecord(dbHandler,  id);
               }
               if (activityType == null && doDoubleCheck && uid.isNotEmpty) {
-                activityType = ActivityTypeDataHandler.GetActivityTypeRecordByUid(dbHandler,  uid);
+                activityType = ActivityTypeDataHandlerBase.GetActivityTypeRecordByUid(dbHandler,  uid);
               }
 
               if (activityType == null) {
                 activityType = ActivityType();
                 activityType = JSONCopier.CopyJsonDataToActivityType( dbHandler, jsonObject, activityType, true);
-                var rid = ActivityTypeDataHandler.AddActivityTypeRecord(dbHandler,  activityType);
+                var rid = ActivityTypeDataHandlerBase.AddActivityTypeRecord(dbHandler,  activityType);
               } else {
                 activityType = JSONCopier.CopyJsonDataToActivityType( dbHandler, jsonObject, activityType, false);
-                var rid = ActivityTypeDataHandler.UpdateActivityTypeRecord(dbHandler,  activityType.id, activityType);
+                var rid = ActivityTypeDataHandlerBase.UpdateActivityTypeRecord(dbHandler,  activityType.id, activityType);
               }
             }
           }
@@ -10709,20 +10711,20 @@ void downSyncCurrencies(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    currency = CurrencyDataHandlerBase.GetMasterCurrencyRecord(dbHandler,  id);
+                    currency = CurrencyDataHandlerBaseBase.GetMasterCurrencyRecord(dbHandler,  id);
                   }
 
                   if (currency == null && doDoubleCheck && uid != null && uid != '') {
-                    currency = CurrencyDataHandlerBase.GetCurrencyRecordByUid(dbHandler,  uid);
+                    currency = CurrencyDataHandlerBaseBase.GetCurrencyRecordByUid(dbHandler,  uid);
                   }
 
                   if (currency == null) {
                     currency = Currency();
                     currency = JSONCopier.CopyJsonDataToCurrency( dbHandler, jsonObject, currency, true);
-                    var rid = CurrencyDataHandlerBase.AddCurrencyRecord(dbHandler,  currency);
+                    var rid = CurrencyDataHandlerBaseBase.AddCurrencyRecord(dbHandler,  currency);
                   } else {
                     currency = JSONCopier.CopyJsonDataToCurrency( dbHandler, jsonObject, currency, false);
-                    var rid = CurrencyDataHandlerBase.UpdateCurrencyRecord(dbHandler,  currency.id, currency);
+                    var rid = CurrencyDataHandlerBaseBase.UpdateCurrencyRecord(dbHandler,  currency.id, currency);
                   }
                 }
               }
@@ -13068,20 +13070,20 @@ void downSyncOpportunityContacts(String typeOfData) async {
                   var uid = jsonObject['Uid'];
 
                   if (id != null && id != '') {
-                    opportunityContact = await OpportunityContactDataHandlerBase.GetMasterOpportunityContactRecord(dbHandler,  id);
+                    opportunityContact = await OpportunityContactHandlerDataBaseBase.GetMasterOpportunityContactRecord(dbHandler,  id);
                   }
 
                   if (opportunityContact == null && doDoubleCheck && uid != null && uid != '') {
-                    opportunityContact = await OpportunityContactDataHandlerBase.GetOpportunityContactRecordByUid(dbHandler,  uid);
+                    opportunityContact = await OpportunityContactHandlerDataBaseBase.GetOpportunityContactRecordByUid(dbHandler,  uid);
                   }
 
                   if (opportunityContact == null) {
                     opportunityContact = OpportunityContact();
                     opportunityContact = JSONCopier.copyJsonDataToOpportunityContact( dbHandler, jsonObject, opportunityContact, true);
-                    var rid = await OpportunityContactDataHandlerBase.AddOpportunityContactRecord(dbHandler,  opportunityContact);
+                    var rid = await OpportunityContactHandlerDataBaseBase.AddOpportunityContactRecord(dbHandler,  opportunityContact);
                   } else {
                     opportunityContact = JSONCopier.copyJsonDataToOpportunityContact( dbHandler, jsonObject, opportunityContact, false);
-                    var rid = await OpportunityContactDataHandlerBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
+                    var rid = await OpportunityContactHandlerDataBaseBase.UpdateOpportunityContactRecord(dbHandler,  opportunityContact.id, opportunityContact);
                   }
                 }
               }
